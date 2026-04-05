@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE DIGITAL | Expertise Tech & Formations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #B5935E;
+            --dark: #0A0A0A;
+            --soft-dark: #1A1A1A;
+            --gray: #F9F9F9;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: white;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .digital-hero {
+            background: var(--dark);
+            color: white;
+            padding: 120px 5% 80px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+        .digital-hero h1 {
+            font-family: 'Cinzel';
+            font-size: 3rem;
+            letter-spacing: 7px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .digital-hero p {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 80px 5%; }
+
+        /* Grid Services */
+        .digital-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .digital-card {
+            background: var(--gray);
+            padding: 50px 40px;
+            border: 1px solid #EEE;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .digital-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 0;
+            background: var(--gold);
+            transition: 0.4s ease;
+        }
+        .digital-card:hover {
+            transform: translateY(-10px);
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        .digital-card:hover::before { height: 100%; }
+
+        .digital-card h3 {
+            font-family: 'Cinzel';
+            color: var(--dark);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .digital-card ul { padding-left: 0; list-style: none; }
+        .digital-card li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+            color: #555;
+        }
+        .digital-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        /* Section Offre Web */
+        .web-factory {
+            margin-top: 100px;
+            background: var(--soft-dark);
+            color: white;
+            padding: 60px;
+            text-align: center;
+            border-radius: 4px;
+            position: relative;
+        }
+        .web-factory h2 {
+            font-family: 'Cinzel';
+            color: white;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        .web-factory p { color: #AAA; max-width: 700px; margin: 0 auto 30px; }
+
+        .price-info {
+            display: block;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .btn-digital {
+            display: inline-block;
+            padding: 18px 45px;
+            background: var(--gold);
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .btn-digital:hover {
+            background: white;
+            color: var(--dark);
+        }
+
+        @media (max-width: 768px) {
+            .digital-hero h1 { font-size: 2rem; }
+            .digital-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="digital-hero">
+        <h1>SAGE DIGITAL</h1>
+        <p>Expertise Technologique & Ingénierie de Projet</p>
+    </section>
+
+    <div class="container">
+      <div class="digital-card">
+        <h3>FORMATIONS ÉLITES</h3>
+        <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
+        <ul>
+          <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
+          <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
+          <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
+          <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
+        </ul>
+      </div>
+
+      <div class="digital-card">
+        <h3>CRÉATION SUR-MESURE</h3>
+        <p>Une présence digitale propulsée par des technologies de pointe :</p>
+        <ul>
+          <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
+          <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
+          <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
+          <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
+        </ul>
+      </div>
+
+      <div class="web-factory">
+            <h2>VOTRE PROJET WEB</h2>
+            <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
+            <span class="price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
+            <a href="https://wa.me/22891645869?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." class="btn-digital">Lancer mon projet</a>
+        </div>
+    </div>
+
+</body>
+</html>

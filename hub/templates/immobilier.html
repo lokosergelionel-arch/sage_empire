@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SAGE EMPIRE | Immobilier d'Exception</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #B5935E; --charcoal: #1A1A1A; --ivory: #F9F8F6; }
+        body { margin: 0; font-family: 'Lato', sans-serif; background: white; color: var(--charcoal); }
+
+        /* Header Immobilier */
+        .immo-hero {
+            height: 70vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/immo-hero.jpg" %}') center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
+        }
+        .immo-hero h1 { font-family: 'Cinzel'; font-size: 3rem; letter-spacing: 10px; text-transform: uppercase; }
+
+        .section-title { text-align: center; padding: 80px 5% 40px; }
+        .section-title h2 { font-family: 'Cinzel'; font-size: 2rem; letter-spacing: 5px; }
+        .section-title div { width: 50px; height: 2px; background: var(--gold); margin: 20px auto; }
+
+        /* Grille des propriétés */
+        .immo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px; padding: 0 8% 80px;
+        }
+
+        .property-card {
+            background: var(--ivory);
+            border: 1px solid #eee;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+        .property-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        .property-img { width: 100%; height: 300px; object-fit: cover; }
+
+        .property-content { padding: 30px; }
+        .property-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        .property-content h3 { font-family: 'Cinzel'; font-size: 1.2rem; margin: 15px 0; }
+        .property-features { display: flex; gap: 20px; font-size: 0.8rem; color: #777; margin-bottom: 20px; }
+
+        .btn-immo {
+            display: block; text-align: center; padding: 15px; background: var(--charcoal);
+            color: white; text-decoration: none; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s;
+        }
+        .btn-immo:hover { background: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <section class="immo-hero">
+        <h1>IMMOBILIER</h1>
+        <p style="letter-spacing: 5px; font-size: 0.8rem;">VIVEZ L'EXCEPTION AU QUOTIDIEN</p>
+    </section>
+
+    <div class="section-title">
+        <h2>NOS BIENS DISPONIBLES</h2>
+        <div></div>
+        <p style="font-style: italic; color: #888;">Une sélection rigoureuse d'appartements et de résidences de luxe à Lomé.</p>
+    </div>
+
+    <div class="immo-grid">
+        <div class="property-card">
+            <img src="{% static 'images/villa1.jpg' %}" class="property-img">
+            <div class="property-content">
+                <span class="property-tag">Location Meublée</span>
+                <h3>Penthouse Horizon</h3>
+                <div class="property-features">
+                    <span>3 Chambres</span> • <span>Salon VIP</span> • <span>Piscine</span>
+                </div>
+                <a href="https://wa.me/22891645869" class="btn-immo">DEMANDER UNE VISITE</a>
+            </div>
+        </div>
+
+        <div class="property-card">
+            <img src="{% static 'images/villa2.jpg' %}" class="property-img">
+            <div class="property-content">
+                <span class="property-tag">Gestion Immobilière</span>
+                <h3>Résidence Empire</h3>
+                <div class="property-features">
+                    <span>Sécurité 24h/7</span> • <span>Quartier Chic</span>
+                </div>
+                <a href="https://wa.me/22891645869" class="btn-immo">NOUS CONTACTER</a>
+            </div>
+        </div>
+    </div>
+
+    <section style="background: var(--charcoal); color: white; padding: 80px 10%; text-align: center;">
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 4px;">VOUS AVEZ UN BIEN À PROPOSER ?</h2>
+        <p style="color: #aaa; margin-bottom: 40px;">Confiez la gestion ou la vente de votre propriété à l'expertise Sage Empire.</p>
+        <a href="https://wa.me/22891645869" style="color: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 15px 40px; font-size: 0.8rem; letter-spacing: 2px;">DEVENIR PARTENAIRE IMMO</a>
+    </section>
+
+</body>
+</html>

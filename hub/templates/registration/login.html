@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE EMPIRE | Connexion Partenaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ivory: #F9F8F6;
+            --charcoal: #1A1A1A;
+            --gold: #B5935E;
+            --border: #E5E2DA;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--ivory);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-card {
+            background: white;
+            padding: 50px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+        }
+
+        .logo-small { height: 50px; margin-bottom: 30px; }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            font-size: 0.75rem;
+            color: #888;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+        }
+
+        /* Champs du formulaire */
+        .form-group { margin-bottom: 20px; text-align: left; }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            background: var(--ivory);
+            font-family: 'Lato', sans-serif;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus { outline: none; border-color: var(--gold); background: white; }
+
+        .btn-login {
+            width: 100%;
+            padding: 18px;
+            background: var(--charcoal);
+            color: white;
+            border: none;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover { background: var(--gold); }
+
+        .footer-links { margin-top: 30px; font-size: 0.75rem; color: #aaa; }
+        .footer-links a { color: var(--charcoal); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" class="logo-small" alt="Sage Empire">
+        </a>
+
+        <h2>Accès Créateur</h2>
+        <p class="subtitle">Gérez votre univers de mode</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <input type="text" name="username" placeholder="NOM D'UTILISATEUR" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" placeholder="MOT DE PASSE" required>
+            </div>
+
+            <button type="submit" class="btn-login">Se Connecter</button>
+        </form>
+
+        <div class="footer-links">
+            Pas encore partenaire ? <a href="{% url 'inscription_styliste' %}">Rejoindre l'Empire</a><br><br>
+            <a href="{% url 'home' %}" style="color: #ccc; font-weight: normal;">← Retour à l'accueil</a>
+        </div>
+    </div>
+
+</body>
+</html>

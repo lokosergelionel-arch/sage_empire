@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE EMPIRE | Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ivory: #F9F8F6;
+            --charcoal: #1A1A1A;
+            --gold: #B5935E;
+            --border: #E5E2DA;
+            --white: #ffffff;
+        }
+
+        body { margin: 0; font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); }
+
+        /* Navigation minimale */
+        nav {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo { height: 40px; }
+        .back-home { text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        header { padding: 80px 5% 40px; text-align: center; }
+        header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; }
+        .subtitle { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 40px 8% 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 50px 30px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .profil-img-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--gold);
+            padding: 5px;
+            background: white;
+        }
+
+        .profil-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: #777;
+            line-height: 1.8;
+            min-height: 70px;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .btn-portfolio {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 12px 25px;
+            border: 1px solid var(--charcoal);
+            transition: 0.3s;
+        }
+
+        .btn-portfolio:hover {
+            background: var(--charcoal);
+            color: var(--white);
+        }
+
+        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" class="nav-logo" alt="Logo"></a>
+        <a href="{% url 'home' %}" class="back-home">← Accueil</a>
+    </nav>
+
+    <header>
+        <h1>L'Annuaire des Créateurs</h1>
+        <p class="subtitle">L'ÉLITE DE LA MODE RÉUNIE</p>
+    </header>
+
+    <div class="grid">
+        {% for styliste in stylistes %}
+        <div class="card">
+            <div class="profil-img-container">
+                {% if styliste.photo_profil %}
+                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+                {% else %}
+                    <div style="background: #f0f0f0; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ccc;">SAGE</div>
+                {% endif %}
+            </div>
+
+            <h3>{{ styliste.nom_marque }}</h3>
+            <p>{{ styliste.biographie|truncatewords:20 }}</p>
+
+            <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
+                DÉCOUVRIR L'UNIVERS →
+            </a>
+        </div>
+        {% empty %}
+        <div class="empty-msg">
+            <p>L'Empire recrute actuellement ses nouveaux talents.<br>Revenez très bientôt.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

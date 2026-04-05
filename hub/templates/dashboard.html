@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>SAGE EMPIRE - Dashboard</title>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; margin: 0; display: flex; }
+        .sidebar { width: 250px; background: #000; color: #fff; height: 100vh; padding: 20px; position: fixed; }
+        .main { margin-left: 290px; padding: 40px; width: 100%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card-img { width: 100%; height: 250px; object-fit: cover; border: 1px solid #eee; }
+        .btn-add { background: #000; color: #fff; padding: 10px 20px; text-decoration: none; display: inline-block; margin-bottom: 30px; }
+        h1 { font-weight: 300; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>SAGE EMPIRE</h2>
+        <p style="color: #666; font-size: 0.8rem;">ESPACE STYLISTE</p>
+        <br>
+        <p>Marque : <strong>{{ profil.nom_marque }}</strong></p>
+        <a href="{% url 'home' %}" style="color: #fff; text-decoration: none; font-size: 0.9rem;">← Retour au Hub</a>
+    </div>
+
+    <div class="main">
+        <h1>Bienvenue, {{ profil.nom_marque }}</h1>
+        <p>Gérez vos collections et vos publications.</p>
+        
+        <a href="#" class="btn-add">+ Ajouter une nouvelle création</a>
+
+        <div class="grid">
+            {% for c in creations %}
+            <div>
+                <img src="{{ c.image.url }}" class="card-img" alt="">
+                <p style="font-size: 0.9rem;">{{ c.titre }}</p>
+            </div>
+            {% empty %}
+            <p>Vous n'avez pas encore posté de création.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
