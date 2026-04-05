@@ -19,11 +19,10 @@
             --gold-subtle: #B5935E;
             --border: #E5E2DA;
             --white: #ffffff;
-            --hamburger-blue: #5499B4; /* Couleur de ton image */
         }
 
         html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; }
+        body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
         /* NAV */
         nav {
@@ -38,7 +37,6 @@
         .nav-logo-container { height: 50px; }
         .nav-logo-container img { height: 100%; width: auto; }
 
-        /* Liens Ordi */
         .nav-links { display: flex; align-items: center; }
         .nav-links a {
             margin-left: 25px;
@@ -49,55 +47,66 @@
             letter-spacing: 2px;
             transition: 0.3s;
         }
-        .nav-links a:hover { color: var(--gold-subtle); }
         .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-       /* HAMBURGER (Version Prestige Dorée) */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 6px;
-    cursor: pointer;
-    z-index: 2100;
-}
+        /* HAMBURGER (Design comme ton image) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2100;
+            padding: 5px;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background-color: var(--gold-subtle);
+            border-radius: 2px;
+            transition: 0.4s;
+        }
 
-.hamburger span {
-    width: 30px;
-    height: 3px;
-    background-color: var(--gold-subtle); /* Utilisation du doré Sage Empire */
-    border-radius: 2px;
-    transition: 0.4s;
-}
-
-        /* MENU RIDEAU (OVERLAY) */
+        /* MENU TIROIR (DRAWER STYLE) */
         .mobile-overlay {
             position: fixed;
             top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--charcoal);
-            z-index: 2000;
+            right: -100%; /* Caché par défaut */
+            width: 75%; /* Ne prend pas tout l'écran pour le style */
+            height: 100vh;
+            background: var(--white);
+            z-index: 2050;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+            padding-top: 100px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
         .mobile-overlay.active { right: 0; }
 
-        .overlay-links { display: flex; flex-direction: column; text-align: center; gap: 30px; }
+        /* Fond sombre quand le menu est ouvert */
+        .drawer-backdrop {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 2040;
+        }
+        .drawer-backdrop.active { display: block; }
+
+        .overlay-links { display: flex; flex-direction: column; }
         .overlay-links a {
-            color: white;
+            color: var(--charcoal);
             text-decoration: none;
             font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            padding: 20px 40px;
+            border-bottom: 1px solid #f5f5f5;
             text-transform: uppercase;
         }
-        .overlay-links a:hover { color: var(--gold-subtle); }
 
-        /* HERO & VISION */
+        /* HERO & RESPONSIVE TEXT */
         .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; }
         .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
 
@@ -113,18 +122,22 @@
 
         footer { padding: 60px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center; }
 
-        /* ANIMATIONS */
         [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
         [data-animate].animated { opacity: 1; transform: translateY(0); }
 
-        /* --- ADAPTATION MOBILE --- */
+        /* --- CORRECTIONS MOBILE --- */
         @media (max-width: 768px) {
-            nav { padding: 15px 5%; }
-            .nav-links { display: none; } /* On cache les liens normaux */
-            .hamburger { display: flex; } /* On montre les 3 barres */
-            .hero h1 { font-size: 1.8rem; letter-spacing: 4px; }
-            .service-card { flex: 0 1 100%; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero h1 { font-size: 1.8rem; letter-spacing: 4px; } /* Evite que le titre soit trop grand */
+            .hero p { font-size: 0.6rem !important; }
+            .service-card { flex: 0 1 100%; padding: 30px; }
         }
+
+        /* Animation X du hamburger */
+        .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
     </style>
 </head>
 <body>
@@ -152,18 +165,22 @@
         </div>
     </nav>
 
+    <div class="drawer-backdrop" id="backdrop" onclick="toggleMenu()"></div>
+
     <div class="mobile-overlay" id="mobileMenu">
         <div class="overlay-links">
+            <a href="{% url 'home' %}" onclick="toggleMenu()">Accueil</a>
             <a href="#services" onclick="toggleMenu()">Hub Services</a>
             <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
-            <a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()">Contact Privé</a>
-
+            <a href="{% url 'immobilier' %}" onclick="toggleMenu()">Immobilier</a>
+            <hr style="border:none; border-top:1px solid #eee; margin: 5px 40px;">
             {% if user.is_authenticated %}
                 <a href="{% url 'dashboard' %}" onclick="toggleMenu()" style="color: var(--gold-subtle);">Mon Espace</a>
             {% else %}
                 <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
                 <a href="{% url 'login' %}" onclick="toggleMenu()" style="color: var(--gold-subtle);">Connexion</a>
             {% endif %}
+            <a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()">Contact Privé</a>
         </div>
     </div>
 
@@ -203,17 +220,16 @@
     </footer>
 
     <script>
-        // Fonction pour ouvrir/fermer le menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
-            const hamburger = document.getElementById('hamburgerBtn');
-            menu.classList.toggle('active');
+            const btn = document.getElementById('hamburgerBtn');
+            const backdrop = document.getElementById('backdrop');
 
-            // Animation optionnelle du hamburger en "X"
-            hamburger.classList.toggle('open');
+            menu.classList.toggle('active');
+            btn.classList.toggle('open');
+            backdrop.classList.toggle('active');
         }
 
-        // Animation au scroll
         document.addEventListener("DOMContentLoaded", function() {
             const elements = document.querySelectorAll('[data-animate]');
             elements.forEach((el, index) => {
