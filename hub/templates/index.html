@@ -49,8 +49,32 @@
         .nav-links a:hover { color: var(--gold-subtle); }
         .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
+        /* --- NOUVEAU : MENU EXCLUSIF MOBILE --- */
+        .mobile-exclusive-menu {
+            display: none; /* Caché sur ordi */
+            padding: 20px 8%;
+            background: var(--white);
+            gap: 10px;
+            flex-direction: column;
+            border-bottom: 1px solid var(--border);
+        }
+        .m-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--charcoal);
+            color: var(--gold-subtle) !important;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            border: 1px solid var(--gold-subtle);
+            text-transform: uppercase;
+        }
+
         /* HERO & VISION */
-        .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; }
         .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
         .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
         .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
@@ -87,6 +111,18 @@
         footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
         [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
         [data-animate].animated { opacity: 1; transform: translateY(0); }
+
+        /* --- ADAPTATION MOBILE --- */
+        @media (max-width: 768px) {
+            nav { padding: 10px 5%; }
+            .nav-links { display: none; } /* On cache les liens qui se chevauchent */
+            .mobile-exclusive-menu { display: flex; } /* On affiche les gros boutons */
+            .hero h1 { font-size: 1.8rem; letter-spacing: 4px; } /* Titre adapté au téléphone */
+            .vision h2 { font-size: 1.5rem; }
+            .services { padding: 40px 5%; }
+            .services-grid { gap: 15px; }
+            .service-card { padding: 25px; flex: 0 1 100%; } /* Un service par ligne sur mobile */
+        }
     </style>
 </head>
 <body>
@@ -98,21 +134,21 @@
         <div class="nav-links">
             <a href="#services">Hub Services</a>
             <a href="{% url 'liste_stylistes' %}">Marketplace</a>
-            <a href="https://wa.me/22891645869" target="_blank" style="color: var(--gold-subtle); font-weight: bold;">
-   CONTACT PRIVE</a>
-
+            <a href="https://wa.me/22891645869" target="_blank" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'dashboard' %}" class="btn-gold-nav">MON ESPACE</a>
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" style="background:none; border:none; cursor:pointer; color:inherit; font-family:inherit; font-size:0.75rem; letter-spacing:2px; margin-left:25px;">DÉCONNEXION</button>
-                </form>
             {% else %}
-                <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
                 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
             {% endif %}
         </div>
     </nav>
+
+    <div class="mobile-exclusive-menu">
+        <a href="{% url 'galerie_mode' %}" class="m-btn">SAGE MODE</a>
+        <a href="{% url 'liste_stylistes' %}" class="m-btn">MARKETPLACE</a>
+        <a href="{% url 'immobilier' %}" class="m-btn">IMMOBILIER</a>
+        <a href="https://wa.me/22891645869" target="_blank" class="m-btn" style="background: var(--gold-subtle); color: white !important; border: none;">CONTACT PRIVE</a>
+    </div>
 
     <section class="hero" data-animate>
         <h1>SAGE EMPIRE</h1>
@@ -146,89 +182,29 @@
                 <div class="line"></div>
             </a>
             <a href="{% url 'galerie_mode' %}" class="service-card" data-animate>
-    <h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives : Streetwear & Accessoires signés Sage Empire.</p>
-    <div class="line"></div>
-</a>
+                <h3>SAGE MODE</h3>
+                <p>Découvrez nos collections exclusives : Streetwear & Accessoires.</p>
+                <div class="line"></div>
+            </a>
             <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
                 <h3>MAKO SERVICES</h3>
                 <p>Entretien expert post-évènement.</p>
                 <div class="line"></div>
             </a>
             <a href="{% url 'sage_digital' %}" class="service-card" data-animate>
-    <h3>SAGE DIGITAL</h3>
-    <p>Solutions Web & Formations d'Excellence</p>
-    <div class="line"></div>
-</a>
-    </section>
-
-    <section id="marketplace" class="marketplace-banner" data-animate>
-        <h2>MARKETPLACE</h2>
-        <div style="width: 40px; height: 1px; background: var(--gold-subtle); margin: 0 auto 30px;"></div>
-        <p style="font-size: 0.9rem; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8;">
-            L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.<br>
-            Explorez les biographies, découvrez les univers de nos partenaires et accédez à leurs collections exclusives.
-        </p>
-        <a href="{% url 'liste_stylistes' %}" class="btn-enter">Entrer dans la Marketplace →</a>
-    </section>
-
-    {% if not user.is_authenticated %}
-    <section class="cta-styliste">
-        <h3>VOUS ÊTES CRÉATEUR ?</h3>
-        <a href="{% url 'inscription_styliste' %}">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
-    </section>
-    {% endif %}
-    <section style="background: #0A0A0A; color: white; padding: 120px 10%; text-align: center; border-top: 1px solid #1A1A1A;">
-    <h2 style="font-family: 'Cinzel'; letter-spacing: 6px; color: #B5935E; margin-bottom: 40px;">POURQUOI SAGE EMPIRE ?</h2>
-
-    <div style="max-width: 850px; margin: 0 auto; font-family: 'Lato'; line-height: 2.2; color: #EEE; font-size: 1.1rem;">
-        <p style="margin-bottom: 30px;">
-            Parce que la réussite exige une <strong>structure sans faille</strong>. SAGE EMPIRE ne se contente pas de l’esthétique ; nous bâtissons des standards de haute performance.
-        </p>
-
-        <p style="margin-bottom: 30px; color: #AAA; font-style: italic;">
-            "Nous croyons que l’excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la <strong>précision d’un code informatique</strong> que dans la <strong>solidité d’un patrimoine immobilier</strong> ou l’élégance d’une silhouette."
-        </p>
-
-        <p>
-            En unifiant le luxe, l’expertise immobilière et la haute technologie, nous offrons bien plus que des services : nous forgeons un écosystème de confiance pour ceux qui visent le sommet.
-        </p>
-
-        <div style="margin-top: 50px; font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold; font-size: 1.2rem;">
-            UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
+                <h3>SAGE DIGITAL</h3>
+                <p>Solutions Web & Formations d'Excellence</p>
+                <div class="line"></div>
+            </a>
         </div>
-    </div>
-</section>
+    </section>
 
-    <footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
-
-    <div style="margin-bottom: 50px;">
-        <h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px; font-size: 1.4rem;">SAGE EMPIRE</h4>
-        <p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; text-transform: uppercase;">L'Excellence comme Référence</p>
-    </div>
-
-    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
-        <a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE MODE</a>
-        <a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">IMMOBILIER</a>
-        <a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">ÉVÉNEMENTIEL</a>
-        <a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE DIGITAL</a>
-        <a href="https://www.makoservicestg" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">MAKO SERVICES</a>
-
-    </div>
-
-    <div style="margin-bottom: 50px;">
-        <p style="font-family: 'Lato'; font-size: 0.9rem; color: var(--charcoal); margin-bottom: 20px; letter-spacing: 1px;">
-            <span style="color: var(--gold-subtle); font-weight: bold;">
+    <footer style="padding: 60px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
+        <h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px;">SAGE EMPIRE</h4>
+        <p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; padding-top: 20px;">
+            &copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
         </p>
-        <a href="https://wa.me/22891645869" target="_blank"
-           style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase; transition: 0.3s; display: inline-block;">
-           CONTACTEZ L'EMPIRE
-        </a>
-    </div>
-
-    <p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; border-top: 1px solid #f0f0f0; pt-30px; display: inline-block; padding-top: 20px;">
-        &copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
-    </p>
-</footer>
+    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
