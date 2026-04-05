@@ -4,13 +4,6 @@ from django.contrib.auth.models import User
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
 
-# --- LE HACK DE SÉCURITÉ (ADMIN) ---
-# Ce code s'exécute une seule fois au démarrage du serveur sur Render
-try:
-    if not User.objects.filter(username="admin_final").exists():
-        User.objects.create_superuser("admin_final", "admin@empire.com", "EmpireCode99!")
-except Exception:
-    pass
 
 # --- 1. PAGES PUBLIQUES (ACCUEIL & HUB) ---
 
