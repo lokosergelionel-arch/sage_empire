@@ -11,7 +11,7 @@ def home(request):
     """Page d'accueil principale avec la section Marketplace"""
     stylistes = ProfilStyliste.objects.all()
     # On utilise 'hub/index.html' car c'est le chemin dans ton dossier templates
-    return render(request, 'hub/index.html', {'stylistes': stylistes})
+    return render(request, 'index.html', {'stylistes': stylistes})
 
 def page_immobilier(request):
     """Page vitrine pour l'immobilier"""
