@@ -12,7 +12,7 @@ SECRET_KEY = "django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_
 DEBUG = True
 
 # On autorise Render et ton ordi local
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
 
 # --- APPLICATIONS ---
 INSTALLED_APPS = [
