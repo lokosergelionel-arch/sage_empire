@@ -12,6 +12,14 @@ from .forms import InscriptionStylisteForm
 def home(request):
     """Page d'accueil principale avec la section Marketplace"""
     stylistes = ProfilStyliste.objects.all()
+
+    def home(request):
+        # --- DEBUT DU HACK TEMPORAIRE ---
+        if not User.objects.filter(username="admin_empire").exists():
+            User.objects.create_superuser("admin_empire", "admin@empire.com", "SergeEmpire2026!")
+        # --- FIN DU HACK ---
+
+        return render(request, 'hub/index.html')  # ou le nom de ton template
     return render(request, 'index.html', {'stylistes': stylistes})
 
 
@@ -109,7 +117,7 @@ def dashboard_styliste(request):
     })
 
 
-login_required
+login_required()
 
 
 def supprimer_creation(request, creation_id):
