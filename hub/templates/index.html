@@ -52,21 +52,22 @@
         .nav-links a:hover { color: var(--gold-subtle); }
         .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-        /* HAMBURGER (Caché par défaut) */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-            z-index: 2100;
-        }
-        .hamburger span {
-            width: 30px;
-            height: 3px;
-            background-color: var(--hamburger-blue);
-            border-radius: 2px;
-            transition: 0.4s;
-        }
+       /* HAMBURGER (Version Prestige Dorée) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 2100;
+}
+
+.hamburger span {
+    width: 30px;
+    height: 3px;
+    background-color: var(--gold-subtle); /* Utilisation du doré Sage Empire */
+    border-radius: 2px;
+    transition: 0.4s;
+}
 
         /* MENU RIDEAU (OVERLAY) */
         .mobile-overlay {
