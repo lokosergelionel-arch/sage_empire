@@ -49,7 +49,7 @@
         .nav-links a:hover { color: var(--gold-subtle); }
         .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-        /* --- AJOUT TECHNIQUE MOBILE --- */
+        /* --- MENU MOBILE TRANSPARENT & BACKDROP --- */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -59,19 +59,35 @@
         }
         .hamburger span { width: 28px; height: 3px; background: var(--gold-subtle); transition: 0.4s; }
 
+        /* Fond sombre cliquable pour revenir à la page */
+        .menu-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 2040;
+            display: none; opacity: 0; transition: 0.4s;
+        }
+        .menu-backdrop.active { display: block; opacity: 1; }
+
+        /* Overlay transparent avec flou */
         .mobile-overlay {
             position: fixed; top: 0; right: -100%;
-            width: 80%; height: 100vh;
-            background: var(--white); z-index: 2050;
-            transition: 0.4s; display: flex; flex-direction: column; padding-top: 80px;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            width: 75%; height: 100vh;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 2050; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; padding-top: 100px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
         }
         .mobile-overlay.active { right: 0; }
         .mobile-overlay a {
             padding: 20px 40px; text-decoration: none; color: var(--charcoal);
-            font-family: 'Cinzel'; border-bottom: 1px solid #eee; text-transform: uppercase; font-size: 0.85rem;
+            font-family: 'Cinzel'; border-bottom: 1px solid rgba(0,0,0,0.05);
+            text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px;
         }
-        /* ------------------------------ */
+
+        /* Animation X */
+        .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         /* HERO & VISION */
         .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
@@ -112,7 +128,6 @@
         [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
         [data-animate].animated { opacity: 1; transform: translateY(0); }
 
-        /* RESPONSIVE FIXES (SANS SUPPRESSION) */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hamburger { display: flex; }
@@ -139,10 +154,12 @@
                 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
             {% endif %}
         </div>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
     </nav>
+
+    <div class="menu-backdrop" id="menuBackdrop" onclick="toggleMenu()"></div>
 
     <div class="mobile-overlay" id="mobileMenu">
         <a href="#services" onclick="toggleMenu()">Hub Services</a>
@@ -222,10 +239,10 @@
                 Parce que la réussite exige une <strong>structure sans faille</strong>. SAGE EMPIRE ne se contente pas de l’esthétique ; nous bâtissons des standards de haute performance.
             </p>
             <p style="margin-bottom: 30px; color: #AAA; font-style: italic;">
-                "Nous croyons que l’excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la <strong>précision d’un code informatique</strong> que dans la <strong>solidité d’un patrimoine immobilier</strong> ou l’élégance d’une silhouette."
+                "Nous croyons que l’excellence est une discipline globale qui ne souffre aucune zone d'ombre."
             </p>
             <p>
-                En unifiant le luxe, l’expertise immobilière et la haute technologie, nous offrons bien plus que des services : nous forgeons un écosystème de confiance pour ceux qui visent le sommet.
+                En unifiant le luxe, l’expertise immobilière et la haute technologie, nous offrons bien plus que des services.
             </p>
             <div style="margin-top: 50px; font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold; font-size: 1.2rem;">
                 UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
@@ -256,10 +273,14 @@
     </footer>
 
     <script>
-        // LA SEULE FONCTION AJOUTÉE POUR LE MENU
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
+            const backdrop = document.getElementById('menuBackdrop');
+            const btn = document.getElementById('hamburgerBtn');
+
             menu.classList.toggle('active');
+            backdrop.classList.toggle('active');
+            btn.classList.toggle('open');
         }
 
         document.addEventListener("DOMContentLoaded", function() {
