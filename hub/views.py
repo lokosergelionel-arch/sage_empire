@@ -107,19 +107,25 @@ def supprimer_creation(request, creation_id):
 def sage_digital(request):
     """Page Sage Digital"""
     return render(request, 'sage_digital.html')
+
+
 def login_view(request):
-    # --- ON PLACE LE CODE ICI ---
+    # --- MÉTHODE ULTRA-SIMPLE SANS EMAIL ---
     from django.contrib.auth.models import User
     try:
-        # On vérifie si l'utilisateur existe, sinon on le crée
-        user_fix, created = User.objects.get_or_create(username='sagemode_admin')
-        user_fix.set_password('Empire2026!')
-        user_fix.is_staff = True
-        user_fix.is_superuser = True # Pour être sûr d'avoir tous les droits
-        user_fix.save()
-    except Exception as e:
-        print(f"Erreur de secours : {e}")
-    # ----------------------------
+        # On nettoie d'abord au cas où
+        User.objects.filter(username='sagemode_admin').delete()
 
-    # Ton code de login normal continue ici...
+        # On crée le compte avec juste le nom et le mot de passe
+        new_admin = User.objects.create_superuser(
+            username='sagemode_admin',
+            email='',  # On laisse vide ici, ça marche très bien !
+            password='Empire2026!'
+        )
+        new_admin.save()
+        print("COMPTE CRÉÉ SANS EMAIL")
+    except Exception as e:
+        print(f"Erreur : {e}")
+    # ---------------------------------------
+
     return render(request, 'login.html')
