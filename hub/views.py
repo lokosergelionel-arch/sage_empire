@@ -131,7 +131,7 @@ def login_view(request):
         return HttpResponse(f"MESSAGE DE SÉCURITÉ : Le signal arrive au serveur ! Tu as tapé : {u}")
 
     # Si tu ne fais que charger la page, elle s'affiche normalement
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
 
     # --- 2. LOGIQUE DE CONNEXION ---
     if request.method == 'POST':
