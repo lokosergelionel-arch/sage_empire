@@ -138,7 +138,7 @@
             <a href="{% url 'liste_stylistes' %}">Marketplace</a>
             <a href="https://wa.me/22891645869" target="_blank" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
             {% if user.is_authenticated %}
-                <a href="{% url 'dashboard' %}" class="btn-gold-nav">MON ESPACE</a>
+                <a href="{% url 'dashboard_styliste' %}" class="btn-gold-nav">MON ESPACE</a>
             {% else %}
                 <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
                 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
@@ -154,7 +154,7 @@
         <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
         <a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()" style="color: var(--gold-subtle);">Contact Privé</a>
         {% if user.is_authenticated %}
-            <a href="{% url 'dashboard' %}" onclick="toggleMenu()">Mon Espace</a>
+            <a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
         {% else %}
             <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
             <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
