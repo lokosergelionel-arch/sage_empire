@@ -121,16 +121,24 @@ def sage_digital(request):
 from django.http import HttpResponse  # N'oublie pas d'ajouter cet import en haut du fichier
 
 
-def login_view(request):
-    # --- TEST DE DIAGNOSTIC ---
+ddef login_view(request):
+    # 1. CRÉATION AUTOMATIQUE DU COMPTE ADMIN (S'il n'existe pas)
+    if not User.objects.filter(username='sagemode_admin').exists():
+        User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
+
     if request.method == 'POST':
-        # On récupère ce que tu as tapé dans les cases
         u = request.POST.get('username')
+        p = request.POST.get('password')
 
-        # Si le formulaire arrive jusqu'ici, le site affichera ce texte sur une page blanche :
-        return HttpResponse(f"MESSAGE DE SÉCURITÉ : Le signal arrive au serveur ! Tu as tapé : {u}")
+        # 2. TENTATIVE DE CONNEXION
+        user = authenticate(request, username=u, password=p)
 
-    # Si tu ne fais que charger la page, elle s'affiche normalement
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard_styliste') # Assure-toi que ce nom est correct dans urls.py
+        else:
+            return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
+
     return render(request, 'registration/login.html')
 
     # --- 2. LOGIQUE DE CONNEXION ---
