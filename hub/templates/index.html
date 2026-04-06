@@ -200,20 +200,20 @@
                 <div class="line"></div>
             </a>
             <div class="service-card" data-animate style="cursor: default;">
-    <a href="{% url 'portfolio_styliste' styliste_id=1 %}" class="service-card" data-animate style="text-decoration: none; display: block;">
+    <a href="{% url 'portfolio_styliste' styliste_id=1 %}" class="service-card" data-animate>
     <h3>SAGE MODE</h3>
     <p>Découvrez nos collections exclusives.</p>
     <div class="line"></div>
 </a>
 
-<section class="creations-preview" style="padding: 20px 0;">
-    <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+<section class="creations-preview">
+    <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
         {% for creation in creations %}
             <div class="creation-card" style="border: 1px solid #d4af37; padding: 10px; text-align: center;">
                 {% if creation.image %}
                     <img src="{{ creation.image.url }}" alt="{{ creation.nom }}" style="width: 100%; height: 300px; object-fit: cover;">
                 {% endif %}
-                <h4 style="margin-top: 10px; color: #1a1a1a;">{{ creation.nom }}</h4>
+                <h4 style="margin-top: 10px;">{{ creation.nom }}</h4>
                 <p style="color: #d4af37;">{{ creation.prix }} FCFA</p>
             </div>
         {% endfor %}
