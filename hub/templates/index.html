@@ -213,8 +213,8 @@
                 {% if creation.image %}
                     <img src="{{ creation.image.url }}" alt="{{ creation.nom }}" style="width: 100%; height: 300px; object-fit: cover;">
                 {% endif %}
-                <h4 style="margin-top: 10px;">{{ creation.nom }}</h4>
-                <p style="color: #d4af37;">{{ creation.prix }} FCFA</p>
+                <h4 style="margin-top: 10px; color: #1a1a1a;">{{ creation.nom }}</h4>
+                <p style="color: #d4af37; font-weight: bold;">{{ creation.prix }} FCFA</p>
             </div>
         {% endfor %}
     </div>
