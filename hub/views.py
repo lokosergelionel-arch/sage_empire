@@ -78,7 +78,8 @@ def inscription_styliste(request):
 @login_required
 def dashboard_styliste(request):
     """Espace privé du styliste pour gérer ses créations"""
-    styliste = get_object_or_404(ProfilStyliste, user=request.user)
+    # MODIFICATION : On utilise get_or_create pour éviter l'erreur 404
+    styliste, created = ProfilStyliste.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         titre = request.POST.get('titre')
@@ -86,16 +87,20 @@ def dashboard_styliste(request):
         description = request.POST.get('description')
         image = request.FILES.get('image')
 
-        Creation.objects.create(
-            styliste=styliste,
-            titre=titre,
-            prix=prix,
-            description=description,
-            image=image
-        )
-        return redirect('dashboard_styliste')  # Corrigé le nom de la redirection
+        if titre and prix:  # Petite sécurité pour éviter les créations vides
+            Creation.objects.create(
+                styliste=styliste,
+                titre=titre,
+                prix=prix,
+                description=description,
+                image=image
+            )
+        return redirect('dashboard_styliste')
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
+
+    # Note : Vérifie bien le chemin du template ci-dessous
+    # Si ton fichier est dans registration/ ou hub/, ajuste le nom
     return render(request, 'dashboard_styliste.html', {
         'styliste': styliste,
         'creations': mes_creations
