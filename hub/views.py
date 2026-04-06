@@ -9,9 +9,9 @@ from .forms import InscriptionStylisteForm
 # --- 1. PAGES PUBLIQUES (ACCUEIL & HUB) ---
 
 def home(request):
-    """Page d'accueil principale avec la section Marketplace"""
-    stylistes = ProfilStyliste.objects.all()
-    return render(request, 'index.html', {'stylistes': stylistes})
+    # On va chercher les 6 dernières créations
+    creations = Creation.objects.all().order_by('-id')[:6]
+    return render(request, 'hub/index.html', {'creations': creations})
 
 
 def page_immobilier(request):
@@ -41,7 +41,7 @@ def galerie_mode(request):
 
 def liste_stylistes(request):
     """Annuaire des créateurs partenaires"""
-    stylistes = ProfilStyliste.objects.exclude(nom_marque="SAGE MODE")
+    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin")
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
 

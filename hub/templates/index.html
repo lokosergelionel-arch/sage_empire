@@ -199,10 +199,31 @@
                 <p>Résidences de prestige et foncier.</p>
                 <div class="line"></div>
             </a>
-            <a href="{% url 'galerie_mode' %}" class="service-card" data-animate>
-                <h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives.</p>
-                <div class="line"></div>
-            </a>
+            <a href="{% url 'portfolio_styliste' styliste_id=1 %}" class="service-card" data-animate>
+    <h3>SAGE MODE</h3>
+    <p>Découvrez nos collections exclusives.</p>
+    <div class="line"></div>
+</a>
+
+<section class="creations-preview" style="padding: 40px 0;">
+    <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        {% for creation in creations %}
+            <div class="creation-card" style="border: 1px solid #d4af37; padding: 10px; text-align: center;">
+                {% if creation.image %}
+                    <img src="{{ creation.image.url }}" alt="{{ creation.nom }}" style="width: 100%; height: 300px; object-fit: cover;">
+                {% endif %}
+                <h4 style="margin-top: 10px; color: #1a1a1a;">{{ creation.nom }}</h4>
+                <p style="color: #d4af37;">{{ creation.prix }} FCFA</p>
+            </div>
+        {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 1px dashed #d4af37; margin-top: 20px;">
+                <p style="font-family: 'Playfair Display', serif; font-style: italic; color: #999;">
+                    L'excellence se prépare... Nos nouvelles collections arrivent bientôt.
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
             <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
                 <h3>MAKO SERVICES</h3>
                 <p>Entretien expert post-évènement.</p>
