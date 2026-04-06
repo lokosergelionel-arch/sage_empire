@@ -15,7 +15,7 @@ urlpatterns = [
 
     # Inscription et Espace Styliste
     path('rejoindre/', views.inscription_styliste, name='inscription_styliste'),
-    path('mon-espace/', views.dashboard_styliste, name='dashboard'),
+    path('mon-espace/', views.dashboard_styliste, name='dashboard_styliste'),
     path('supprimer-creation/<int:creation_id>/', views.supprimer_creation, name='supprimer_creation'),
 
     # Services de l'Empire

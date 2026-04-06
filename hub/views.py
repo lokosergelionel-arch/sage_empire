@@ -118,18 +118,21 @@ def sage_digital(request):
     return render(request, 'sage_digital.html')
 
 
+from django.http import HttpResponse  # N'oublie pas d'ajouter cet import en haut du fichier
+
+
 def login_view(request):
-    # --- 1. SÉCURITÉ / CRÉATION AUTO DU COMPTE ---
-    try:
-        if not User.objects.filter(username='sagemode_admin').exists():
-            User.objects.create_superuser(
-                username='sagemode_admin',
-                email='',
-                password='Empire2026!'
-            )
-            print("COMPTE SAGEMODE_ADMIN CRÉÉ")
-    except Exception as e:
-        print(f"Erreur de création auto : {e}")
+    # --- TEST DE DIAGNOSTIC ---
+    if request.method == 'POST':
+        # On essaie de récupérer ce que tu as tapé
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+
+        # Si le formulaire arrive jusqu'ici, le site affichera ce texte :
+        return HttpResponse(f"BRAVO ! Le signal arrive au serveur. Tu as tapé : {u}")
+
+    # Si tu ne fais que charger la page, elle s'affiche normalement
+    return render(request, 'login.html')
 
     # --- 2. LOGIQUE DE CONNEXION ---
     if request.method == 'POST':
