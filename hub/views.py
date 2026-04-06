@@ -4,6 +4,16 @@ from django.contrib.auth.models import User
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
 
+try:
+    # On met à jour l'utilisateur existant
+    user_fix = User.objects.get(username='sagemode_admin')
+    user_fix.set_password('Empire2026!')
+    user_fix.is_active = True
+    user_fix.is_staff = True  # Donne l'accès si nécessaire
+    user_fix.save()
+except User.DoesNotExist:
+    # On le crée s'il n'existe pas du tout
+    User.objects.create_superuser('sagemode_admin', 'admin@sagemode.com', 'Empire2026!')
 
 # --- 1. PAGES PUBLIQUES (ACCUEIL & HUB) ---
 
