@@ -29,6 +29,7 @@ urlpatterns = [
 
     # Authentification
     path('accounts/', include('django.contrib.auth.urls')),
+    path('login/', views.login_view, name='login'),
 ]
 
 # CETTE LIGNE DOIT ÊTRE EXACTEMENT COMME ÇA :
