@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | {{ styliste.nom_marque }}</title>
+    <title>Portfolio | {{ styliste.nom_complet }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -90,38 +90,38 @@
     <header>
         <div class="profil-container">
             {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}">
+                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_complet }}">
             {% else %}
-                <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">IMAGE</div>
+                <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">SAGE MODE</div>
             {% endif %}
         </div>
 
-        <h1>{{ styliste.nom_marque }}</h1>
-        <p class="bio">{{ styliste.biographie }}</p>
+        <h1>{{ styliste.nom_complet }}</h1>
+        <p class="bio">{{ styliste.bio }}</p>
     </header>
 
     <div class="grid">
-        {% for creation in oeuvres %}
+        {% for creation in creations %}
         <div class="item">
             {% if creation.image %}
-                <img src="{{ creation.image.url }}" alt="{{ creation.titre }}">
+                <img src="{{ creation.image.url }}" alt="{{ creation.nom }}">
             {% endif %}
-            <h3>{{ creation.titre }}</h3>
+            <h3>{{ creation.nom }}</h3>
             <span class="price">{{ creation.prix }} FCFA</span>
             <p style="font-size: 0.85rem; color: #777; margin-bottom: 20px;">{{ creation.description }}</p>
 
-            <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par votre création : {{ creation.titre }}" class="btn-wa">
+            <a href="https://wa.me/22890000000?text=Bonjour {{ styliste.nom_complet }}, je suis intéressé par votre création : {{ creation.nom }}" class="btn-wa">
                 COMMANDER VIA WHATSAPP
             </a>
         </div>
         {% empty %}
         <div style="grid-column: 1/-1; padding: 50px;">
-            <p style="color: #999; font-style: italic;">Ce créateur n'a pas encore ajouté d'œuvres à son portfolio.</p>
+            <p style="color: #999; font-style: italic;">L'excellence se prépare... Nos nouvelles collections arrivent bientôt.</p>
         </div>
         {% endfor %}
     </div>
 
-    <a href="{% url 'liste_stylistes' %}" class="back-link">← RETOUR AUX CRÉATEURS</a>
+    <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
 
 </body>
 </html>
