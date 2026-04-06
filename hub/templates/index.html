@@ -200,26 +200,27 @@
                 <div class="line"></div>
             </a>
             <a href="{% url 'portfolio_styliste' styliste_id=1 %}" class="service-card" data-animate>
-    <a href="{% url 'portfolio_styliste' styliste_id=1 %}" class="service-card" data-animate>
-    <h3>SAGE MODE</h3>
-    <div class="line"></div>
-</a>
+                <h3>SAGE MODE</h3>
+                <div class="line"></div>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #999; font-style: italic;">
+        Les collections exclusives arrivent bientôt.
+    </p>
+</div>
 
-<section class="creations-preview" style="padding: 20px 0;">
+<section class="creations-preview">
     <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
         {% for creation in creations %}
             <div class="creation-card" style="border: 1px solid #d4af37; padding: 10px; text-align: center;">
                 {% if creation.image %}
                     <img src="{{ creation.image.url }}" alt="{{ creation.nom }}" style="width: 100%; height: 300px; object-fit: cover;">
                 {% endif %}
-                <h4 style="margin-top: 10px; color: #1a1a1a;">{{ creation.nom }}</h4>
+                <h4 style="margin-top: 10px;">{{ creation.nom }}</h4>
                 <p style="color: #d4af37;">{{ creation.prix }} FCFA</p>
             </div>
-        {% empty %}
-            {% endfor %}
+        {% endfor %}
     </div>
 </section>
-            <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
+                <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
                 <h3>MAKO SERVICES</h3>
                 <p>Entretien expert post-évènement.</p>
                 <div class="line"></div>
