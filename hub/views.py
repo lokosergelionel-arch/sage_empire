@@ -121,7 +121,7 @@ def sage_digital(request):
 from django.http import HttpResponse  # N'oublie pas d'ajouter cet import en haut du fichier
 
 
-ddef login_view(request):
+def login_view(request):
     # 1. CRÉATION AUTOMATIQUE DU COMPTE ADMIN (S'il n'existe pas)
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
