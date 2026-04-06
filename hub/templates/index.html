@@ -13,119 +13,127 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --ivory: #F9F8F6;
-            --charcoal: #1A1A1A;
-            --gold-subtle: #B5935E;
-            --border: #E5E2DA;
-            --white: #ffffff;
-        }
+ :root {
+ --ivory: #F9F8F6;
+ --charcoal: #1A1A1A;
+ --gold-subtle: #B5935E;
+ --border: #E5E2DA;
+ --white: #ffffff;
+ }
 
-        html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+ html { scroll-behavior: smooth; }
+ body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* NAV */
-        nav {
-            padding: 15px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .nav-logo-container { height: 50px; }
-        .nav-logo-container img { height: 100%; width: auto; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: var(--charcoal);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--gold-subtle); }
-        .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
+ /* NAV */
+ nav {
+ padding: 15px 8%;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background: var(--white);
+ border-bottom: 1px solid var(--border);
+ position: sticky; top: 0; z-index: 1000;
+ }
+ .nav-logo-container { height: 50px; }
+ .nav-logo-container img { height: 100%; width: auto; }
+ .nav-links { display: flex; align-items: center; }
+ .nav-links a {
+ margin-left: 25px;
+ text-decoration: none;
+ color: var(--charcoal);
+ font-size: 0.75rem;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ transition: 0.3s;
+ }
+ .nav-links a:hover { color: var(--gold-subtle); }
+ .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-        /* --- AJOUT TECHNIQUE MOBILE --- */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 2100;
-        }
-        .hamburger span { width: 28px; height: 3px; background: var(--gold-subtle); transition: 0.4s; }
+ /* --- MOBILE OPTIMISÉ --- */
+ .hamburger {
+ display: none;
+ flex-direction: column;
+ gap: 6px;
+ cursor: pointer;
+ z-index: 2100;
+ padding: 10px;
+ }
+ .hamburger span {
+ width: 30px;
+ height: 2px;
+ background: var(--charcoal);
+ transition: 0.4s;
+ border-radius: 2px;
+ }
 
-        /* Animation Hamburger vers X */
-        .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+ /* Transformation en X */
+ .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+ .hamburger.open span:nth-child(2) { opacity: 0; }
+ .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        .mobile-overlay {
-            position: fixed; top: 0; right: -100%;
-            width: 80%; height: 100vh;
-            background: var(--white); z-index: 2050;
-            transition: 0.4s; display: flex; flex-direction: column; padding-top: 80px;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        }
-        .mobile-overlay.active { right: 0; }
-        .mobile-overlay a {
-            padding: 20px 40px; text-decoration: none; color: var(--charcoal);
-            font-family: 'Cinzel'; border-bottom: 1px solid #eee; text-transform: uppercase; font-size: 0.85rem;
-        }
-        /* ------------------------------ */
+ .mobile-overlay {
+ position: fixed; top: 0; right: -100%;
+ width: 100%; height: 100vh;
+ background: var(--white); z-index: 2050;
+ transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+ display: flex; flex-direction: column; padding-top: 100px;
+ }
+ .mobile-overlay.active { right: 0; }
+ .mobile-overlay a {
+ padding: 20px 10%; text-decoration: none; color: var(--charcoal);
+ font-family: 'Cinzel', serif; border-bottom: 1px solid #f5f5f5;
+ text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px;
+ }
+ .mobile-overlay a:first-child { border-top: 1px solid #f5f5f5; }
+ /* ------------------------------ */
 
-        /* HERO & VISION */
-        .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
-        .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
-        .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
-        .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
-        .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
-        .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
-        .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+ /* HERO & VISION */
+ .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+ .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
+ .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
+ .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
+ .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
+ .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
+ .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
+ .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
 
-        /* SERVICES */
-        .services { padding: 80px 8%; }
-        .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .service-card {
-            background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
-            border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
-            text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
-        }
-        .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
-        .service-card p { font-size: 0.8rem; color: #888; }
-        .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
-        .service-card:hover .line { width: 80px; }
+ /* SERVICES */
+ .services { padding: 80px 8%; }
+ .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
+ .service-card {
+ background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
+ border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
+ text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
+ }
+ .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+ .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+ .service-card p { font-size: 0.8rem; color: #888; }
+ .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
+ .service-card:hover .line { width: 80px; }
 
-        /* MARKETPLACE */
-        .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
-        .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
-        .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
-        .btn-enter:hover { background: var(--charcoal); color: white; }
+ /* MARKETPLACE */
+ .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
+ .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
+ .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
+ .btn-enter:hover { background: var(--charcoal); color: white; }
 
-        /* CTA STYLISTE */
-        .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
-        .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
-        .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
+ /* CTA STYLISTE */
+ .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
+ .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
+ .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
 
-        footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
-        [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
-        [data-animate].animated { opacity: 1; transform: translateY(0); }
+ footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
+ [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
+ [data-animate].animated { opacity: 1; transform: translateY(0); }
 
-        /* RESPONSIVE FIXES (SANS SUPPRESSION) */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .hero h1 { font-size: 2rem; letter-spacing: 4px; }
-            .vision-grid { grid-template-columns: 1fr; }
-            .service-card { flex: 0 1 100%; }
-        }
-    </style>
+ @media (max-width: 768px) {
+ .nav-links { display: none; }
+ .hamburger { display: flex; }
+ .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
+ .vision-grid { grid-template-columns: 1fr; }
+ .service-card { flex: 0 1 100%; }
+ }
+ </style>
 </head>
 <body>
 
@@ -150,16 +158,18 @@
     </nav>
 
     <div class="mobile-overlay" id="mobileMenu">
-        <a href="#services" onclick="toggleMenu()">Hub Services</a>
-        <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
-        <a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()" style="color: var(--gold-subtle);">Contact Privé</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
-        {% else %}
-            <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
-            <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
-        {% endif %}
-    </div>
+ <a href="{% url 'home' %}" onclick="toggleMenu()" style="color: var(--gold-subtle); font-weight: bold;">ACCUEIL</a>
+ <a href="#services" onclick="toggleMenu()">Hub Services</a>
+ <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
+ <a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()">Contact Privé</a>
+
+ {% if user.is_authenticated %}
+ <a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
+ {% else %}
+ <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
+ <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
+ {% endif %}
+ </div>
 
     <section class="hero" data-animate>
         <h1>SAGE EMPIRE</h1>
@@ -266,19 +276,28 @@
     </footer>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const hamburger = document.querySelector('.hamburger');
-            menu.classList.toggle('active');
-            hamburger.classList.toggle('open');
-        }
+ function toggleMenu() {
+ const menu = document.getElementById('mobileMenu');
+ const hamburger = document.querySelector('.hamburger');
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const elements = document.querySelectorAll('[data-animate]');
-            elements.forEach((el, index) => {
-                setTimeout(() => { el.classList.add('animated'); }, 200 * index);
-            });
-        });
-    </script>
+ // On bascule les classes pour afficher le menu et transformer le hamburger
+ menu.classList.toggle('active');
+ hamburger.classList.toggle('open');
+
+ // Empêcher le défilement de la page quand le menu est ouvert
+ if (menu.classList.contains('active')) {
+ document.body.style.overflow = 'hidden';
+ } else {
+ document.body.style.overflow = 'auto';
+ }
+ }
+
+ document.addEventListener("DOMContentLoaded", function() {
+ const elements = document.querySelectorAll('[data-animate]');
+ elements.forEach((el, index) => {
+ setTimeout(() => { el.classList.add('animated'); }, 200 * index);
+ });
+ });
+ </script>
 </body>
 </html>
