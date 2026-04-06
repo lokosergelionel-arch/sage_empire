@@ -46,12 +46,19 @@ def liste_stylistes(request):
 
 
 def portfolio_styliste(request, styliste_id):
-    """Portfolio individuel d'un styliste"""
-    styliste = get_object_or_404(ProfilStyliste, id=styliste_id)
-    oeuvres = Creation.objects.filter(styliste=styliste).order_by('-id')
-    return render(request, 'portfolio_styliste.html', {
+    try:
+        # On essaie de trouver le profil
+        styliste = ProfilStyliste.objects.get(id=styliste_id)
+        creations = Creation.objects.filter(styliste=styliste)
+    except ProfilStyliste.DoesNotExist:
+        # SI LE PROFIL N'EXISTE PAS : On ne plante pas !
+        # On crée un objet "vide" pour que la page s'affiche quand même
+        styliste = {"nom_complet": "Sage Empire", "bio": "Bientôt disponible"}
+        creations = []
+
+    return render(request, 'hub/portfolio_styliste.html', {
         'styliste': styliste,
-        'oeuvres': oeuvres
+        'creations': creations
     })
 
 
