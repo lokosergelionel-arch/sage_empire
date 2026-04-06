@@ -97,3 +97,12 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Configuration E-mail (Exemple avec Gmail)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ton-email@gmail.com' # Ton adresse Gmail
+EMAIL_HOST_PASSWORD = 'ton-code-application' # Code à 16 lettres généré par Google
+DEFAULT_FROM_EMAIL = 'Sage Empire <ton-email@gmail.com>'
