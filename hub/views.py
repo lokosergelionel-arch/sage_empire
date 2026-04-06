@@ -4,16 +4,6 @@ from django.contrib.auth.models import User
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
 
-try:
-    # On met à jour l'utilisateur existant
-    user_fix = User.objects.get(username='sagemode_admin')
-    user_fix.set_password('Empire2026!')
-    user_fix.is_active = True
-    user_fix.is_staff = True  # Donne l'accès si nécessaire
-    user_fix.save()
-except User.DoesNotExist:
-    # On le crée s'il n'existe pas du tout
-    User.objects.create_superuser('sagemode_admin', 'admin@sagemode.com', 'Empire2026!')
 
 # --- 1. PAGES PUBLIQUES (ACCUEIL & HUB) ---
 
@@ -117,3 +107,19 @@ def supprimer_creation(request, creation_id):
 def sage_digital(request):
     """Page Sage Digital"""
     return render(request, 'sage_digital.html')
+def login_view(request):
+    # --- ON PLACE LE CODE ICI ---
+    from django.contrib.auth.models import User
+    try:
+        # On vérifie si l'utilisateur existe, sinon on le crée
+        user_fix, created = User.objects.get_or_create(username='sagemode_admin')
+        user_fix.set_password('Empire2026!')
+        user_fix.is_staff = True
+        user_fix.is_superuser = True # Pour être sûr d'avoir tous les droits
+        user_fix.save()
+    except Exception as e:
+        print(f"Erreur de secours : {e}")
+    # ----------------------------
+
+    # Ton code de login normal continue ici...
+    return render(request, 'login.html')
