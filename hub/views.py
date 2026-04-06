@@ -11,7 +11,7 @@ from .forms import InscriptionStylisteForm
 def home(request):
     # On va chercher les 6 dernières créations
     creations = Creation.objects.all().order_by('-id')[:6]
-    return render(request, 'hub/index.html', {'creations': creations})
+    return render(request, 'index.html', {'creations': creations})
 
 
 def page_immobilier(request):
