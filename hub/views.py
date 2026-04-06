@@ -124,12 +124,11 @@ from django.http import HttpResponse  # N'oublie pas d'ajouter cet import en hau
 def login_view(request):
     # --- TEST DE DIAGNOSTIC ---
     if request.method == 'POST':
-        # On essaie de récupérer ce que tu as tapé
+        # On récupère ce que tu as tapé dans les cases
         u = request.POST.get('username')
-        p = request.POST.get('password')
 
-        # Si le formulaire arrive jusqu'ici, le site affichera ce texte :
-        return HttpResponse(f"BRAVO ! Le signal arrive au serveur. Tu as tapé : {u}")
+        # Si le formulaire arrive jusqu'ici, le site affichera ce texte sur une page blanche :
+        return HttpResponse(f"MESSAGE DE SÉCURITÉ : Le signal arrive au serveur ! Tu as tapé : {u}")
 
     # Si tu ne fais que charger la page, elle s'affiche normalement
     return render(request, 'login.html')
