@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login  # <--- AJOUTÉ POUR LA CONNEXION
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
 
@@ -10,18 +11,20 @@ from .forms import InscriptionStylisteForm
 def home(request):
     """Page d'accueil principale avec la section Marketplace"""
     stylistes = ProfilStyliste.objects.all()
-    # On utilise 'hub/index.html' car c'est le chemin dans ton dossier templates
     return render(request, 'index.html', {'stylistes': stylistes})
+
 
 def page_immobilier(request):
     """Page vitrine pour l'immobilier"""
     biens = Immobilier.objects.all()
     return render(request, 'immobilier.html', {'biens': biens})
 
+
 def page_evenementiel(request):
     """Page vitrine pour l'événementiel"""
     evenements = Event.objects.all().order_by('-date')
     return render(request, 'evenementiel.html', {'evenements': evenements})
+
 
 # --- 2. UNIVERS MODE & MARKETPLACE ---
 
@@ -35,10 +38,12 @@ def galerie_mode(request):
 
     return render(request, 'galerie_mode.html', {'produits_sage': produits})
 
+
 def liste_stylistes(request):
     """Annuaire des créateurs partenaires"""
     stylistes = ProfilStyliste.objects.exclude(nom_marque="SAGE MODE")
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
+
 
 def portfolio_styliste(request, styliste_id):
     """Portfolio individuel d'un styliste"""
@@ -48,6 +53,7 @@ def portfolio_styliste(request, styliste_id):
         'styliste': styliste,
         'oeuvres': oeuvres
     })
+
 
 # --- 3. GESTION DES CRÉATEURS ---
 
@@ -68,6 +74,7 @@ def inscription_styliste(request):
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
 
+
 @login_required
 def dashboard_styliste(request):
     """Espace privé du styliste pour gérer ses créations"""
@@ -86,13 +93,14 @@ def dashboard_styliste(request):
             description=description,
             image=image
         )
-        return redirect('dashboard')
+        return redirect('dashboard_styliste')  # Corrigé le nom de la redirection
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
     return render(request, 'dashboard_styliste.html', {
         'styliste': styliste,
         'creations': mes_creations
     })
+
 
 @login_required
 def supprimer_creation(request, creation_id):
@@ -102,7 +110,8 @@ def supprimer_creation(request, creation_id):
 
     if request.method == 'POST':
         creation.delete()
-    return redirect('dashboard')
+    return redirect('dashboard_styliste')
+
 
 def sage_digital(request):
     """Page Sage Digital"""
@@ -110,22 +119,29 @@ def sage_digital(request):
 
 
 def login_view(request):
-    # --- MÉTHODE ULTRA-SIMPLE SANS EMAIL ---
-    from django.contrib.auth.models import User
+    # --- 1. SÉCURITÉ / CRÉATION AUTO DU COMPTE ---
     try:
-        # On nettoie d'abord au cas où
-        User.objects.filter(username='sagemode_admin').delete()
-
-        # On crée le compte avec juste le nom et le mot de passe
-        new_admin = User.objects.create_superuser(
-            username='sagemode_admin',
-            email='',  # On laisse vide ici, ça marche très bien !
-            password='Empire2026!'
-        )
-        new_admin.save()
-        print("COMPTE CRÉÉ SANS EMAIL")
+        if not User.objects.filter(username='sagemode_admin').exists():
+            User.objects.create_superuser(
+                username='sagemode_admin',
+                email='',
+                password='Empire2026!'
+            )
+            print("COMPTE SAGEMODE_ADMIN CRÉÉ")
     except Exception as e:
-        print(f"Erreur : {e}")
-    # ---------------------------------------
+        print(f"Erreur de création auto : {e}")
+
+    # --- 2. LOGIQUE DE CONNEXION ---
+    if request.method == 'POST':
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+
+        user = authenticate(request, username=u, password=p)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard_styliste')
+        else:
+            return render(request, 'login.html', {'error': 'Identifiants invalides'})
 
     return render(request, 'login.html')

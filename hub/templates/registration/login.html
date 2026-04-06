@@ -97,19 +97,16 @@
         <h2>Accès Créateur</h2>
         <p class="subtitle">Gérez votre univers de mode</p>
 
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <input type="text" name="username" placeholder="NOM D'UTILISATEUR" required>
-            </div>
-
-            <div class="form-group">
-                <input type="password" name="password" placeholder="MOT DE PASSE" required>
-            </div>
-
-            <button type="submit" class="btn-login">Se Connecter</button>
-        </form>
+        <form method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="text" name="username" id="id_username" placeholder="NOM D'UTILISATEUR" required>
+    </div>
+    <div class="form-group">
+        <input type="password" name="password" id="id_password" placeholder="MOT DE PASSE" required>
+    </div>
+    <button type="submit" class="btn-login">SE CONNECTER</button>
+</form>
 
         <div class="footer-links">
             Pas encore partenaire ? <a href="{% url 'inscription_styliste' %}">Rejoindre l'Empire</a><br><br>
