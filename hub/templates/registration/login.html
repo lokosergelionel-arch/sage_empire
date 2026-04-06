@@ -99,13 +99,17 @@
 
         <form method="POST" action="">
     {% csrf_token %}
+
     <div class="form-group">
-        <input type="text" name="username" placeholder="NOM D'UTILISATEUR">
+        <input type="text" name="username" id="username" placeholder="NOM D'UTILISATEUR">
     </div>
+
     <div class="form-group">
-        <input type="password" name="password" placeholder="MOT DE PASSE">
+        <input type="password" name="password" id="password" placeholder="MOT DE PASSE">
     </div>
+
     <button type="submit" class="btn-login">SE CONNECTER</button>
+
 </form>
 
         <div class="footer-links">
