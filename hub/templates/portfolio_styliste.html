@@ -40,39 +40,41 @@
         h1 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 10px; text-transform: uppercase; }
         .bio { max-width: 700px; margin: 0 auto 50px; color: #666; line-height: 1.8; font-style: italic; }
 
+        /* --- CORRECTION GRILLE : TAILLE LIMITÉE POUR EFFET GALERIE --- */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 350px)); /* Les cartes ne dépassent plus 350px */
             gap: 30px;
-            padding: 40px 8%;
+            padding: 40px 5%;
+            justify-content: center; /* Centre les articles à l'écran */
         }
 
         .product-card {
             background: white;
-            padding: 20px;
+            padding: 15px; /* Un peu plus serré pour le luxe */
             border: 1px solid #eee;
             transition: 0.4s;
         }
 
-        .product-card:hover { border-color: var(--gold); }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
 
         /* --- SYSTÈME DEVANT / DERRIÈRE --- */
         .product-image-wrapper {
             position: relative;
-            height: 500px;
+            height: 450px; /* Hauteur fixe pour l'harmonie */
             overflow: hidden;
             margin-bottom: 20px;
-            cursor: zoom-in; /* Curseur qui indique qu'on peut cliquer */
+            cursor: zoom-in;
+            background: #fff;
         }
 
         .product-image-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Remplit le cadre proprement */
             transition: opacity 0.5s ease-in-out;
         }
 
-        /* L'image de dos est cachée par défaut */
         .img-back {
             position: absolute;
             top: 0;
@@ -80,29 +82,29 @@
             opacity: 0;
         }
 
-        /* Au survol, l'image de devant disparaît et celle de derrière apparaît */
         .product-card:hover .img-front { opacity: 0; }
         .product-card:hover .img-back { opacity: 1; }
 
-        .product-details h3 { font-family: 'Cinzel', serif; font-size: 1rem; margin-bottom: 5px; }
-        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
-        .desc { font-size: 0.9rem; color: #777; margin-bottom: 15px; }
+        .product-details h3 { font-family: 'Cinzel', serif; font-size: 0.95rem; margin-bottom: 5px; }
+        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; font-size: 0.9rem; }
+        .desc { font-size: 0.85rem; color: #777; margin-bottom: 15px; height: 40px; overflow: hidden; }
 
         .btn-wa {
             display: inline-block;
-            padding: 12px 25px;
+            padding: 12px 20px;
             background: var(--charcoal);
             color: white;
             text-decoration: none;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             transition: 0.3s;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .btn-wa:hover { background: var(--gold); }
 
-        /* --- OVERLAY DU ZOOM (LIGHTBOX) --- */
         #lightbox {
             display: none;
             position: fixed;
@@ -114,7 +116,6 @@
             align-items: center;
         }
         #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--gold); }
-        #lightbox:target { display: flex; } /* On utilisera JS pour plus de flexibilité */
 
         .back-link {
             display: inline-block;
@@ -157,7 +158,7 @@
         <div class="product-details">
             <h3>{{ produit.titre }}</h3>
             <p class="price">{{ produit.prix }} FCFA</p>
-            <p class="desc">{{ produit.description|truncatewords:10 }}</p>
+            <p class="desc">{{ produit.description|truncatewords:8 }}</p>
             <a href="https://wa.me/22891645869?text=Bonjour {{ styliste.nom_complet }}, je suis intéressé par votre création : {{ produit.titre }}" class="btn-wa">
                 COMMANDER VIA WHATSAPP
             </a>
@@ -173,7 +174,6 @@
     <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
 
     <script>
-        // Fonction pour ouvrir l'image en grand
         function openZoom(url) {
             document.getElementById('lightbox-img').src = url;
             document.getElementById('lightbox').style.display = 'flex';
