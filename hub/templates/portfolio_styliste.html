@@ -40,7 +40,6 @@
         h1 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 10px; text-transform: uppercase; }
         .bio { max-width: 700px; margin: 0 auto 50px; color: #666; line-height: 1.8; font-style: italic; }
 
-        /* --- LE CODE CSS AJOUTÉ ICI POUR TA GRILLE --- */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -55,16 +54,35 @@
             transition: 0.4s;
         }
 
-        .product-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .product-card:hover { border-color: var(--gold); }
+
+        /* --- SYSTÈME DEVANT / DERRIÈRE --- */
+        .product-image-wrapper {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: zoom-in; /* Curseur qui indique qu'on peut cliquer */
+        }
 
         .product-image-wrapper img {
-    width: 100%;
-    /* --- CORRECTION ICI --- */
-    height: 350px; /* On impose une hauteur fixe et raisonnable */
-    object-fit: contain; /* L'image s'adapte entière dans ces 350px sans déformer */
-    background: #fdfdfd; /* Un fond très léger si l'image est étroite */
-    margin-bottom: 20px;
-}
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* L'image de dos est cachée par défaut */
+        .img-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        /* Au survol, l'image de devant disparaît et celle de derrière apparaît */
+        .product-card:hover .img-front { opacity: 0; }
+        .product-card:hover .img-back { opacity: 1; }
 
         .product-details h3 { font-family: 'Cinzel', serif; font-size: 1rem; margin-bottom: 5px; }
         .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
@@ -84,6 +102,20 @@
 
         .btn-wa:hover { background: var(--gold); }
 
+        /* --- OVERLAY DU ZOOM (LIGHTBOX) --- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--gold); }
+        #lightbox:target { display: flex; } /* On utilisera JS pour plus de flexibilité */
+
         .back-link {
             display: inline-block;
             margin: 50px 0;
@@ -96,6 +128,10 @@
 </head>
 <body>
 
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" alt="Zoom">
+    </div>
+
     <header>
         <div class="profil-container">
             {% if styliste.photo_profil %}
@@ -104,7 +140,6 @@
                 <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">SAGE MODE</div>
             {% endif %}
         </div>
-
         <h1>{{ styliste.nom_complet }}</h1>
         <p class="bio">{{ styliste.bio }}</p>
     </header>
@@ -112,9 +147,13 @@
     <div class="portfolio-grid">
     {% for produit in creations %}
     <div class="product-card">
-        <div class="product-image-wrapper">
-            <img src="{{ produit.image.url }}" alt="{{ produit.titre }}">
+        <div class="product-image-wrapper" onclick="openZoom('{{ produit.image.url }}')">
+            <img src="{{ produit.image.url }}" class="img-front" alt="{{ produit.titre }}">
+            {% if produit.image_dos %}
+                <img src="{{ produit.image_dos.url }}" class="img-back" alt="{{ produit.titre }} dos">
+            {% endif %}
         </div>
+
         <div class="product-details">
             <h3>{{ produit.titre }}</h3>
             <p class="price">{{ produit.prix }} FCFA</p>
@@ -132,6 +171,14 @@
     </div>
 
     <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
+
+    <script>
+        // Fonction pour ouvrir l'image en grand
+        function openZoom(url) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+    </script>
 
 </body>
 </html>
