@@ -26,10 +26,9 @@ def page_evenementiel(request):
 # --- 2. UNIVERS MODE & MARKETPLACE ---
 
 def galerie_mode(request):
-    """Affiche les créations de SAGE MODE (insensible à la casse)"""
+    # On cherche le profil de l'admin sagemode
     try:
-        # __iexact permet de trouver "Sage Mode" ou "SAGE MODE" sans erreur
-        profil_sage = ProfilStyliste.objects.get(nom_marque__iexact="SAGE MODE")
+        profil_sage = ProfilStyliste.objects.get(user__username="sagemode_admin")
         produits = Creation.objects.filter(styliste=profil_sage).order_by('-id')
     except ProfilStyliste.DoesNotExist:
         produits = []
