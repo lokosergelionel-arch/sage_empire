@@ -117,13 +117,20 @@ def supprimer_creation(request, creation_id):
 # --- 4. CONNEXION & DIVERS ---
 
 def login_view(request):
-    # 1. Création automatique de sageempire_admin s'il n'existe pas
-    if not User.objects.filter(username='sageempire_admin').exists():
-        User.objects.create_superuser('sageempire_admin', 'admin@sageempire.com', 'S@ge2026!')
+    # --- FORCE RESET DE L'ADMIN (À supprimer après réussite) ---
+    # On nettoie l'ancien compte pour éviter les conflits de mot de passe
+    User.objects.filter(username='sageempire_admin').delete()
 
-    # 2. Création automatique de sagemode_admin s'il n'existe pas
-    if not User.objects.filter(username='sagemode_admin').exists():
-        User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
+    # On recrée le compte tout neuf avec les accès Admin
+    new_admin = User.objects.create_superuser(
+        username='sageempire_admin',
+        email='admin@sageempire.com',
+        password='S@ge2026!'
+    )
+    new_admin.is_staff = True
+    new_admin.is_superuser = True
+    new_admin.save()
+    # -----------------------------------------------------------
 
     if request.method == 'POST':
         u = request.POST.get('username')
