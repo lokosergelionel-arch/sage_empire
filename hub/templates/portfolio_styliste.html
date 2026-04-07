@@ -58,11 +58,13 @@
         .product-card:hover { transform: translateY(-10px); border-color: var(--gold); }
 
         .product-image-wrapper img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
+    width: 100%;
+    /* --- CORRECTION ICI --- */
+    height: 350px; /* On impose une hauteur fixe et raisonnable */
+    object-fit: contain; /* L'image s'adapte entière dans ces 350px sans déformer */
+    background: #fdfdfd; /* Un fond très léger si l'image est étroite */
+    margin-bottom: 20px;
+}
 
         .product-details h3 { font-family: 'Cinzel', serif; font-size: 1rem; margin-bottom: 5px; }
         .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
