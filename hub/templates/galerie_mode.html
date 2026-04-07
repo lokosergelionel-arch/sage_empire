@@ -76,12 +76,12 @@
         {% for produit in produits_sage %}
         <div class="collection-item">
             {% if produit.image %}
-                <img src="{{ produit.image.url }}" class="product-img" alt="{{ produit.nom }}">
+                <img src="{{ produit.image.url }}" class="product-img" alt="{{ produit.titre }}">
             {% endif %}
 
             <div class="product-info">
-                <h3>{{ produit.nom }}</h3> <p class="price">{{ produit.prix }} FCFA</p>
-                <a href="https://wa.me/22891645869?text=Bonjour, je souhaite commander l'article : {{ produit.nom }}" class="btn-order">
+                <h3>{{ produit.titre }}</h3> <p class="price">{{ produit.prix }} FCFA</p>
+                <a href="https://wa.me/22891645869?text=Bonjour, je souhaite commander l'article : {{ produit.titre }}" class="btn-order">
                     Commander via WhatsApp
                 </a>
             </div>

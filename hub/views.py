@@ -50,10 +50,13 @@ def portfolio_styliste(request, styliste_id):
         # On essaie de trouver le profil
         styliste = ProfilStyliste.objects.get(id=styliste_id)
         creations = Creation.objects.filter(styliste=styliste)
-    except ProfilStyliste.DoesNotExist:
-        # SI LE PROFIL N'EXISTE PAS : On ne plante pas !
-        # On crée un objet "vide" pour que la page s'affiche quand même
-        styliste = {"nom_complet": "Sage Empire", "bio": "Bientôt disponible"}
+        except ProfilStyliste.DoesNotExist:
+        # On utilise les mêmes noms que dans le modèle pour ne pas faire planter le HTML
+        styliste = {
+            "nom_marque": "Sage Empire",
+            "biographie": "Bientôt disponible",
+            "contact_whatsapp": "22891645869"
+        }
         creations = []
 
     return render(request, 'hub/portfolio_styliste.html', {

@@ -62,7 +62,7 @@
 
         <nav>
             <a href="{% url 'dashboard_styliste' %}" class="nav-link" style="color: var(--gold);">Tableau de bord</a>
-            <a href="{% url 'portfolio_styliste' styliste.id %}" class="nav-link">Voir mon Portfolio</a>
+            <a href="{% url 'portfolio_styliste' styliste_id=user.profilstyliste.id %}">Voir mon Portfolio</a>
             <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
             <form action="{% url 'logout' %}" method="post">
