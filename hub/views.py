@@ -47,11 +47,11 @@ def liste_stylistes(request):
 
 def portfolio_styliste(request, styliste_id):
     try:
-        # On essaie de trouver le profil
+        # Il faut 4 espaces ici
         styliste = ProfilStyliste.objects.get(id=styliste_id)
         creations = Creation.objects.filter(styliste=styliste)
-        except ProfilStyliste.DoesNotExist:
-        # On utilise les mêmes noms que dans le modèle pour ne pas faire planter le HTML
+    except ProfilStyliste.DoesNotExist:
+        # Il faut 4 espaces ici aussi
         styliste = {
             "nom_marque": "Sage Empire",
             "biographie": "Bientôt disponible",
