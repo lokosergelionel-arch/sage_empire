@@ -117,19 +117,14 @@ def supprimer_creation(request, creation_id):
 # --- 4. CONNEXION & DIVERS ---
 
 def login_view(request):
-    # --- FORCE RESET DE L'ADMIN (À supprimer après réussite) ---
-    # On nettoie l'ancien compte pour éviter les conflits de mot de passe
+    # NETTOYAGE RADICAL
     User.objects.filter(username='sageempire_admin').delete()
 
-    # On recrée le compte tout neuf avec les accès Admin
-    new_admin = User.objects.create_superuser(
-        username='sageempire_admin',
-        email='admin@sageempire.com',
-        password='S@ge2026!'
-    )
-    new_admin.is_staff = True
-    new_admin.is_superuser = True
-    new_admin.save()
+    # CRÉATION PROPRE
+    u = User.objects.create_superuser('sageempire_admin', 'admin@test.com', 'Empire2026')
+    u.is_staff = True
+    u.is_superuser = True
+    u.save()
     # -----------------------------------------------------------
 
     if request.method == 'POST':
