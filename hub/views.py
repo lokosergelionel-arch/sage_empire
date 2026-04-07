@@ -1,27 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login  # <--- AJOUTÉ POUR LA CONNEXION
+from django.contrib.auth import authenticate, login
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
 
 
-# --- 1. PAGES PUBLIQUES (ACCUEIL & HUB) ---
+# --- 1. PAGES PUBLIQUES ---
 
 def home(request):
-    # On va chercher les 6 dernières créations
     creations = Creation.objects.all().order_by('-id')[:6]
     return render(request, 'index.html', {'creations': creations})
 
 
 def page_immobilier(request):
-    """Page vitrine pour l'immobilier"""
     biens = Immobilier.objects.all()
     return render(request, 'immobilier.html', {'biens': biens})
 
 
 def page_evenementiel(request):
-    """Page vitrine pour l'événementiel"""
     evenements = Event.objects.all().order_by('-date')
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
@@ -29,9 +26,10 @@ def page_evenementiel(request):
 # --- 2. UNIVERS MODE & MARKETPLACE ---
 
 def galerie_mode(request):
-    """Affiche uniquement les créations de la marque SAGE MODE"""
+    """Affiche les créations de SAGE MODE (insensible à la casse)"""
     try:
-        profil_sage = ProfilStyliste.objects.get(nom_marque="SAGE MODE")
+        # __iexact permet de trouver "Sage Mode" ou "SAGE MODE" sans erreur
+        profil_sage = ProfilStyliste.objects.get(nom_marque__iexact="SAGE MODE")
         produits = Creation.objects.filter(styliste=profil_sage).order_by('-id')
     except ProfilStyliste.DoesNotExist:
         produits = []
@@ -40,26 +38,22 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
-    """Annuaire des créateurs partenaires"""
+    """Annuaire des créateurs (on exclut l'admin de Sage Mode)"""
     stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin")
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
 
 def portfolio_styliste(request, styliste_id):
+    """Affiche le portfolio d'un styliste spécifique"""
     try:
-        # Il faut 4 espaces ici
         styliste = ProfilStyliste.objects.get(id=styliste_id)
-        creations = Creation.objects.filter(styliste=styliste)
+        creations = Creation.objects.filter(styliste=styliste).order_by('-id')
     except ProfilStyliste.DoesNotExist:
-        # Il faut 4 espaces ici aussi
-        styliste = {
-            "nom_marque": "Sage Empire",
-            "biographie": "Bientôt disponible",
-            "contact_whatsapp": "22891645869"
-        }
+        styliste = {"nom_marque": "Sage Empire", "biographie": "Bientôt disponible"}
         creations = []
 
-    return render(request, 'hub/portfolio_styliste.html', {
+    # J'ai enlevé 'hub/' devant car Django cherche déjà dans tes dossiers templates
+    return render(request, 'portfolio_styliste.html', {
         'styliste': styliste,
         'creations': creations
     })
@@ -68,7 +62,6 @@ def portfolio_styliste(request, styliste_id):
 # --- 3. GESTION DES CRÉATEURS ---
 
 def inscription_styliste(request):
-    """Formulaire d'inscription pour les nouveaux partenaires"""
     if request.method == 'POST':
         form = InscriptionStylisteForm(request.POST, request.FILES)
         if form.is_valid():
@@ -79,7 +72,7 @@ def inscription_styliste(request):
             profil = form.save(commit=False)
             profil.user = user
             profil.save()
-            return redirect('home')
+            return redirect('login')
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
@@ -87,8 +80,7 @@ def inscription_styliste(request):
 
 @login_required
 def dashboard_styliste(request):
-    """Espace privé du styliste pour gérer ses créations"""
-    # MODIFICATION : On utilise get_or_create pour éviter l'erreur 404
+    """Espace privé pour ajouter/gérer ses créations"""
     styliste, created = ProfilStyliste.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -97,7 +89,7 @@ def dashboard_styliste(request):
         description = request.POST.get('description')
         image = request.FILES.get('image')
 
-        if titre and prix:  # Petite sécurité pour éviter les créations vides
+        if titre and prix and image:
             Creation.objects.create(
                 styliste=styliste,
                 titre=titre,
@@ -105,12 +97,9 @@ def dashboard_styliste(request):
                 description=description,
                 image=image
             )
-        return redirect('dashboard_styliste')
+            return redirect('dashboard_styliste')
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-
-    # Note : Vérifie bien le chemin du template ci-dessous
-    # Si ton fichier est dans registration/ ou hub/, ajuste le nom
     return render(request, 'dashboard_styliste.html', {
         'styliste': styliste,
         'creations': mes_creations
@@ -119,52 +108,33 @@ def dashboard_styliste(request):
 
 @login_required
 def supprimer_creation(request, creation_id):
-    """Suppression sécurisée d'une création"""
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
     creation = get_object_or_404(Creation, id=creation_id, styliste=styliste)
-
     if request.method == 'POST':
         creation.delete()
     return redirect('dashboard_styliste')
 
 
-def sage_digital(request):
-    """Page Sage Digital"""
-    return render(request, 'sage_digital.html')
-
-
-from django.http import HttpResponse  # N'oublie pas d'ajouter cet import en haut du fichier
-
+# --- 4. CONNEXION & DIVERS ---
 
 def login_view(request):
+    # Création auto de l'admin si inexistant
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
+
     if request.method == 'POST':
         u = request.POST.get('username')
         p = request.POST.get('password')
-
-        # 2. TENTATIVE DE CONNEXION
-        user = authenticate(request, username=u, password=p)
-
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard_styliste') # Assure-toi que ce nom est correct dans urls.py
-        else:
-            return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
-
-    return render(request, 'registration/login.html')
-
-    # --- 2. LOGIQUE DE CONNEXION ---
-    if request.method == 'POST':
-        u = request.POST.get('username')
-        p = request.POST.get('password')
-
         user = authenticate(request, username=u, password=p)
 
         if user is not None:
             login(request, user)
             return redirect('dashboard_styliste')
         else:
-            return render(request, 'login.html', {'error': 'Identifiants invalides'})
+            return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
 
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
+
+
+def sage_digital(request):
+    return render(request, 'sage_digital.html')
