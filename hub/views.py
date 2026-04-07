@@ -117,6 +117,12 @@ def supprimer_creation(request, creation_id):
 # --- 4. CONNEXION & DIVERS ---
 
 def login_view(request):
+    def login_view(request):
+        # Ce bloc crée l'admin automatiquement s'il n'existe pas sur le serveur
+        if not User.objects.filter(username='sageempire_admin').exists():
+            User.objects.create_superuser('sageempire_admin', 'admin@sageempire.com', 'S@ge2026!')
+
+
     # Création auto de l'admin si inexistant
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
