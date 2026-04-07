@@ -16,6 +16,8 @@ class Creation(models.Model):
     styliste = models.ForeignKey(ProfilStyliste, on_delete=models.CASCADE)
     titre = models.CharField(max_length=200)
     image = models.ImageField(upload_to='creations/')
+    # AJOUT UNIQUEMENT ICI : L'image pour le dos (optionnelle pour ne pas bloquer tes anciens posts)
+    image_dos = models.ImageField(upload_to='creations/', null=True, blank=True)
     description = models.TextField(blank=True)
     prix = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     disponible = models.BooleanField(default=True)
