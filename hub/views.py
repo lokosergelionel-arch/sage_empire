@@ -87,6 +87,7 @@ def dashboard_styliste(request):
         prix = request.POST.get('prix')
         description = request.POST.get('description')
         image = request.FILES.get('image')
+        image_dos = request.FILES.get('image_dos') # LIGNE AJOUTÉE
 
         if titre and prix and image:
             Creation.objects.create(
@@ -94,7 +95,8 @@ def dashboard_styliste(request):
                 titre=titre,
                 prix=prix,
                 description=description,
-                image=image
+                image=image,
+                image_dos=image_dos # LIGNE AJOUTÉE
             )
             return redirect('dashboard_styliste')
 
