@@ -12,6 +12,14 @@ class InscriptionStylisteForm(forms.ModelForm):
     nom_marque = forms.CharField(label="Nom de votre Marque")
     whatsapp = forms.CharField(label="Numéro WhatsApp")
 
+    # AJOUT : Champ Biographie pour qu'il apparaisse dans le formulaire
+    biographie = forms.CharField(
+        label="Votre Biographie / Univers",
+        widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Parlez de vos inspirations...'}),
+        required=False
+    )
+
     class Meta:
         model = ProfilStyliste
-        fields = ['nom_marque', 'contact_whatsapp', 'photo_profil']
+        # ON AJOUTE 'biographie' ICI POUR QU'IL SOIT ENREGISTRÉ
+        fields = ['nom_marque', 'contact_whatsapp', 'photo_profil', 'biographie']

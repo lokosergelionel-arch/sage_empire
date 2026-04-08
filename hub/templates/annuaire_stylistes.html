@@ -183,24 +183,29 @@
     <div class="grid">
         {% for styliste in stylistes %}
         <div class="card">
-            <div class="profil-img-container">
-                {% if styliste.photo_profil %}
-                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
-                {% else %}
-                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc; font-family: 'Cinzel'; letter-spacing: 5px; text-align: center; padding: 20px;">SAGE EMPIRE</div>
-                {% endif %}
-            </div>
-
-            <div class="card-content">
-                <h3>{{ styliste.nom_marque }}</h3>
-
-                <p>{{ styliste.biographie|truncatewords:50 }}</p>
-
-                <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
-                    ENTRER DANS L'UNIVERS
-                </a>
-            </div>
+    <div style="flex: 0 0 45%; display: flex; flex-direction: column; border-right: 1px solid var(--border);">
+        <div class="profil-img-container" style="height: 480px; border-right: none;">
+            {% if styliste.photo_profil %}
+                <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+            {% else %}
+                <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc;">SAGE</div>
+            {% endif %}
         </div>
+        <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio" style="width: 100%; text-align: center; box-sizing: border-box;">
+            ENTRER DANS L'UNIVERS
+        </a>
+    </div>
+
+    <div class="card-content" style="padding: 40px;">
+        <h3>{{ styliste.nom_marque }}</h3>
+
+        {% if styliste.biographie %}
+            <p>{{ styliste.biographie|truncatewords:30 }}</p>
+        {% else %}
+            <p style="color: #bbb; font-style: italic;">Ce créateur n'a pas encore rédigé sa présentation.</p>
+        {% endif %}
+    </div>
+</div>
         {% empty %}
         <div class="empty-msg">
             <p>L'Empire recrute actuellement ses nouveaux talents.<br>Revenez très bientôt.</p>

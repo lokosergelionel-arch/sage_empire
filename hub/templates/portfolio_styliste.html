@@ -4,30 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | {{ styliste.nom_complet }}</title>
+    <title>Portfolio | {{ styliste.nom_marque }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --ivory: #F9F8F6;
             --charcoal: #1A1A1A;
             --gold: #B5935E;
-            --gold-subtle: #D4AF37;
         }
 
         body {
             font-family: 'Lato', sans-serif;
             background: var(--ivory);
             color: var(--charcoal);
-            margin: 0;
-            padding: 0;
-            text-align: center;
+            margin: 0; padding: 0; text-align: center;
         }
 
         header { padding: 80px 5% 40px; }
 
         .profil-container {
-            width: 150px;
-            height: 150px;
+            width: 150px; height: 150px;
             margin: 0 auto 30px;
             border-radius: 50%;
             overflow: hidden;
@@ -38,30 +34,30 @@
         .profil-container img { width: 100%; height: 100%; object-fit: cover; }
 
         h1 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 10px; text-transform: uppercase; }
-        .bio { max-width: 700px; margin: 0 auto 50px; color: #666; line-height: 1.8; font-style: italic; }
 
-        /* --- CORRECTION GRILLE : TAILLE LIMITÉE POUR EFFET GALERIE --- */
+        /* Bio corrigée pour l'affichage */
+        .bio { max-width: 700px; margin: 0 auto 50px; color: #666; line-height: 1.8; font-style: italic; padding: 0 20px; }
+
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 350px)); /* Les cartes ne dépassent plus 350px */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
             gap: 30px;
             padding: 40px 5%;
-            justify-content: center; /* Centre les articles à l'écran */
+            justify-content: center;
         }
 
         .product-card {
             background: white;
-            padding: 15px; /* Un peu plus serré pour le luxe */
+            padding: 15px;
             border: 1px solid #eee;
             transition: 0.4s;
         }
 
         .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
 
-        /* --- SYSTÈME DEVANT / DERRIÈRE --- */
         .product-image-wrapper {
             position: relative;
-            height: 450px; /* Hauteur fixe pour l'harmonie */
+            height: 450px;
             overflow: hidden;
             margin-bottom: 20px;
             cursor: zoom-in;
@@ -69,19 +65,12 @@
         }
 
         .product-image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Remplit le cadre proprement */
+            width: 100%; height: 100%;
+            object-fit: cover;
             transition: opacity 0.5s ease-in-out;
         }
 
-        .img-back {
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-        }
-
+        .img-back { position: absolute; top: 0; left: 0; opacity: 0; }
         .product-card:hover .img-front { opacity: 0; }
         .product-card:hover .img-back { opacity: 1; }
 
@@ -91,11 +80,11 @@
 
         .btn-wa {
             display: inline-block;
-            padding: 12px 20px;
+            padding: 15px 20px;
             background: var(--charcoal);
             color: white;
             text-decoration: none;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             transition: 0.3s;
@@ -105,50 +94,53 @@
 
         .btn-wa:hover { background: var(--gold); }
 
+        /* Lightbox avec contrôle miniatures */
         #lightbox {
             display: none;
             position: fixed;
             z-index: 1000;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center; align-items: center;
         }
-        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--gold); }
+        #lightbox img#lightbox-img { max-width: 85%; max-height: 80%; border: 2px solid var(--gold); }
 
-        .back-link {
-            display: inline-block;
-            margin: 50px 0;
-            color: #888;
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
+        .zoom-controls { margin-top: 20px; display: flex; gap: 15px; }
+        .thumb-zoom { width: 50px; height: 70px; object-fit: cover; cursor: pointer; border: 1px solid #fff; opacity: 0.7; }
+        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
+
+        .back-link { display: inline-block; margin: 50px 0; color: #888; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <div id="lightbox" onclick="this.style.display='none'">
+    <div id="lightbox" onclick="closeZoom(event)">
         <img id="lightbox-img" src="" alt="Zoom">
+        <div class="zoom-controls" id="zoom-thumbs"></div>
     </div>
 
     <header>
         <div class="profil-container">
             {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_complet }}">
-            {% else %}
-                <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">SAGE MODE</div>
+                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}">
             {% endif %}
         </div>
-        <h1>{{ styliste.nom_complet }}</h1>
-        <p class="bio">{{ styliste.bio }}</p>
+        <h1>{{ styliste.nom_marque }}</h1>
+
+        <p class="bio">
+            {% if styliste.biographie %}
+                {{ styliste.biographie }}
+            {% else %}
+                Bienvenue dans mon univers créatif.
+            {% endif %}
+        </p>
     </header>
 
     <div class="portfolio-grid">
     {% for produit in creations %}
     <div class="product-card">
-        <div class="product-image-wrapper" onclick="openZoom('{{ produit.image.url }}')">
+        <div class="product-image-wrapper" onclick="openZoom('{{ produit.image.url }}', '{% if produit.image_dos %}{{ produit.image_dos.url }}{% endif %}')">
             <img src="{{ produit.image.url }}" class="img-front" alt="{{ produit.titre }}">
             {% if produit.image_dos %}
                 <img src="{{ produit.image_dos.url }}" class="img-back" alt="{{ produit.titre }} dos">
@@ -159,24 +151,42 @@
             <h3>{{ produit.titre }}</h3>
             <p class="price">{{ produit.prix }} FCFA</p>
             <p class="desc">{{ produit.description|truncatewords:8 }}</p>
-            <a href="https://wa.me/22891645869?text=Bonjour {{ styliste.nom_complet }}, je suis intéressé par votre création : {{ produit.titre }}" class="btn-wa">
+            <a href="https://wa.me/22891645869?text=Bonjour {{ styliste.nom_marque }}, je souhaite commander : {{ produit.titre }}" class="btn-wa">
                 COMMANDER VIA WHATSAPP
             </a>
         </div>
     </div>
-    {% empty %}
-        <div style="grid-column: 1/-1; padding: 50px;">
-            <p style="color: #999; font-style: italic;">L'excellence se prépare... Nos nouvelles collections arrivent bientôt.</p>
-        </div>
     {% endfor %}
     </div>
 
     <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
 
     <script>
-        function openZoom(url) {
+        function openZoom(urlFront, urlBack) {
+            const lightbox = document.getElementById('lightbox');
+            const mainImg = document.getElementById('lightbox-img');
+            const thumbContainer = document.getElementById('zoom-thumbs');
+
+            mainImg.src = urlFront;
+            thumbContainer.innerHTML = '';
+
+            if (urlBack) {
+                thumbContainer.innerHTML = `
+                    <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
+                    <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
+                `;
+            }
+            lightbox.style.display = 'flex';
+        }
+
+        function changeZoomImg(url) {
             document.getElementById('lightbox-img').src = url;
-            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeZoom(e) {
+            if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') {
+                document.getElementById('lightbox').style.display = 'none';
+            }
         }
     </script>
 
