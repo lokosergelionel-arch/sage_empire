@@ -31,6 +31,9 @@ urlpatterns = [
     # Authentification
     path('accounts/', include('django.contrib.auth.urls')),
     path('login/', views.login_view, name='login'),
+    path('admin/', admin.site.urls),
+    # Ajoute cette ligne pour inclure toutes les vues d'authentification (login, logout, password_reset, etc.)
+    path('accounts/', include('django.contrib.auth.urls')),
 
     # Routes pour la réinitialisation du mot de passe (Utilisent auth_views importé plus haut)
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
