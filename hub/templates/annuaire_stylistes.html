@@ -35,79 +35,90 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            padding: 40px 8% 100px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 400px)); /* Limite la largeur pour garder l'aspect vertical */
+            gap: 50px;
+            padding: 40px 5% 100px;
+            max-width: 1400px;
             margin: 0 auto;
+            justify-content: center;
         }
 
         .card {
             background: var(--white);
-            padding: 50px 30px;
+            padding: 0; /* On enlève le padding pour que l'image prenne tout le haut */
             text-align: center;
             border: 1px solid var(--border);
             transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
             border-color: var(--gold);
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
+        /* --- NOUVEAU FORMAT PORTRAIT MAGAZINE --- */
         .profil-img-container {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 25px;
-            border-radius: 50%;
+            width: 100%;
+            height: 450px; /* Format portrait vertical */
+            margin: 0;
             overflow: hidden;
-            border: 1px solid var(--gold);
-            padding: 5px;
-            background: white;
+            background: #f0f0f0;
+            border-bottom: 1px solid var(--border);
         }
 
         .profil-img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
+            object-fit: cover; /* L'image remplit parfaitement le rectangle */
+            transition: transform 0.8s ease;
+        }
+
+        .card:hover .profil-img {
+            transform: scale(1.05); /* Petit zoom élégant au survol */
+        }
+
+        .card-content {
+            padding: 35px 25px;
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin: 0 0 15px;
             text-transform: uppercase;
+            color: var(--charcoal);
         }
 
         .card p {
             font-size: 0.85rem;
-            color: #777;
-            line-height: 1.8;
-            min-height: 70px;
+            color: #666;
+            line-height: 1.6;
+            min-height: 60px;
             margin-bottom: 25px;
             font-style: italic;
+            padding: 0 10px;
         }
 
         .btn-portfolio {
             display: inline-block;
             text-decoration: none;
-            color: var(--charcoal);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
+            color: var(--white);
+            background: var(--charcoal);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: bold;
-            padding: 12px 25px;
-            border: 1px solid var(--charcoal);
+            padding: 15px 30px;
             transition: 0.3s;
+            border: none;
         }
 
         .btn-portfolio:hover {
-            background: var(--charcoal);
-            color: var(--white);
+            background: var(--gold);
         }
 
         .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; }
@@ -132,16 +143,18 @@
                 {% if styliste.photo_profil %}
                     <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
                 {% else %}
-                    <div style="background: #f0f0f0; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ccc;">SAGE</div>
+                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc; font-family: 'Cinzel'; letter-spacing: 5px;">SAGE EMPIRE</div>
                 {% endif %}
             </div>
 
-            <h3>{{ styliste.nom_marque }}</h3>
-            <p>{{ styliste.biographie|truncatewords:20 }}</p>
+            <div class="card-content">
+                <h3>{{ styliste.nom_marque }}</h3>
+                <p>{{ styliste.biographie|truncatewords:15 }}</p>
 
-            <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
-                DÉCOUVRIR L'UNIVERS →
-            </a>
+                <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
+                    ENTRER DANS L'UNIVERS
+                </a>
+            </div>
         </div>
         {% empty %}
         <div class="empty-msg">
