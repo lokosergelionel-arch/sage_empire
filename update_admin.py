@@ -1,17 +1,24 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings') # vérifie si c'est 'core' ou 'sage_empire'
+# FORCE LA CONFIGURATION
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
 from django.contrib.auth.models import User
 
-try:
-    user = User.objects.get(username='admin')
-    user.email = 'loko.sergelionel@gmail.com'
-    # ON CHANGE LE MOT DE PASSE DIRECTEMENT ICI
-    user.set_password('TonNouveauMdp2026!')
-    user.save()
-    print("SUCCÈS : Email mis à jour et Mot de passe réinitialisé en : TonNouveauMdp2026!")
-except User.DoesNotExist:
-    print("ERREUR : L'utilisateur admin n'existe pas.")
+def force_update():
+    try:
+        # On essaie de trouver l'admin par son pseudo
+        user = User.objects.get(username='admin')
+        user.email = 'loko.sergelionel@gmail.com'
+        user.set_password('SageEmpire2026!') # NOTE BIEN CE MDP
+        user.save()
+        print("--- SAGE EMPIRE : ADMIN MIS À JOUR AVEC SUCCÈS ---")
+    except User.DoesNotExist:
+        # Si 'admin' n'existe pas, on le crée carrément
+        User.objects.create_superuser('admin', 'loko.sergelionel@gmail.com', 'SageEmpire2026!')
+        print("--- SAGE EMPIRE : NOUVEL ADMIN CRÉÉ AVEC SUCCÈS ---")
+
+if __name__ == "__main__":
+    force_update()
