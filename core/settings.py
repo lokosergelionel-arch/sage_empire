@@ -13,7 +13,7 @@ DEBUG = True
 
 # On autorise Render et ton ordi local
 ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 # --- APPLICATIONS ---
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -106,3 +106,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'loko.sergelionel@gmail.com' # Ton adresse Gmail
 EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak' # Code à 16 lettres généré par Google
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
+EMAIL_USE_SSL = False  # On utilise TLS (587), donc SSL doit être à False
