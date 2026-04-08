@@ -2,11 +2,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views # <-- L'IMPORTATION CORRIGÉE ICI
+from django.contrib.auth import views as auth_views
 
 from hub import views
 
 urlpatterns = [
+    # --- RÉINITIALISATION MOT DE PASSE ADMIN (NOUVEAU) ---
+    # Ces routes doivent être placées AVANT admin.site.urls
+    path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
+    path('admin/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     # Administration
     path('admin/', admin.site.urls),
     path('digital/', views.sage_digital, name='sage_digital'),
@@ -28,21 +35,17 @@ urlpatterns = [
     path('marketplace/annuaire/', views.liste_stylistes, name='liste_stylistes'),
     path('styliste/<int:styliste_id>/', views.portfolio_styliste, name='portfolio_styliste'),
 
-    # Authentification
-    path('accounts/', include('django.contrib.auth.urls')),
+    # Authentification Site Principal (Stylistes)
     path('login/', views.login_view, name='login'),
-    path('admin/', admin.site.urls),
-    # Ajoute cette ligne pour inclure toutes les vues d'authentification (login, logout, password_reset, etc.)
     path('accounts/', include('django.contrib.auth.urls')),
 
-    # Routes pour la réinitialisation du mot de passe (Utilisent auth_views importé plus haut)
+    # Routes pour la réinitialisation du mot de passe STYLISTES (Utilisent tes templates personnalisés)
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
 ]
 
-# CETTE LIGNE DOIT ÊTRE EXACTEMENT COMME ÇA :
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
