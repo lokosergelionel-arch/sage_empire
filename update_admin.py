@@ -1,17 +1,17 @@
 import os
 import django
 
-# Configuration de l'environnement Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings') # Vérifie si ton dossier s'appelle bien 'core'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings') # vérifie si c'est 'core' ou 'sage_empire'
 django.setup()
 
 from django.contrib.auth.models import User
 
-# On cherche l'admin et on lui met l'email
 try:
-    user = User.objects.get(username='admin') # Remplace 'admin' par ton vrai pseudo si besoin
+    user = User.objects.get(username='admin')
     user.email = 'loko.sergelionel@gmail.com'
+    # ON CHANGE LE MOT DE PASSE DIRECTEMENT ICI
+    user.set_password('TonNouveauMdp2026!')
     user.save()
-    print("Succès : L'email de l'admin a été mis à jour.")
+    print("SUCCÈS : Email mis à jour et Mot de passe réinitialisé en : TonNouveauMdp2026!")
 except User.DoesNotExist:
-    print("Erreur : L'utilisateur admin n'existe pas.")
+    print("ERREUR : L'utilisateur admin n'existe pas.")
