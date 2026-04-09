@@ -116,7 +116,12 @@ CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
+# On définit explicitement le moteur de stockage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# On laisse Cloudinary gérer l'URL de base tout seul
-MEDIA_URL = '/media/'
+# On FORCE l'URL de base pour les médias pour qu'il n'utilise PAS ton domaine Render
+# Remplace bien par ton cloud_name (dgqjazpwu)
+MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
+
+# ON SUPPRIME OU COMMENTE TOUTE LIGNE MEDIA_ROOT
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media') <--- ASSURE-TOI QUE CETTE LIGNE EST SUPPRIMÉE
