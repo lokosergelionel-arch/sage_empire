@@ -15,15 +15,17 @@ DEBUG = True
 ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 # --- APPLICATIONS ---
-INSTALLED_APPS = [
+INSTALLED_APPS = {
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "cloudinary_storage",
     "django.contrib.staticfiles",
+    "cloudinary",
     "hub",
-]
+}
 
 # --- MIDDLEWARE (L'ordre est CRUCIAL ici pour WhiteNoise) ---
 MIDDLEWARE = [
@@ -107,3 +109,13 @@ EMAIL_HOST_USER = 'loko.sergelionel@gmail.com' # Ton adresse Gmail
 EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak' # Code à 16 lettres généré par Google
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 EMAIL_USE_SSL = False  # On utilise TLS (587), donc SSL doit être à False
+
+# Configuration Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+# On dit à Django d'utiliser Cloudinary pour les fichiers envoyés par les utilisateurs
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
