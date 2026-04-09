@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm
+from .forms import CreationForm  # Assure-toi d'avoir créé ce formulaire
 
 
 # --- 1. PAGES PUBLIQUES ---
@@ -149,3 +150,26 @@ def login_view(request):
 
 def sage_digital(request):
     return render(request, 'sage_digital.html')
+
+
+@login_required
+def ajouter_creation(request):
+    # 1. On récupère le profil styliste de l'utilisateur connecté
+    try:
+        profil = request.user.profilstyliste
+    except ProfilStyliste.DoesNotExist:
+        # Si sagemode_admin n'a pas de profil styliste, on le redirige ou on affiche une erreur
+        return render(request, 'hub/erreur.html', {'message': "Vous devez avoir un profil styliste pour poster."})
+
+    if request.method == 'POST':
+        # 2. On passe les fichiers (FILES) pour Cloudinary
+        form = CreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            creation = form.save(commit=False)
+            creation.styliste = profil  # On lie la création au profil
+            creation.save()  # L'image part chez Cloudinary ici !
+            return redirect('ma_galerie')  # Change par le nom de ta page de succès
+    else:
+        form = CreationForm()
+
+    return render(request, 'hub/ajouter_creation.html', {'form': form})

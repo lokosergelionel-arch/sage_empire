@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Ajouter une nouvelle création au Sage Empire</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        
+        <button type="submit" class="btn btn-success">
+            Publier sur le site
+        </button>
+    </form>
+</div>
+{% endblock %}
