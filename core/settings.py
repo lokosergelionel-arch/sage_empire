@@ -111,17 +111,17 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# --- CONFIGURATION CLOUDINARY ---
+# --- CONFIGURATION CLOUDINARY FINALE ---
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
-# On définit explicitement le moteur de stockage
+# On force Django à envoyer les fichiers vers Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# On FORCE l'URL de base pour les médias pour qu'il n'utilise PAS ton domaine Render
-# Remplace bien par ton cloud_name (dgqjazpwu)
+# L'URL pointera vers Cloudinary
 MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
-
-# ON SUPPRIME OU COMMENTE TOUTE LIGNE MEDIA_ROOT
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media') <--- ASSURE-TOI QUE CETTE LIGNE EST SUPPRIMÉE
