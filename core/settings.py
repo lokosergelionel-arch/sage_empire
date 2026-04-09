@@ -111,5 +111,8 @@ CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
+# Cette ligne est CRUCIAL : elle dit à Django d'arrêter d'utiliser le disque local
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Garde uniquement cette ligne, SUPPRIME 'MEDIA_ROOT'
 MEDIA_URL = '/media/'
