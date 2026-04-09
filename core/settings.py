@@ -6,15 +6,13 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SÉCURITÉ ---
-# Garde ta clé actuelle pour le moment, mais sur Render tu pourras la cacher
 SECRET_KEY = "django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_"
 
-# DEBUG reste True pour tes tests, on le passera à False pour le lancement final
 DEBUG = True
 
-# On autorise Render et ton ordi local
 ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
+
 # --- APPLICATIONS ---
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -22,16 +20,16 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "cloudinary_storage",
+    "cloudinary_storage",  # Doit être AVANT staticfiles
     "django.contrib.staticfiles",
     "cloudinary",
     "hub",
 ]
 
-# --- MIDDLEWARE (L'ordre est CRUCIAL ici pour WhiteNoise) ---
+# --- MIDDLEWARE ---
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # Gère tes images/CSS sur Render
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -45,7 +43,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],  # Pour tes futurs fichiers HTML globaux
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -59,14 +57,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
-
-# On garde SQLite par défaut en local, mais on utilise PostgreSQL sur Render
+# --- BASE DE DONNÉES (Configuration Immortelle Neon) ---
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
         conn_max_age=600,
-        ssl_require=True
+        # On n'active le SSL que si on est sur Render (DATABASE_URL présente)
+        ssl_require=True if os.environ.get('DATABASE_URL') else False
     )
 }
 
@@ -79,46 +76,41 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # --- INTERNATIONALISATION ---
-LANGUAGE_CODE = "fr-fr"  # Passé en Français pour l'Empire
+LANGUAGE_CODE = "fr-fr"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# --- FICHIERS STATIQUES (CSS, JS, IMAGES) ---
+# --- FICHIERS STATIQUES ---
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
-
-# Dossier où Render va stocker les fichiers compilés
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Utilisation de WhiteNoise pour servir les fichiers statiques de manière ultra-rapide
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# --- REDIRECTIONS ---
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'home'
+# --- REDIRECTIONS (CORRIGÉES POUR ÉVITER L'ERREUR JAUNE) ---
+# On redirige vers l'accueil ('/') au lieu de 'dashboard' car ce nom n'existe pas dans tes URLs
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Configuration E-mail (Exemple avec Gmail)
+# --- CONFIGURATION EMAIL ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'loko.sergelionel@gmail.com' # Ton adresse Gmail
-EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak' # Code à 16 lettres généré par Google
+EMAIL_HOST_USER = 'loko.sergelionel@gmail.com'
+EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
-EMAIL_USE_SSL = False  # On utilise TLS (587), donc SSL doit être à False
 
-# Configuration Cloudinary
+# --- CONFIGURATION CLOUDINARY ---
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# On dit à Django d'utiliser Cloudinary pour les fichiers envoyés par les utilisateurs
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
