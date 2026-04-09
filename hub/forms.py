@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import ProfilStyliste
-
+from .models import ProfilStyliste, Creation  # <-- MODIFIÉ : On importe aussi Creation ici
 
 class InscriptionStylisteForm(forms.ModelForm):
     # Champs pour le compte (Logins)
@@ -12,7 +11,7 @@ class InscriptionStylisteForm(forms.ModelForm):
     nom_marque = forms.CharField(label="Nom de votre Marque")
     whatsapp = forms.CharField(label="Numéro WhatsApp")
 
-    # AJOUT : Champ Biographie pour qu'il apparaisse dans le formulaire
+    # AJOUT : Champ Biographie
     biographie = forms.CharField(
         label="Votre Biographie / Univers",
         widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Parlez de vos inspirations...'}),
@@ -21,18 +20,17 @@ class InscriptionStylisteForm(forms.ModelForm):
 
     class Meta:
         model = ProfilStyliste
-        # ON AJOUTE 'biographie' ICI POUR QU'IL SOIT ENREGISTRÉ
+        # On utilise les noms exacts de ton models.py
         fields = ['nom_marque', 'contact_whatsapp', 'photo_profil', 'biographie']
 
 
 class CreationForm(forms.ModelForm):
     class Meta:
         model = Creation
-        # On liste les champs que tu as définis dans ton models.py
-        # 'styliste' est exclu car on le gère automatiquement dans la vue
+        # Les champs correspondent à ton models.py
         fields = ['titre', 'image', 'image_dos', 'description', 'prix', 'disponible']
 
-        # On ajoute des 'widgets' pour que les cases soient jolies sur ton site
+        # Widgets pour le style Bootstrap (propre et net)
         widgets = {
             'titre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Robe de soirée Empire'}),
             'description': forms.Textarea(
