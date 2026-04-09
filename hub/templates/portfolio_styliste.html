@@ -20,7 +20,7 @@
             margin: 0; padding: 0; text-align: center;
         }
 
-        header { padding: 80px 5% 40px; }
+        header { padding: 140px 5% 40px; }
 
         .profil-container {
             width: 150px; height: 150px;
@@ -151,8 +151,9 @@
             <h3>{{ produit.titre }}</h3>
             <p class="price">{{ produit.prix }} FCFA</p>
             <p class="desc">{{ produit.description|truncatewords:8 }}</p>
-            <a href="https://wa.me/22891645869?text=Bonjour {{ styliste.nom_marque }}, je souhaite commander : {{ produit.titre }}" class="btn-wa">
-                COMMANDER VIA WHATSAPP
+            <a href="https://wa.me/{{ styliste.telephone }}?text=Bonjour {{ styliste.nom_marque }}, je souhaite commander : {{ produit.titre }}" class="btn-wa" target="_blank">
+    COMMANDER VIA WHATSAPP
+</a>
             </a>
         </div>
     </div>
