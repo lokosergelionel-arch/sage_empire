@@ -111,12 +111,12 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+# --- CONFIGURATION CLOUDINARY ---
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
-# On force l'utilisation immédiate pour les médias
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# L'URL des médias doit pointer vers Cloudinary
-MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
+# On laisse Cloudinary gérer l'URL de base tout seul
+MEDIA_URL = '/media/'
