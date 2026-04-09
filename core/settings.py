@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,7 +59,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-import dj_database_url
+
 
 # On garde SQLite par défaut en local, mais on utilise PostgreSQL sur Render
 DATABASES = {
