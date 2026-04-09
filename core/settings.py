@@ -107,10 +107,20 @@ EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 
 # --- CONFIGURATION CLOUDINARY ---
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
+# On vérifie si la variable simplifiée existe, sinon on prend les variables séparées
+if os.environ.get('CLOUDINARY_URL'):
+    CLOUDINARY_STORAGE = {
+        'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+    }
+else:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
 
+# Force l'utilisation de Cloudinary pour les fichiers uploadés
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# On garde MEDIA_URL mais on enlève MEDIA_ROOT pour ne plus écrire en local
+MEDIA_URL = '/media/'
