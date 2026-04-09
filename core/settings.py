@@ -106,13 +106,17 @@ EMAIL_HOST_USER = 'loko.sergelionel@gmail.com'
 EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 
-# --- CONFIGURATION CLOUDINARY ---
+# --- CONFIGURATION CLOUDINARY (FORCE) ---
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
-# Cette ligne est CRUCIAL : elle dit à Django d'arrêter d'utiliser le disque local
+# On force l'utilisation immédiate pour les médias
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Garde uniquement cette ligne, SUPPRIME 'MEDIA_ROOT'
-MEDIA_URL = '/media/'
+# L'URL des médias doit pointer vers Cloudinary
+MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
