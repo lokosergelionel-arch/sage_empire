@@ -6,8 +6,6 @@ from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm, CreationForm
 
 
-# ===================== PAGES PUBLIQUES =====================
-
 def home(request):
     creations = Creation.objects.all().order_by('-id')[:6]
     return render(request, 'index.html', {'creations': creations})
@@ -23,10 +21,7 @@ def page_evenementiel(request):
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
 
-# ===================== SAGE MODE & MARKETPLACE =====================
-
 def galerie_mode(request):
-    """Sage Mode : affiche toutes les créations ou celles d'un compte dédié"""
     creations = Creation.objects.all().order_by('-id')
     return render(request, 'galerie_mode.html', {'produits_sage': creations})
 
@@ -39,14 +34,11 @@ def liste_stylistes(request):
 def portfolio_styliste(request, styliste_id):
     styliste = get_object_or_404(ProfilStyliste, id=styliste_id)
     creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-
     return render(request, 'portfolio_styliste.html', {
         'styliste': styliste,
         'creations': creations
     })
 
-
-# ===================== GESTION CRÉATEURS =====================
 
 def inscription_styliste(request):
     if request.method == 'POST':
@@ -75,11 +67,14 @@ def dashboard_styliste(request):
             creation = form.save(commit=False)
             creation.styliste = styliste
             creation.image_url = request.POST.get('image_url')
-            creation.public_id = request.POST.get('public_id')
+            creation.image_dos_url = request.POST.get('image_dos_url')
+            creation.public_id = request.POST.get('public_id') or ""
 
-            # Gestion de l'image dos
             if request.POST.get('public_id_dos'):
-                creation.public_id = f"{creation.public_id or ''},{request.POST.get('public_id_dos')}".strip(',')
+                if creation.public_id:
+                    creation.public_id += f",{request.POST.get('public_id_dos')}"
+                else:
+                    creation.public_id = request.POST.get('public_id_dos')
 
             creation.save()
             return redirect('dashboard_styliste')
@@ -100,18 +95,12 @@ def supprimer_creation(request, creation_id):
     return redirect('dashboard_styliste')
 
 
-# ===================== AUTH & DIVERS =====================
-
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
 
     if request.method == 'POST':
-        user = authenticate(
-            request,
-            username=request.POST.get('username'),
-            password=request.POST.get('password')
-        )
+        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
         if user:
             login(request, user)
             return redirect('dashboard_styliste')

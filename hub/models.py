@@ -23,10 +23,11 @@ class Creation(models.Model):
     titre = models.CharField(max_length=200)
 
     # Champs Cloudinary
-    image = models.ImageField(upload_to='creations/')
+    image = models.ImageField(upload_to='creations/', null=True, blank=True)
     image_dos = models.ImageField(upload_to='creations/', null=True, blank=True)
     public_id = models.CharField(max_length=255, blank=True)
     image_url = models.URLField(max_length=500, blank=True)
+    image_dos_url = models.URLField(max_length=500, blank=True)  # ← NOUVEAU
 
     description = models.TextField(blank=True)
     prix = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -40,7 +41,6 @@ class Creation(models.Model):
 
     @property
     def display_image(self):
-        """Retourne l'URL de l'image principale (Cloudinary ou ancien système)"""
         if self.image_url:
             return self.image_url
         if self.image:
@@ -49,7 +49,8 @@ class Creation(models.Model):
 
     @property
     def display_image_dos(self):
-        """Retourne l'URL de l'image dos si elle existe"""
+        if self.image_dos_url:
+            return self.image_dos_url
         if self.image_dos and self.image_dos.url:
             return self.image_dos.url
         return None
@@ -66,7 +67,7 @@ class Creation(models.Model):
         super().delete(*args, **kwargs)
 
 
-# === ANCIENS MODÈLES (conservés pour éviter les erreurs d'import) ===
+# Anciens modèles conservés
 class Immobilier(models.Model):
     CHOIX = [('terrain', 'Terrain'), ('appartement', 'Appartement')]
     type_bien = models.CharField(max_length=20, choices=CHOIX)
