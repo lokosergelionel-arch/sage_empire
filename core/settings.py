@@ -2,20 +2,18 @@ import os
 from pathlib import Path
 import dj_database_url
 
-# 1. BASE_DIR défini tout en haut pour éviter les erreurs NameError
+# 1. BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SÉCURITÉ ---
 SECRET_KEY = "django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_"
 DEBUG = True
-
 ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 
 # --- APPLICATIONS ---
-# 'cloudinary_storage' DOIT être avant 'staticfiles'
 INSTALLED_APPS = [
-    "cloudinary_storage",
+    "cloudinary_storage",  # OBLIGATOIRE EN PREMIER
     "django.contrib.staticfiles",
     "cloudinary",
     "hub",
@@ -57,7 +55,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-# --- BASE DE DONNÉES (Configuration Neon/PostgreSQL) ---
+# --- BASE DE DONNÉES ---
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -66,44 +64,38 @@ DATABASES = {
     )
 }
 
-# --- VALIDATION MOTS DE PASSE ---
-AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
-
 # --- INTERNATIONALISATION ---
 LANGUAGE_CODE = "fr-fr"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# --- FICHIERS STATIQUES (WhiteNoise) ---
+# --- FICHIERS STATIQUES ---
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --- CONFIGURATION CLOUDINARY (MEDIA) ---
-# Pas de MEDIA_ROOT ici pour forcer le passage par le Cloud
+# --- CLOUDINARY (LÀ OÙ TOUT SE JOUE) ---
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+# ON FORCE LE STOCKAGE EXTERNE
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
+# L'URL devient un simple préfixe, Cloudinary gérera le reste
 MEDIA_URL = '/media/'
 
-# --- REDIRECTIONS ---
+# --- ATTENTION : AUCUNE LIGNE MEDIA_ROOT ICI ---
+
+# --- REDIRECTIONS & AUTOFIELD ---
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- CONFIGURATION EMAIL ---
