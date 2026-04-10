@@ -20,7 +20,7 @@
             margin: 0; padding: 0; text-align: center;
         }
 
-        header { padding: 180px 5% 40px; }
+        header { padding: 60px 5% 40px; }
 
         .profil-container {
             width: 150px; height: 150px;
@@ -138,13 +138,15 @@
     <div class="portfolio-grid">
         {% for produit in creations %}
         <div class="product-card">
-            <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
+            <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos|default:'' }}')">
                 {% if produit.display_image %}
                     <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
                 {% endif %}
 
                 {% if produit.display_image_dos %}
                     <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} - dos">
+                {% else %}
+                    <img src="{{ produit.display_image }}" class="img-back" alt="{{ produit.titre }}">
                 {% endif %}
             </div>
 
