@@ -17,13 +17,18 @@
             font-family: 'Lato', sans-serif;
             background: var(--ivory);
             color: var(--charcoal);
-            margin: 0; padding: 0; text-align: center;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
 
-        header { padding: 180px 5% 40px; }
+        header {
+            padding: 180px 5% 40px;
+        }
 
         .profil-container {
-            width: 150px; height: 150px;
+            width: 150px;
+            height: 150px;
             margin: 0 auto 30px;
             border-radius: 50%;
             overflow: hidden;
@@ -31,12 +36,27 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        .profil-container img { width: 100%; height: 100%; object-fit: cover; }
+        .profil-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-        h1 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 10px; text-transform: uppercase; }
+        h1 {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
 
-        /* Bio corrigée pour l'affichage */
-        .bio { max-width: 700px; margin: 0 auto 50px; color: #666; line-height: 1.8; font-style: italic; padding: 0 20px; }
+        .bio {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: #666;
+            line-height: 1.8;
+            font-style: italic;
+            padding: 0 20px;
+        }
 
         .portfolio-grid {
             display: grid;
@@ -53,7 +73,10 @@
             transition: 0.4s;
         }
 
-        .product-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
 
         .product-image-wrapper {
             position: relative;
@@ -65,18 +88,40 @@
         }
 
         .product-image-wrapper img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             transition: opacity 0.5s ease-in-out;
         }
 
-        .img-back { position: absolute; top: 0; left: 0; opacity: 0; }
+        .img-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
         .product-card:hover .img-front { opacity: 0; }
         .product-card:hover .img-back { opacity: 1; }
 
-        .product-details h3 { font-family: 'Cinzel', serif; font-size: 0.95rem; margin-bottom: 5px; }
-        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; font-size: 0.9rem; }
-        .desc { font-size: 0.85rem; color: #777; margin-bottom: 15px; height: 40px; overflow: hidden; }
+        .product-details h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        .price {
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+            font-size: 0.9rem;
+        }
+        .desc {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
 
         .btn-wa {
             display: inline-block;
@@ -94,7 +139,7 @@
 
         .btn-wa:hover { background: var(--gold); }
 
-        /* Lightbox avec contrôle miniatures */
+        /* Lightbox */
         #lightbox {
             display: none;
             position: fixed;
@@ -102,15 +147,41 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9);
             flex-direction: column;
-            justify-content: center; align-items: center;
+            justify-content: center;
+            align-items: center;
         }
-        #lightbox img#lightbox-img { max-width: 85%; max-height: 80%; border: 2px solid var(--gold); }
+        #lightbox img#lightbox-img {
+            max-width: 85%;
+            max-height: 80%;
+            border: 2px solid var(--gold);
+        }
 
-        .zoom-controls { margin-top: 20px; display: flex; gap: 15px; }
-        .thumb-zoom { width: 50px; height: 70px; object-fit: cover; cursor: pointer; border: 1px solid #fff; opacity: 0.7; }
-        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
+        .zoom-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .thumb-zoom {
+            width: 50px;
+            height: 70px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 1px solid #fff;
+            opacity: 0.7;
+        }
+        .thumb-zoom:hover {
+            opacity: 1;
+            border-color: var(--gold);
+        }
 
-        .back-link { display: inline-block; margin: 50px 0; color: #888; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; }
+        .back-link {
+            display: inline-block;
+            margin: 50px 0;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -138,26 +209,39 @@
     </header>
 
     <div class="portfolio-grid">
-    {% for produit in creations %}
-    <div class="product-card">
-        <div class="product-image-wrapper" onclick="openZoom('{{ produit.image.url }}', '{% if produit.image_dos %}{{ produit.image_dos.url }}{% endif %}')">
-            <img src="{{ produit.image.url }}" class="img-front" alt="{{ produit.titre }}">
-            {% if produit.image_dos %}
-                <img src="{{ produit.image_dos.url }}" class="img-back" alt="{{ produit.titre }} dos">
-            {% endif %}
-        </div>
+        {% for produit in creations %}
+        <div class="product-card">
+            <div class="product-image-wrapper"
+                 onclick="openZoom('{{ produit.image_url|default:produit.image.url }}',
+                 {% if produit.image_dos and produit.image_dos.url %}'{{ produit.image_dos.url }}'{% else %}null{% endif %})">
 
-        <div class="product-details">
-            <h3>{{ produit.titre }}</h3>
-            <p class="price">{{ produit.prix }} FCFA</p>
-            <p class="desc">{{ produit.description|truncatewords:8 }}</p>
-            <a href="https://wa.me/{{ styliste.telephone }}?text=Bonjour {{ styliste.nom_marque }}, je souhaite commander : {{ produit.titre }}" class="btn-wa" target="_blank">
-    COMMANDER VIA WHATSAPP
-</a>
-            </a>
+                <img src="{{ produit.image_url|default:produit.image.url }}"
+                     class="img-front"
+                     alt="{{ produit.titre }}">
+
+                {% if produit.image_dos and produit.image_dos.url %}
+                    <img src="{{ produit.image_dos.url }}"
+                         class="img-back"
+                         alt="{{ produit.titre }} - dos">
+                {% endif %}
+            </div>
+
+            <div class="product-details">
+                <h3>{{ produit.titre }}</h3>
+                <p class="price">{{ produit.prix }} FCFA</p>
+                <p class="desc">{{ produit.description|truncatewords:12 }}</p>
+                <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par : {{ produit.titre }}"
+                   class="btn-wa"
+                   target="_blank">
+                    COMMANDER VIA WHATSAPP
+                </a>
+            </div>
         </div>
-    </div>
-    {% endfor %}
+        {% empty %}
+        <p style="grid-column: 1 / -1; color: #888; font-style: italic;">
+            Aucune création disponible pour le moment.
+        </p>
+        {% endfor %}
     </div>
 
     <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
@@ -171,7 +255,7 @@
             mainImg.src = urlFront;
             thumbContainer.innerHTML = '';
 
-            if (urlBack) {
+            if (urlBack && urlBack !== 'null') {
                 thumbContainer.innerHTML = `
                     <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
                     <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
