@@ -116,12 +116,14 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+# --- CONFIGURATION CLOUDINARY (BUNKER) ---
 CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL'),
+    'SECURE': True  # Force le HTTPS
 }
 
-# On force Django à envoyer les fichiers vers Cloudinary
+# Moteur de stockage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# L'URL pointera vers Cloudinary
-MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
+# URL simplifiée
+MEDIA_URL = '/media/'
