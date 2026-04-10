@@ -80,24 +80,24 @@ def inscription_styliste(request):
 
 @login_required
 def dashboard_styliste(request):
-    """Espace privé pour ajouter/gérer ses créations"""
     styliste, created = ProfilStyliste.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         titre = request.POST.get('titre')
         prix = request.POST.get('prix')
         description = request.POST.get('description')
-        image = request.FILES.get('image')
-        image_dos = request.FILES.get('image_dos') # LIGNE AJOUTÉE
+        image_url = request.POST.get('image_url')
+        public_id = request.POST.get('public_id')
 
-        if titre and prix and image:
+        if titre and prix and image_url:
             Creation.objects.create(
                 styliste=styliste,
                 titre=titre,
                 prix=prix,
                 description=description,
-                image=image,
-                image_dos=image_dos # LIGNE AJOUTÉE
+                image_url=image_url,
+                public_id=public_id or "",
+                disponible=True
             )
             return redirect('dashboard_styliste')
 
