@@ -3,103 +3,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SAGE MODE | La Collection Officielle</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        :root { --gold: #B5935E; --charcoal: #1A1A1A; --ivory: #F9F8F6; }
-        body { margin: 0; font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); }
-
-        header { padding: 100px 5% 60px; text-align: center; background: white; border-bottom: 1px solid #eee; }
-        header h1 { font-family: 'Cinzel'; font-size: 2.5rem; letter-spacing: 8px; margin: 0; text-transform: uppercase; }
-        header p { color: var(--gold); letter-spacing: 3px; font-size: 0.8rem; margin-top: 15px; }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 2%; } /* Ajusté pour éviter trop d'étirement */
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 350px)); /* Limite la largeur des cartes */
-            gap: 30px;
-            padding: 20px;
-            justify-content: center; /* Centre la galerie */
-        }
-
-        .collection-item {
-            background: white;
-            transition: 0.4s;
-            position: relative;
-            border: 1px solid #eee;
-        }
-
-        .collection-item:hover { transform: translateY(-10px); border-color: var(--gold); }
-
-        /* --- SYSTEME IMAGE GRANDE ET PROPRE --- */
-        .product-image-wrapper {
-            position: relative;
-            height: 450px; /* Hauteur harmonisée */
-            overflow: hidden;
-            background: #fff;
-            cursor: zoom-in;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* REMPLIT TOUT LE CADRE (plus de vide blanc) */
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .img-back {
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-        }
-
-        .collection-item:hover .img-front { opacity: 0; }
-        .collection-item:hover .img-back { opacity: 1; }
-
-        .product-info { padding: 25px; text-align: center; }
-        .product-info h3 { font-family: 'Cinzel'; font-size: 1rem; margin: 0 0 10px; letter-spacing: 2px; }
-
-        .price { color: var(--gold); font-weight: bold; font-size: 1.1rem; margin-bottom: 20px; }
-
-        .btn-order {
-            display: inline-block;
-            text-decoration: none;
-            background: var(--charcoal);
-            color: white;
-            padding: 15px 30px;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-order:hover { background: var(--gold); }
-
-        /* Overlay Zoom modifié pour supporter les miniatures */
-        #lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            flex-direction: column;
-            justify-content: center; align-items: center;
-        }
-        #lightbox img#lightbox-img { max-width: 80%; max-height: 80%; border: 2px solid var(--gold); }
-
-        /* Conteneur des miniatures dans le zoom */
-        .zoom-controls { margin-top: 20px; display: flex; gap: 15px; }
-        .thumb-zoom { width: 50px; height: 70px; object-fit: cover; cursor: pointer; border: 1px solid #fff; opacity: 0.7; transition: 0.3s; }
-        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
-
-        .empty-shop { text-align: center; grid-column: 1/-1; padding: 100px; color: #999; }
-    </style>
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAGE MODE | La Collection Officielle</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -289,7 +192,7 @@
                 <div class="product-info">
                     <h3>{{ produit.titre }}</h3>
                     <p class="price">{{ produit.prix }} FCFA</p>
-                    <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'0000000000' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
+                    <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
                        class="btn-order"
                        target="_blank">
                         COMMANDER VIA WHATSAPP

@@ -6,6 +6,8 @@ from .models import ProfilStyliste, Creation, Immobilier, Event
 from .forms import InscriptionStylisteForm, CreationForm
 
 
+# ===================== PAGES PUBLIQUES =====================
+
 def home(request):
     creations = Creation.objects.all().order_by('-id')[:6]
     return render(request, 'index.html', {'creations': creations})
@@ -21,9 +23,17 @@ def page_evenementiel(request):
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
 
+# ===================== SAGE MODE (OFFICIEL SEULEMENT) =====================
+
 def galerie_mode(request):
-    creations = Creation.objects.all().order_by('-id')
-    return render(request, 'galerie_mode.html', {'produits_sage': creations})
+    """Sage Mode = uniquement les créations officielles"""
+    try:
+        profil_sage = ProfilStyliste.objects.get(user__username="sagemode_admin")
+        produits = Creation.objects.filter(styliste=profil_sage).order_by('-id')
+    except ProfilStyliste.DoesNotExist:
+        produits = []
+
+    return render(request, 'galerie_mode.html', {'produits_sage': produits})
 
 
 def liste_stylistes(request):
@@ -39,6 +49,8 @@ def portfolio_styliste(request, styliste_id):
         'creations': creations
     })
 
+
+# ===================== INSCRIPTION =====================
 
 def inscription_styliste(request):
     if request.method == 'POST':
@@ -56,6 +68,8 @@ def inscription_styliste(request):
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
 
+
+# ===================== DASHBOARD STYLISTE =====================
 
 @login_required
 def dashboard_styliste(request):
@@ -94,6 +108,8 @@ def supprimer_creation(request, creation_id):
         creation.delete()
     return redirect('dashboard_styliste')
 
+
+# ===================== AUTH =====================
 
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
