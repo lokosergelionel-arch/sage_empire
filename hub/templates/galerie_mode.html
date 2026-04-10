@@ -95,6 +95,164 @@
 
         .empty-shop { text-align: center; grid-column: 1/-1; padding: 100px; color: #999; }
     </style>
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE MODE | La Collection Officielle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+        }
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+        }
+
+        header {
+            padding: 100px 5% 60px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        header h1 {
+            font-family: 'Cinzel';
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        header p {
+            color: var(--gold);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 2%;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+            gap: 30px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .collection-item {
+            background: white;
+            transition: 0.4s;
+            border: 1px solid #eee;
+        }
+
+        .collection-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            height: 450px;
+            overflow: hidden;
+            background: #fff;
+            cursor: zoom-in;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .img-back {
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+        }
+        .collection-item:hover .img-front { opacity: 0; }
+        .collection-item:hover .img-back { opacity: 1; }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .product-info h3 {
+            font-family: 'Cinzel';
+            font-size: 1.05rem;
+            margin: 0 0 8px;
+            letter-spacing: 1px;
+        }
+        .price {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-order {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .btn-order:hover { background: var(--gold); }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #lightbox img#lightbox-img {
+            max-width: 85%;
+            max-height: 80%;
+            border: 3px solid var(--gold);
+        }
+
+        .zoom-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+        }
+        .thumb-zoom {
+            width: 55px;
+            height: 75px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #fff;
+            opacity: 0.8;
+        }
+        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
+
+        .empty-shop {
+            grid-column: 1 / -1;
+            padding: 80px 20px;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
@@ -109,67 +267,71 @@
     </header>
 
     <section class="container">
-    <div class="gallery-grid">
-        {% for produit in produits_sage %}
-        <div class="collection-product-item">
-    <div class="product-image-wrapper" onclick="openZoom('{{ product.display_image }}', '{{ product.display_image_dos }}')">
-        {% if product.display_image %}
-            <img src="{{ product.display_image }}" class="product-img img-front" alt="{{ product.titre }}">
-        {% endif %}
+        <div class="gallery-grid">
+            {% for produit in produits_sage %}
+            <div class="collection-item">
+                <div class="product-image-wrapper"
+                     onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
 
-        {% if product.display_image_dos %}
-            <img src="{{ product.display_image_dos }}" class="product-img img-back" alt="{{ product.titre }} - dos">
-        {% endif %}
-    </div>
+                    {% if produit.display_image %}
+                        <img src="{{ produit.display_image }}"
+                             class="product-img img-front"
+                             alt="{{ produit.titre }}">
+                    {% endif %}
 
-    <div class="product-info">
-        <h3>{{ product.titre }}</h3>
-        <p class="price">{{ product.prix }} FCFA</p>
-                <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par : {{ produit.titre }}"
-                   class="btn-wa" Commander via WhatsApp
-                </a>
+                    {% if produit.display_image_dos %}
+                        <img src="{{ produit.display_image_dos }}"
+                             class="product-img img-back"
+                             alt="{{ produit.titre }} - dos">
+                    {% endif %}
+                </div>
+
+                <div class="product-info">
+                    <h3>{{ produit.titre }}</h3>
+                    <p class="price">{{ produit.prix }} FCFA</p>
+                    <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'0000000000' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
+                       class="btn-order"
+                       target="_blank">
+                        COMMANDER VIA WHATSAPP
+                    </a>
+                </div>
             </div>
+            {% empty %}
+            <div class="empty-shop">
+                <p>Nos nouvelles collections arrivent bientôt...</p>
+            </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="empty-shop">
-            <p>Nos nouvelles collections arrivent bientôt...</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
+    </section>
 
-<script>
-    function openZoom(urlFront, urlBack) {
-        const lightbox = document.getElementById('lightbox');
-        const mainImg = document.getElementById('lightbox-img');
-        const thumbContainer = document.getElementById('zoom-thumbs');
+    <script>
+        function openZoom(urlFront, urlBack) {
+            const lightbox = document.getElementById('lightbox');
+            const mainImg = document.getElementById('lightbox-img');
+            const thumbContainer = document.getElementById('zoom-thumbs');
 
-        mainImg.src = urlFront;
-        thumbContainer.innerHTML = ''; // On nettoie
+            mainImg.src = urlFront;
+            thumbContainer.innerHTML = '';
 
-        // Si on a une image de dos, on crée les deux boutons miniatures
-        if (urlBack) {
-            const html = `
-                <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
-                <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
-            `;
-            thumbContainer.innerHTML = html;
+            if (urlBack && urlBack !== 'None' && urlBack !== 'null') {
+                thumbContainer.innerHTML = `
+                    <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
+                    <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
+                `;
+            }
+            lightbox.style.display = 'flex';
         }
 
-        lightbox.style.display = 'flex';
-    }
-
-    function changeZoomImg(url) {
-        document.getElementById('lightbox-img').src = url;
-    }
-
-    function closeZoom(e) {
-        // Ferme seulement si on clique sur le fond noir, pas sur les boutons
-        if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') {
-            document.getElementById('lightbox').style.display = 'none';
+        function changeZoomImg(url) {
+            document.getElementById('lightbox-img').src = url;
         }
-    }
-</script>
+
+        function closeZoom(e) {
+            if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') {
+                document.getElementById('lightbox').style.display = 'none';
+            }
+        }
+    </script>
 
 </body>
 </html>

@@ -3,11 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import ProfilStyliste, Creation, Immobilier, Event
-from .forms import InscriptionStylisteForm
-from .forms import CreationForm  # Assure-toi d'avoir créé ce formulaire
+from .forms import InscriptionStylisteForm, CreationForm
 
 
-# --- 1. PAGES PUBLIQUES ---
+# ===================== PAGES PUBLIQUES =====================
 
 def home(request):
     creations = Creation.objects.all().order_by('-id')[:6]
@@ -24,42 +23,30 @@ def page_evenementiel(request):
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
 
-# --- 2. UNIVERS MODE & MARKETPLACE ---
+# ===================== SAGE MODE & MARKETPLACE =====================
 
 def galerie_mode(request):
-    # On cherche le profil de l'admin sagemode
-    try:
-        profil_sage = ProfilStyliste.objects.get(user__username="sagemode_admin")
-        produits = Creation.objects.filter(styliste=profil_sage).order_by('-id')
-    except ProfilStyliste.DoesNotExist:
-        produits = []
-
-    return render(request, 'galerie_mode.html', {'produits_sage': produits})
+    """Sage Mode : affiche toutes les créations ou celles d'un compte dédié"""
+    creations = Creation.objects.all().order_by('-id')
+    return render(request, 'galerie_mode.html', {'produits_sage': creations})
 
 
 def liste_stylistes(request):
-    """Annuaire des créateurs (on exclut l'admin de Sage Mode)"""
     stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin")
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
 
 def portfolio_styliste(request, styliste_id):
-    """Affiche le portfolio d'un styliste spécifique"""
-    try:
-        styliste = ProfilStyliste.objects.get(id=styliste_id)
-        creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-    except ProfilStyliste.DoesNotExist:
-        styliste = {"nom_marque": "Sage Empire", "biographie": "Bientôt disponible"}
-        creations = []
+    styliste = get_object_or_404(ProfilStyliste, id=styliste_id)
+    creations = Creation.objects.filter(styliste=styliste).order_by('-id')
 
-    # J'ai enlevé 'hub/' devant car Django cherche déjà dans tes dossiers templates
     return render(request, 'portfolio_styliste.html', {
         'styliste': styliste,
         'creations': creations
     })
 
 
-# --- 3. GESTION DES CRÉATEURS ---
+# ===================== GESTION CRÉATEURS =====================
 
 def inscription_styliste(request):
     if request.method == 'POST':
@@ -80,25 +67,21 @@ def inscription_styliste(request):
 
 @login_required
 def dashboard_styliste(request):
-    styliste, created = ProfilStyliste.objects.get_or_create(user=request.user)
+    styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        titre = request.POST.get('titre')
-        prix = request.POST.get('prix')
-        description = request.POST.get('description')
-        image_url = request.POST.get('image_url')
-        public_id = request.POST.get('public_id')
+        form = CreationForm(request.POST)
+        if form.is_valid():
+            creation = form.save(commit=False)
+            creation.styliste = styliste
+            creation.image_url = request.POST.get('image_url')
+            creation.public_id = request.POST.get('public_id')
 
-        if titre and prix and image_url:
-            Creation.objects.create(
-                styliste=styliste,
-                titre=titre,
-                prix=prix,
-                description=description,
-                image_url=image_url,
-                public_id=public_id or "",
-                disponible=True
-            )
+            # Gestion de l'image dos
+            if request.POST.get('public_id_dos'):
+                creation.public_id = f"{creation.public_id or ''},{request.POST.get('public_id_dos')}".strip(',')
+
+            creation.save()
             return redirect('dashboard_styliste')
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
@@ -117,73 +100,25 @@ def supprimer_creation(request, creation_id):
     return redirect('dashboard_styliste')
 
 
-# --- 4. CONNEXION & DIVERS ---
+# ===================== AUTH & DIVERS =====================
 
 def login_view(request):
-    # NETTOYAGE RADICAL
-    User.objects.filter(username='sageempire_admin').delete()
-
-    # CRÉATION PROPRE
-    u = User.objects.create_superuser('sageempire_admin', 'admin@test.com', 'Empire2026')
-    u.is_staff = True
-    u.is_superuser = True
-    u.save()
-    # -----------------------------------------------------------
-
-    # 2. Création automatique de sagemode_admin s'il n'existe pas
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
 
     if request.method == 'POST':
-        u = request.POST.get('username')
-        p = request.POST.get('password')
-        user = authenticate(request, username=u, password=p)
-
-        if user is not None:
+        user = authenticate(
+            request,
+            username=request.POST.get('username'),
+            password=request.POST.get('password')
+        )
+        if user:
             login(request, user)
             return redirect('dashboard_styliste')
-        else:
-            return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
+        return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
 
     return render(request, 'registration/login.html')
 
 
 def sage_digital(request):
     return render(request, 'sage_digital.html')
-
-
-@login_required
-def ajouter_creation(request):
-    try:
-        profil = request.user.profil
-    except ProfilStyliste.DoesNotExist:
-        return render(request, 'ajouter_creation.html', {
-            'error': "Vous devez d'abord compléter votre profil styliste."
-        })
-
-    if request.method == 'POST':
-        form = CreationForm(request.POST)
-
-        if form.is_valid():
-            creation = form.save(commit=False)
-            creation.styliste = profil
-            creation.public_id = request.POST.get('public_id')
-            creation.image_url = request.POST.get('image_url')
-            creation.image_dos = None  # On gère l'image dos manuellement
-
-            # Gestion de l'image dos (optionnelle)
-            if request.POST.get('public_id_dos'):
-                creation.public_id = f"{creation.public_id},{request.POST.get('public_id_dos')}" if creation.public_id else request.POST.get(
-                    'public_id_dos')
-                # Note: Pour image_dos, on peut créer un champ supplémentaire plus tard si besoin
-
-            creation.save()
-            return redirect('dashboard_styliste')  # ou 'portfolio_styliste'
-
-    else:
-        form = CreationForm()
-
-    return render(request, 'ajouter_creation.html', {
-        'form': form,
-        'profil': profil
-    })
