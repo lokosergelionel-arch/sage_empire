@@ -211,29 +211,29 @@
     <div class="portfolio-grid">
         {% for produit in creations %}
         <div class="product-card">
-            <div class="product-image-wrapper"
-                 onclick="openZoom('{{ produit.image_url|default:produit.image.url }}',
-                 {% if produit.image_dos and produit.image_dos.url %}'{{ produit.image_dos.url }}'{% else %}null{% endif %})">
+    <div class="product-image-wrapper"
+         onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
 
-                <img src="{{ produit.image_url|default:produit.image.url }}"
-                     class="img-front"
-                     alt="{{ produit.titre }}">
+        {% if produit.display_image %}
+            <img src="{{ produit.display_image }}"
+                 class="img-front"
+                 alt="{{ produit.titre }}">
+        {% endif %}
 
-                {% if produit.image_dos and produit.image_dos.url %}
-                    <img src="{{ produit.image_dos.url }}"
-                         class="img-back"
-                         alt="{{ produit.titre }} - dos">
-                {% endif %}
-            </div>
+        {% if produit.display_image_dos %}
+            <img src="{{ produit.display_image_dos }}"
+                 class="img-back"
+                 alt="{{ produit.titre }} - dos">
+        {% endif %}
+    </div>
 
-            <div class="product-details">
-                <h3>{{ produit.titre }}</h3>
-                <p class="price">{{ produit.prix }} FCFA</p>
-                <p class="desc">{{ produit.description|truncatewords:12 }}</p>
-                <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par : {{ produit.titre }}"
-                   class="btn-wa"
-                   target="_blank">
-                    COMMANDER VIA WHATSAPP
+    <div class="product-details">
+        <h3>{{ produit.titre }}</h3>
+        <p class="price">{{ produit.prix }} FCFA</p>
+        <p class="desc">{{ produit.description|truncatewords:12 }}</p>
+        <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre }}"
+           class="btn-wa" target="_blank">
+            COMMANDER VIA WHATSAPP
                 </a>
             </div>
         </div>

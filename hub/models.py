@@ -38,6 +38,22 @@ class Creation(models.Model):
         verbose_name_plural = "Créations"
         ordering = ['-date_post']
 
+    @property
+    def display_image(self):
+        """Retourne l'URL de l'image principale (Cloudinary ou ancien système)"""
+        if self.image_url:
+            return self.image_url
+        if self.image:
+            return self.image.url
+        return None
+
+    @property
+    def display_image_dos(self):
+        """Retourne l'URL de l'image dos si elle existe"""
+        if self.image_dos and self.image_dos.url:
+            return self.image_dos.url
+        return None
+
     def __str__(self):
         return f"{self.titre} - {self.styliste.nom_marque}"
 
