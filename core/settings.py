@@ -91,7 +91,7 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # On change l'URL pour pointer vers le Cloud
-MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
+MEDIA_URL = '/media/'
 
 # Sécurité : On s'assure que MEDIA_ROOT n'existe pas dans tout le fichier
 if 'MEDIA_ROOT' in locals():
