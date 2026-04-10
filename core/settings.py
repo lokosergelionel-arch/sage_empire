@@ -1,30 +1,33 @@
 import os
 from pathlib import Path
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
-# 1. BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- SÉCURITÉ ---
+# ====================== SÉCURITÉ ======================
 SECRET_KEY = "django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_"
 DEBUG = True
 ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 
-# --- APPLICATIONS ---
+# ====================== APPLICATIONS ======================
 INSTALLED_APPS = [
-    "cloudinary_storage",  # OBLIGATOIRE EN PREMIER
-    "django.contrib.staticfiles",
-    "cloudinary",
-    "hub",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.staticfiles",
+
+    "cloudinary_storage",
+    "cloudinary",
+    "hub",
 ]
 
-# --- MIDDLEWARE ---
+# ====================== MIDDLEWARE ======================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -37,6 +40,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "core.urls"
+WSGI_APPLICATION = "core.wsgi.application"
 
 TEMPLATES = [
     {
@@ -53,57 +57,52 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
+# ====================== BASE DE DONNÉES ======================
+if os.environ.get('DATABASE_URL'):
+    # En production (sur Render)
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    # En local : on force SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-# --- BASE DE DONNÉES ---
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
-        ssl_require=True if os.environ.get('DATABASE_URL') else False
-    )
+# ====================== STATIC & MEDIA ======================
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_URL = "https://res.cloudinary.com/"
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'SECURE': True,
 }
 
-# --- INTERNATIONALISATION ---
+# ====================== AUTRES ======================
 LANGUAGE_CODE = "fr-fr"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# --- FICHIERS STATIQUES ---
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-# --- FORCE ABSOLUE CLOUDINARY ---
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-# On définit les réglages Cloudinary
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
-}
-
-# LA LIGNE MAGIQUE : On force le backend de stockage directement
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# On change l'URL pour pointer vers le Cloud
-MEDIA_URL = '/media/'
-
-# Sécurité : On s'assure que MEDIA_ROOT n'existe pas dans tout le fichier
-if 'MEDIA_ROOT' in locals():
-    del MEDIA_ROOT
-# --- ATTENTION : AUCUNE LIGNE MEDIA_ROOT ICI ---
-
-# --- REDIRECTIONS & AUTOFIELD ---
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- CONFIGURATION EMAIL ---
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

@@ -154,22 +154,36 @@ def sage_digital(request):
 
 @login_required
 def ajouter_creation(request):
-    # 1. On récupère le profil styliste de l'utilisateur connecté
     try:
-        profil = request.user.profilstyliste
+        profil = request.user.profil
     except ProfilStyliste.DoesNotExist:
-        # Si sagemode_admin n'a pas de profil styliste, on le redirige ou on affiche une erreur
-        return render(request, 'hub/erreur.html', {'message': "Vous devez avoir un profil styliste pour poster."})
+        return render(request, 'ajouter_creation.html', {
+            'error': "Vous devez d'abord compléter votre profil styliste."
+        })
 
     if request.method == 'POST':
-        # 2. On passe les fichiers (FILES) pour Cloudinary
-        form = CreationForm(request.POST, request.FILES)
+        form = CreationForm(request.POST)
+
         if form.is_valid():
             creation = form.save(commit=False)
-            creation.styliste = profil  # On lie la création au profil
-            creation.save()  # L'image part chez Cloudinary ici !
-            return redirect('ma_galerie')  # Change par le nom de ta page de succès
+            creation.styliste = profil
+            creation.public_id = request.POST.get('public_id')
+            creation.image_url = request.POST.get('image_url')
+            creation.image_dos = None  # On gère l'image dos manuellement
+
+            # Gestion de l'image dos (optionnelle)
+            if request.POST.get('public_id_dos'):
+                creation.public_id = f"{creation.public_id},{request.POST.get('public_id_dos')}" if creation.public_id else request.POST.get(
+                    'public_id_dos')
+                # Note: Pour image_dos, on peut créer un champ supplémentaire plus tard si besoin
+
+            creation.save()
+            return redirect('dashboard_styliste')  # ou 'portfolio_styliste'
+
     else:
         form = CreationForm()
 
-    return render(request, 'hub/ajouter_creation.html', {'form': form})
+    return render(request, 'ajouter_creation.html', {
+        'form': form,
+        'profil': profil
+    })

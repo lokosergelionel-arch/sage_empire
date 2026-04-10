@@ -1,19 +1,70 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container">
-    <h2>Ajouter une nouvelle création au Sage Empire</h2>
-    
-    <form method="POST" enctype="multipart/form-data">
+
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Ajouter une Nouvelle Création</h2>
+
+    <form method="POST" id="creationForm">
         {% csrf_token %}
-        
-        <div class="form-group">
-            {{ form.as_p }}
+        {{ form.as_div }}
+
+        <!-- Widget Cloudinary - Photo Principale -->
+        <div class="mb-4">
+            <label class="form-label fw-bold">Photo Principale (Face)</label>
+            <div id="upload_widget_front" class="border border-2 border-dashed p-4 text-center" style="cursor: pointer; border-radius: 12px;">
+                <p>Cliquez ou glissez la photo principale ici</p>
+            </div>
+            <input type="hidden" name="public_id" id="public_id">
+            <input type="hidden" name="image_url" id="image_url">
         </div>
-        
-        <button type="submit" class="btn btn-success">
-            Publier sur le site
-        </button>
+
+        <!-- Widget Cloudinary - Photo Dos -->
+        <div class="mb-4">
+            <label class="form-label fw-bold">Photo Dos (Optionnel)</label>
+            <div id="upload_widget_back" class="border border-2 border-dashed p-4 text-center" style="cursor: pointer; border-radius: 12px;">
+                <p>Cliquez ou glissez la photo du dos ici</p>
+            </div>
+            <input type="hidden" name="public_id_dos" id="public_id_dos">
+        </div>
+
+        <button type="submit" class="btn btn-success btn-lg w-100">Publier la Création</button>
     </form>
 </div>
+
+<!-- Cloudinary Widget Script -->
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+<script>
+    let widgetFront = cloudinary.createUploadWidget({
+        cloudName: 'dgqjazpwu',        // ← À REMPLACER
+        uploadPreset: 'sage_empire_preset', // ← À créer dans Cloudinary
+        sources: ['local', 'camera'],
+        cropping: true,
+        multiple: false,
+        folder: 'creations'
+    }, function(error, result) {
+        if (!error && result && result.event === "success") {
+            document.getElementById('public_id').value = result.info.public_id;
+            document.getElementById('image_url').value = result.info.secure_url;
+            document.getElementById('upload_widget_front').innerHTML = `<p style="color:green">✓ Photo principale chargée</p>`;
+        }
+    });
+
+    let widgetBack = cloudinary.createUploadWidget({
+        cloudName: 'dgqjazpwu',        // ← À REMPLACER
+        uploadPreset: 'sage_empire_preset',
+        sources: ['local', 'camera'],
+        cropping: true,
+        multiple: false,
+        folder: 'creations'
+    }, function(error, result) {
+        if (!error && result && result.event === "success") {
+            document.getElementById('public_id_dos').value = result.info.public_id;
+            document.getElementById('upload_widget_back').innerHTML = `<p style="color:green">✓ Photo dos chargée</p>`;
+        }
+    });
+
+    document.getElementById('upload_widget_front').addEventListener('click', () => widgetFront.open());
+    document.getElementById('upload_widget_back').addEventListener('click', () => widgetBack.open());
+</script>
+
 {% endblock %}
