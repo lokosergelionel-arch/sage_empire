@@ -22,12 +22,11 @@ class Creation(models.Model):
     styliste = models.ForeignKey(ProfilStyliste, on_delete=models.CASCADE, related_name='creations')
     titre = models.CharField(max_length=200)
 
-    # Champs Cloudinary
     image = models.ImageField(upload_to='creations/', null=True, blank=True)
     image_dos = models.ImageField(upload_to='creations/', null=True, blank=True)
     public_id = models.CharField(max_length=255, blank=True)
     image_url = models.URLField(max_length=500, blank=True)
-    image_dos_url = models.URLField(max_length=500, blank=True)  # ← NOUVEAU
+    image_dos_url = models.URLField(max_length=500, blank=True, null=True)  # ← Corrigé
 
     description = models.TextField(blank=True)
     prix = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -67,7 +66,6 @@ class Creation(models.Model):
         super().delete(*args, **kwargs)
 
 
-# Anciens modèles conservés
 class Immobilier(models.Model):
     CHOIX = [('terrain', 'Terrain'), ('appartement', 'Appartement')]
     type_bien = models.CharField(max_length=20, choices=CHOIX)
