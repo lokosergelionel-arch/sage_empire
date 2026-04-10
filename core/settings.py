@@ -76,21 +76,26 @@ STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --- CLOUDINARY (LÀ OÙ TOUT SE JOUE) ---
+
+# --- FORCE ABSOLUE CLOUDINARY ---
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# ON FORCE LE STOCKAGE EXTERNE
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
+# On définit les réglages Cloudinary
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
 
-# L'URL devient un simple préfixe, Cloudinary gérera le reste
-MEDIA_URL = '/media/'
+# LA LIGNE MAGIQUE : On force le backend de stockage directement
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# On change l'URL pour pointer vers le Cloud
+MEDIA_URL = 'https://res.cloudinary.com/dgqjazpwu/'
+
+# Sécurité : On s'assure que MEDIA_ROOT n'existe pas dans tout le fichier
+if 'MEDIA_ROOT' in locals():
+    del MEDIA_ROOT
 # --- ATTENTION : AUCUNE LIGNE MEDIA_ROOT ICI ---
 
 # --- REDIRECTIONS & AUTOFIELD ---
