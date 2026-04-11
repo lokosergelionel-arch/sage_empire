@@ -88,3 +88,6 @@ def inscription_styliste(request):
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
+
+def sage_digital(request):
+    return render(request, 'sage_digital.html')
