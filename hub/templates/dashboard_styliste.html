@@ -22,7 +22,6 @@
             color: var(--charcoal);
         }
 
-        /* Sidebar */
         .sidebar {
             width: 260px;
             background: var(--charcoal);
@@ -50,10 +49,8 @@
             text-transform: uppercase;
             transition: 0.3s;
         }
-        .nav-link:hover, .nav-link.active {
-            color: var(--gold);
-            padding-left: 8px;
-        }
+        .nav-link:hover, .nav-link.active { color: var(--gold); padding-left: 8px; }
+
         .logout-btn {
             background: none;
             border: none;
@@ -66,7 +63,6 @@
             margin-top: 50px;
         }
 
-        /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 60px 5%;
@@ -186,11 +182,6 @@
             color: var(--gold);
             font-weight: bold;
         }
-
-        @media (max-width: 1100px) {
-            .dash-grid { grid-template-columns: 1fr; }
-            .main-content { margin-left: 0; width: 100%; padding: 20px; }
-        }
     </style>
 </head>
 <body>
@@ -227,7 +218,6 @@
         </div>
 
         <div class="dash-grid">
-            <!-- Widget Luxe Cloudinary -->
             <div class="card-form">
                 <h3>Ajouter une Nouvelle Création</h3>
                 <form method="POST" id="creationForm">
@@ -248,6 +238,7 @@
                         <textarea name="description" rows="4" placeholder="Détails sur le tissu, la coupe, l'inspiration..."></textarea>
                     </div>
 
+                    <!-- Image Principale -->
                     <div class="form-group">
                         <label>Image Principale (Devant)</label>
                         <div id="upload_widget_front" class="upload-zone">
@@ -257,28 +248,27 @@
                         <input type="hidden" name="image_url" id="image_url">
                     </div>
 
+                    <!-- Image Dos -->
                     <div class="form-group">
                         <label>Image Dos (Optionnel)</label>
                         <div id="upload_widget_back" class="upload-zone">
                             <p>Cliquez ou glissez la photo du dos ici</p>
                         </div>
                         <input type="hidden" name="public_id_dos" id="public_id_dos">
+                        <input type="hidden" name="image_dos_url" id="image_dos_url">   <!-- ← AJOUTÉ -->
                     </div>
 
                     <button type="submit" class="btn-gold">PUBLIER LA CRÉATION</button>
                 </form>
             </div>
 
-            <!-- Mes publications -->
             <div class="card-list">
                 <h3>Mes publications récentes</h3>
                 {% for creation in creations %}
                 <div class="creation-item">
                     <div style="display: flex; align-items: center; gap: 20px;">
-                        {% if creation.image_url %}
-                            <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
-                        {% elif creation.image %}
-                            <img src="{{ creation.image.url }}" alt="{{ creation.titre }}">
+                        {% if creation.display_image %}
+                            <img src="{{ creation.display_image }}" alt="{{ creation.titre }}">
                         {% endif %}
                         <div class="creation-info">
                             <h4>{{ creation.titre }}</h4>
@@ -297,7 +287,6 @@
         </div>
     </div>
 
-    <!-- Cloudinary Upload Widget -->
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
     <script>
         const cloudName = 'dgqjazpwu';
@@ -323,6 +312,7 @@
         }, (error, result) => {
             if (result && result.event === "success") {
                 document.getElementById('public_id_dos').value = result.info.public_id;
+                document.getElementById('image_dos_url').value = result.info.secure_url;   <!-- ← AJOUTÉ -->
                 document.getElementById('upload_widget_back').innerHTML = `<p style="color:#B5935E;">✓ Image dos chargée</p>`;
             }
         });
