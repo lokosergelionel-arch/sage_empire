@@ -140,14 +140,17 @@
             gap: 12px;
         }
         .thumb-zoom {
-            width: 55px;
-            height: 75px;
+            width: 60px;
+            height: 80px;
             object-fit: cover;
             cursor: pointer;
             border: 2px solid #fff;
             opacity: 0.8;
         }
-        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
+        .thumb-zoom:hover {
+            opacity: 1;
+            border-color: var(--gold);
+        }
 
         .empty-shop {
             grid-column: 1 / -1;
@@ -193,8 +196,7 @@
                     <h3>{{ produit.titre }}</h3>
                     <p class="price">{{ produit.prix }} FCFA</p>
                     <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
-                       class="btn-order"
-                       target="_blank">
+                       class="btn-order" target="_blank">
                         COMMANDER VIA WHATSAPP
                     </a>
                 </div>
@@ -216,12 +218,14 @@
             mainImg.src = urlFront;
             thumbContainer.innerHTML = '';
 
+            // Toujours afficher au moins l'image principale
+            let thumbsHTML = `<img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">`;
+
             if (urlBack && urlBack !== 'None' && urlBack !== 'null') {
-                thumbContainer.innerHTML = `
-                    <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
-                    <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
-                `;
+                thumbsHTML += `<img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">`;
             }
+
+            thumbContainer.innerHTML = thumbsHTML;
             lightbox.style.display = 'flex';
         }
 
