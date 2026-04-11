@@ -15,6 +15,7 @@ CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 
 # ====================== APPLICATIONS ======================
 INSTALLED_APPS = [
+    "cloudinary_storage",  # MODIFICATION : Placé en premier pour intercepter les médias
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -22,7 +23,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "cloudinary_storage",
     "cloudinary",
     "hub",
 ]
@@ -81,7 +81,8 @@ STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = "https://res.cloudinary.com/"
+# MODIFICATION : URL standard pour que Cloudinary gère les liens
+MEDIA_URL = '/media/'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
