@@ -20,7 +20,7 @@ class Creation(models.Model):
     styliste = models.ForeignKey(ProfilStyliste, on_delete=models.CASCADE, related_name='creations')
     titre = models.CharField(max_length=200)
 
-    # On utilise CloudinaryField directement, plus besoin de image_url ou public_id manuels
+    # Utilisation correcte du champ Cloudinary
     image = CloudinaryField('creations', null=True, blank=True)
     image_dos = CloudinaryField('creations_dos', null=True, blank=True)
 
@@ -49,10 +49,17 @@ class Creation(models.Model):
     def __str__(self):
         return f"{self.titre} - {self.styliste.nom_marque}"
 
+    # CORRECTION DE LA SUPPRESSION
     def delete(self, *args, **kwargs):
-        if self.public_id:
+        # Avec CloudinaryField, l'ID public est stocké directement dans le champ image
+        if self.image:
             try:
-                cloudinary.uploader.destroy(self.public_id)
+                cloudinary.uploader.destroy(self.image.public_id)
+            except:
+                pass
+        if self.image_dos:
+            try:
+                cloudinary.uploader.destroy(self.image_dos.public_id)
             except:
                 pass
         super().delete(*args, **kwargs)
