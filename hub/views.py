@@ -7,7 +7,6 @@ from .forms import InscriptionStylisteForm, CreationForm
 
 
 # ===================== PAGES PUBLIQUES =====================
-
 def home(request):
     creations = Creation.objects.all().order_by('-id')[:6]
     return render(request, 'index.html', {'creations': creations})
@@ -24,9 +23,7 @@ def page_evenementiel(request):
 
 
 # ===================== SAGE MODE (OFFICIEL SEULEMENT) =====================
-
 def galerie_mode(request):
-    """Sage Mode = uniquement les créations officielles"""
     try:
         profil_sage = ProfilStyliste.objects.get(user__username="sagemode_admin")
         produits = Creation.objects.filter(styliste=profil_sage).order_by('-id')
@@ -51,7 +48,6 @@ def portfolio_styliste(request, styliste_id):
 
 
 # ===================== INSCRIPTION =====================
-
 def inscription_styliste(request):
     if request.method == 'POST':
         form = InscriptionStylisteForm(request.POST, request.FILES)
@@ -69,8 +65,7 @@ def inscription_styliste(request):
     return render(request, 'inscription.html', {'form': form})
 
 
-# ===================== DASHBOARD STYLISTE =====================
-
+# ===================== DASHBOARD STYLISTE (CORRIGÉ) =====================
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
@@ -81,7 +76,7 @@ def dashboard_styliste(request):
             creation = form.save(commit=False)
             creation.styliste = styliste
             creation.image_url = request.POST.get('image_url')
-            creation.image_dos_url = request.POST.get('image_dos_url')
+            creation.image_dos_url = request.POST.get('image_dos_url')  # ← Important
             creation.public_id = request.POST.get('public_id') or ""
 
             if request.POST.get('public_id_dos'):
@@ -110,13 +105,16 @@ def supprimer_creation(request, creation_id):
 
 
 # ===================== AUTH =====================
-
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
 
     if request.method == 'POST':
-        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
+        user = authenticate(
+            request,
+            username=request.POST.get('username'),
+            password=request.POST.get('password')
+        )
         if user:
             login(request, user)
             return redirect('dashboard_styliste')
