@@ -34,7 +34,8 @@
     /* --- GRILLE PC --- */
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        /* On force 3 colonnes sur PC pour aligner les créateurs */
+        grid-template-columns: repeat(3, 1fr);
         gap: 25px;
         padding: 40px 5% 80px;
         max-width: 1400px;
@@ -44,10 +45,10 @@
     .card { background: white; border: 1px solid var(--border); overflow: hidden; transition: all 0.4s ease; position: relative; }
     .card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 15px 35px rgba(181, 147, 94, 0.15); }
 
-    /* CORRECTION IMAGE PC (Finit l'effet étiré) */
+    /* CORRECTION IMAGE PC (Hauteur augmentée pour éviter l'effet écrasé) */
     .profil-img-container {
         width: 100%;
-        height: 400px;
+        height: 480px; /* Plus de hauteur pour que l'image respire sur PC */
         overflow: hidden;
         background: #f8f8f8;
         display: flex;
@@ -58,7 +59,7 @@
     .profil-img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Garde les proportions sans déformer */
+        object-fit: cover; /* Cadrage parfait sans déformation */
         transition: transform 0.5s ease;
     }
 
@@ -72,7 +73,7 @@
     }
     .btn-enter:hover { background: var(--gold); }
 
-    /* --- CORRECTION MOBILE (3 COLONNES) --- */
+    /* --- CORRECTION MOBILE (On ne touche à rien ici comme demandé) --- */
     @media (max-width: 600px) {
         header { padding: 40px 5% 20px; }
         header h1 { font-size: 1.2rem; }
@@ -87,7 +88,7 @@
 
         .card-content { padding: 10px 5px !important; }
         .card h3 { font-size: 0.55rem !important; letter-spacing: 0; }
-        .card p { display: none; } /* Cache la bio sur mobile pour la grille de 3 */
+        .card p { display: none; }
 
         .btn-enter { font-size: 0.45rem !important; padding: 8px 2px !important; margin-top: 5px; }
     }
