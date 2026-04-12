@@ -1,5 +1,6 @@
 from django import forms
 from .models import ProfilStyliste, Creation
+from .models import Styliste
 
 
 class InscriptionStylisteForm(forms.ModelForm):
