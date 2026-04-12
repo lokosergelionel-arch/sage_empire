@@ -40,43 +40,26 @@
             margin-bottom: 30px;
         }
 
-        .current-avatar-wrapper {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Le conteneur circulaire optimisé */
+        .profile-image-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white; /* Fond blanc pour les logos transparents */
+            margin: 0 auto 30px;
         }
 
-        .profile-header img { /* Remplace par le bon sélecteur si nécessaire */
-             width: 150px; /* Ou la taille de ton cercle */
-             height: 150px;
-             border-radius: 50%; /* Crée le cercle */
-             border: 2px solid var(--gold);
-             object-fit: contain; /* <--- AJOUTE CETTE LIGNE CRUCIALE */
-             background-color: white; /* <--- AJOUTE UN FOND BLANC POUR UN LOGO TRANSPARENT */
-             padding: 10px; /* <--- AJOUTE UN PETIT ESPACE POUR RESPIRER */
+        /* L'image à l'intérieur : ne sera jamais écrasée */
+        .profile-image-container img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain; /* Garde les proportions du rectangle dans le cercle */
         }
-
-        /* Le conteneur circulaire */
-.profile-image-container {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%; /* Garde la forme circulaire */
-    border: 2px solid #D4AF37; /* Ton doré */
-    overflow: hidden; /* Coupe ce qui dépasse du cercle */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white; /* Fond blanc pour que le logo ressorte */
-    margin: 0 auto 20px;
-}
-
-/* L'image à l'intérieur */
-.profile-image-container img {
-    width: 100%;
-    height: 100%;
-    /* C'est ICI que la magie opère */
-    object-fit: contain;
-    padding: 10px; /* Donne de l'espace au logo pour ne pas toucher les bords */
-}
 
         form p { margin-bottom: 20px; }
 
@@ -90,13 +73,25 @@
             margin-bottom: 8px;
         }
 
-        input, textarea {
+        /* Style des champs pour rester dans l'esprit luxe */
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        textarea,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border);
             background: var(--ivory);
             box-sizing: border-box;
             font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Style spécifique pour le bouton de fichier */
+        input[type="file"] {
+            background: white;
+            cursor: pointer;
         }
 
         .btn-save {
@@ -110,6 +105,8 @@
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
         }
 
         .btn-save:hover { background: var(--gold); }
@@ -121,9 +118,19 @@
             text-decoration: none;
             color: #888;
             font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Responsive Mobile */
+        /* Erreurs de formulaire */
+        .errorlist {
+            color: #b22222;
+            list-style: none;
+            padding: 0;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
         @media (max-width: 600px) {
             .edit-container { padding: 25px 20px; }
             h2 { font-size: 1.2rem; }
@@ -135,13 +142,13 @@
 <div class="edit-container">
     <h2>Édition du Profil</h2>
 
-    <<div class="profile-image-container">
-    {% if styliste.photo_profil %}
-        <img src="{{ styliste.photo_profil.url }}" alt="Logo {{ styliste.nom_marque }}">
-    {% else %}
-        <img src="/static/images/default-avatar.png" alt="Photo par défaut">
-    {% endif %}
-</div>
+    <div class="profile-image-container">
+        {% if styliste.photo_profil %}
+            <img src="{{ styliste.photo_profil.url }}" alt="Logo {{ styliste.nom_marque }}">
+        {% else %}
+            <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" alt="Profil">
+        {% endif %}
+    </div>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -150,8 +157,11 @@
             <p>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
                 {% if field.help_text %}
-                    <small style="color: #999;">{{ field.help_text }}</small>
+                    <small style="color: #999; display: block; mt-1;">{{ field.help_text }}</small>
                 {% endif %}
             </p>
         {% endfor %}
@@ -159,7 +169,7 @@
         <button type="submit" class="btn-save">Mettre à jour mon profil</button>
     </form>
 
-    <a href="javascript:history.back()" class="back-link">← ANNULER ET RETOURNER</a>
+    <a href="{% url 'dashboard_styliste' %}" class="back-link">← ANNULER ET RETOURNER</a>
 </div>
 
 </body>
