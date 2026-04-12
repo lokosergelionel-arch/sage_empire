@@ -16,88 +16,79 @@
 
         body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: var(--dark); }
 
-        /* --- LAYOUT GLOBAL --- */
+        /* --- STRUCTURE PC (STRICTE) --- */
         .dashboard-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
+            display: flex;
             min-height: 100vh;
         }
 
-        /* --- SIDEBAR (PC) --- */
         .sidebar {
+            width: 280px;
             background: var(--dark);
             color: white;
             padding: 40px 20px;
-            position: sticky;
-            top: 0;
-            height: 100vh;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar h2 { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-
-        .nav-links { list-style: none; padding: 0; }
-        .nav-links li { margin-bottom: 20px; }
-        .nav-links a { color: #999; text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-
-        /* --- MAIN CONTENT --- */
-        .main-content { padding: 40px 5%; }
-        .welcome-header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; }
-        .welcome-header h1 { font-family: 'Cinzel', serif; font-size: 1.8rem; margin: 0; }
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            background: var(--light);
+        }
 
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 350px;
-            gap: 40px;
+            gap: 30px;
         }
 
-        /* --- FORMULAIRE --- */
-        .card { background: white; padding: 30px; border: 1px solid var(--border); }
-        .card h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; margin-top: 0; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        /* --- ÉLÉMENTS SIDEBAR --- */
+        .sidebar h2 { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 40px; }
+        .nav-links { list-style: none; padding: 0; margin: 0; }
+        .nav-links li { margin-bottom: 20px; }
+        .nav-links a { color: #999; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #666; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); background: var(--light); font-family: inherit; }
+        /* --- CARDS & FORM --- */
+        .card { background: white; padding: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .card h2 { font-family: 'Cinzel', serif; font-size: 1rem; margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
 
-        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .upload-box { border: 2px dashed var(--border); padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .upload-box:hover { border-color: var(--gold); background: #fffcf5; }
-        .upload-box span { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 5px; color: #666; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); background: #fcfcfc; }
 
-        .btn-submit { background: var(--dark); color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-family: 'Cinzel', serif; letter-spacing: 2px; transition: 0.3s; margin-top: 20px; }
-        .btn-submit:hover { background: var(--gold); }
+        .pub-item { display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .pub-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
 
-        /* --- LISTE PUBLICATIONS --- */
-        .pub-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .pub-img { width: 60px; height: 60px; object-fit: cover; }
-        .pub-info h4 { margin: 0; font-size: 0.9rem; text-transform: uppercase; }
-        .pub-info p { margin: 5px 0 0; font-size: 0.8rem; color: var(--gold); font-weight: bold; }
+        .btn-submit { background: var(--dark); color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-family: 'Cinzel', serif; margin-top: 10px; }
 
-        /* --- RESPONSIVE MOBILE (CORRECTION RADICALE) --- */
+        /* --- AJUSTEMENTS MOBILE (UNIQUEMENT ICI) --- */
         @media (max-width: 900px) {
-    /* ... tes autres règles ... */
-    .nav-links li a {
-        padding: 10px;
-        display: inline-block;
-        min-width: 100px; /* Plus facile à cliquer avec le doigt */
-    }
-}
-            .dashboard-container { grid-template-columns: 1fr; }
+            .dashboard-container { flex-direction: column; }
 
-            /* On transforme la sidebar en menu horizontal */
             .sidebar {
+                width: 100%;
                 height: auto;
-                position: relative;
                 padding: 20px;
                 text-align: center;
             }
-            .sidebar h2 { margin-bottom: 20px; }
-            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
             .nav-links li { margin-bottom: 0; }
 
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .welcome-header { flex-direction: column; text-align: center; gap: 20px; }
-            .upload-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 20px; }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+            }
         }
     </style>
 </head>
@@ -107,83 +98,65 @@
         <aside class="sidebar">
             <h2>SAGE EMPIRE</h2>
             <ul class="nav-links">
-    <li><a href="#" class="active">Tableau de bord</a></li>
-    <li><a href="{% url 'portfolio_styliste' styliste.id %}">Paramètres</a></li>
-    <li><a href="{% url 'portfolio_styliste' styliste.id %}" target="_blank">Voir mon Portfolio</a></li>
-    <li><a href="{% url 'home' %}">Retour au Hub</a></li>
-    <li>
-    <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
-        {% csrf_token %}
-    </form>
-    <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" style="color: #ff4444; font-weight: bold;">
-        DÉCONNEXION
-    </a>
-</li>
-</ul>
+                <li><a href="#" class="active">Tableau de bord</a></li>
+                <li><a href="{% url 'portfolio_styliste' styliste.id %}">Paramètres</a></li>
+                <li><a href="{% url 'portfolio_styliste' styliste.id %}" target="_blank">Mon Portfolio</a></li>
+                <li><a href="{% url 'home' %}">Retour au Hub</a></li>
+                <li>
+                    <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" style="color: #ff4444;">DÉCONNEXION</a>
+                </li>
+            </ul>
         </aside>
 
         <main class="main-content">
-            <header class="welcome-header">
-                <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
-                <a href="{% url 'portfolio_styliste' styliste.id %}" style="text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-size: 0.8rem;">MODIFIER PROFIL</a>
-            </header>
+            <h1 style="font-family: 'Cinzel', serif;">Bienvenue, {{ styliste.nom_marque }}</h1>
 
             <div class="dashboard-grid">
-                <section class="card">
+                <div class="card">
                     <h2>Ajouter une création</h2>
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label>Nom de la création</label>
-                            <input type="text" name="titre" placeholder="Ex: Kimono Impérial" required>
+                            <label>Nom</label>
+                            <input type="text" name="titre" required>
                         </div>
                         <div class="form-group">
                             <label>Prix (FCFA)</label>
-                            <input type="number" name="prix" placeholder="15000" required>
+                            <input type="number" name="prix" required>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea name="biographie" rows="3" placeholder="Détails sur le tissu, la coupe..."></textarea>
+                            <textarea name="biographie" rows="2"></textarea>
                         </div>
-
-                        <div class="upload-grid">
-                            <div class="upload-box" onclick="document.getElementById('img_face').click()">
-                                <span>Image Face (Requis)</span>
-                                <input type="file" id="img_face" name="display_image" style="display:none;" required>
-                            </div>
-                            <div class="upload-box" onclick="document.getElementById('img_dos').click()">
-                                <span>Image Dos (Optionnel)</span>
-                                <input type="file" id="img_dos" name="display_image_dos" style="display:none;">
-                            </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <input type="file" name="display_image" required>
+                            <input type="file" name="display_image_dos">
                         </div>
-
-                        <button type="submit" class="btn-submit">PUBLIER LA CRÉATION</button>
+                        <button type="submit" class="btn-submit">PUBLIER</button>
                     </form>
-                </section>
+                </div>
 
-                <section class="card">
+                <div class="card">
                     <h2>Mes Publications</h2>
                     {% for produit in creations %}
                     <div class="pub-item">
-    {% if produit.display_image %}
-        <img src="{{ produit.display_image.url }}" class="pub-img" onerror="this.src='{{ produit.display_image }}'">
-    {% else %}
-        <div class="pub-img" style="background: #eee;"></div>
-    {% endif %}
-    <div class="pub-info">
-        <h4>{{ produit.titre }}</h4>
-        <p>{{ produit.prix }} FCFA</p>
-    </div>
-</div>
+                        {% if produit.display_image %}
+                            <img src="{{ produit.display_image.url }}" class="pub-img" onerror="this.src='{{ produit.display_image }}'">
+                        {% endif %}
+                        <div class="pub-info">
+                            <h4 style="margin:0; font-size:0.8rem;">{{ produit.titre }}</h4>
+                            <span style="color:var(--gold); font-size:0.8rem;">{{ produit.prix }} FCFA</span>
+                        </div>
                         <form action="{% url 'supprimer_creation' produit.id %}" method="POST" style="margin-left:auto;">
                             {% csrf_token %}
-                            <button type="submit" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:0.7rem;">Supprimer</button>
+                            <button type="submit" style="background:none; border:none; color:red; cursor:pointer; font-size:0.7rem;">Supprimer</button>
                         </form>
                     </div>
-                    {% empty %}
-                    <p style="font-size: 0.8rem; color: #999;">Aucune publication pour le moment.</p>
                     {% endfor %}
-                </section>
+                </div>
             </div>
         </main>
     </div>
