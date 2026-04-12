@@ -134,6 +134,40 @@
             font-style: italic;
         }
 
+       /* --- UNQUEMENT POUR LE TÉLÉPHONE --- */
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr) !important; /* Force les 3 colonnes */
+        gap: 8px; /* Espace réduit pour gagner de la place */
+        padding: 20px 2%;
+    }
+
+    .profil-img-container {
+        height: 100px; /* Hauteur réduite pour garder des proportions carrées/propres */
+    }
+
+    .card-content {
+        padding: 10px 5px; /* Moins d'espace autour du texte */
+    }
+
+    .card h3 {
+        font-size: 0.6rem; /* Texte plus petit pour éviter qu'il ne saute de ligne */
+        letter-spacing: 1px;
+    }
+
+    .card p {
+        display: none; /* On cache la bio sur mobile pour ne pas surcharger la grille */
+    }
+
+    /* Bouton toujours visible sur mobile */
+    .btn-portfolio {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        font-size: 0.5rem;
+        padding: 8px 0;
+    }
+}
+
         .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; font-family: 'Cinzel'; }
     </style>
 </head>

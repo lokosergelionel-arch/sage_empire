@@ -186,6 +186,27 @@
             text-decoration: none;
             font-size: 0.85rem;
         }
+
+  /* --- UNIQUEMENT POUR LE TÉLÉPHONE --- */
+@media (max-width: 600px) {
+    .creations-grid {
+        grid-template-columns: repeat(3, 1fr) !important; /* 3 créations par ligne */
+        gap: 5px;
+    }
+
+    .creation-card img {
+        height: 150px; /* Hauteur fixe pour que tout soit aligné */
+        object-fit: cover;
+    }
+
+    .creation-info h3 {
+        font-size: 0.7rem;
+    }
+
+    .creation-info .prix {
+        font-size: 0.6rem;
+    }
+}
     </style>
 </head>
 <body>
