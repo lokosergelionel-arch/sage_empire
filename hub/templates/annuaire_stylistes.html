@@ -12,152 +12,146 @@
             --charcoal: #1A1A1A;
             --gold: #B5935E;
             --border: #E5E2DA;
-            --white: #ffffff;
         }
 
-        body { margin: 0; font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); }
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+        }
 
-        nav { padding: 20px 8%; display: flex; justify-content: space-between; align-items: center; background: var(--white); border-bottom: 1px solid var(--border); }
-        .nav-logo { height: 40px; }
-        .back-home { text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+        nav {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo { height: 45px; }
+        .back-home {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-        header { padding: 60px 5% 20px; text-align: center; }
-        header h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; }
-        .subtitle { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
+        header {
+            padding: 80px 5% 40px;
+            text-align: center;
+            background: white;
+        }
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .subtitle {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            margin-top: 12px;
+            text-transform: uppercase;
+        }
 
-        /* --- GRILLE PC --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 40px 8% 100px;
-            max-width: 1300px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            padding: 40px 5% 80px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 par ligne sur mobile */
+                gap: 18px;
+                padding: 20px 4% 60px;
+            }
+        }
+
         .card {
-            background: var(--white);
-            display: flex;
-            flex-direction: column;
+            background: white;
             border: 1px solid var(--border);
-            transition: 0.4s ease;
-            position: relative;
             overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
         }
 
         .card:hover {
+            transform: translateY(-6px);
             border-color: var(--gold);
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(181, 147, 94, 0.1);
+            box-shadow: 0 15px 35px rgba(181, 147, 94, 0.15);
         }
 
         .profil-img-container {
-            width: 100%;
-            height: 350px;
+            height: 280px;
             overflow: hidden;
-            background: #fff;
+            background: #f8f8f8;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            border-bottom: 1px solid var(--border);
         }
 
         .profil-img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Garde le format logo sur PC */
-            padding: 20px;
-            transition: transform 0.6s ease;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        .btn-portfolio {
-            display: block;
-            text-decoration: none;
-            color: var(--white);
-            background: var(--charcoal);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: bold;
-            padding: 15px 0;
-            text-align: center;
-            transition: 0.3s;
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            opacity: 0;
-            transform: translateY(100%);
-            z-index: 10;
+        .card:hover .profil-img {
+            transform: scale(1.05);
         }
-
-        .card:hover .btn-portfolio {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .btn-portfolio:hover { background: var(--gold); }
 
         .card-content {
-            padding: 25px;
+            padding: 20px;
             text-align: center;
-            flex-grow: 1;
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            margin: 0;
+            font-size: 1.05rem;
+            margin: 0 0 6px 0;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        .card p { font-size: 0.85rem; color: #777; font-style: italic; }
-
-        /* --- LE RÉGLAGE TÉLÉPHONE (3 COLONNES) --- */
-        @media (max-width: 600px) {
-            header { padding: 30px 5% 10px; }
-            header h1 { font-size: 1.2rem; letter-spacing: 2px; }
-
-            .grid {
-                grid-template-columns: repeat(3, 1fr) !important;
-                gap: 5px !important;
-                padding: 15px 2% !important;
-            }
-
-            .profil-img-container {
-                height: 110px !important;
-            }
-
-            .profil-img {
-                padding: 0 !important;
-                object-fit: cover !important; /* Remplit la case pour un look propre sur mobile */
-            }
-
-            .card-content {
-                padding: 5px 2px !important;
-            }
-
-            .card h3 {
-                font-size: 0.5rem !important;
-                letter-spacing: 0px !important;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .card p { display: none; }
-
-            .btn-portfolio {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-                position: relative !important; /* Se place sous l'image */
-                font-size: 0.45rem !important;
-                padding: 6px 0 !important;
-                letter-spacing: 1px !important;
-            }
+        .card p {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0;
+            min-height: 40px;
         }
 
-        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; }
+        .btn-enter {
+            display: block;
+            margin-top: 15px;
+            padding: 12px;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .btn-enter:hover {
+            background: var(--gold);
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #999;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+        }
     </style>
 </head>
 <body>
@@ -176,28 +170,25 @@
         {% for styliste in stylistes %}
         <div class="card">
             <div class="profil-img-container">
-    {% if styliste.photo_profil %}
-        {# Si le styliste a une photo, on l'affiche #}
-        <img src="{{ styliste.get_photo_url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
-    {% else %}
-        {# Sinon, on génère un bel avatar avec ses initiales #}
-        <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" class="profil-img" alt="{{ styliste.nom_marque }}">
-    {% endif %}
-
-    <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
-        ENTRER DANS L'UNIVERS
-    </a>
-</div>
+                {% if styliste.photo_profil %}
+                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=F9F8F6&color=B5935E&size=300" class="profil-img" alt="{{ styliste.nom_marque }}">
+                {% endif %}
+            </div>
 
             <div class="card-content">
                 <h3>{{ styliste.nom_marque }}</h3>
                 <p>
                     {% if styliste.biographie %}
-                        {{ styliste.biographie|truncatewords:15 }}
+                        {{ styliste.biographie|truncatewords:12 }}
                     {% else %}
-                        Bienvenue dans mon univers créatif.
+                        Créateur de mode
                     {% endif %}
                 </p>
+                <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-enter">
+                    Entrer dans l'univers
+                </a>
             </div>
         </div>
         {% empty %}
