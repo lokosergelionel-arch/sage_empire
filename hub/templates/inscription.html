@@ -44,6 +44,7 @@
             max-width: 500px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.02);
             margin-bottom: 50px;
+            box-sizing: border-box; /* Assure que le padding ne dépasse pas */
         }
 
         h2 {
@@ -126,6 +127,23 @@
 
         .back-link:hover {
             color: var(--charcoal);
+        }
+
+        /* --- AJOUT POUR LE TÉLÉPHONE UNIQUEMENT --- */
+        @media (max-width: 600px) {
+            .form-container {
+                width: 90%;          /* On resserre le bloc à 90% de l'écran */
+                padding: 30px 20px;  /* On réduit le padding interne pour gagner de la place */
+                margin-top: 10px;
+            }
+
+            h2 {
+                font-size: 1.3rem;   /* On réduit un peu le titre sur mobile */
+            }
+
+            form input, form textarea {
+                font-size: 16px;     /* Évite le zoom auto sur iPhone */
+            }
         }
     </style>
 </head>
