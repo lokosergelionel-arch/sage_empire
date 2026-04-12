@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | {{ styliste.nom_marque }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #D4AF37;
@@ -14,156 +14,96 @@
             --border: #E5E2DA;
         }
 
-        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); margin: 0; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--light);
-            color: var(--dark);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+        /* --- HEADER PROFIL --- */
+        .profile-header { background: white; padding: 60px 5%; text-align: center; border-bottom: 1px solid var(--border); }
+        .profile-img-container { width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold); }
+        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .brand { font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 4px; text-transform: uppercase; margin: 0; }
+        .bio { max-width: 700px; margin: 15px auto; color: #666; font-style: italic; }
 
-        .profile-header {
-            background: white;
-            padding: 60px 5%;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .profile-img-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid var(--gold);
-        }
-
-        .profile-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .brand {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            letter-spacing: 4px;
-            margin: 0 0 10px;
-            text-transform: uppercase;
-        }
-
-        .bio {
-            max-width: 700px;
-            margin: 0 auto;
-            color: #666;
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        /* --- GRILLE PORTFOLIO --- */
+        /* --- GRILLE --- */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            padding: 50px 5%;
+            gap: 25px;
+            padding: 40px 5%;
             max-width: 1300px;
             margin: 0 auto;
         }
 
-        .product-card {
-            background: white;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: 0.4s ease;
-        }
+        .product-card { background: white; border: 1px solid var(--border); overflow: hidden; transition: 0.4s; }
 
-        /* --- RÉTABLISSEMENT DU ZOOM IN/OUT --- */
+        /* --- SYSTÈME DE SURVOL (PC) --- */
         .product-image-wrapper {
             position: relative;
             height: 500px;
             overflow: hidden;
-            cursor: zoom-in;
+            background: #eee;
+            cursor: pointer;
         }
 
         .product-image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease; /* Fluidité du zoom */
+            transition: opacity 0.5s ease, transform 0.6s ease;
         }
 
-        .product-card:hover .img-front {
-            transform: scale(1.1); /* L'effet zoom in au survol */
+        .img-back {
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0; /* Caché par défaut */
+        }
+
+        /* Effet PC : au survol, on montre le dos */
+        @media (min-width: 1025px) {
+            .product-card:hover .img-front { opacity: 0; transform: scale(1.05); }
+            .product-card:hover .img-back { opacity: 1; transform: scale(1.05); }
         }
 
         .product-info { padding: 20px; text-align: center; }
-        .product-info h3 { font-family: 'Cinzel', serif; font-size: 1rem; margin-bottom: 10px; }
-        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; }
+        .product-info h3 { font-family: 'Cinzel', serif; font-size: 0.9rem; margin: 0 0 10px; }
+        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
 
         .btn-commander {
-            background: var(--dark);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--dark); color: white; border: none; padding: 12px; width: 100%;
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer;
         }
 
-        .btn-commander:hover { background: var(--gold); }
-
-        /* --- LIGHTBOX (Miniatures en bas) --- */
+        /* --- LIGHTBOX --- */
         #lightbox {
             display: none;
             position: fixed;
-            z-index: 2000;
+            z-index: 9999;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.98);
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
-        #lightbox img#main-image {
-            max-width: 90%;
+        #main-image {
+            max-width: 95%;
             max-height: 70vh;
-            border: 4px solid white;
-            border-radius: 4px;
+            border: 3px solid white;
             margin-bottom: 20px;
+            object-fit: contain;
         }
 
-        .zoom-controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .thumb {
-            width: 60px;
-            height: 80px;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.5);
-            cursor: pointer;
-        }
-
+        .zoom-controls { display: flex; gap: 15px; }
+        .thumb { width: 60px; height: 80px; object-fit: cover; border: 2px solid #555; cursor: pointer; }
         .thumb.active { border-color: var(--gold); }
 
-        .back-link { display: block; text-align: center; padding: 40px; text-decoration: none; color: #888; text-transform: uppercase; font-size: 0.8rem; }
-
-        /* --- CORRECTIF MOBILE : RETOUR AU MODE HORIZONTAL (2 COLONNES) --- */
+        /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr) !important; /* Force l'horizontal */
-                gap: 15px;
-            }
-            .product-image-wrapper { height: 250px; }
-            .brand { font-size: 1.5rem; }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 20px 3%; }
+            .product-image-wrapper { height: 280px; }
+            /* On désactive l'effet de transparence sur mobile pour éviter l'image noire */
+            .img-back { display: none; }
+            .product-card:active .img-front { transform: scale(0.98); }
         }
     </style>
 </head>
@@ -186,11 +126,14 @@
         <div class="product-card">
             <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
                 <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
+                {% if produit.display_image_dos %}
+                    <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} dos">
+                {% endif %}
             </div>
             <div class="product-info">
                 <h3>{{ produit.titre }}</h3>
-                <p class="price">{{ produit.prix }} FCFA</p>
-                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour, je souhaite commander : {{ produit.titre }}', '_blank')" class="btn-commander">
+                <span class="price">{{ produit.prix }} FCFA</span>
+                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp }}?text=Commande: {{ produit.titre }}', '_blank')" class="btn-commander">
                     COMMANDER
                 </button>
             </div>
@@ -198,27 +141,28 @@
         {% endfor %}
     </div>
 
-    <a href="{% url 'home' %}" class="back-link">← Accueil</a>
-
     <div id="lightbox" onclick="closeZoom(event)">
         <img id="main-image" src="" alt="Zoom">
         <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()"></div>
     </div>
 
     <script>
-        function openZoom(frontUrl, backUrl) {
-            const lightbox = document.getElementById('lightbox');
-            const mainImg = document.getElementById('main-image');
+        function openZoom(front, back) {
+            const lb = document.getElementById('lightbox');
+            const main = document.getElementById('main-image');
             const thumbs = document.getElementById('zoom-thumbs');
-            mainImg.src = frontUrl;
-            thumbs.innerHTML = `<img src="${frontUrl}" class="thumb active" onclick="switchImage(this, '${frontUrl}')">`;
-            if (backUrl && backUrl !== 'None' && backUrl !== '') {
-                thumbs.innerHTML += `<img src="${backUrl}" class="thumb" onclick="switchImage(this, '${backUrl}')">`;
+
+            main.src = front;
+            thumbs.innerHTML = `<img src="${front}" class="thumb active" onclick="switchImg(this, '${front}')">`;
+
+            if (back && back !== 'None' && back !== '') {
+                thumbs.innerHTML += `<img src="${back}" class="thumb" onclick="switchImg(this, '${back}')">`;
             }
-            lightbox.style.display = 'flex';
+
+            lb.style.display = 'flex';
         }
 
-        function switchImage(el, url) {
+        function switchImg(el, url) {
             document.getElementById('main-image').src = url;
             document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
