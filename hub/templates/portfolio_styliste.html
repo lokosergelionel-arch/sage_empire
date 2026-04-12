@@ -17,9 +17,7 @@
             font-family: 'Lato', sans-serif;
             background: var(--ivory);
             color: var(--charcoal);
-            margin: 0;
-            padding: 0;
-            text-align: center;
+            margin: 0; padding: 0; text-align: center;
         }
 
         header {
@@ -27,13 +25,12 @@
         }
 
         .profile-image-container {
-            width: 180px;
-            height: 180px;
+            width: 170px;
+            height: 170px;
             margin: 0 auto 25px;
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid var(--gold);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         .profile-image-container img {
             width: 100%;
@@ -43,35 +40,31 @@
 
         h1 {
             font-family: 'Cinzel', serif;
-            letter-spacing: 6px;
-            margin-bottom: 8px;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            font-size: 2.2rem;
         }
 
         .bio {
-            max-width: 720px;
-            margin: 0 auto 70px;
+            max-width: 700px;
+            margin: 0 auto 60px;
             color: #555;
             line-height: 1.8;
             font-style: italic;
-            padding: 0 5%;
+            padding: 0 20px;
         }
 
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 35px;
-            padding: 20px 5% 100px;
+            gap: 30px;
+            padding: 30px 5% 80px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* 3 cartes par ligne sur PC */
-        @media (min-width: 1024px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        @media (min-width: 1100px) {
+            .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         .product-card {
@@ -82,35 +75,42 @@
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(181, 147, 94, 0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
         .product-image-wrapper {
-            height: 380px;
+            position: relative;
+            height: 420px;
             overflow: hidden;
+            cursor: zoom-in;
         }
 
         .product-image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            transition: opacity 0.6s ease;
         }
 
-        .product-card:hover img {
-            transform: scale(1.06);
+        .img-back {
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
         }
+
+        .product-card:hover .img-front { opacity: 0; }
+        .product-card:hover .img-back { opacity: 1; }
 
         .product-details {
-            padding: 22px;
+            padding: 20px;
             text-align: center;
         }
 
         .product-details h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             margin: 0 0 8px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -119,7 +119,7 @@
         .price {
             color: var(--gold);
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             margin: 8px 0 20px;
         }
 
@@ -129,26 +129,62 @@
             background: var(--charcoal);
             color: white;
             text-decoration: none;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
+        .btn-wa:hover { background: var(--gold); }
 
-        .btn-wa:hover {
-            background: var(--gold);
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #lightbox img#main-image {
+            max-width: 85%;
+            max-height: 78%;
+            border: 5px solid var(--gold);
+        }
+
+        .zoom-controls {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+        .thumb {
+            width: 70px;
+            height: 90px;
+            object-fit: cover;
+            border: 3px solid #fff;
+            cursor: pointer;
+            opacity: 0.75;
+        }
+        .thumb:hover, .thumb.active {
+            opacity: 1;
+            border-color: var(--gold);
         }
 
         .back-link {
             display: inline-block;
-            margin: 40px 0 80px;
+            margin: 60px 0;
             color: #666;
             text-decoration: none;
             font-size: 0.9rem;
-            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+
+    <div id="lightbox" onclick="closeZoom(event)">
+        <img id="main-image" src="" alt="Zoom">
+        <div class="zoom-controls" id="zoom-thumbs"></div>
+    </div>
 
     <header>
         <div class="profile-image-container">
@@ -168,8 +204,13 @@
     <div class="portfolio-grid">
         {% for produit in creations %}
         <div class="product-card">
-            <div class="product-image-wrapper">
-                <img src="{{ produit.display_image }}" alt="{{ produit.titre }}">
+            <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
+                {% if produit.display_image %}
+                    <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
+                {% endif %}
+                {% if produit.display_image_dos %}
+                    <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} - dos">
+                {% endif %}
             </div>
 
             <div class="product-details">
@@ -182,13 +223,44 @@
             </div>
         </div>
         {% empty %}
-        <p style="grid-column: 1 / -1; color: #888; font-style: italic; padding: 80px 20px;">
+        <p style="grid-column: 1 / -1; color: #888; font-style: italic; padding: 60px 20px;">
             Vous n'avez pas encore publié de créations.
         </p>
         {% endfor %}
     </div>
 
     <a href="{% url 'home' %}" class="back-link">← RETOUR À L'ACCUEIL</a>
+
+    <script>
+        function openZoom(frontUrl, backUrl) {
+            const lightbox = document.getElementById('lightbox');
+            const mainImg = document.getElementById('main-image');
+            const thumbs = document.getElementById('zoom-thumbs');
+
+            mainImg.src = frontUrl;
+            thumbs.innerHTML = '';
+
+            thumbs.innerHTML += `<img src="${frontUrl}" class="thumb active" onclick="switchImage(this, '${frontUrl}')">`;
+
+            if (backUrl && backUrl !== 'None' && backUrl !== 'null' && backUrl !== '') {
+                thumbs.innerHTML += `<img src="${backUrl}" class="thumb" onclick="switchImage(this, '${backUrl}')">`;
+            }
+
+            lightbox.style.display = 'flex';
+        }
+
+        function switchImage(el, url) {
+            document.getElementById('main-image').src = url;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function closeZoom(e) {
+            if (e.target.id === 'lightbox' || e.target.id === 'main-image') {
+                document.getElementById('lightbox').style.display = 'none';
+            }
+        }
+    </script>
 
 </body>
 </html>
