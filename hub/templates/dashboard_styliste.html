@@ -111,7 +111,14 @@
     <li><a href="{% url 'portfolio_styliste' styliste.id %}">Paramètres</a></li>
     <li><a href="{% url 'portfolio_styliste' styliste.id %}" target="_blank">Voir mon Portfolio</a></li>
     <li><a href="{% url 'home' %}">Retour au Hub</a></li>
-    <li><a href="{% url 'logout' %}" style="color: #ff4444; font-weight: bold; display: block; position: relative; z-index: 10;">DÉCONNEXION</a></li>
+    <li>
+    <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+        {% csrf_token %}
+    </form>
+    <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" style="color: #ff4444; font-weight: bold;">
+        DÉCONNEXION
+    </a>
+</li>
 </ul>
         </aside>
 
@@ -159,15 +166,15 @@
                     {% for produit in creations %}
                     <div class="pub-item">
     {% if produit.display_image %}
-        <img src="{{ produit.display_image.url }}" class="pub-img" alt="{{ produit.titre }}">
+        <img src="{{ produit.display_image.url }}" class="pub-img" onerror="this.src='{{ produit.display_image }}'">
     {% else %}
-        <div class="pub-img" style="background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px;">Sans image</div>
+        <div class="pub-img" style="background: #eee;"></div>
     {% endif %}
     <div class="pub-info">
         <h4>{{ produit.titre }}</h4>
         <p>{{ produit.prix }} FCFA</p>
     </div>
-    </div>
+</div>
                         <form action="{% url 'supprimer_creation' produit.id %}" method="POST" style="margin-left:auto;">
                             {% csrf_token %}
                             <button type="submit" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:0.7rem;">Supprimer</button>
