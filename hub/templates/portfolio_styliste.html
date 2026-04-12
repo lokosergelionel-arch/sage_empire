@@ -56,6 +56,25 @@
             justify-content: center;
         }
 
+       .profile-image-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #B5935E;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    margin: 0 auto 20px;
+}
+
+.profile-image-container img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
         .product-card {
             background: white;
             padding: 15px;
@@ -177,11 +196,12 @@
     </div>
 
     <header>
-        <div class="profil-container">
-            {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}">
-            {% endif %}
-        </div>
+        <<div class="profile-image-container"> {% if styliste.photo_profil %}
+        <img src="{{ styliste.photo_profil.url }}" alt="Logo {{ styliste.nom_marque }}">
+    {% else %}
+        <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" alt="{{ styliste.nom_marque }}">
+    {% endif %}
+</div>
         <h1>{{ styliste.nom_marque }}</h1>
         <p class="bio">
             {% if styliste.biographie %}{{ styliste.biographie }}
