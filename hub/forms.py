@@ -42,7 +42,7 @@ class CreationForm(forms.ModelForm):
 
 class EditProfilForm(forms.ModelForm):
     class Meta:
-        model = Styliste
+        model = ProfilStyliste
         # On ajoute 'nom_marque' ici
         fields = ['nom_marque', 'photo_profil', 'biographie', 'contact_whatsapp']
 

@@ -129,7 +129,7 @@ def sage_digital(request):
 @login_required
 def edit_profil(request):
     # On récupère le profil du styliste
-    styliste = Styliste.objects.get(user=request.user)
+    styliste = get_object_or_404(ProfilStyliste, user=request.user)
 
     if request.method == 'POST':
         # Si le formulaire est envoyé
