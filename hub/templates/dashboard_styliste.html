@@ -101,7 +101,7 @@
             <h2>SAGE EMPIRE</h2>
             <ul class="nav-links">
                 <li><a href="#" class="active">Tableau de bord</a></li>
-                <li><a href="#">Paramètres</a></li>
+                <li><a href="{% url 'portfolio_styliste' styliste.id %}">Paramètres</a></li>
                 <li><a href="{% url 'portfolio_styliste' styliste.id %}" target="_blank">Voir mon Portfolio</a></li>
                 <li><a href="{% url 'home' %}">Retour au Hub</a></li>
                 <li><a href="{% url 'logout' %}" style="color: #ff4444;">Déconnexion</a></li>
@@ -111,7 +111,7 @@
         <main class="main-content">
             <header class="welcome-header">
                 <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
-                <a href="#" style="text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-size: 0.8rem;">MODIFIER PROFIL</a>
+                <a href="{% url 'portfolio_styliste' styliste.id %}" style="text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-size: 0.8rem;">MODIFIER PROFIL</a>
             </header>
 
             <div class="dashboard-grid">
