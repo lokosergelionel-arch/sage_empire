@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 import cloudinary.uploader
 
 
@@ -7,7 +8,7 @@ class ProfilStyliste(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profil')
     nom_marque = models.CharField(max_length=100)
     contact_whatsapp = models.CharField(max_length=20)
-    photo_profil = models.ImageField(upload_to='profils/', null=True, blank=True)
+    photo_profil = CloudinaryField('image', null=True, blank=True)
     biographie = models.TextField(blank=True)
 
     @property
