@@ -2,249 +2,243 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAGE MODE | La Collection Officielle</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #B5935E;
-            --charcoal: #1A1A1A;
-            --ivory: #F9F8F6;
-        }
-        body {
-            margin: 0;
-            font-family: 'Lato', sans-serif;
-            background: var(--ivory);
-            color: var(--charcoal);
-        }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>SAGE MODE | La Collection Officielle</title>
+ <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --gold: #B5935E;
+ --charcoal: #1A1A1A;
+ --ivory: #F9F8F6;
+ }
+ body {
+ margin: 0;
+ font-family: 'Lato', sans-serif;
+ background: var(--ivory);
+ color: var(--charcoal);
+ }
 
-        header {
-            padding: 100px 5% 60px;
-            text-align: center;
-            background: white;
-            border-bottom: 1px solid #eee;
-        }
-        header h1 {
-            font-family: 'Cinzel';
-            font-size: 2.5rem;
-            letter-spacing: 8px;
-            margin: 0;
-            text-transform: uppercase;
-        }
-        header p {
-            color: var(--gold);
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            margin-top: 15px;
-        }
+ header {
+ padding: 100px 5% 60px;
+ text-align: center;
+ background: white;
+ border-bottom: 1px solid #eee;
+ }
+ header h1 {
+ font-family: 'Cinzel';
+ font-size: 2.5rem;
+ letter-spacing: 8px;
+ margin: 0;
+ text-transform: uppercase;
+ }
+ header p {
+ color: var(--gold);
+ letter-spacing: 3px;
+ font-size: 0.9rem;
+ margin-top: 15px;
+ }
 
-        .container {
-            max-width: 1350px;
-            margin: 0 auto;
-            padding: 40px 3%;
-        }
+ .container {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 40px 2%;
+ }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 35px;
-            padding: 20px 0;
-        }
+ .gallery-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+ gap: 30px;
+ padding: 20px;
+ justify-content: center;
+ }
 
-        /* Maximum 3 par ligne sur grand écran */
-        @media (min-width: 1150px) {
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+ .collection-item {
+ background: white;
+ transition: 0.4s;
+ border: 1px solid #eee;
+ }
 
-        @media (max-width: 900px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+ .collection-item:hover {
+ transform: translateY(-8px);
+ border-color: var(--gold);
+ }
 
-        .collection-item {
-            background: white;
-            transition: 0.4s;
-            border: 1px solid #eee;
-            overflow: hidden;
-        }
+ .product-image-wrapper {
+ position: relative;
+ height: 450px;
+ overflow: hidden;
+ background: #fff;
+ cursor: zoom-in;
+ }
 
-        .collection-item:hover {
-            transform: translateY(-10px);
-            border-color: var(--gold);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
-        }
+ .product-img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: opacity 0.5s ease-in-out;
+ }
 
-        .product-image-wrapper {
-            position: relative;
-            height: 460px;
-            overflow: hidden;
-            background: #fff;
-            cursor: zoom-in;
-        }
+ .img-back {
+ position: absolute;
+ top: 0; left: 0;
+ opacity: 0;
+ }
+ .collection-item:hover .img-front { opacity: 0; }
+ .collection-item:hover .img-back { opacity: 1; }
 
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.6s ease-in-out;
-        }
+ .product-info {
+ padding: 20px;
+ text-align: center;
+ }
+ .product-info h3 {
+ font-family: 'Cinzel';
+ font-size: 1.05rem;
+ margin: 0 0 8px;
+ letter-spacing: 1px;
+ }
+ .price {
+ color: var(--gold);
+ font-weight: bold;
+ font-size: 1rem;
+ margin-bottom: 15px;
+ }
 
-        .img-back {
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-        }
-        .collection-item:hover .img-front { opacity: 0; }
-        .collection-item:hover .img-back { opacity: 1; }
+ .btn-order {
+ display: inline-block;
+ width: 100%;
+ padding: 14px;
+ background: var(--charcoal);
+ color: white;
+ text-decoration: none;
+ font-size: 0.75rem;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ transition: 0.3s;
+ }
+ .btn-order:hover { background: var(--gold); }
 
-        .product-info {
-            padding: 25px 20px;
-            text-align: center;
-        }
-        .product-info h3 {
-            font-family: 'Cinzel';
-            font-size: 1.1rem;
-            margin: 0 0 8px;
-            letter-spacing: 1px;
-        }
-        .price {
-            color: var(--gold);
-            font-weight: bold;
-            font-size: 1.05rem;
-            margin-bottom: 18px;
-        }
+ #lightbox {
+ display: none;
+ position: fixed;
+ z-index: 1000;
+ top: 0; left: 0; width: 100%; height: 100%;
+ background: rgba(0,0,0,0.9);
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ }
+ #lightbox img#lightbox-img {
+ max-width: 85%;
+ max-height: 80%;
+ border: 3px solid var(--gold);
+ }
 
-        .btn-order {
-            display: inline-block;
-            width: 100%;
-            padding: 15px;
-            background: var(--charcoal);
-            color: white;
-            text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-        .btn-order:hover { background: var(--gold); }
+ .zoom-controls {
+ margin-top: 20px;
+ display: flex;
+ gap: 12px;
+ }
+ .thumb-zoom {
+ width: 60px;
+ height: 80px;
+ object-fit: cover;
+ cursor: pointer;
+ border: 2px solid #fff;
+ opacity: 0.8;
+ }
+ .thumb-zoom:hover {
+ opacity: 1;
+ border-color: var(--gold);
+ }
 
-        #lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        #lightbox img#lightbox-img {
-            max-width: 85%;
-            max-height: 80%;
-            border: 4px solid var(--gold);
-        }
-
-        .zoom-controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-        .thumb-zoom {
-            width: 65px;
-            height: 85px;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid #fff;
-            opacity: 0.8;
-        }
-        .thumb-zoom:hover { opacity: 1; border-color: var(--gold); }
-
-        .empty-shop {
-            grid-column: 1 / -1;
-            padding: 100px 20px;
-            color: #888;
-            font-style: italic;
-        }
-    </style>
+ .empty-shop {
+ grid-column: 1 / -1;
+ padding: 80px 20px;
+ color: #888;
+ font-style: italic;
+ }
+ </style>
 </head>
 <body>
 
-    <div id="lightbox" onclick="closeZoom(event)">
-        <img id="lightbox-img" src="" alt="Zoom">
-        <div class="zoom-controls" id="zoom-thumbs"></div>
-    </div>
+ <div id="lightbox" onclick="closeZoom(event)">
+ <img id="lightbox-img" src="" alt="Zoom">
+ <div class="zoom-controls" id="zoom-thumbs"></div>
+ </div>
 
-    <header>
-        <h1>SAGE MODE</h1>
-        <p>L'EXCELLENCE À VOTRE MESURE</p>
-    </header>
+ <header>
+ <h1>SAGE MODE</h1>
+ <p>L'EXCELLENCE À VOTRE MESURE</p>
+ </header>
 
-    <section class="container">
-        <div class="gallery-grid">
-            {% for produit in produits_sage %}
-            <div class="collection-item">
-                <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
-                    {% if produit.display_image %}
-                        <img src="{{ produit.display_image }}" class="product-img img-front" alt="{{ produit.titre }}">
-                    {% endif %}
-                    {% if produit.display_image_dos %}
-                        <img src="{{ produit.display_image_dos }}" class="product-img img-back" alt="{{ produit.titre }} - dos">
-                    {% endif %}
-                </div>
+ <section class="container">
+ <div class="gallery-grid">
+ {% for produit in produits_sage %}
+ <div class="collection-item">
+ <div class="product-image-wrapper"
+ onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
 
-                <div class="product-info">
-                    <h3>{{ produit.titre }}</h3>
-                    <p class="price">{{ produit.prix }} FCFA</p>
-                    <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
-                       class="btn-order" target="_blank">
-                        COMMANDER VIA WHATSAPP
-                    </a>
-                </div>
-            </div>
-            {% empty %}
-            <div class="empty-shop">
-                <p>Nos nouvelles collections arrivent bientôt...</p>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
+ {% if produit.display_image %}
+ <img src="{{ produit.display_image }}"
+ class="product-img img-front"
+ alt="{{ produit.titre }}">
+ {% endif %}
 
-    <script>
-        function openZoom(urlFront, urlBack) {
-            const lightbox = document.getElementById('lightbox');
-            const mainImg = document.getElementById('lightbox-img');
-            const thumbContainer = document.getElementById('zoom-thumbs');
+ {% if produit.display_image_dos %}
+ <img src="{{ produit.display_image_dos }}"
+ class="product-img img-back"
+ alt="{{ produit.titre }} - dos">
+ {% endif %}
+ </div>
 
-            mainImg.src = urlFront;
-            thumbContainer.innerHTML = '';
+ <div class="product-info">
+ <h3>{{ produit.titre }}</h3>
+ <p class="price">{{ produit.prix }} FCFA</p>
+ <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
+ class="btn-order" target="_blank">
+ COMMANDER VIA WHATSAPP
+ </a>
+ </div>
+ </div>
+ {% empty %}
+ <div class="empty-shop">
+ <p>Nos nouvelles collections arrivent bientôt...</p>
+ </div>
+ {% endfor %}
+ </div>
+ </section>
 
-            if (urlBack && urlBack !== 'None' && urlBack !== 'null' && urlBack !== '') {
-                thumbContainer.innerHTML = `
-                    <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
-                    <img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">
-                `;
-            } else {
-                thumbContainer.innerHTML = `
-                    <img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">
-                `;
-            }
-            lightbox.style.display = 'flex';
-        }
+ <script>
+ function openZoom(urlFront, urlBack) {
+ const lightbox = document.getElementById('lightbox');
+ const mainImg = document.getElementById('lightbox-img');
+ const thumbContainer = document.getElementById('zoom-thumbs');
 
-        function changeZoomImg(url) {
-            document.getElementById('lightbox-img').src = url;
-        }
+ mainImg.src = urlFront;
+ thumbContainer.innerHTML = '';
 
-        function closeZoom(e) {
-            if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') {
-                document.getElementById('lightbox').style.display = 'none';
-            }
-        }
-    </script>
+ // Toujours afficher au moins l'image principale
+ let thumbsHTML = `<img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">`;
+
+ if (urlBack && urlBack !== 'None' && urlBack !== 'null') {
+ thumbsHTML += `<img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">`;
+ }
+
+ thumbContainer.innerHTML = thumbsHTML;
+ lightbox.style.display = 'flex';
+ }
+
+ function changeZoomImg(url) {
+ document.getElementById('lightbox-img').src = url;
+ }
+
+ function closeZoom(e) {
+ if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') {
+ document.getElementById('lightbox').style.display = 'none';
+ }
+ }
+ </script>
 
 </body>
 </html>
