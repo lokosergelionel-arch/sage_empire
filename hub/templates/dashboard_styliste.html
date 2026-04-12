@@ -4,381 +4,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAGE EMPIRE | Mon Espace Créateur</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <title>SAGE EMPIRE | Tableau de Bord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #B5935E;
-            --charcoal: #1A1A1A;
-            --ivory: #F9F8F6;
+            --dark: #1A1A1A;
+            --light: #F9F8F6;
             --border: #E5E2DA;
         }
 
-        body {
-            font-family: 'Lato', sans-serif;
-            background: var(--ivory);
-            margin: 0;
-            display: flex;
-            color: var(--charcoal);
+        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; color: var(--dark); }
+
+        /* --- LAYOUT GLOBAL --- */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
         }
 
+        /* --- SIDEBAR (PC) --- */
         .sidebar {
-            width: 260px;
-            background: var(--charcoal);
-            height: 100vh;
+            background: var(--dark);
             color: white;
             padding: 40px 20px;
-            position: fixed;
-            box-sizing: border-box;
-        }
-        .sidebar h2 {
-            font-family: 'Cinzel';
-            font-size: 1.2rem;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 20px;
-            letter-spacing: 3px;
-            text-align: center;
-        }
-        .nav-link {
-            display: block;
-            color: #aaa;
-            text-decoration: none;
-            margin: 25px 0;
-            font-size: 0.82rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-        .nav-link:hover, .nav-link.active { color: var(--gold); padding-left: 8px; }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            font-family: 'Lato';
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            margin-top: 50px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        .main-content {
-            margin-left: 260px;
-            padding: 60px 5%;
-            width: calc(100% - 260px);
-            box-sizing: border-box;
-        }
-        .header-dash {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 50px;
-            background: white;
-            padding: 20px 40px;
-            border: 1px solid var(--border);
-        }
-        .header-dash h1 {
-            font-family: 'Cinzel';
-            font-size: 1.6rem;
-            margin: 0;
-            letter-spacing: 1px;
-        }
+        .sidebar h2 { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; }
 
-        .dash-grid {
+        .nav-links { list-style: none; padding: 0; }
+        .nav-links li { margin-bottom: 20px; }
+        .nav-links a { color: #999; text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { padding: 40px 5%; }
+        .welcome-header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .welcome-header h1 { font-family: 'Cinzel', serif; font-size: 1.8rem; margin: 0; }
+
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            grid-template-columns: 1fr 350px;
             gap: 40px;
         }
 
-        .card-form, .card-list {
-            background: white;
-            padding: 40px;
-            border: 1px solid var(--border);
+        /* --- FORMULAIRE --- */
+        .card { background: white; padding: 30px; border: 1px solid var(--border); }
+        .card h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; margin-top: 0; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #666; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); background: var(--light); font-family: inherit; }
+
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .upload-box { border: 2px dashed var(--border); padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .upload-box:hover { border-color: var(--gold); background: #fffcf5; }
+        .upload-box span { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+
+        .btn-submit { background: var(--dark); color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-family: 'Cinzel', serif; letter-spacing: 2px; transition: 0.3s; margin-top: 20px; }
+        .btn-submit:hover { background: var(--gold); }
+
+        /* --- LISTE PUBLICATIONS --- */
+        .pub-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        .pub-img { width: 60px; height: 60px; object-fit: cover; }
+        .pub-info h4 { margin: 0; font-size: 0.9rem; text-transform: uppercase; }
+        .pub-info p { margin: 5px 0 0; font-size: 0.8rem; color: var(--gold); font-weight: bold; }
+
+        /* --- RESPONSIVE MOBILE (CORRECTION RADICALE) --- */
+        @media (max-width: 900px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+
+            /* On transforme la sidebar en menu horizontal */
+            .sidebar {
+                height: auto;
+                position: relative;
+                padding: 20px;
+                text-align: center;
+            }
+            .sidebar h2 { margin-bottom: 20px; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .nav-links li { margin-bottom: 0; }
+
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .welcome-header { flex-direction: column; text-align: center; gap: 20px; }
+            .upload-grid { grid-template-columns: 1fr; }
         }
-
-        .card-form h3, .card-list h3 {
-            font-family: 'Cinzel';
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            color: var(--charcoal);
-        }
-
-        .form-group { margin-bottom: 25px; }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--gold);
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            background: var(--ivory);
-            font-family: 'Lato';
-            box-sizing: border-box;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-            background: white;
-        }
-
-        .upload-zone {
-            border: 2px dashed var(--gold);
-            background: var(--ivory);
-            padding: 45px 20px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-        }
-        .upload-zone:hover {
-            background: #fffaf0;
-            border-color: #d4af7b;
-        }
-        .upload-zone p {
-            margin: 10px 0 5px 0;
-            color: var(--charcoal);
-            font-weight: 500;
-        }
-
-        .btn-gold {
-            width: 100%;
-            background: var(--charcoal);
-            color: white;
-            border: none;
-            padding: 16px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            font-size: 0.85rem;
-            margin-top: 15px;
-        }
-        .btn-gold:hover { background: var(--gold); }
-
-        .creation-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--ivory);
-        }
-        .creation-item img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-        .creation-info h4 { margin: 0; font-size: 0.95rem; }
-        .creation-info p {
-            margin: 6px 0 0;
-            font-size: 0.8rem;
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        /* --- OPTIMISATION DASHBOARD MOBILE --- */
-@media (max-width: 768px) {
-    /* On change la structure globale : tout passe en une seule colonne */
-    .dashboard-container {
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 10px !important;
-    }
-
-    /* Le menu latéral passe en haut et s'affiche sur une ligne */
-    .sidebar {
-        width: 100% !important;
-        min-height: auto !important;
-        padding: 15px !important;
-        margin-bottom: 20px;
-    }
-
-    /* On aligne les liens du menu horizontalement pour gagner de la place */
-    .sidebar-menu {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-    }
-
-    .sidebar-menu a {
-        font-size: 0.75rem !important;
-        padding: 8px !important;
-    }
-
-    /* La zone de contenu prend 100% de la largeur */
-    .main-content {
-        padding: 10px !important;
-    }
-
-    /* Les deux colonnes (Formulaire et Publications) s'empilent */
-    .dashboard-grid {
-        grid-template-columns: 1fr !important; /* Une seule colonne */
-        gap: 30px !important;
-    }
-
-    /* On ajuste les champs du formulaire pour qu'ils soient faciles à cliquer */
-    input, textarea, .upload-zone {
-        font-size: 16px !important; /* Évite le zoom auto de l'iPhone */
-    }
-
-    .upload-zone {
-        height: 150px !important;
-    }
-
-    /* Titres plus adaptés au mobile */
-    h2, .welcome-text {
-        font-size: 1.2rem !important;
-        text-align: center;
-    }
-}
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2>SAGE EMPIRE</h2>
-        <p style="font-size: 0.6rem; color: var(--gold); text-align: center; letter-spacing: 2px; margin-top: -3px;">ESPACE CRÉATEUR</p>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <h2>SAGE EMPIRE</h2>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Tableau de bord</a></li>
+                <li><a href="{% url 'edit_profile' %}">Paramètres</a></li>
+                <li><a href="{% url 'portfolio_styliste' styliste.id %}" target="_blank">Voir mon Portfolio</a></li>
+                <li><a href="{% url 'home' %}">Retour au Hub</a></li>
+                <li><a href="{% url 'logout' %}" style="color: #ff4444;">Déconnexion</a></li>
+            </ul>
+        </aside>
 
-        <nav>
-            <a href="{% url 'dashboard_styliste' %}" class="nav-link" style="color: var(--gold);">Tableau de bord</a>
-            <a href="{% url 'edit_profil' %}" class="nav-link">Paramètres du profil</a>
-            {% if user.profil %}
-                <a href="{% url 'portfolio_styliste' styliste_id=user.profil.id %}" class="nav-link">Voir mon Portfolio</a>
-            {% else %}
-                <a href="#" class="nav-link">Voir mon Portfolio</a>
-            {% endif %}
-            <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
+        <main class="main-content">
+            <header class="welcome-header">
+                <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
+                <a href="{% url 'edit_profile' %}" style="text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 8px 15px; font-size: 0.8rem;">MODIFIER PROFIL</a>
+            </header>
 
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="logout-btn">→ Déconnexion</button>
-            </form>
-        </nav>
-    </div>
-
-    <div class="main-content">
-        <div class="header-dash">
-    <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
-    <div class="profile-snap" style="display: flex; align-items: center; gap: 15px;">
-        <a href="{% url 'edit_profil' %}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 0.75rem; color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; text-transform: uppercase;">Modifier le profil</span>
-            {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold);">
-            {% endif %}
-        </a>
-            </div>
-        </div>
-
-        <div class="dash-grid">
-            <div class="card-form">
-                <h3>Ajouter une Nouvelle Création</h3>
-                <form method="POST" id="creationForm">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label>Nom de la Création</label>
-                        <input type="text" name="titre" placeholder="Ex: Kimono Impérial" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Prix (FCFA)</label>
-                        <input type="number" name="prix" placeholder="15000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea name="description" rows="4" placeholder="Détails sur le tissu, la coupe, l'inspiration..."></textarea>
-                    </div>
-
-                    <!-- Image Principale -->
-                    <div class="form-group">
-                        <label>Image Principale (Devant)</label>
-                        <div id="upload_widget_front" class="upload-zone">
-                            <p>Cliquez ou glissez la photo principale ici</p>
-                        </div>
-                        <input type="hidden" name="public_id" id="public_id">
-                        <input type="hidden" name="image_url" id="image_url">
-                    </div>
-
-                    <!-- Image Dos -->
-                    <div class="form-group">
-                        <label>Image Dos (Optionnel)</label>
-                        <div id="upload_widget_back" class="upload-zone">
-                            <p>Cliquez ou glissez la photo du dos ici</p>
-                        </div>
-                        <input type="hidden" name="public_id_dos" id="public_id_dos">
-                        <input type="hidden" name="image_dos_url" id="image_dos_url">   <!-- ← AJOUTÉ -->
-                    </div>
-
-                    <button type="submit" class="btn-gold">PUBLIER LA CRÉATION</button>
-                </form>
-            </div>
-
-            <div class="card-list">
-                <h3>Mes publications récentes</h3>
-                {% for creation in creations %}
-                <div class="creation-item">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        {% if creation.display_image %}
-                            <img src="{{ creation.display_image }}" alt="{{ creation.titre }}">
-                        {% endif %}
-                        <div class="creation-info">
-                            <h4>{{ creation.titre }}</h4>
-                            <p>{{ creation.prix }} FCFA</p>
-                        </div>
-                    </div>
-                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer cette œuvre ?');">
+            <div class="dashboard-grid">
+                <section class="card">
+                    <h2>Ajouter une création</h2>
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <button type="submit" style="background:none;border:none;color:#ff6b6b;cursor:pointer;font-size:0.75rem;">Supprimer</button>
+                        <div class="form-group">
+                            <label>Nom de la création</label>
+                            <input type="text" name="titre" placeholder="Ex: Kimono Impérial" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Prix (FCFA)</label>
+                            <input type="number" name="prix" placeholder="15000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="biographie" rows="3" placeholder="Détails sur le tissu, la coupe..."></textarea>
+                        </div>
+
+                        <div class="upload-grid">
+                            <div class="upload-box" onclick="document.getElementById('img_face').click()">
+                                <span>Image Face (Requis)</span>
+                                <input type="file" id="img_face" name="display_image" style="display:none;" required>
+                            </div>
+                            <div class="upload-box" onclick="document.getElementById('img_dos').click()">
+                                <span>Image Dos (Optionnel)</span>
+                                <input type="file" id="img_dos" name="display_image_dos" style="display:none;">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit">PUBLIER LA CRÉATION</button>
                     </form>
-                </div>
-                {% empty %}
-                <p style="color:#aaa; font-style:italic;">Vous n'avez pas encore publié de créations.</p>
-                {% endfor %}
+                </section>
+
+                <section class="card">
+                    <h2>Mes Publications</h2>
+                    {% for produit in creations %}
+                    <div class="pub-item">
+                        <img src="{{ produit.display_image.url }}" class="pub-img">
+                        <div class="pub-info">
+                            <h4>{{ produit.titre }}</h4>
+                            <p>{{ produit.prix }} FCFA</p>
+                        </div>
+                        <form action="{% url 'supprimer_creation' produit.id %}" method="POST" style="margin-left:auto;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:0.7rem;">Supprimer</button>
+                        </form>
+                    </div>
+                    {% empty %}
+                    <p style="font-size: 0.8rem; color: #999;">Aucune publication pour le moment.</p>
+                    {% endfor %}
+                </section>
             </div>
-        </div>
+        </main>
     </div>
 
-    <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
-    <script>
-        const cloudName = 'dgqjazpwu';
-
-        const widgetFront = cloudinary.createUploadWidget({
-            cloudName: cloudName,
-            uploadPreset: 'sage_empire_preset',
-            cropping: true,
-            folder: 'creations'
-        }, (error, result) => {
-            if (result && result.event === "success") {
-                document.getElementById('public_id').value = result.info.public_id;
-                document.getElementById('image_url').value = result.info.secure_url;
-                document.getElementById('upload_widget_front').innerHTML = `<p style="color:#B5935E;">✓ Image principale chargée</p>`;
-            }
-        });
-
-        const widgetBack = cloudinary.createUploadWidget({
-            cloudName: cloudName,
-            uploadPreset: 'sage_empire_preset',
-            cropping: true,
-            folder: 'creations'
-        }, (error, result) => {
-            if (result && result.event === "success") {
-                document.getElementById('public_id_dos').value = result.info.public_id;
-                document.getElementById('image_dos_url').value = result.info.secure_url;   <!-- ← AJOUTÉ -->
-                document.getElementById('upload_widget_back').innerHTML = `<p style="color:#B5935E;">✓ Image dos chargée</p>`;
-            }
-        });
-
-        document.getElementById('upload_widget_front').addEventListener('click', () => widgetFront.open());
-        document.getElementById('upload_widget_back').addEventListener('click', () => widgetBack.open());
-    </script>
 </body>
 </html>
