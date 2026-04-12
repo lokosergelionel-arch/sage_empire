@@ -182,6 +182,63 @@
             color: var(--gold);
             font-weight: bold;
         }
+
+        /* --- OPTIMISATION DASHBOARD MOBILE --- */
+@media (max-width: 768px) {
+    /* On change la structure globale : tout passe en une seule colonne */
+    .dashboard-container {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 10px !important;
+    }
+
+    /* Le menu latéral passe en haut et s'affiche sur une ligne */
+    .sidebar {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 15px !important;
+        margin-bottom: 20px;
+    }
+
+    /* On aligne les liens du menu horizontalement pour gagner de la place */
+    .sidebar-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .sidebar-menu a {
+        font-size: 0.75rem !important;
+        padding: 8px !important;
+    }
+
+    /* La zone de contenu prend 100% de la largeur */
+    .main-content {
+        padding: 10px !important;
+    }
+
+    /* Les deux colonnes (Formulaire et Publications) s'empilent */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important; /* Une seule colonne */
+        gap: 30px !important;
+    }
+
+    /* On ajuste les champs du formulaire pour qu'ils soient faciles à cliquer */
+    input, textarea, .upload-zone {
+        font-size: 16px !important; /* Évite le zoom auto de l'iPhone */
+    }
+
+    .upload-zone {
+        height: 150px !important;
+    }
+
+    /* Titres plus adaptés au mobile */
+    h2, .welcome-text {
+        font-size: 1.2rem !important;
+        text-align: center;
+    }
+}
     </style>
 </head>
 <body>
