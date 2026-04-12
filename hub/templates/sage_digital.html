@@ -45,13 +45,28 @@
             font-weight: 400;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 80px 5%; }
+        /* Bannière Pleine Largeur */
+        .service-banner-container {
+            width: 100%;
+            background: var(--dark);
+            overflow: hidden;
+        }
+        .service-banner-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 500px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
 
         /* Grid Services */
         .digital-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
+            margin-top: 40px;
         }
 
         .digital-card {
@@ -156,31 +171,35 @@
     </section>
 
     <div class="service-banner-container">
-        <img src="{% static 'images/sage_digital_banner.jpg' %}" alt="Expertise Sage Digital" class="img-fluid">
-</div>
-      <div class="service-content-container">
-        <h3>FORMATIONS ÉLITES</h3>
-        <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
-        <ul>
-          <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
-          <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
-          <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
-          <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
-        </ul>
-      </div>
+        <img src="{% static 'images/sage_digital_banner.jpg' %}" alt="Expertise Sage Digital">
+    </div>
 
-      <div class="digital-card">
-        <h3>CRÉATION SUR-MESURE</h3>
-        <p>Une présence digitale propulsée par des technologies de pointe :</p>
-        <ul>
-          <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
-          <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
-          <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
-          <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
-        </ul>
-      </div>
+    <div class="container">
+        <div class="digital-grid">
+            <div class="digital-card">
+                <h3>FORMATIONS ÉLITES</h3>
+                <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
+                <ul>
+                    <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
+                    <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
+                    <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
+                    <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
+                </ul>
+            </div>
 
-      <div class="web-factory">
+            <div class="digital-card">
+                <h3>CRÉATION SUR-MESURE</h3>
+                <p>Une présence digitale propulsée par des technologies de pointe :</p>
+                <ul>
+                    <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
+                    <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
+                    <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
+                    <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="web-factory">
             <h2>VOTRE PROJET WEB</h2>
             <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
             <span class="price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
