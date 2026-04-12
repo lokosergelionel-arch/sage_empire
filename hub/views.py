@@ -143,7 +143,7 @@ def edit_profil(request):
         form = EditProfilForm(instance=styliste)
 
     # On garde cette ligne pour afficher la page si on n'a pas encore validé
-    return render(request, 'hub/edit_profil.html', {
+    return render(request, 'edit_profil.html', {
         'form': form,
         'styliste': styliste
     })
