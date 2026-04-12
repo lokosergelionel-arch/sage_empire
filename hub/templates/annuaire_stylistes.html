@@ -155,7 +155,7 @@
             <div class="profil-img-container">
     {% if styliste.photo_profil %}
         {# Si le styliste a une photo, on l'affiche #}
-        <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+        <img src="{{ styliste.get_photo_url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
     {% else %}
         {# Sinon, on génère un bel avatar avec ses initiales #}
         <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" class="profil-img" alt="{{ styliste.nom_marque }}">

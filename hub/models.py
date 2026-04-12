@@ -10,6 +10,15 @@ class ProfilStyliste(models.Model):
     photo_profil = models.ImageField(upload_to='profils/', null=True, blank=True)
     biographie = models.TextField(blank=True)
 
+    @property
+    def get_photo_url(self):
+        if self.photo_profil:
+            try:
+                return self.photo_profil.url
+            except:
+                return f"https://ui-avatars.com/api/?name={self.nom_marque}&background=f9f8f6&color=b5935e"
+        return f"https://ui-avatars.com/api/?name={self.nom_marque}&background=f9f8f6&color=b5935e"
+
     def __str__(self):
         return self.nom_marque
 
