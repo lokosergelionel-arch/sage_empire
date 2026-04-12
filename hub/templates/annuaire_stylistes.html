@@ -153,16 +153,18 @@
         {% for styliste in stylistes %}
         <div class="card">
             <div class="profil-img-container">
-                {% if styliste.photo_profil %}
-                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
-                {% else %}
-                    <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e&size=512" class="initials-fallback" alt="Profil">
-                {% endif %}
+    {% if styliste.photo_profil %}
+        {# Si le styliste a une photo, on l'affiche #}
+        <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+    {% else %}
+        {# Sinon, on génère un bel avatar avec ses initiales #}
+        <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" class="profil-img" alt="{{ styliste.nom_marque }}">
+    {% endif %}
 
-                <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
-                    ENTRER DANS L'UNIVERS
-                </a>
-            </div>
+    <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
+        ENTRER DANS L'UNIVERS
+    </a>
+</div>
 
             <div class="card-content">
                 <h3>{{ styliste.nom_marque }}</h3>
