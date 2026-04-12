@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | {{ styliste.nom_marque }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #D4AF37;
             --dark: #1A1A1A;
             --light: #F8F6F3;
+            --border: #E5E2DA;
         }
 
         * { box-sizing: border-box; }
@@ -24,202 +25,183 @@
             line-height: 1.6;
         }
 
-        header {
-            padding: 80px 20px 50px;
+        /* --- BLOC PROFIL (AJOUTÉ) --- */
+        .profile-header {
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 60px 5%;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--gold);
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .brand {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinzel', serif;
             font-size: 2.2rem;
             letter-spacing: 4px;
-            margin: 0 0 8px 0;
-            color: var(--dark);
-        }
-
-        .tagline {
-            font-size: 0.95rem;
-            color: #666;
-            letter-spacing: 2px;
+            margin: 0 0 10px;
             text-transform: uppercase;
         }
 
+        .bio {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        /* --- GRILLE PORTFOLIO --- */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 40px 15px 80px;
-            max-width: 1200px;
+            gap: 30px;
+            padding: 50px 5%;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
         .product-card {
             background: white;
-            border-radius: 12px;
+            border: 1px solid var(--border);
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.4s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            transition: 0.4s ease;
         }
 
         .product-image-wrapper {
             position: relative;
-            height: 580px;
+            height: 450px;
             overflow: hidden;
             cursor: zoom-in;
-            background: #000;
         }
 
         .product-image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
         }
 
-        .product-card:hover img { transform: scale(1.08); }
-
-        .img-back {
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .product-card:hover .img-front { opacity: 0; }
-        .product-card:hover .img-back { opacity: 1; }
-
-        .product-info {
-            padding: 18px 14px;
-            text-align: center;
-        }
-
-        .product-info h3 {
-            font-size: 1.05rem;
-            margin: 0 0 8px 0;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-        }
-
-        .price {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin: 8px 0 16px;
-        }
+        .product-info { padding: 20px; text-align: center; }
+        .product-info h3 { font-family: 'Cinzel', serif; font-size: 1rem; margin-bottom: 10px; }
+        .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; }
 
         .btn-commander {
             background: var(--dark);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px;
             width: 100%;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 1px;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
-        .btn-commander:hover {
-            background: var(--gold);
-            color: black;
-        }
+        .btn-commander:hover { background: var(--gold); }
 
-        /* Lightbox */
+        /* --- LIGHTBOX (CORRIGÉE : ÉLÉMENTS EN COLONNE) --- */
         #lightbox {
             display: none;
             position: fixed;
             z-index: 2000;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
+            flex-direction: column; /* Force l'alignement vertical */
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
         #lightbox img#main-image {
-            max-width: 100%;
-            max-height: 75vh;
-            border-radius: 12px;
-            border: 6px solid white;
+            max-width: 90%;
+            max-height: 70vh; /* Laisse de la place en bas pour les miniatures */
+            border: 4px solid white;
+            border-radius: 4px;
+            margin-bottom: 20px; /* Espace entre l'image et les miniatures */
         }
 
         .zoom-controls {
-            margin-top: 20px;
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
         }
 
         .thumb {
-            width: 65px;
-            height: 85px;
+            width: 60px;
+            height: 80px;
             object-fit: cover;
-            border: 3px solid #fff;
-            border-radius: 6px;
+            border: 2px solid rgba(255,255,255,0.5);
             cursor: pointer;
-            opacity: 0.7;
+            transition: 0.3s;
         }
 
-        .thumb.active, .thumb:hover {
-            opacity: 1;
-            border-color: var(--gold);
-        }
+        .thumb.active { border-color: var(--gold); transform: scale(1.1); }
 
-        .back-link {
-            display: block;
-            text-align: center;
-            margin: 30px 0 50px;
-            color: #777;
-            text-decoration: none;
-            font-size: 0.95rem;
+        .back-link { display: block; text-align: center; padding: 40px; text-decoration: none; color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .product-image-wrapper { height: 300px; }
+            .brand { font-size: 1.5rem; }
         }
 
         @media (max-width: 480px) {
-            .portfolio-grid { gap: 16px; padding: 25px 12px 60px; }
-            .product-image-wrapper { height: 280px; }
+            .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <header class="profile-header">
+        <div class="profile-img-container">
+            {% if styliste.photo_profil %}
+                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}">
+            {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=F9F8F6&color=B5935E" alt="{{ styliste.nom_marque }}">
+            {% endif %}
+        </div>
         <h1 class="brand">{{ styliste.nom_marque }}</h1>
-        <p class="tagline">L'EXCELLENCE À VOTRE MESURE</p>
+        <p class="bio">
+            {% if styliste.biographie %}
+                {{ styliste.biographie }}
+            {% else %}
+                L'excellence à votre mesure.
+            {% endif %}
+        </p>
     </header>
 
     <div class="portfolio-grid">
         {% for produit in creations %}
         <div class="product-card">
             <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
-                {% if produit.display_image %}
-                    <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
-                {% endif %}
-                {% if produit.display_image_dos %}
-                    <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} - dos">
-                {% endif %}
+                <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
             </div>
 
             <div class="product-info">
                 <h3>{{ produit.titre }}</h3>
                 <p class="price">{{ produit.prix }} FCFA</p>
-                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre }}', '_blank')"
+                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par le modèle {{ produit.titre }}', '_blank')"
                         class="btn-commander">
-                    COMMANDER
+                    COMMANDER VIA WHATSAPP
                 </button>
             </div>
         </div>
         {% empty %}
-        <p style="grid-column: 1 / -1; padding: 60px 20px; color: #888;">
+        <p style="grid-column: 1 / -1; text-align: center; padding: 60px; color: #888;">
             Aucune création disponible pour le moment.
         </p>
         {% endfor %}
@@ -227,10 +209,10 @@
 
     <a href="{% url 'home' %}" class="back-link">← Retour à l'accueil</a>
 
-    <!-- Lightbox -->
     <div id="lightbox" onclick="closeZoom(event)">
         <img id="main-image" src="" alt="Zoom">
-        <div class="zoom-controls" id="zoom-thumbs"></div>
+        <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()">
+            </div>
     </div>
 
     <script>
