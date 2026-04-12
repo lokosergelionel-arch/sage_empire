@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAGE EMPIRE | Marketplace</title>
+    <title>SAGE EMPIRE | Annuaire des Créateurs</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,115 +21,120 @@
         .nav-logo { height: 40px; }
         .back-home { text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
 
-        header { padding: 80px 5% 40px; text-align: center; }
-        header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; }
-        .subtitle { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px; }
+        header { padding: 60px 5% 20px; text-align: center; }
+        header h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; }
+        .subtitle { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
 
-        /* --- NOUVELLE GRILLE VERTICALE (3 PAR LIGNE SUR PC) --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* S'adapte au nombre de cartes */
-            gap: 40px; /* Espace généreux entre les stylistes */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
             padding: 40px 8% 100px;
-            max-width: 1400px; /* Plus large pour la grille */
+            max-width: 1300px;
             margin: 0 auto;
-            justify-content: center; /* Centre les cartes */
         }
 
-        /* --- LA CARTE DEVIENT VERTICALE, PLUS COMPACTE --- */
         .card {
             background: var(--white);
             display: flex;
-            flex-direction: column; /* Organise photo puis texte verticalement */
+            flex-direction: column;
             border: 1px solid var(--border);
             transition: 0.4s ease;
             position: relative;
             overflow: hidden;
-            border-radius: 0;
         }
 
         .card:hover {
             border-color: var(--gold);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(181, 147, 94, 0.1);
         }
 
-        /* --- BLOC PHOTO AVEC PROPORTIONS RESPECTÉES (Point 1 corrigé) --- */
+        /* --- CONTENEUR IMAGE CORRIGÉ --- */
         .profil-img-container {
             width: 100%;
-            height: auto; /* La hauteur s'adapte à l'image */
-            max-height: 500px; /* Limite pour ne pas être géant, mais respecte proportions */
-            margin: 0;
+            height: 350px; /* Hauteur fixe pour l'unité de la grille */
             overflow: hidden;
-            background: #f0f0f0;
-            position: relative; /* Pour positionner le bouton */
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
         }
 
         .profil-img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Remplit le cadre, mais respecte les proportions si possible */
+            object-fit: contain; /* Respecte le logo rectangulaire sans l'écraser */
+            padding: 20px; /* Marge interne pour que le logo respire */
             transition: transform 0.6s ease;
         }
 
+        /* Effet de zoom léger au survol */
         .card:hover .profil-img {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
-        /* --- LE BOUTON RESTE COLLÉ SOUS LA PHOTO --- */
+        /* Image de remplacement (initiales) si pas de photo */
+        .initials-fallback {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .btn-portfolio {
             display: block;
             text-decoration: none;
             color: var(--white);
-            background: rgba(26, 26, 26, 0.95); /* Plus subtil sur photo */
+            background: var(--charcoal);
             font-size: 0.7rem;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: bold;
             padding: 15px 0;
             text-align: center;
             transition: 0.3s;
-            border: none;
-            position: absolute; /* Placé en bas de la photo */
+            position: absolute;
             bottom: 0; left: 0; right: 0;
+            opacity: 0;
+            transform: translateY(100%);
         }
 
-        .btn-portfolio:hover {
-            background: var(--gold);
+        .card:hover .btn-portfolio {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* --- BLOC CONTENU (Point 2 corrigé) --- */
+        .btn-portfolio:hover { background: var(--gold); }
+
         .card-content {
-            padding: 25px; /* Plus compact pour la grille */
+            padding: 25px;
+            text-align: center;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            text-align: center; /* Centre les textes pour la grille */
+            justify-content: center;
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.1rem; /* Titre plus adapté à la grille */
-            letter-spacing: 3px;
-            margin: 0 0 15px; /* Nom en haut du bloc */
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin: 0 0 12px;
             text-transform: uppercase;
             color: var(--charcoal);
         }
 
-        /* --- LA BIOGRAPHIE RESTE SOUS LE NOM --- */
         .card p {
             font-size: 0.85rem;
             color: #777;
-            line-height: 1.6;
-            margin-bottom: 0; /* Pas d'espace après la bio */
+            line-height: 1.5;
+            margin: 0;
             font-style: italic;
-            position: relative;
-            padding-left: 0; /* Plus de barre dorée pour ne pas surcharger la grille */
         }
 
-        /* On enlève la barre dorée pour cette grille */
-        .card p::before { display: none; }
-
-        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; }
+        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; font-family: 'Cinzel'; }
     </style>
 </head>
 <body>
@@ -151,7 +156,7 @@
                 {% if styliste.photo_profil %}
                     <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
                 {% else %}
-                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc;">SAGE</div>
+                    <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e&size=512" class="initials-fallback" alt="Profil">
                 {% endif %}
 
                 <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-portfolio">
@@ -161,12 +166,13 @@
 
             <div class="card-content">
                 <h3>{{ styliste.nom_marque }}</h3>
-
-                {% if styliste.biographie %}
-                    <p>{{ styliste.biographie|truncatewords:20 }}</p>
-                {% else %}
-                    <p style="color: #bbb; font-style: italic;">Bienvenue dans mon univers.</p>
-                {% endif %}
+                <p>
+                    {% if styliste.biographie %}
+                        {{ styliste.biographie|truncatewords:15 }}
+                    {% else %}
+                        Bienvenue dans mon univers créatif.
+                    {% endif %}
+                </p>
             </div>
         </div>
         {% empty %}
