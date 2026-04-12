@@ -1,7 +1,5 @@
 from django import forms
 from .models import ProfilStyliste, Creation
-from .models import Styliste
-
 
 class InscriptionStylisteForm(forms.ModelForm):
     username = forms.CharField(label="Nom d'utilisateur")
