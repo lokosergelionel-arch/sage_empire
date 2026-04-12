@@ -192,6 +192,7 @@
 
         <nav>
             <a href="{% url 'dashboard_styliste' %}" class="nav-link" style="color: var(--gold);">Tableau de bord</a>
+            <a href="{% url 'edit_profil' %}" class="nav-link">Paramètres du profil</a>
             {% if user.profil %}
                 <a href="{% url 'portfolio_styliste' styliste_id=user.profil.id %}" class="nav-link">Voir mon Portfolio</a>
             {% else %}
@@ -208,12 +209,14 @@
 
     <div class="main-content">
         <div class="header-dash">
-            <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
-            <div class="profile-snap">
-                <span style="font-size: 0.8rem; color: #888;">Profil Actif</span>
-                {% if styliste.photo_profil %}
-                    <img src="{{ styliste.photo_profil.url }}" alt="Profil">
-                {% endif %}
+    <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
+    <div class="profile-snap" style="display: flex; align-items: center; gap: 15px;">
+        <a href="{% url 'edit_profil' %}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 0.75rem; color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; text-transform: uppercase;">Modifier le profil</span>
+            {% if styliste.photo_profil %}
+                <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold);">
+            {% endif %}
+        </a>
             </div>
         </div>
 

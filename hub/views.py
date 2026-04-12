@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from .forms import EditProfilForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import ProfilStyliste, Creation, Immobilier, Event
@@ -123,3 +124,26 @@ def login_view(request):
 
 def sage_digital(request):
     return render(request, 'sage_digital.html')
+
+
+@login_required
+def edit_profil(request):
+    # On récupère le profil du styliste
+    styliste = Styliste.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        # Si le formulaire est envoyé
+        form = EditProfilForm(request.POST, request.FILES, instance=styliste)
+        if form.is_valid():
+            form.save()
+            # C'est ICI qu'on redirige vers le dashboard après l'enregistrement
+            return redirect('dashboard_styliste')
+    else:
+        # Si on arrive juste sur la page (méthode GET)
+        form = EditProfilForm(instance=styliste)
+
+    # On garde cette ligne pour afficher la page si on n'a pas encore validé
+    return render(request, 'hub/edit_profil.html', {
+        'form': form,
+        'styliste': styliste
+    })

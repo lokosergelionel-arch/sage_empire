@@ -37,3 +37,23 @@ class CreationForm(forms.ModelForm):
             'prix': forms.NumberInput(attrs={'class': 'form-control'}),
             'disponible': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+
+class EditProfilForm(forms.ModelForm):
+    class Meta:
+        model = Styliste
+        # On ajoute 'nom_marque' ici
+        fields = ['nom_marque', 'photo_profil', 'biographie', 'contact_whatsapp']
+
+        widgets = {
+            'nom_marque': forms.TextInput(attrs={'placeholder': 'Nouveau nom de votre maison...'}),
+            'biographie': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Parlez de vos inspirations...'}),
+            'contact_whatsapp': forms.TextInput(attrs={'placeholder': 'Ex: 22891645869'}),
+        }
+
+        labels = {
+            'nom_marque': 'Nom de la Marque / Maison',
+            'photo_profil': 'Photo de Profil',
+            'biographie': 'Votre Univers / Biographie',
+            'contact_whatsapp': 'Numéro WhatsApp Pro',
+        }

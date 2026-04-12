@@ -17,6 +17,7 @@ urlpatterns = [
     # Administration
     path('admin/', admin.site.urls),
     path('digital/', views.sage_digital, name='sage_digital'),
+    path('profil/modifier/', views.edit_profil, name='edit_profil'),
 
     # Page d'accueil (Le Hub)
     path('', views.home, name='home'),
