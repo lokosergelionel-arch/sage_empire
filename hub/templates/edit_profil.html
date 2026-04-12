@@ -55,6 +55,29 @@
              padding: 10px; /* <--- AJOUTE UN PETIT ESPACE POUR RESPIRER */
         }
 
+        /* Le conteneur circulaire */
+.profile-image-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Garde la forme circulaire */
+    border: 2px solid #D4AF37; /* Ton doré */
+    overflow: hidden; /* Coupe ce qui dépasse du cercle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white; /* Fond blanc pour que le logo ressorte */
+    margin: 0 auto 20px;
+}
+
+/* L'image à l'intérieur */
+.profile-image-container img {
+    width: 100%;
+    height: 100%;
+    /* C'est ICI que la magie opère */
+    object-fit: contain;
+    padding: 10px; /* Donne de l'espace au logo pour ne pas toucher les bords */
+}
+
         form p { margin-bottom: 20px; }
 
         label {
@@ -112,13 +135,13 @@
 <div class="edit-container">
     <h2>Édition du Profil</h2>
 
-    <div class="current-avatar-wrapper">
-        {% if styliste.photo_profil %}
-            <img src="{{ styliste.photo_profil.url }}" class="current-avatar" alt="Photo actuelle">
-        {% else %}
-            <img src="{% static 'images/default-avatar.png' %}" class="current-avatar">
-        {% endif %}
-    </div>
+    <<div class="profile-image-container">
+    {% if styliste.photo_profil %}
+        <img src="{{ styliste.photo_profil.url }}" alt="Logo {{ styliste.nom_marque }}">
+    {% else %}
+        <img src="/static/images/default-avatar.png" alt="Photo par défaut">
+    {% endif %}
+</div>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
