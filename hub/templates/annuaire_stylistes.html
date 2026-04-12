@@ -25,6 +25,7 @@
         header h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 6px; text-transform: uppercase; margin: 0; }
         .subtitle { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
 
+        /* --- GRILLE PC --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -50,10 +51,9 @@
             box-shadow: 0 15px 40px rgba(181, 147, 94, 0.1);
         }
 
-        /* --- CONTENEUR IMAGE CORRIGÉ --- */
         .profil-img-container {
             width: 100%;
-            height: 350px; /* Hauteur fixe pour l'unité de la grille */
+            height: 350px;
             overflow: hidden;
             background: #fff;
             display: flex;
@@ -66,21 +66,9 @@
         .profil-img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Respecte le logo rectangulaire sans l'écraser */
-            padding: 20px; /* Marge interne pour que le logo respire */
+            object-fit: contain; /* Garde le format logo sur PC */
+            padding: 20px;
             transition: transform 0.6s ease;
-        }
-
-        /* Effet de zoom léger au survol */
-        .card:hover .profil-img {
-            transform: scale(1.05);
-        }
-
-        /* Image de remplacement (initiales) si pas de photo */
-        .initials-fallback {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .btn-portfolio {
@@ -99,6 +87,7 @@
             bottom: 0; left: 0; right: 0;
             opacity: 0;
             transform: translateY(100%);
+            z-index: 10;
         }
 
         .card:hover .btn-portfolio {
@@ -112,63 +101,63 @@
             padding: 25px;
             text-align: center;
             flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
             font-size: 1.1rem;
             letter-spacing: 2px;
-            margin: 0 0 12px;
-            text-transform: uppercase;
-            color: var(--charcoal);
-        }
-
-        .card p {
-            font-size: 0.85rem;
-            color: #777;
-            line-height: 1.5;
             margin: 0;
-            font-style: italic;
+            text-transform: uppercase;
         }
 
-       /* --- UNQUEMENT POUR LE TÉLÉPHONE --- */
-@media (max-width: 600px) {
-    .grid {
-        grid-template-columns: repeat(3, 1fr) !important; /* Force les 3 colonnes */
-        gap: 8px; /* Espace réduit pour gagner de la place */
-        padding: 20px 2%;
-    }
+        .card p { font-size: 0.85rem; color: #777; font-style: italic; }
 
-    .profil-img-container {
-        height: 100px; /* Hauteur réduite pour garder des proportions carrées/propres */
-    }
+        /* --- LE RÉGLAGE TÉLÉPHONE (3 COLONNES) --- */
+        @media (max-width: 600px) {
+            header { padding: 30px 5% 10px; }
+            header h1 { font-size: 1.2rem; letter-spacing: 2px; }
 
-    .card-content {
-        padding: 10px 5px; /* Moins d'espace autour du texte */
-    }
+            .grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 5px !important;
+                padding: 15px 2% !important;
+            }
 
-    .card h3 {
-        font-size: 0.6rem; /* Texte plus petit pour éviter qu'il ne saute de ligne */
-        letter-spacing: 1px;
-    }
+            .profil-img-container {
+                height: 110px !important;
+            }
 
-    .card p {
-        display: none; /* On cache la bio sur mobile pour ne pas surcharger la grille */
-    }
+            .profil-img {
+                padding: 0 !important;
+                object-fit: cover !important; /* Remplit la case pour un look propre sur mobile */
+            }
 
-    /* Bouton toujours visible sur mobile */
-    .btn-portfolio {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
-        font-size: 0.5rem;
-        padding: 8px 0;
-    }
-}
+            .card-content {
+                padding: 5px 2px !important;
+            }
 
-        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; font-family: 'Cinzel'; }
+            .card h3 {
+                font-size: 0.5rem !important;
+                letter-spacing: 0px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card p { display: none; }
+
+            .btn-portfolio {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                position: relative !important; /* Se place sous l'image */
+                font-size: 0.45rem !important;
+                padding: 6px 0 !important;
+                letter-spacing: 1px !important;
+            }
+        }
+
+        .empty-msg { text-align: center; color: #999; padding: 100px; grid-column: 1/-1; }
     </style>
 </head>
 <body>
