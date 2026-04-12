@@ -25,7 +25,6 @@
             line-height: 1.6;
         }
 
-        /* --- BLOC PROFIL (AJOUTÉ) --- */
         .profile-header {
             background: white;
             padding: 60px 5%;
@@ -81,9 +80,10 @@
             transition: 0.4s ease;
         }
 
+        /* --- RÉTABLISSEMENT DU ZOOM IN/OUT --- */
         .product-image-wrapper {
             position: relative;
-            height: 450px;
+            height: 500px;
             overflow: hidden;
             cursor: zoom-in;
         }
@@ -92,6 +92,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s ease; /* Fluidité du zoom */
+        }
+
+        .product-card:hover .img-front {
+            transform: scale(1.1); /* L'effet zoom in au survol */
         }
 
         .product-info { padding: 20px; text-align: center; }
@@ -112,14 +117,14 @@
 
         .btn-commander:hover { background: var(--gold); }
 
-        /* --- LIGHTBOX (CORRIGÉE : ÉLÉMENTS EN COLONNE) --- */
+        /* --- LIGHTBOX (Miniatures en bas) --- */
         #lightbox {
             display: none;
             position: fixed;
             z-index: 2000;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
-            flex-direction: column; /* Force l'alignement vertical */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -127,10 +132,10 @@
 
         #lightbox img#main-image {
             max-width: 90%;
-            max-height: 70vh; /* Laisse de la place en bas pour les miniatures */
+            max-height: 70vh;
             border: 4px solid white;
             border-radius: 4px;
-            margin-bottom: 20px; /* Espace entre l'image et les miniatures */
+            margin-bottom: 20px;
         }
 
         .zoom-controls {
@@ -145,22 +150,20 @@
             object-fit: cover;
             border: 2px solid rgba(255,255,255,0.5);
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .thumb.active { border-color: var(--gold); transform: scale(1.1); }
+        .thumb.active { border-color: var(--gold); }
 
-        .back-link { display: block; text-align: center; padding: 40px; text-decoration: none; color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+        .back-link { display: block; text-align: center; padding: 40px; text-decoration: none; color: #888; text-transform: uppercase; font-size: 0.8rem; }
 
-        /* --- RESPONSIVE MOBILE --- */
+        /* --- CORRECTIF MOBILE : RETOUR AU MODE HORIZONTAL (2 COLONNES) --- */
         @media (max-width: 768px) {
-            .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .product-image-wrapper { height: 300px; }
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr) !important; /* Force l'horizontal */
+                gap: 15px;
+            }
+            .product-image-wrapper { height: 250px; }
             .brand { font-size: 1.5rem; }
-        }
-
-        @media (max-width: 480px) {
-            .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -175,13 +178,7 @@
             {% endif %}
         </div>
         <h1 class="brand">{{ styliste.nom_marque }}</h1>
-        <p class="bio">
-            {% if styliste.biographie %}
-                {{ styliste.biographie }}
-            {% else %}
-                L'excellence à votre mesure.
-            {% endif %}
-        </p>
+        <p class="bio">{{ styliste.biographie|default:"L'excellence à votre mesure." }}</p>
     </header>
 
     <div class="portfolio-grid">
@@ -190,29 +187,22 @@
             <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
                 <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
             </div>
-
             <div class="product-info">
                 <h3>{{ produit.titre }}</h3>
                 <p class="price">{{ produit.prix }} FCFA</p>
-                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par le modèle {{ produit.titre }}', '_blank')"
-                        class="btn-commander">
-                    COMMANDER VIA WHATSAPP
+                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour, je souhaite commander : {{ produit.titre }}', '_blank')" class="btn-commander">
+                    COMMANDER
                 </button>
             </div>
         </div>
-        {% empty %}
-        <p style="grid-column: 1 / -1; text-align: center; padding: 60px; color: #888;">
-            Aucune création disponible pour le moment.
-        </p>
         {% endfor %}
     </div>
 
-    <a href="{% url 'home' %}" class="back-link">← Retour à l'accueil</a>
+    <a href="{% url 'home' %}" class="back-link">← Accueil</a>
 
     <div id="lightbox" onclick="closeZoom(event)">
         <img id="main-image" src="" alt="Zoom">
-        <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()">
-            </div>
+        <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()"></div>
     </div>
 
     <script>
@@ -220,17 +210,11 @@
             const lightbox = document.getElementById('lightbox');
             const mainImg = document.getElementById('main-image');
             const thumbs = document.getElementById('zoom-thumbs');
-
             mainImg.src = frontUrl;
-            thumbs.innerHTML = '';
-
-            let html = `<img src="${frontUrl}" class="thumb active" onclick="switchImage(this, '${frontUrl}')">`;
-
-            if (backUrl && backUrl !== 'None' && backUrl !== 'null' && backUrl !== '') {
-                html += `<img src="${backUrl}" class="thumb" onclick="switchImage(this, '${backUrl}')">`;
+            thumbs.innerHTML = `<img src="${frontUrl}" class="thumb active" onclick="switchImage(this, '${frontUrl}')">`;
+            if (backUrl && backUrl !== 'None' && backUrl !== '') {
+                thumbs.innerHTML += `<img src="${backUrl}" class="thumb" onclick="switchImage(this, '${backUrl}')">`;
             }
-
-            thumbs.innerHTML = html;
             lightbox.style.display = 'flex';
         }
 
