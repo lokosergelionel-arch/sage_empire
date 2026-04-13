@@ -24,7 +24,7 @@
             color: var(--charcoal);
         }
 
-        /* ==================== SIDEBAR ==================== */
+        /* Sidebar - Desktop */
         .sidebar {
             width: 260px;
             background: var(--charcoal);
@@ -40,7 +40,7 @@
         .sidebar h2 {
             font-family: 'Cinzel', serif;
             text-align: center;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
 
@@ -49,7 +49,6 @@
             color: var(--gold);
             font-size: 0.75rem;
             letter-spacing: 2px;
-            margin-bottom: 40px;
         }
 
         .nav-link {
@@ -59,16 +58,15 @@
             padding: 12px 15px;
             margin: 8px 0;
             border-radius: 8px;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            font-size: 0.92rem;
         }
 
         .nav-link:hover, .nav-link.active {
-            background: rgba(181, 147, 94, 0.2);
+            background: rgba(181, 147, 94, 0.25);
             color: var(--gold);
         }
 
-        /* ==================== MAIN CONTENT ==================== */
+        /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 40px 5%;
@@ -79,7 +77,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             background: white;
             padding: 20px 30px;
             border-radius: 12px;
@@ -88,22 +86,21 @@
 
         .header h1 {
             font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
         }
 
         .card {
             background: white;
             border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-            margin-bottom: 30px;
+            padding: 28px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
             margin-bottom: 25px;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
         }
 
         label {
@@ -128,16 +125,15 @@
         .btn-upload, .btn-submit {
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
+            margin: 12px 0;
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            letter-spacing: 1px;
             cursor: pointer;
         }
 
         .btn-upload { background: #333; color: white; }
-        .btn-submit { background: var(--gold); color: white; font-size: 1rem; }
+        .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
 
         .creation-item {
             display: flex;
@@ -148,148 +144,164 @@
         }
 
         .creation-item img {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             object-fit: cover;
             border-radius: 8px;
         }
 
-        /* ==================== MOBILE ==================== */
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 20px 15px 80px; }
-
-            .header {
-                padding: 15px 20px;
-                margin-bottom: 20px;
-            }
-
-            .card { padding: 20px; }
-
-            .creation-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
+        /* Grid - 2 colonnes même sur mobile */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
         }
 
-        /* Bottom nav sur mobile */
+        /* Mobile Optimisation */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px 15px 85px; }
+            .dash-grid { grid-template-columns: 1fr; }
+            .header { padding: 15px 20px; }
+            .card { padding: 20px; }
+        }
+
+        /* Bottom Navigation Mobile */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: var(--charcoal);
-            display: none;
+            display: flex;
             justify-content: space-around;
             padding: 12px 0 8px;
             z-index: 1000;
-        }
-
-        @media (max-width: 768px) {
-            .bottom-nav { display: flex; }
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
         }
 
         .nav-item {
             color: #ccc;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .nav-item.active { color: var(--gold); }
+        .nav-icon { font-size: 1.45rem; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Desktop -->
     <div class="sidebar">
         <h2>SAGE EMPIRE</h2>
         <p class="subtitle">ESPACE CRÉATEUR</p>
-
         <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
-        <form action="{% url 'logout' %}" method="post" style="margin-top: 50px;">
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 60px;">
             {% csrf_token %}
-            <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.9rem; cursor:pointer;">
+            <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.95rem; cursor:pointer;">
                 → Déconnexion
             </button>
         </form>
     </div>
 
     <div class="main-content">
-
         <div class="header">
             <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
             {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width:55px; height:55px; border-radius:50%; border:3px solid var(--gold);">
+                <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width:55px;height:55px;border-radius:50%;border:3px solid var(--gold);">
             {% endif %}
         </div>
 
-        <div class="card">
-            <h3>Ajouter une nouvelle œuvre</h3>
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <label>Nom de la création</label>
-                <input type="text" name="titre" required placeholder="Ex: Kimono Impérial">
-
-                <label>Prix (FCFA)</label>
-                <input type="number" name="prix" required placeholder="0">
-
-                <label>Description</label>
-                <textarea name="description" rows="4" placeholder="Décrivez votre création..."></textarea>
-
-                <label>Image Principale (Devant)</label>
-                <button type="button" id="upload-front" class="btn-upload">Choisir une image (Devant)</button>
-                <input type="hidden" name="image_url" id="image_url">
-
-                <label>Image Dos (Optionnel)</label>
-                <button type="button" id="upload-back" class="btn-upload">Choisir une image (Dos)</button>
-                <input type="hidden" name="image_dos_url" id="image_dos_url">
-
-                <button type="submit" class="btn-submit">Publier la création</button>
-            </form>
-        </div>
-
-        <div class="card">
-            <h3>Mes publications récentes</h3>
-            {% for creation in creations %}
-            <div class="creation-item">
-                {% if creation.image_url %}
-                    <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
-                {% endif %}
-                <div>
-                    <strong>{{ creation.titre }}</strong><br>
-                    <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
-                </div>
-                <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
+        <div class="dash-grid">
+            <!-- Ajouter une œuvre -->
+            <div class="card">
+                <h3>Ajouter une œuvre</h3>
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
+                    <label>Nom de la création</label>
+                    <input type="text" name="titre" required placeholder="Ex: Kimono Impérial">
+
+                    <label>Prix (FCFA)</label>
+                    <input type="number" name="prix" required placeholder="0">
+
+                    <label>Description</label>
+                    <textarea name="description" rows="4" placeholder="Détails sur le tissu, la coupe..."></textarea>
+
+                    <label>Image (Devant)</label>
+                    <button type="button" id="upload-front" class="btn-upload">Choisir une image (Devant)</button>
+                    <input type="hidden" name="image_url" id="image_url">
+
+                    <label>Image (Dos - Optionnel)</label>
+                    <button type="button" id="upload-back" class="btn-upload">Choisir une image (Dos)</button>
+                    <input type="hidden" name="image_dos_url" id="image_dos_url">
+
+                    <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
-            {% empty %}
-            <p style="color:#888; font-style:italic; text-align:center; padding:30px 0;">
-                Vous n'avez pas encore publié de créations.
-            </p>
-            {% endfor %}
+
+            <!-- Mes publications récentes -->
+            <div class="card">
+                <h3>Mes publications récentes</h3>
+                {% for creation in creations %}
+                <div class="creation-item">
+                    {% if creation.image_url %}
+                        <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
+                    {% endif %}
+                    <div style="flex:1;">
+                        <strong>{{ creation.titre }}</strong><br>
+                        <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
+                    </div>
+                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
+                        {% csrf_token %}
+                        <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p style="color:#888; font-style:italic; text-align:center; padding:40px 0;">
+                    Vous n'avez pas encore publié de créations.
+                </p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation Mobile -->
+    <!-- Bottom Navigation - Mobile -->
     <div class="bottom-nav">
-        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">Dashboard</a>
-        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">Portfolio</a>
-        <a href="{% url 'home' %}" class="nav-item">Hub</a>
+        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
+            <span class="nav-icon">👕</span>
+            <span>Portfolio</span>
+        </a>
+        <a href="{% url 'home' %}" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>Hub</span>
+        </a>
+        <form action="{% url 'logout' %}" method="post" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="nav-item" style="background:none; border:none; color:#ccc; font-size:0.72rem;">
+                <span class="nav-icon">🚪</span>
+                <span>Déconnexion</span>
+            </button>
+        </form>
     </div>
 
     <script>
         function openCloudinaryWidget(isFront) {
             const widget = cloudinary.createUploadWidget({
-                cloudName: 'dgqjazpwu',        // ← À MODIFIER
-                uploadPreset: 'sage_empire_preset',  // ← À MODIFIER
+                cloudName: 'dgqjazpwu',
+                uploadPreset: 'sage_empire_preset',
                 cropping: true,
                 sources: ['local', 'camera']
             }, (error, result) => {
@@ -299,7 +311,7 @@
                     } else {
                         document.getElementById('image_dos_url').value = result.info.secure_url;
                     }
-                    alert("Image uploadée avec succès !");
+                    alert("Image chargée avec succès !");
                 }
             });
             widget.open();
