@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE EMPIRE | Mes Publications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #B5935E; --charcoal: #1A1A1A; --ivory: #F9F8F6; --border: #E5E2DA; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            padding-bottom: 20px;
+        }
+
+        .header {
+            background: var(--charcoal);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .header span {
+            color: var(--gold);
+            font-size: 0.85rem;
+        }
+
+        .container {
+            padding: 20px 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .creation-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .creation-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .creation-info {
+            padding: 20px;
+        }
+
+        .creation-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+
+        .price {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .btn-delete {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-back {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--charcoal);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        @media (min-width: 768px) {
+            .creations-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Mes Publications</h1>
+        <span>{{ styliste.nom_marque }}</span>
+    </div>
+
+    <div class="container">
+        {% if creations %}
+            <div class="creations-grid">
+                {% for creation in creations %}
+                <div class="creation-card">
+                    {% if creation.image_url %}
+                        <img src="{{ creation.image_url }}" alt="{{ creation.titre }}" class="creation-image">
+                    {% else %}
+                        <div style="height:250px; background:#ddd; display:flex; align-items:center; justify-content:center; color:#999;">
+                            Pas d'image
+                        </div>
+                    {% endif %}
+
+                    <div class="creation-info">
+                        <h3>{{ creation.titre }}</h3>
+                        <div class="price">{{ creation.prix }} FCFA</div>
+                        {% if creation.description %}
+                            <p class="description">{{ creation.description }}</p>
+                        {% endif %}
+
+                        <form action="{% url 'supprimer_creation' creation.id %}" method="post"
+                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette création ?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Vous n'avez pas encore publié de créations.</p>
+                <p style="margin-top:10px; font-size:0.9rem;">Retournez au tableau de bord pour ajouter votre première œuvre.</p>
+            </div>
+        {% endif %}
+
+        <a href="{% url 'dashboard_styliste' %}" class="btn-back">← Retour au Tableau de bord</a>
+    </div>
+
+</body>
+</html>
