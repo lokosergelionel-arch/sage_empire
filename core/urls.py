@@ -26,6 +26,7 @@ urlpatterns = [
     path('rejoindre/', views.inscription_styliste, name='inscription_styliste'),
     path('mon-espace/', views.dashboard_styliste, name='dashboard_styliste'),
     path('supprimer-creation/<int:creation_id>/', views.supprimer_creation, name='supprimer_creation'),
+    path('mes-publications/', views.mes_publications, name='mes_publications'),
 
     # Services de l'Empire
     path('immobilier/', views.page_immobilier, name='immobilier'),

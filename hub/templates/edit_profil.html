@@ -5,171 +5,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAGE EMPIRE | Modifier mon Profil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ivory: #F9F8F6;
-            --charcoal: #1A1A1A;
             --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
             --border: #E5E2DA;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--ivory);
-            margin: 0;
-            padding: 40px 5%;
-            display: flex;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            padding: 20px 15px;
+            min-height: 100vh;
         }
 
         .edit-container {
+            max-width: 600px;
+            margin: 0 auto;
             background: white;
-            padding: 40px;
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 550px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-        }
-
-        h2 {
-            font-family: 'Cinzel', serif;
-            text-align: center;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        /* Le conteneur circulaire optimisé */
-        .profile-image-container {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white; /* Fond blanc pour les logos transparents */
-            margin: 0 auto 30px;
         }
 
-        /* L'image à l'intérieur : ne sera jamais écrasée */
-        .profile-image-container img {
-            width: 90%;
-            height: 90%;
-            object-fit: contain; /* Garde les proportions du rectangle dans le cercle */
+        .edit-header {
+            background: var(--charcoal);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
         }
 
-        form p { margin-bottom: 20px; }
+        .edit-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .profile-preview {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid var(--gold);
+            overflow: hidden;
+            margin: 20px auto;
+            background: #f0f0f0;
+        }
+
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 30px 25px;
+        }
 
         label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--gold);
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 8px;
         }
 
-        /* Style des champs pour rester dans l'esprit luxe */
-        input[type="text"],
-        input[type="number"],
-        input[type="file"],
-        textarea,
-        select {
+        input[type="text"], textarea {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: 1px solid var(--border);
+            border-radius: 8px;
             background: var(--ivory);
-            box-sizing: border-box;
-            font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            margin-bottom: 20px;
         }
 
-        /* Style spécifique pour le bouton de fichier */
-        input[type="file"] {
-            background: white;
+        textarea { min-height: 100px; resize: vertical; }
+
+        .btn-upload {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #333;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            margin: 15px 0 25px;
             cursor: pointer;
+            font-weight: 500;
         }
 
         .btn-save {
             width: 100%;
-            padding: 18px;
-            background: var(--charcoal);
+            padding: 16px;
+            background: var(--gold);
             color: white;
             border: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: 0.3s;
             margin-top: 10px;
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
         }
-
-        .btn-save:hover { background: var(--gold); }
 
         .back-link {
             display: block;
             text-align: center;
             margin-top: 25px;
+            color: #777;
             text-decoration: none;
-            color: #888;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Erreurs de formulaire */
-        .errorlist {
-            color: #b22222;
-            list-style: none;
-            padding: 0;
-            font-size: 0.8rem;
-            margin-top: 5px;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 600px) {
-            .edit-container { padding: 25px 20px; }
-            h2 { font-size: 1.2rem; }
+            .content { padding: 25px 18px; }
         }
     </style>
 </head>
 <body>
 
 <div class="edit-container">
-    <h2>Édition du Profil</h2>
-
-    <div class="profile-image-container">
-        {% if styliste.photo_profil %}
-            <img src="{{ styliste.get_photo_url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
-        {% else %}
-            <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" alt="Profil">
-        {% endif %}
+    <div class="edit-header">
+        <h2>Modifier mon Profil</h2>
     </div>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div class="content">
+        <!-- Photo Preview -->
+        <div class="profile-preview">
+            {% if styliste.photo_profil %}
+                <img src="{{ styliste.photo_profil.url }}" alt="Photo de profil">
+            {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=f9f8f6&color=b5935e" alt="Photo de profil">
+            {% endif %}
+        </div>
 
-        {% for field in form %}
-            <p>
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    {{ field.errors }}
-                {% endif %}
-                {% if field.help_text %}
-                    <small style="color: #999; display: block; mt-1;">{{ field.help_text }}</small>
-                {% endif %}
-            </p>
-        {% endfor %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <button type="submit" class="btn-save">Mettre à jour mon profil</button>
-    </form>
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <small style="color:#e74c3c;">{{ field.errors }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
 
-    <a href="{% url 'dashboard_styliste' %}" class="back-link">← ANNULER ET RETOURNER</a>
+            <button type="submit" class="btn-save">Enregistrer les modifications</button>
+        </form>
+
+        <a href="{% url 'dashboard_styliste' %}" class="back-link">← Retour au Tableau de bord</a>
+    </div>
 </div>
 
 </body>
