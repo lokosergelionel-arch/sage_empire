@@ -11,7 +11,6 @@
             --gold: #B5935E;
             --charcoal: #1A1A1A;
             --ivory: #F9F8F6;
-            --white: #ffffff;
             --border: #E5E2DA;
         }
 
@@ -31,112 +30,87 @@
             color: white;
             padding: 40px 20px;
             position: fixed;
-            top: 0;
-            left: 0;
-            box-sizing: border-box;
-            z-index: 100;
+            top: 0; left: 0;
         }
-
         .sidebar h2 {
             font-family: 'Cinzel';
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 20px;
-            letter-spacing: 2px;
+            font-size: 1.2rem;
             text-align: center;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 15px;
         }
-
         .nav-link {
             display: block;
             color: #aaa;
             text-decoration: none;
-            margin: 25px 0;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            transition: 0.3s;
         }
+        .nav-link:hover, .nav-link[style*="gold"] { color: var(--gold); }
 
-        .nav-link:hover { color: var(--gold); padding-left: 5px; }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            font-family: 'Lato';
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            padding: 0;
-            margin-top: 40px;
-        }
-
-        /* ==================== MAIN CONTENT (PC) ==================== */
-        .main-content {
-            margin-left: 260px;
-            padding: 60px 5%;
-            width: calc(100% - 260px);
-        }
-
-        .header-dash {
+        /* ==================== MOBILE TOP BAR ==================== */
+        .mobile-topbar {
+            background: var(--charcoal);
+            color: white;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 50px;
-            background: white;
-            padding: 20px 40px;
-            border: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 200;
         }
-
-        .header-dash h1 {
+        .mobile-topbar h2 {
             font-family: 'Cinzel';
-            font-size: 1.5rem;
-            margin: 0;
+            font-size: 1.1rem;
+        }
+        .mobile-topbar .subtitle {
+            color: var(--gold);
+            font-size: 0.75rem;
         }
 
-        .profile-snap {
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            padding: 20px 15px 100px;
+        }
+
+        .header-dash {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-        }
-
-        .profile-snap img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold);
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
         .dash-grid {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 40px;
-            align-items: start;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
-        .card-form {
+        .card-form, .card-list {
             background: white;
-            padding: 40px;
-            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
-        .card-form h3 {
+        .card-form h3, .card-list h3 {
             font-family: 'Cinzel';
-            font-size: 1rem;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            border-bottom: 1px solid var(--ivory);
-            padding-bottom: 10px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
-
-        .form-group { margin-bottom: 20px; }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.7rem;
+            margin: 15px 0 8px;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--gold);
@@ -145,17 +119,11 @@
 
         input, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: 1px solid var(--border);
+            border-radius: 8px;
             background: var(--ivory);
-            font-family: 'Lato';
-            box-sizing: border-box;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--gold);
-            background: white;
+            font-size: 1rem;
         }
 
         .btn-gold {
@@ -163,27 +131,12 @@
             background: var(--charcoal);
             color: white;
             border: none;
-            padding: 15px;
-            cursor: pointer;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            transition: 0.4s;
-        }
-
-        .btn-gold:hover { background: var(--gold); }
-
-        .card-list {
-            background: white;
-            padding: 40px;
-            border: 1px solid var(--border);
-        }
-
-        .card-list h3 {
-            font-family: 'Cinzel';
-            font-size: 1rem;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
         }
 
         .creation-item {
@@ -191,221 +144,93 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
-            border-bottom: 1px solid var(--ivory);
+            border-bottom: 1px solid var(--border);
         }
 
-        .creation-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
+        .creation-item:last-child { border-bottom: none; }
+
+        /* ==================== BOTTOM NAVIGATION ==================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--charcoal);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 5px;
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
 
-        .creation-info h4 { margin: 0; font-size: 0.9rem; }
-        .creation-info p {
-            margin: 5px 0 0;
-            font-size: 0.75rem;
-            color: var(--gold);
-            font-weight: bold;
+        .nav-item {
+            color: #ccc;
+            text-align: center;
+            font-size: 0.7rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
         }
 
-        /* ==================== MOBILE ==================== */
+        .nav-item.active { color: var(--gold); }
+
+        .nav-icon { font-size: 1.4rem; }
+
+        @media (min-width: 769px) {
+            .sidebar { display: block; }
+            .mobile-topbar, .bottom-nav { display: none; }
+            .main-content { margin-left: 260px; padding: 40px 5%; }
+        }
+
         @media (max-width: 768px) {
-
-            /* Cacher la sidebar sur mobile */
             .sidebar { display: none; }
-
-            /* Main content prend toute la largeur */
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding: 0 0 100px 0;
-            }
-
-            /* Header mobile */
-            .header-dash {
-                padding: 20px 16px;
-                margin-bottom: 20px;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .header-dash h1 {
-                font-size: 1.1rem;
-            }
-
-            /* Grid en colonne sur mobile */
-            .dash-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                padding: 0 16px;
-            }
-
-            /* Cards mobile */
-            .card-form, .card-list {
-                padding: 20px 16px;
-                border-radius: 12px;
-            }
-
-            .card-form h3, .card-list h3 {
-                font-size: 0.95rem;
-                margin-bottom: 20px;
-            }
-
-            /* Inputs plus grands sur mobile */
-            input, textarea {
-                padding: 14px;
-                font-size: 1rem;
-                border-radius: 8px;
-            }
-
-            .btn-gold {
-                padding: 16px;
-                font-size: 0.9rem;
-                border-radius: 8px;
-            }
-
-            /* Items créations mobile */
-            .creation-item {
-                padding: 12px 0;
-                gap: 12px;
-            }
-
-            .creation-item img {
-                width: 55px;
-                height: 55px;
-                border-radius: 8px;
-            }
-
-            /* Bottom Navigation Mobile */
-            .bottom-nav {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: var(--charcoal);
-                display: flex;
-                justify-content: space-around;
-                padding: 12px 0 8px;
-                z-index: 1000;
-                border-top: 2px solid var(--gold);
-            }
-
-            .nav-item {
-                text-align: center;
-                color: #aaa;
-                font-size: 0.65rem;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                text-decoration: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 4px;
-            }
-
-            .nav-item.active { color: var(--gold); }
-
-            .nav-icon { font-size: 1.3rem; }
-
-            /* Top bar mobile */
-            .mobile-topbar {
-                background: var(--charcoal);
-                padding: 16px 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: sticky;
-                top: 0;
-                z-index: 200;
-            }
-
-            .mobile-topbar h2 {
-                font-family: 'Cinzel';
-                color: white;
-                font-size: 1rem;
-                letter-spacing: 3px;
-            }
-
-            .mobile-topbar span {
-                color: var(--gold);
-                font-size: 0.7rem;
-                letter-spacing: 1px;
-            }
-        }
-
-        /* Cacher bottom nav sur PC */
-        .bottom-nav { display: none; }
-        .mobile-topbar { display: none; }
-
-        @media (max-width: 1100px) {
-            .dash-grid { grid-template-columns: 1fr; }
+            .mobile-topbar { display: flex; }
         }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR (PC uniquement) -->
-    <div class="sidebar">
-        <h2>SAGE EMPIRE</h2>
-        <p style="font-size: 0.6rem; color: var(--gold); text-align: center; letter-spacing: 2px; margin-top: -3px;">ESPACE CRÉATEUR</p>
-        <nav>
-    <a href="{% url 'dashboard_styliste' %}" class="nav-link" style="color: var(--gold);">Tableau de bord</a>
-    <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
-    <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
-
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="logout-btn">→ Déconnexion</button>
-    </form>
-</nav>
-    </div>
-
-    <!-- TOP BAR (Mobile uniquement) -->
+    <!-- Top Bar Mobile -->
     <div class="mobile-topbar">
-        <h2>SAGE EMPIRE</h2>
-        <span>ESPACE CRÉATEUR</span>
+        <div>
+            <h2>SAGE EMPIRE</h2>
+            <div class="subtitle">ESPACE CRÉATEUR</div>
+        </div>
+        {% if styliste.photo_profil %}
+            <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width:45px;height:45px;border-radius:50%;border:2px solid var(--gold);">
+        {% endif %}
     </div>
 
     <div class="main-content">
 
-        <!-- Header -->
         <div class="header-dash">
-            <h1>{{ styliste.nom_marque }}</h1>
-            <div class="profile-snap">
-                <span style="font-size: 0.8rem; color: #888;">Profil Actif</span>
-                {% if styliste.photo_profil %}
-                    <img src="{{ styliste.photo_profil.url }}" alt="Profil">
-                {% endif %}
-            </div>
+            <h1 style="font-family:'Cinzel'; font-size:1.3rem;">{{ styliste.nom_marque }}</h1>
+            <span style="color:#666; font-size:0.9rem;">Profil Actif</span>
         </div>
 
         <div class="dash-grid">
-
-            <!-- Formulaire ajout création -->
+            <!-- Formulaire -->
             <div class="card-form">
                 <h3>Ajouter une œuvre</h3>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label>Nom de la création</label>
-                        <input type="text" name="titre" required placeholder="Ex: Kimono impérial">
-                    </div>
-                    <div class="form-group">
-                        <label>Prix (FCFA)</label>
-                        <input type="number" name="prix" required placeholder="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea name="description" rows="3" placeholder="Détails sur le tissu, la coupe..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Image (DEVANT)</label>
-                        <input type="file" name="image" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Image (DERRIÈRE - OPTIONNEL)</label>
-                        <input type="file" name="image_dos">
-                    </div>
+                    <label>Nom de la création</label>
+                    <input type="text" name="titre" required placeholder="Ex: Kimono impérial">
+
+                    <label>Prix (FCFA)</label>
+                    <input type="number" name="prix" required placeholder="0">
+
+                    <label>Description</label>
+                    <textarea name="description" rows="3" placeholder="Détails sur le tissu, la coupe..."></textarea>
+
+                    <label>Image (Devant)</label>
+                    <input type="file" name="image" required>
+
+                    <label>Image (Derrière - Optionnel)</label>
+                    <input type="file" name="image_dos">
+
                     <button type="submit" class="btn-gold">Publier la création</button>
                 </form>
             </div>
@@ -415,55 +240,44 @@
                 <h3>Mes publications récentes</h3>
                 {% for creation in creations %}
                 <div class="creation-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        {% if creation.image %}
-                            <img src="{{ creation.image.url }}" alt="{{ creation.titre }}">
-                        {% endif %}
-                        <div class="creation-info">
-                            <h4>{{ creation.titre }}</h4>
-                            <p>{{ creation.prix }} FCFA</p>
-                        </div>
+                    <div>
+                        <strong>{{ creation.titre }}</strong><br>
+                        <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
                     </div>
-                    <form action="{% url 'supprimer_creation' creation.id %}" method="post"
-                          onsubmit="return confirm('Voulez-vous vraiment retirer cette œuvre de votre portfolio ?');">
+                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
                         {% csrf_token %}
-                        <button type="submit" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; font-weight: bold;">
-                            Supprimer
-                        </button>
+                        <button type="submit" style="color:#ff4444; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
                     </form>
                 </div>
                 {% empty %}
-                <p style="font-size: 0.8rem; color: #aaa; font-style: italic;">
-                    Vous n'avez pas encore publié de créations.
-                </p>
+                <p style="color:#999; font-style:italic;">Aucune création publiée pour le moment.</p>
                 {% endfor %}
             </div>
-
         </div>
     </div>
 
-    <!-- BOTTOM NAV (Mobile uniquement) -->
-<div class="bottom-nav">
-    <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
-        <span class="nav-icon">📊</span>
-        <span>Dashboard</span>
-    </a>
-    <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
-        <span class="nav-icon">👕</span>
-        <span>Portfolio</span>
-    </a>
-    <a href="{% url 'home' %}" class="nav-item">
-        <span class="nav-icon">🏠</span>
-        <span>Hub</span>
-    </a>
-    <form action="{% url 'logout' %}" method="post" style="margin:0; padding:0; background:none; border:none;">
-        {% csrf_token %}
-        <button type="submit" class="nav-item" style="background:none; border:none; color:#aaa; font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; cursor:pointer;">
-            <span class="nav-icon">🚪</span>
-            <span>Déconnexion</span>
-        </button>
-    </form>
-</div>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
+            <span class="nav-icon">📊</span>
+            <span>Accueil</span>
+        </a>
+        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
+            <span class="nav-icon">👕</span>
+            <span>Portfolio</span>
+        </a>
+        <a href="{% url 'home' %}" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>Hub</span>
+        </a>
+        <form action="{% url 'logout' %}" method="post" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="nav-item" style="background:none;border:none;color:inherit;font-size:inherit;">
+                <span class="nav-icon">🚪</span>
+                <span>Quitter</span>
+            </button>
+        </form>
+    </div>
 
 </body>
 </html>
