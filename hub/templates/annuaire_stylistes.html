@@ -6,93 +6,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAGE EMPIRE | Annuaire des Créateurs</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-   <style>
-    :root {
-        --ivory: #F9F8F6;
-        --charcoal: #1A1A1A;
-        --gold: #B5935E;
-        --border: #E5E2DA;
-    }
-
-    body { margin: 0; font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); }
-
-    nav {
-        padding: 20px 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: white;
-        border-bottom: 1px solid var(--border);
-    }
-    .nav-logo { height: 45px; }
-    .back-home { text-decoration: none; color: var(--charcoal); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
-
-    header { padding: 80px 5% 40px; text-align: center; background: white; }
-    header h1 { font-family: 'Cinzel', serif; font-size: 2.1rem; letter-spacing: 4px; text-transform: uppercase; margin: 0; }
-    .subtitle { color: var(--gold); font-size: 0.85rem; letter-spacing: 3px; margin-top: 12px; text-transform: uppercase; }
-
-    /* --- GRILLE PC --- */
-    .grid {
-        display: grid;
-        /* On force 3 colonnes sur PC pour aligner les créateurs */
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
-        padding: 40px 5% 80px;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    .card { background: white; border: 1px solid var(--border); overflow: hidden; transition: all 0.4s ease; position: relative; }
-    .card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 15px 35px rgba(181, 147, 94, 0.15); }
-
-    /* CORRECTION IMAGE PC (Hauteur augmentée pour éviter l'effet écrasé) */
-    .profil-img-container {
-        width: 100%;
-        height: 480px; /* Plus de hauteur pour que l'image respire sur PC */
-        overflow: hidden;
-        background: #f8f8f8;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .profil-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Cadrage parfait sans déformation */
-        transition: transform 0.5s ease;
-    }
-
-    .card-content { padding: 20px; text-align: center; }
-    .card h3 { font-family: 'Cinzel', serif; font-size: 1.05rem; margin: 0 0 8px 0; text-transform: uppercase; }
-    .card p { font-size: 0.82rem; color: #666; margin: 0; min-height: 55px; }
-
-    .btn-enter {
-        display: block; margin-top: 15px; padding: 12px; background: var(--charcoal); color: white;
-        text-decoration: none; font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold;
-    }
-    .btn-enter:hover { background: var(--gold); }
-
-    /* --- CORRECTION MOBILE (On ne touche à rien ici comme demandé) --- */
-    @media (max-width: 600px) {
-        header { padding: 40px 5% 20px; }
-        header h1 { font-size: 1.2rem; }
-
-        .grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 8px !important;
-            padding: 20px 2% !important;
+    <style>
+        :root {
+            --ivory: #F9F8F6;
+            --charcoal: #1A1A1A;
+            --gold: #B5935E;
+            --border: #E5E2DA;
         }
 
-        .profil-img-container { height: 120px !important; }
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+        }
 
-        .card-content { padding: 10px 5px !important; }
-        .card h3 { font-size: 0.55rem !important; letter-spacing: 0; }
-        .card p { display: none; }
+        nav {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo { height: 45px; }
+        .back-home {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-        .btn-enter { font-size: 0.45rem !important; padding: 8px 2px !important; margin-top: 5px; }
-    }
-</style>
+        header {
+            padding: 80px 5% 40px;
+            text-align: center;
+            background: white;
+        }
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .subtitle {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            margin-top: 12px;
+            text-transform: uppercase;
+        }
+
+        /* --- GRILLE PC --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 40px 5% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+            box-shadow: 0 15px 35px rgba(181, 147, 94, 0.15);
+        }
+
+        .profil-img-container {
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profil-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+        }
+        .card p {
+            font-size: 0.82rem;
+            color: #666;
+            margin: 0;
+            min-height: 55px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .btn-enter {
+            display: block;
+            margin-top: 15px;
+            padding: 12px;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .btn-enter:hover { background: var(--gold); }
+
+        /* ==================== MOBILE UNIQUEMENT ==================== */
+        @media (max-width: 600px) {
+            header {
+                padding: 50px 5% 30px;
+            }
+            header h1 {
+                font-size: 1.35rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+                padding: 20px 4% !important;
+            }
+
+            .profil-img-container {
+                height: 140px !important;
+            }
+
+            .card-content {
+                padding: 12px 8px !important;
+            }
+
+            .card h3 {
+                font-size: 0.78rem !important;
+                margin-bottom: 6px;
+            }
+
+            .card p {
+                display: -webkit-box !important;
+                font-size: 0.72rem;
+                color: #555;
+                line-height: 1.35;
+                -webkit-line-clamp: 2;
+                min-height: auto;
+                margin-bottom: 10px;
+            }
+
+            .btn-enter {
+                font-size: 0.65rem !important;
+                padding: 10px 8px !important;
+                margin-top: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -123,7 +208,7 @@
                     {% if styliste.biographie %}
                         {{ styliste.biographie|truncatewords:25 }}
                     {% else %}
-                        Créateur de mode
+                        Créateur de mode talentueux
                     {% endif %}
                 </p>
                 <a href="{% url 'portfolio_styliste' styliste.id %}" class="btn-enter">
