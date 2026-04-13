@@ -443,27 +443,27 @@
     </div>
 
     <!-- BOTTOM NAV (Mobile uniquement) -->
-    <div class="bottom-nav">
-        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
-            <span class="nav-icon">📊</span>
-            <span>Dashboard</span>
-        </a>
-        <a href="{% url 'portfolio_styliste' styliste_id=user.profilstyliste.id %}" class="nav-item">
-            <span class="nav-icon">👕</span>
-            <span>Portfolio</span>
-        </a>
-        <a href="{% url 'home' %}" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span>Hub</span>
-        </a>
-        <form action="{% url 'logout' %}" method="post" style="margin:0;">
-            {% csrf_token %}
-            <button type="submit" class="nav-item" style="background:none; border:none; cursor:pointer; color:#aaa; font-size:0.65rem; letter-spacing:1px; text-transform:uppercase;">
-                <span class="nav-icon">🚪</span>
-                <span>Quitter</span>
-            </button>
-        </form>
-    </div>
+<div class="bottom-nav">
+    <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+    </a>
+    <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
+        <span class="nav-icon">👕</span>
+        <span>Portfolio</span>
+    </a>
+    <a href="{% url 'home' %}" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span>Hub</span>
+    </a>
+    <form action="{% url 'logout' %}" method="post" style="margin:0; padding:0; background:none; border:none;">
+        {% csrf_token %}
+        <button type="submit" class="nav-item" style="background:none; border:none; color:#aaa; font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; cursor:pointer;">
+            <span class="nav-icon">🚪</span>
+            <span>Déconnexion</span>
+        </button>
+    </form>
+</div>
 
 </body>
 </html>
