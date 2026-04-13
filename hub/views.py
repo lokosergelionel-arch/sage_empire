@@ -114,8 +114,9 @@ def login_view(request):
             username=request.POST.get('username'),
             password=request.POST.get('password')
         )
-        if user:
+        if user is not None:
             login(request, user)
+
             return redirect('dashboard_styliste')
         return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
 
