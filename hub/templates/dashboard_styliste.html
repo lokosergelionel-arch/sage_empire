@@ -158,7 +158,7 @@
 
         .dash-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: 1fr;
             gap: 20px;
         }
 
@@ -176,7 +176,15 @@
             font-size: 1.25rem;
         }
 
-        label { display: block; margin: 15px 0 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; }
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            font-weight: 600;
+        }
 
         input, textarea {
             width: 100%;
@@ -199,22 +207,11 @@
         .btn-upload { background: #333; color: white; }
         .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
 
-        .creation-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .creation-item img {
-            width: 65px; height: 65px; object-fit: cover; border-radius: 8px;
-        }
-
         @media (min-width: 769px) {
             .sidebar { display: block; }
             .topbar, .overlay, .mobile-menu { display: none; }
             .main-content { margin-left: 270px; padding: 40px 5%; }
+            .dash-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -236,6 +233,7 @@
 
         <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
         <a href="{% url 'edit_profil' %}" class="nav-link">Modifier mon profil</a>
+        <a href="{% url 'mes_publications' %}" class="nav-link">Mes Publications</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
@@ -251,6 +249,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <a href="{% url 'dashboard_styliste' %}">Tableau de bord</a>
         <a href="{% url 'edit_profil' %}">Modifier mon profil</a>
+        <a href="{% url 'mes_publications' %}">Mes Publications</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}">Voir mon Portfolio</a>
         <a href="{% url 'home' %}">Retour au Hub</a>
         <form action="{% url 'logout' %}" method="post">
@@ -270,6 +269,7 @@
         </div>
 
         <div class="dash-grid">
+            <!-- Seulement le formulaire d'ajout sur mobile -->
             <div class="card">
                 <h3>Ajouter une œuvre</h3>
                 <form method="POST" enctype="multipart/form-data">
@@ -294,29 +294,6 @@
                     <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
-
-            <div class="card">
-                <h3>Mes publications récentes</h3>
-                {% for creation in creations %}
-                <div class="creation-item">
-                    {% if creation.image_url %}
-                        <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
-                    {% endif %}
-                    <div style="flex:1;">
-                        <strong>{{ creation.titre }}</strong><br>
-                        <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
-                    </div>
-                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
-                        {% csrf_token %}
-                        <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
-                    </form>
-                </div>
-                {% empty %}
-                <p style="color:#888; font-style:italic; text-align:center; padding:40px 0;">
-                    Vous n'avez pas encore publié de créations.
-                </p>
-                {% endfor %}
-            </div>
         </div>
     </div>
 
@@ -330,8 +307,8 @@
 
         function openCloudinaryWidget(isFront) {
             const widget = cloudinary.createUploadWidget({
-                cloudName: 'dgqjazpwu',
-                uploadPreset: 'sage_empire_preset',
+                cloudName: 'VOTRE_CLOUD_NAME',
+                uploadPreset: 'VOTRE_UPLOAD_PRESET',
                 cropping: true,
                 sources: ['local', 'camera']
             }, (error, result) => {
