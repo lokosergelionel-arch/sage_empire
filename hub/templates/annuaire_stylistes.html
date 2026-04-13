@@ -162,14 +162,18 @@
             }
 
             .card p {
-                display: -webkit-box !important;
-                font-size: 0.72rem;
-                color: #555;
-                line-height: 1.35;
-                -webkit-line-clamp: 2;
-                min-height: auto;
-                margin-bottom: 10px;
-            }
+    display: block !important;          /* Force l'affichage */
+    font-size: 0.78rem !important;      /* Un peu plus grand */
+    color: #444 !important;             /* Plus contrasté */
+    line-height: 1.6 !important;        /* Meilleure lisibilité */
+    -webkit-line-clamp: 4 !important;   /* Montre jusqu'à 4 lignes */
+    min-height: 60px;
+    margin-bottom: 12px;
+    background: var(--ivory);           /* Fond léger pour faire ressortir */
+    padding: 8px;                       /* Espace autour du texte */
+    border-radius: 6px;                 /* Coins arrondis */
+    text-align: left;                   /* Texte aligné à gauche pour lire mieux */
+}
 
             .btn-enter {
                 font-size: 0.65rem !important;
@@ -206,7 +210,7 @@
                 <h3>{{ styliste.nom_marque }}</h3>
                 <p>
                     {% if styliste.biographie %}
-                        {{ styliste.biographie|truncatewords:25 }}
+                        {{ styliste.biographie|truncatewords:30 }}
                     {% else %}
                         Créateur de mode talentueux
                     {% endif %}
