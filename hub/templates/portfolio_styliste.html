@@ -105,23 +105,19 @@
             .img-back { display: none; }
             .product-card:active .img-front { transform: scale(0.98); }
         }
-        /* Correction contour blanc lightbox sur mobile */
+        /* Correction lightbox sur mobile */
 #lightbox {
-    padding: 10px !important;
+    padding: 15px !important;
+    background: rgba(0,0,0,0.95) !important;
 }
 
 #lightbox img#main-image {
-    border: 6px solid var(--gold) !important;
-    border-radius: 8px !important;
-    max-width: 92% !important;
-    max-height: 78vh !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* Enlever tout contour blanc indésirable */
-.product-image-wrapper {
-    border: none !important;
-    background: #000;
+    border: 4px solid var(--gold) !important;   /* Bordure plus fine */
+    border-radius: 12px !important;
+    max-width: 90% !important;
+    max-height: 75vh !important;
+    object-fit: contain !important;            /* Image entière visible sans coupure */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
     </style>
 </head>
