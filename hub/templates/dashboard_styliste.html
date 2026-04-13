@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAGE EMPIRE | Mon Espace Créateur</title>
+    <title>SAGE EMPIRE | Tableau de Bord</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
@@ -24,45 +24,46 @@
             color: var(--charcoal);
         }
 
-        /* Sidebar - Desktop */
+        /* Sidebar Desktop */
         .sidebar {
             width: 260px;
             background: var(--charcoal);
             height: 100vh;
             position: fixed;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             color: white;
-            padding: 30px 20px;
+            padding: 35px 20px;
             z-index: 100;
         }
 
         .sidebar h2 {
             font-family: 'Cinzel', serif;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 5px;
         }
 
         .sidebar .subtitle {
             text-align: center;
             color: var(--gold);
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             letter-spacing: 2px;
+            margin-bottom: 40px;
         }
 
         .nav-link {
             display: block;
             color: #ccc;
             text-decoration: none;
-            padding: 12px 15px;
-            margin: 8px 0;
+            padding: 14px 18px;
+            margin: 6px 0;
             border-radius: 8px;
-            font-size: 0.92rem;
+            font-size: 0.93rem;
+            transition: 0.3s;
         }
 
         .nav-link:hover, .nav-link.active {
-            background: rgba(181, 147, 94, 0.25);
+            background: rgba(181, 147, 94, 0.2);
             color: var(--gold);
         }
 
@@ -94,6 +95,7 @@
             border-radius: 12px;
             padding: 28px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
         }
 
         .card h3 {
@@ -150,28 +152,24 @@
             border-radius: 8px;
         }
 
-        /* Grid - 2 colonnes même sur mobile */
         .dash-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 25px;
         }
 
-        /* Mobile Optimisation */
+        /* Mobile */
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 20px 15px 85px; }
+            .main-content { margin-left: 0; padding: 20px 15px 90px; }
             .dash-grid { grid-template-columns: 1fr; }
             .header { padding: 15px 20px; }
-            .card { padding: 20px; }
         }
 
         /* Bottom Navigation Mobile */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: var(--charcoal);
             display: flex;
             justify-content: space-around;
@@ -183,7 +181,7 @@
         .nav-item {
             color: #ccc;
             text-align: center;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             text-decoration: none;
             display: flex;
             flex-direction: column;
@@ -201,11 +199,13 @@
     <div class="sidebar">
         <h2>SAGE EMPIRE</h2>
         <p class="subtitle">ESPACE CRÉATEUR</p>
+
         <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
+        <a href="{% url 'edit_profil' %}" class="nav-link">Modifier mon profil</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
-        <form action="{% url 'logout' %}" method="post" style="margin-top: 60px;">
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 50px;">
             {% csrf_token %}
             <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.95rem; cursor:pointer;">
                 → Déconnexion
@@ -274,11 +274,15 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation - Mobile -->
+    <!-- Bottom Navigation Mobile -->
     <div class="bottom-nav">
         <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
             <span class="nav-icon">📊</span>
             <span>Dashboard</span>
+        </a>
+        <a href="{% url 'edit_profil' %}" class="nav-item">
+            <span class="nav-icon">✏️</span>
+            <span>Profil</span>
         </a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
             <span class="nav-icon">👕</span>
@@ -288,13 +292,6 @@
             <span class="nav-icon">🏠</span>
             <span>Hub</span>
         </a>
-        <form action="{% url 'logout' %}" method="post" style="margin:0;">
-            {% csrf_token %}
-            <button type="submit" class="nav-item" style="background:none; border:none; color:#ccc; font-size:0.72rem;">
-                <span class="nav-icon">🚪</span>
-                <span>Déconnexion</span>
-            </button>
-        </form>
     </div>
 
     <script>
@@ -306,11 +303,8 @@
                 sources: ['local', 'camera']
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
-                    if (isFront) {
-                        document.getElementById('image_url').value = result.info.secure_url;
-                    } else {
-                        document.getElementById('image_dos_url').value = result.info.secure_url;
-                    }
+                    if (isFront) document.getElementById('image_url').value = result.info.secure_url;
+                    else document.getElementById('image_dos_url').value = result.info.secure_url;
                     alert("Image chargée avec succès !");
                 }
             });
