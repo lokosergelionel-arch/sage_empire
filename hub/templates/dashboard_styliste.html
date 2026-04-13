@@ -24,90 +24,149 @@
             color: var(--charcoal);
         }
 
-        /* Sidebar Desktop */
+        /* ==================== SIDEBAR DESKTOP ==================== */
         .sidebar {
-            width: 260px;
+            width: 270px;
             background: var(--charcoal);
             height: 100vh;
             position: fixed;
             left: 0; top: 0;
             color: white;
-            padding: 35px 20px;
+            padding: 40px 25px;
             z-index: 100;
+            display: none;
         }
 
         .sidebar h2 {
             font-family: 'Cinzel', serif;
             text-align: center;
-            font-size: 1.6rem;
-            margin-bottom: 5px;
+            font-size: 1.7rem;
+            margin-bottom: 8px;
         }
 
         .sidebar .subtitle {
             text-align: center;
             color: var(--gold);
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             letter-spacing: 2px;
-            margin-bottom: 40px;
         }
 
         .nav-link {
             display: block;
-            color: #ccc;
+            color: #ddd;
             text-decoration: none;
             padding: 14px 18px;
-            margin: 6px 0;
+            margin: 8px 0;
             border-radius: 8px;
-            font-size: 0.93rem;
+            font-size: 0.95rem;
             transition: 0.3s;
         }
 
         .nav-link:hover, .nav-link.active {
-            background: rgba(181, 147, 94, 0.2);
+            background: rgba(181, 147, 94, 0.25);
             color: var(--gold);
         }
 
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            padding: 40px 5%;
-            min-height: 100vh;
+        .logout-link {
+            color: #ff6b6b;
+            margin-top: 40px;
         }
 
-        .header {
+        /* ==================== TOP BAR MOBILE ==================== */
+        .topbar {
+            background: var(--charcoal);
+            color: white;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .topbar h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+        }
+
+        .hamburger {
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        /* ==================== MOBILE MENU ==================== */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            height: 100vh;
             background: white;
-            padding: 20px 30px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transition: 0.4s ease;
+            padding: 80px 25px 30px;
+            z-index: 300;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 16px 0;
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-menu .logout {
+            color: #e74c3c;
+            margin-top: 30px;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            padding: 20px 15px 30px;
+        }
+
+        .header {
+            background: white;
+            padding: 18px 20px;
             border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .header h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.7rem;
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background: white;
             border-radius: 12px;
-            padding: 28px;
+            padding: 25px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
         }
 
         .card h3 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
-            margin-bottom: 25px;
+            margin-bottom: 22px;
             font-size: 1.25rem;
         }
 
         label {
             display: block;
-            margin: 18px 0 8px;
+            margin: 15px 0 8px;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -121,7 +180,6 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             background: var(--ivory);
-            font-size: 1rem;
         }
 
         .btn-upload, .btn-submit {
@@ -146,54 +204,23 @@
         }
 
         .creation-item img {
-            width: 65px;
-            height: 65px;
-            object-fit: cover;
-            border-radius: 8px;
+            width: 65px; height: 65px; object-fit: cover; border-radius: 8px;
         }
 
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 25px;
+        @media (min-width: 769px) {
+            .sidebar { display: block; }
+            .topbar, .mobile-menu { display: none; }
+            .main-content { margin-left: 270px; padding: 40px 5%; }
         }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 20px 15px 90px; }
-            .dash-grid { grid-template-columns: 1fr; }
-            .header { padding: 15px 20px; }
-        }
-
-        /* Bottom Navigation Mobile */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: var(--charcoal);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0 8px;
-            z-index: 1000;
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
-        }
-
-        .nav-item {
-            color: #ccc;
-            text-align: center;
-            font-size: 0.7rem;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .nav-item.active { color: var(--gold); }
-        .nav-icon { font-size: 1.45rem; }
     </style>
 </head>
 <body>
+
+    <!-- Top Bar Mobile -->
+    <div class="topbar">
+        <h2>SAGE EMPIRE</h2>
+        <span class="hamburger" onclick="toggleMenu()">☰</span>
+    </div>
 
     <!-- Sidebar Desktop -->
     <div class="sidebar">
@@ -205,10 +232,24 @@
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
-        <form action="{% url 'logout' %}" method="post" style="margin-top: 50px;">
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 60px;">
             {% csrf_token %}
             <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.95rem; cursor:pointer;">
                 → Déconnexion
+            </button>
+        </form>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="{% url 'dashboard_styliste' %}">Tableau de bord</a>
+        <a href="{% url 'edit_profil' %}">Modifier mon profil</a>
+        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}">Voir mon Portfolio</a>
+        <a href="{% url 'home' %}">Retour au Hub</a>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout" style="background:none; border:none; color:#e74c3c; font-size:1.1rem; cursor:pointer; text-align:left; width:100%; padding:16px 0;">
+                Déconnexion
             </button>
         </form>
     </div>
@@ -274,27 +315,11 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation Mobile -->
-    <div class="bottom-nav">
-        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">
-            <span class="nav-icon">📊</span>
-            <span>Dashboard</span>
-        </a>
-        <a href="{% url 'edit_profil' %}" class="nav-item">
-            <span class="nav-icon">✏️</span>
-            <span>Profil</span>
-        </a>
-        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">
-            <span class="nav-icon">👕</span>
-            <span>Portfolio</span>
-        </a>
-        <a href="{% url 'home' %}" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span>Hub</span>
-        </a>
-    </div>
-
     <script>
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
         function openCloudinaryWidget(isFront) {
             const widget = cloudinary.createUploadWidget({
                 cloudName: 'dgqjazpwu',
