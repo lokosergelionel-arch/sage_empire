@@ -5,165 +5,308 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAGE EMPIRE | Mon Espace Créateur</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-
-    <!-- Cloudinary Upload Widget -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
     <style>
-        :root { --gold: #B5935E; --charcoal: #1A1A1A; --ivory: #F9F8F6; --border: #E5E2DA; }
-
-        body { font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); margin: 0; }
-
-        .mobile-topbar {
-            background: var(--charcoal); color: white; padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 200;
+        :root {
+            --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+            --border: #E5E2DA;
         }
-        .mobile-topbar h2 { font-family: 'Cinzel'; margin: 0; }
 
-        .main-content { padding: 20px 15px 90px; }
-        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        label { display: block; margin: 15px 0 8px; font-size: 0.8rem; color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--ivory); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+        }
 
-        .btn-upload, .btn-gold {
-            width: 100%; padding: 14px; margin: 10px 0;
-            background: var(--charcoal); color: white; border: none;
-            border-radius: 8px; font-weight: bold; letter-spacing: 1px;
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            width: 260px;
+            background: var(--charcoal);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            color: white;
+            padding: 30px 20px;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar .subtitle {
+            text-align: center;
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(181, 147, 94, 0.2);
+            color: var(--gold);
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px 5%;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+        }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--ivory);
+            font-size: 1rem;
+        }
+
+        .btn-upload, .btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
         }
-        .btn-gold { background: #B5935E; margin-top: 20px; }
+
+        .btn-upload { background: #333; color: white; }
+        .btn-submit { background: var(--gold); color: white; font-size: 1rem; }
 
         .creation-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid var(--border);
-        }
-        .creation-item img {
-            width: 55px; height: 55px; object-fit: cover; border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
         }
 
+        .creation-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* ==================== MOBILE ==================== */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px 15px 80px; }
+
+            .header {
+                padding: 15px 20px;
+                margin-bottom: 20px;
+            }
+
+            .card { padding: 20px; }
+
+            .creation-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        /* Bottom nav sur mobile */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; background: var(--charcoal);
-            display: flex; justify-content: space-around; padding: 10px 0 5px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--charcoal);
+            display: none;
+            justify-content: space-around;
+            padding: 12px 0 8px;
             z-index: 1000;
         }
-        .nav-item {
-            color: #ccc; text-align: center; font-size: 0.7rem; text-decoration: none;
+
+        @media (max-width: 768px) {
+            .bottom-nav { display: flex; }
         }
+
+        .nav-item {
+            color: #ccc;
+            text-align: center;
+            font-size: 0.7rem;
+            text-decoration: none;
+        }
+
         .nav-item.active { color: var(--gold); }
-        .nav-icon { font-size: 1.5rem; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="mobile-topbar">
-        <div>
-            <h2>SAGE EMPIRE</h2>
-            <div style="color:var(--gold); font-size:0.75rem;">ESPACE CRÉATEUR</div>
-        </div>
-        {% if styliste.photo_profil %}
-            <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);">
-        {% endif %}
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>SAGE EMPIRE</h2>
+        <p class="subtitle">ESPACE CRÉATEUR</p>
+
+        <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
+        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
+        <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
+
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 50px;">
+            {% csrf_token %}
+            <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.9rem; cursor:pointer;">
+                → Déconnexion
+            </button>
+        </form>
     </div>
 
     <div class="main-content">
 
+        <div class="header">
+            <h1>Bienvenue, {{ styliste.nom_marque }}</h1>
+            {% if styliste.photo_profil %}
+                <img src="{{ styliste.photo_profil.url }}" alt="Profil" style="width:55px; height:55px; border-radius:50%; border:3px solid var(--gold);">
+            {% endif %}
+        </div>
+
         <div class="card">
-            <h3 style="color:var(--gold); margin-bottom:20px;">Ajouter une œuvre</h3>
-            <form method="POST" id="creation-form">
+            <h3>Ajouter une nouvelle œuvre</h3>
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <label>Nom de la création</label>
-                <input type="text" name="titre" required placeholder="Ex: Kimono impérial">
+                <input type="text" name="titre" required placeholder="Ex: Kimono Impérial">
 
                 <label>Prix (FCFA)</label>
                 <input type="number" name="prix" required placeholder="0">
 
                 <label>Description</label>
-                <textarea name="description" rows="3" placeholder="Détails sur le tissu, la coupe..."></textarea>
+                <textarea name="description" rows="4" placeholder="Décrivez votre création..."></textarea>
 
                 <label>Image Principale (Devant)</label>
-                <button type="button" id="btn-front" class="btn-upload">Choisir une image (Devant)</button>
+                <button type="button" id="upload-front" class="btn-upload">Choisir une image (Devant)</button>
                 <input type="hidden" name="image_url" id="image_url">
-                <input type="hidden" name="public_id" id="public_id">
 
                 <label>Image Dos (Optionnel)</label>
-                <button type="button" id="btn-back" class="btn-upload">Choisir une image (Dos)</button>
+                <button type="button" id="upload-back" class="btn-upload">Choisir une image (Dos)</button>
                 <input type="hidden" name="image_dos_url" id="image_dos_url">
-                <input type="hidden" name="public_id_dos" id="public_id_dos">
 
-                <button type="submit" class="btn-gold">Publier la création</button>
+                <button type="submit" class="btn-submit">Publier la création</button>
             </form>
         </div>
 
         <div class="card">
-            <h3 style="color:var(--gold);">Mes publications récentes</h3>
+            <h3>Mes publications récentes</h3>
             {% for creation in creations %}
             <div class="creation-item">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    {% if creation.image_url %}
-                        <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
-                    {% endif %}
-                    <div>
-                        <strong>{{ creation.titre }}</strong><br>
-                        <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
-                    </div>
+                {% if creation.image_url %}
+                    <img src="{{ creation.image_url }}" alt="{{ creation.titre }}">
+                {% endif %}
+                <div>
+                    <strong>{{ creation.titre }}</strong><br>
+                    <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
                 </div>
-                <form action="{% url 'supprimer_creation' creation.id %}" method="post"
-                      onsubmit="return confirm('Supprimer cette création ?');">
+                <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
                     {% csrf_token %}
-                    <button type="submit" style="color:#ff4444; background:none; border:none; font-weight:bold;">Supprimer</button>
+                    <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
                 </form>
             </div>
             {% empty %}
-            <p style="color:#999; font-style:italic; text-align:center; padding:20px;">
+            <p style="color:#888; font-style:italic; text-align:center; padding:30px 0;">
                 Vous n'avez pas encore publié de créations.
             </p>
             {% endfor %}
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation Mobile -->
     <div class="bottom-nav">
-        <a href="{% url 'dashboard_styliste' %}" class="nav-item active"><span class="nav-icon">📊</span><span>Accueil</span></a>
-        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item"><span class="nav-icon">👕</span><span>Portfolio</span></a>
-        <a href="{% url 'home' %}" class="nav-item"><span class="nav-icon">🏠</span><span>Hub</span></a>
-        <form action="{% url 'logout' %}" method="post" style="margin:0;">
-            {% csrf_token %}
-            <button type="submit" class="nav-item" style="background:none;border:none;color:inherit;">
-                <span class="nav-icon">🚪</span><span>Quitter</span>
-            </button>
-        </form>
+        <a href="{% url 'dashboard_styliste' %}" class="nav-item active">Dashboard</a>
+        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-item">Portfolio</a>
+        <a href="{% url 'home' %}" class="nav-item">Hub</a>
     </div>
 
     <script>
-        let widget;
-
-        function openWidget(isFront) {
-            widget = cloudinary.createUploadWidget({
-                cloudName: 'dgqjazpwu',        // ← À REMPLACER
-                uploadPreset: 'sage_empire_preset',  // ← À REMPLACER
+        function openCloudinaryWidget(isFront) {
+            const widget = cloudinary.createUploadWidget({
+                cloudName: 'dgqjazpwu',        // ← À MODIFIER
+                uploadPreset: 'sage_empire_preset',  // ← À MODIFIER
                 cropping: true,
-                sources: ['local', 'camera', 'url']
+                sources: ['local', 'camera']
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
                     if (isFront) {
                         document.getElementById('image_url').value = result.info.secure_url;
-                        document.getElementById('public_id').value = result.info.public_id;
                     } else {
                         document.getElementById('image_dos_url').value = result.info.secure_url;
-                        document.getElementById('public_id_dos').value = result.info.public_id;
                     }
-                    alert("Image chargée avec succès !");
+                    alert("Image uploadée avec succès !");
                 }
             });
             widget.open();
         }
 
-        document.getElementById('btn-front').addEventListener('click', () => openWidget(true));
-        document.getElementById('btn-back').addEventListener('click', () => openWidget(false));
+        document.getElementById('upload-front').addEventListener('click', () => openCloudinaryWidget(true));
+        document.getElementById('upload-back').addEventListener('click', () => openCloudinaryWidget(false));
     </script>
 
 </body>
