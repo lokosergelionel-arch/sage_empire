@@ -95,6 +95,17 @@ def dashboard_styliste(request):
 
 
 @login_required
+def mes_publications(request):
+    styliste = get_object_or_404(ProfilStyliste, user=request.user)
+    creations = Creation.objects.filter(styliste=styliste).order_by('-id')
+
+    return render(request, 'mes_publications.html', {
+        'styliste': styliste,
+        'creations': creations
+    })
+
+
+@login_required
 def supprimer_creation(request, creation_id):
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
     creation = get_object_or_404(Creation, id=creation_id, styliste=styliste)
@@ -149,14 +160,3 @@ def edit_profil(request):
         'styliste': styliste
     })
 
-
-@login_required
-def mes_publications(request):
-    """Page dédiée pour voir toutes ses créations (accessible depuis le menu mobile)"""
-    styliste = get_object_or_404(ProfilStyliste, user=request.user)
-    creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-
-    return render(request, 'mes_publications.html', {
-        'styliste': styliste,
-        'creations': creations
-    })
