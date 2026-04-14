@@ -157,76 +157,10 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .dash-grid {
+        .content-wrapper {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .card h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            margin-bottom: 22px;
-            font-size: 1.25rem;
-        }
-
-        label {
-            display: block;
-            margin: 15px 0 8px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--ivory);
-        }
-
-        .btn-upload, .btn-submit {
-            width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-upload { background: #333; color: white; }
-        .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
-
-        /* ==================== PC UNIQUEMENT ==================== */
-        /* Modification UNIQUEMENT sur PC */
-        @media (min-width: 769px) {
-            .sidebar { display: block; }
-            .topbar, .overlay, .mobile-menu { display: none; }
-            .main-content { margin-left: 270px; padding: 40px 5%; }
-
-            .content-wrapper {
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
-            }
-
-            .publications-section {
-                display: none;
-            }
-
-            .content-wrapper.show-publications .publications-section {
-                display: block;
-            }
         }
 
         .card {
@@ -286,7 +220,25 @@
             font-weight: 500;
         }
 
+        /* ==================== UNIQUEMENT PC ==================== */
         @media (min-width: 769px) {
+            .sidebar { display: block; }
+            .topbar, .overlay, .mobile-menu { display: none; }
+            .main-content { margin-left: 270px; padding: 40px 5%; }
+
+            .content-wrapper {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
+
+            .publications-section {
+                display: none;
+            }
+
+            .content-wrapper.show-publications .publications-section {
+                display: block;
+            }
+
             .content-wrapper.show-publications .back-to-add {
                 display: block;
             }
@@ -309,9 +261,9 @@
         <h2>SAGE EMPIRE</h2>
         <p class="subtitle">ESPACE CRÉATEUR</p>
 
-        <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
+        <a href="{% url 'dashboard_styliste' %}" class="nav-link active" onclick="showAddOnly()">Tableau de bord</a>
+        <a href="#" class="nav-link" onclick="showPublications()">Mes Publications</a>
         <a href="{% url 'edit_profil' %}" class="nav-link">Modifier mon profil</a>
-        <a href="{% url 'mes_publications' %}" class="nav-link">Mes Publications</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
@@ -346,8 +298,8 @@
             {% endif %}
         </div>
 
-        <div class="dash-grid">
-            <!-- Seulement le formulaire d'ajout sur mobile -->
+        <div class="content-wrapper" id="contentWrapper">
+            <!-- Ajouter une œuvre -->
             <div class="card">
                 <h3>Ajouter une œuvre</h3>
                 <form method="POST" enctype="multipart/form-data">
@@ -372,7 +324,8 @@
                     <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
-        <!-- Mes Publications (visible seulement sur PC quand activé) -->
+
+            <!-- Mes Publications (visible seulement sur PC quand activé) -->
             <div class="card publications-section" id="publicationsSection">
                 <h3>Mes Publications Récentes</h3>
                 {% for creation in creations %}
