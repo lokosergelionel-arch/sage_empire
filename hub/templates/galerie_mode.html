@@ -243,10 +243,10 @@
  <div class="product-info">
  <h3>{{ produit.titre }}</h3>
  <p class="price">{{ produit.prix }} FCFA</p>
- <a href="https://wa.me/{{ styliste.contact_whatsapp|default:'' }}?text=Bonjour, je suis intéressé par {{ produit.titre|urlencode }}"
- class="btn-order" target="_blank">
- COMMANDER
- </a>
+ <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour Sage Mode, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
+   target="_blank" class="btn-commander">
+    COMMANDER VIA WHATSAPP
+</a>
  </div>
  </div>
  {% empty %}

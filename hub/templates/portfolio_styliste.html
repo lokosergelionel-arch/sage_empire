@@ -147,9 +147,10 @@
             <div class="product-info">
                 <h3>{{ produit.titre }}</h3>
                 <span class="price">{{ produit.prix }} FCFA</span>
-                <button onclick="window.open('https://wa.me/{{ styliste.contact_whatsapp }}?text=Commande: {{ produit.titre }}', '_blank')" class="btn-commander">
-                    COMMANDER
-                </button>
+                <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
+   target="_blank" class="btn-commander">
+    COMMANDER
+</a>
             </div>
         </div>
         {% endfor %}
