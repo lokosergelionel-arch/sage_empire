@@ -128,6 +128,25 @@
  }
  .btn-order:hover { background: var(--gold); }
 
+ .btn-commander {
+    background: var(--charcoal);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    display: block;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.btn-commander:hover {
+    background: var(--gold);
+    color: black;
+}
+
  /* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
  @media (max-width: 768px) {
  header { padding: 60px 5% 30px; }
@@ -244,7 +263,7 @@
  <h3>{{ produit.titre }}</h3>
  <p class="price">{{ produit.prix }} FCFA</p>
  <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour Sage Mode, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
-   target="_blank" class="btn-commander">
+   target="_blank" class="btn-commander" style="text-decoration: none; display: inline-block; text-align: center;">
     COMMANDER VIA WHATSAPP
 </a>
  </div>
