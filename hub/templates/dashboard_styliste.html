@@ -34,7 +34,6 @@
             color: white;
             padding: 40px 25px;
             z-index: 100;
-            display: none;
         }
 
         .sidebar h2 {
@@ -59,6 +58,7 @@
             margin: 8px 0;
             border-radius: 8px;
             font-size: 0.95rem;
+            cursor: pointer;
         }
 
         .nav-link:hover, .nav-link.active {
@@ -90,82 +90,42 @@
             padding: 5px 12px;
         }
 
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-            z-index: 250;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 78%;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.25);
-            transition: 0.4s ease;
-            padding: 80px 25px 40px;
-            z-index: 300;
-        }
-
-        .mobile-menu.active {
-            right: 0;
-        }
-
-        .mobile-menu a {
-            display: block;
-            padding: 16px 10px;
-            color: var(--charcoal);
-            text-decoration: none;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .mobile-menu .logout {
-            color: #e74c3c;
-            margin-top: 30px;
-            font-weight: 500;
-        }
+        /* Overlay & Mobile Menu */
+        .overlay, .mobile-menu { display: none; }
 
         /* Main Content */
         .main-content {
-            padding: 20px 15px 30px;
+            margin-left: 270px;
+            padding: 40px 5%;
+            min-height: 100vh;
         }
 
         .header {
             background: white;
-            padding: 18px 20px;
+            padding: 20px 30px;
             border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .dash-grid {
+        .content-area {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
+            transition: all 0.4s ease;
+        }
+
+        .content-area.show-publications {
+            grid-template-columns: 1fr 1fr;
         }
 
         .card {
             background: white;
             border-radius: 12px;
-            padding: 25px;
+            padding: 28px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
@@ -176,64 +136,49 @@
             font-size: 1.25rem;
         }
 
-        label {
-            display: block;
-            margin: 15px 0 8px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--ivory);
-        }
+        /* Style formulaire et publications */
+        label { display: block; margin: 18px 0 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; }
+        input, textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--ivory); }
 
         .btn-upload, .btn-submit {
-            width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
+            width: 100%; padding: 15px; margin: 12px 0; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
         }
-
         .btn-upload { background: #333; color: white; }
         .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
 
-        @media (min-width: 769px) {
-            .sidebar { display: block; }
-            .topbar, .overlay, .mobile-menu { display: none; }
-            .main-content { margin-left: 270px; padding: 40px 5%; }
-            .dash-grid { grid-template-columns: repeat(2, 1fr); }
+        .back-to-add {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #555;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .content-area.show-publications .back-to-add {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px 15px 80px; }
+            .content-area, .content-area.show-publications { grid-template-columns: 1fr; }
+            .back-to-add { display: none !important; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Top Bar Mobile -->
-    <div class="topbar">
-        <h2>SAGE EMPIRE</h2>
-        <span class="hamburger" onclick="toggleMenu()">☰</span>
-    </div>
-
-    <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <!-- Sidebar Desktop -->
     <div class="sidebar">
         <h2>SAGE EMPIRE</h2>
         <p class="subtitle">ESPACE CRÉATEUR</p>
 
-        <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
+        <a href="{% url 'dashboard_styliste' %}" class="nav-link active" onclick="showAddOnly()">Tableau de bord</a>
+        <a href="#" class="nav-link" onclick="showPublications()">Mes Publications</a>
         <a href="{% url 'edit_profil' %}" class="nav-link">Modifier mon profil</a>
-        <a href="{% url 'mes_publications' %}" class="nav-link">Mes Publications</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
@@ -241,21 +186,6 @@
             {% csrf_token %}
             <button type="submit" style="background:none; border:none; color:#ff6b6b; font-size:0.95rem; cursor:pointer;">
                 → Déconnexion
-            </button>
-        </form>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="{% url 'dashboard_styliste' %}">Tableau de bord</a>
-        <a href="{% url 'edit_profil' %}">Modifier mon profil</a>
-        <a href="{% url 'mes_publications' %}">Mes Publications</a>
-        <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}">Voir mon Portfolio</a>
-        <a href="{% url 'home' %}">Retour au Hub</a>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="logout" style="background:none; border:none; color:#e74c3c; font-size:1.1rem; cursor:pointer; text-align:left; width:100%; padding:16px 0;">
-                Déconnexion
             </button>
         </form>
     </div>
@@ -268,9 +198,9 @@
             {% endif %}
         </div>
 
-        <div class="dash-grid">
-            <!-- Seulement le formulaire d'ajout sur mobile -->
-            <div class="card">
+        <div class="content-area" id="contentArea">
+            <!-- Ajouter une œuvre -->
+            <div class="card" id="addCard">
                 <h3>Ajouter une œuvre</h3>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -294,21 +224,55 @@
                     <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
+
+            <!-- Mes Publications (affiché à côté sur PC) -->
+            <div class="card" id="publicationsCard" style="display:none;">
+                <h3>Mes Publications Récentes</h3>
+                {% for creation in creations %}
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        {% if creation.image_url %}
+                            <img src="{{ creation.image_url }}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">
+                        {% endif %}
+                        <div>
+                            <strong>{{ creation.titre }}</strong><br>
+                            <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
+                        </div>
+                    </div>
+                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
+                        {% csrf_token %}
+                        <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p style="color:#888; font-style:italic; text-align:center; padding:40px 0;">
+                    Vous n'avez pas encore publié de créations.
+                </p>
+                {% endfor %}
+            </div>
         </div>
+
+        <button onclick="showAddOnly()" class="back-to-add" id="backButton" style="display:none;">
+            ← Retour à l'ajout d'œuvre
+        </button>
     </div>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const overlay = document.getElementById('overlay');
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
+        function showPublications() {
+            document.getElementById('contentArea').classList.add('show-publications');
+            document.getElementById('publicationsCard').style.display = 'block';
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function showAddOnly() {
+            document.getElementById('contentArea').classList.remove('show-publications');
+            document.getElementById('backButton').style.display = 'none';
         }
 
         function openCloudinaryWidget(isFront) {
             const widget = cloudinary.createUploadWidget({
-                cloudName: 'dgqjazpwu',
-                uploadPreset: 'sage_empire_preset',
+                cloudName: 'VOTRE_CLOUD_NAME',
+                uploadPreset: 'VOTRE_UPLOAD_PRESET',
                 cropping: true,
                 sources: ['local', 'camera']
             }, (error, result) => {
