@@ -141,9 +141,9 @@
             font-weight: 500;
         }
 
-        /* Main Content */
+        /* ==================== MAIN CONTENT ==================== */
         .main-content {
-            padding: 20px 15px 90px;
+            padding: 20px 15px 30px;
         }
 
         .header {
@@ -161,6 +161,26 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
+        }
+
+        /* Modification UNIQUEMENT sur PC */
+        @media (min-width: 769px) {
+            .sidebar { display: block; }
+            .topbar, .overlay, .mobile-menu { display: none; }
+            .main-content { margin-left: 270px; padding: 40px 5%; }
+
+            .content-wrapper {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
+
+            .publications-section {
+                display: none;
+            }
+
+            .content-wrapper.show-publications .publications-section {
+                display: block;
+            }
         }
 
         .card {
@@ -220,25 +240,7 @@
             font-weight: 500;
         }
 
-        /* ==================== UNIQUEMENT PC ==================== */
         @media (min-width: 769px) {
-            .sidebar { display: block; }
-            .topbar, .overlay, .mobile-menu { display: none; }
-            .main-content { margin-left: 270px; padding: 40px 5%; }
-
-            .content-wrapper {
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
-            }
-
-            .publications-section {
-                display: none;
-            }
-
-            .content-wrapper.show-publications .publications-section {
-                display: block;
-            }
-
             .content-wrapper.show-publications .back-to-add {
                 display: block;
             }
