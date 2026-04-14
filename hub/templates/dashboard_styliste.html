@@ -157,6 +157,57 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 22px;
+            font-size: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--ivory);
+        }
+
+        .btn-upload, .btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-upload { background: #333; color: white; }
+        .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
+
         .content-wrapper {
             display: grid;
             grid-template-columns: 1fr;
