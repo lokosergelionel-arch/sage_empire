@@ -141,9 +141,9 @@
             font-weight: 500;
         }
 
-        /* ==================== MAIN CONTENT ==================== */
+        /* Main Content */
         .main-content {
-            padding: 20px 15px 30px;
+            padding: 20px 15px 90px;
         }
 
         .header {
@@ -157,30 +157,10 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .content-wrapper {
+        .dash-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
-        }
-
-        /* Modification UNIQUEMENT sur PC */
-        @media (min-width: 769px) {
-            .sidebar { display: block; }
-            .topbar, .overlay, .mobile-menu { display: none; }
-            .main-content { margin-left: 270px; padding: 40px 5%; }
-
-            .content-wrapper {
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
-            }
-
-            .publications-section {
-                display: none;
-            }
-
-            .content-wrapper.show-publications .publications-section {
-                display: block;
-            }
         }
 
         .card {
@@ -228,22 +208,12 @@
         .btn-upload { background: #333; color: white; }
         .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
 
-        .back-to-add {
-            display: none;
-            margin-top: 20px;
-            padding: 14px;
-            background: #555;
-            color: white;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
+        /* ==================== PC UNIQUEMENT ==================== */
         @media (min-width: 769px) {
-            .content-wrapper.show-publications .back-to-add {
-                display: block;
-            }
+            .sidebar { display: block; }
+            .topbar, .overlay, .mobile-menu { display: none; }
+            .main-content { margin-left: 270px; padding: 40px 5%; }
+            .dash-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -263,9 +233,9 @@
         <h2>SAGE EMPIRE</h2>
         <p class="subtitle">ESPACE CRÉATEUR</p>
 
-        <a href="{% url 'dashboard_styliste' %}" class="nav-link active" onclick="showAddOnly()">Tableau de bord</a>
-        <a href="#" class="nav-link" onclick="showPublications()">Mes Publications</a>
+        <a href="{% url 'dashboard_styliste' %}" class="nav-link active">Tableau de bord</a>
         <a href="{% url 'edit_profil' %}" class="nav-link">Modifier mon profil</a>
+        <a href="{% url 'mes_publications' %}" class="nav-link">Mes Publications</a>
         <a href="{% url 'portfolio_styliste' styliste_id=styliste.id %}" class="nav-link">Voir mon Portfolio</a>
         <a href="{% url 'home' %}" class="nav-link">Retour au Hub</a>
 
@@ -300,8 +270,8 @@
             {% endif %}
         </div>
 
-        <div class="content-wrapper" id="contentWrapper">
-            <!-- Ajouter une œuvre -->
+        <div class="dash-grid">
+            <!-- Seulement le formulaire d'ajout sur mobile -->
             <div class="card">
                 <h3>Ajouter une œuvre</h3>
                 <form method="POST" enctype="multipart/form-data">
@@ -326,37 +296,7 @@
                     <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
-
-            <!-- Mes Publications (visible seulement sur PC quand activé) -->
-            <div class="card publications-section" id="publicationsSection">
-                <h3>Mes Publications Récentes</h3>
-                {% for creation in creations %}
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        {% if creation.image_url %}
-                            <img src="{{ creation.image_url }}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">
-                        {% endif %}
-                        <div>
-                            <strong>{{ creation.titre }}</strong><br>
-                            <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
-                        </div>
-                    </div>
-                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
-                        {% csrf_token %}
-                        <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
-                    </form>
-                </div>
-                {% empty %}
-                <p style="color:#888; font-style:italic; text-align:center; padding:40px 0;">
-                    Vous n'avez pas encore publié de créations.
-                </p>
-                {% endfor %}
-            </div>
         </div>
-
-        <button onclick="showAddOnly()" class="back-to-add" id="backButton">
-            ← Retour à l'ajout d'œuvre
-        </button>
     </div>
 
     <script>
@@ -365,16 +305,6 @@
             const overlay = document.getElementById('overlay');
             menu.classList.toggle('active');
             overlay.classList.toggle('active');
-        }
-
-        function showPublications() {
-            document.getElementById('contentWrapper').classList.add('show-publications');
-            document.getElementById('backButton').style.display = 'block';
-        }
-
-        function showAddOnly() {
-            document.getElementById('contentWrapper').classList.remove('show-publications');
-            document.getElementById('backButton').style.display = 'none';
         }
 
         function openCloudinaryWidget(isFront) {
