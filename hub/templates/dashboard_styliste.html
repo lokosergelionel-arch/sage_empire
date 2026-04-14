@@ -209,11 +209,87 @@
         .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
 
         /* ==================== PC UNIQUEMENT ==================== */
+        /* Modification UNIQUEMENT sur PC */
         @media (min-width: 769px) {
             .sidebar { display: block; }
             .topbar, .overlay, .mobile-menu { display: none; }
             .main-content { margin-left: 270px; padding: 40px 5%; }
-            .dash-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .content-wrapper {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
+
+            .publications-section {
+                display: none;
+            }
+
+            .content-wrapper.show-publications .publications-section {
+                display: block;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 22px;
+            font-size: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--ivory);
+        }
+
+        .btn-upload, .btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-upload { background: #333; color: white; }
+        .btn-submit { background: var(--gold); color: white; font-size: 1.05rem; }
+
+        .back-to-add {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            background: #555;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        @media (min-width: 769px) {
+            .content-wrapper.show-publications .back-to-add {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -296,7 +372,36 @@
                     <button type="submit" class="btn-submit">Publier la création</button>
                 </form>
             </div>
+        <!-- Mes Publications (visible seulement sur PC quand activé) -->
+            <div class="card publications-section" id="publicationsSection">
+                <h3>Mes Publications Récentes</h3>
+                {% for creation in creations %}
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        {% if creation.image_url %}
+                            <img src="{{ creation.image_url }}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">
+                        {% endif %}
+                        <div>
+                            <strong>{{ creation.titre }}</strong><br>
+                            <span style="color:var(--gold);">{{ creation.prix }} FCFA</span>
+                        </div>
+                    </div>
+                    <form action="{% url 'supprimer_creation' creation.id %}" method="post" onsubmit="return confirm('Supprimer cette création ?');">
+                        {% csrf_token %}
+                        <button type="submit" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">Supprimer</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p style="color:#888; font-style:italic; text-align:center; padding:40px 0;">
+                    Vous n'avez pas encore publié de créations.
+                </p>
+                {% endfor %}
+            </div>
         </div>
+
+        <button onclick="showAddOnly()" class="back-to-add" id="backButton">
+            ← Retour à l'ajout d'œuvre
+        </button>
     </div>
 
     <script>
@@ -305,6 +410,16 @@
             const overlay = document.getElementById('overlay');
             menu.classList.toggle('active');
             overlay.classList.toggle('active');
+        }
+
+        function showPublications() {
+            document.getElementById('contentWrapper').classList.add('show-publications');
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function showAddOnly() {
+            document.getElementById('contentWrapper').classList.remove('show-publications');
+            document.getElementById('backButton').style.display = 'none';
         }
 
         function openCloudinaryWidget(isFront) {
