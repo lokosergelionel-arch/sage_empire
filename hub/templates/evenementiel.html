@@ -21,9 +21,10 @@
             color: var(--charcoal);
         }
 
+        /* Hero - Réduit */
         .hero-event {
-            height: 65vh;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover;
+            height: 55vh; /* Réduit comme demandé */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,7 +34,7 @@
         }
         .hero-event h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3rem;
+            font-size: 2.8rem;
             letter-spacing: 8px;
         }
         .hero-event p {
@@ -44,8 +45,9 @@
             text-transform: uppercase;
         }
 
+        /* Introduction */
         .intro {
-            padding: 80px 10%;
+            padding: 70px 10% 60px;
             text-align: center;
             max-width: 850px;
             margin: 0 auto;
@@ -61,10 +63,11 @@
             line-height: 1.8;
         }
 
+        /* Events Grid */
         .events-grid {
-            padding: 40px 5% 80px;
+            padding: 30px 5% 80px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 25px;
             max-width: 1300px;
             margin: 0 auto;
@@ -80,30 +83,30 @@
         }
 
         .event-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.15);
         }
 
         .event-card img {
             width: 100%;
-            height: 220px;
+            height: 230px; /* Taille réduite */
             object-fit: cover;
         }
 
         .event-info {
-            padding: 18px;
+            padding: 20px;
             text-align: center;
         }
 
         .event-info h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
-            margin-bottom: 8px;
+            font-size: 1.35rem;
+            margin-bottom: 10px;
         }
 
         .event-info p {
             color: #555;
-            font-size: 0.9rem;
+            font-size: 0.93rem;
             line-height: 1.6;
         }
 
@@ -121,7 +124,7 @@
 
         #lightbox-image {
             max-width: 92%;
-            max-height: 75vh;
+            max-height: 78vh;
             border-radius: 12px;
             box-shadow: 0 10px 35px rgba(0,0,0,0.7);
         }
@@ -140,7 +143,7 @@
 
         .close-lightbox {
             position: absolute;
-            top: -45px;
+            top: -50px;
             right: 20px;
             color: white;
             font-size: 2rem;
@@ -162,7 +165,7 @@
 
     <section class="events-grid">
         <div class="event-card" onclick="openEventGallery(0)">
-            <img src="https://res.cloudinary.com/dgqjazpwu/image/upload/v1/your-image.jpg" alt="Coup de Coeur 2022">
+            <img src="{% static 'images/coupdecoeur_01.jpg' %}" alt="Coup de Coeur 2022">
             <div class="event-info">
                 <h3>COUP DE CŒUR - 2022</h3>
                 <p>Soirée dédiée à l’amour dans un cadre somptueusement décoré. Scénographie florale, lumière dorée et ambiance feutrée et glamour.</p>
@@ -186,17 +189,17 @@
             {
                 title: "COUP DE CŒUR - 2022",
                 images: [
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_01.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_02.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_03.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_05.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_06.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_07.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_08.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_09.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_10.jpg",
-                    "https://res.cloudinary.com/dgqjazpwu/image/upload/v1/coupdecoeur_11.jpg",
-                    // Colle ici les liens Cloudinary de tes photos
+                    "{% static 'images/coupdecoeur_01.jpg' %}",
+                    "{% static 'images/coupdecoeur_02.jpg' %}",
+                    "{% static 'images/coupdecoeur_03.jpg' %}",
+                    "{% static 'images/coupdecoeur_04.jpg' %}",
+                    "{% static 'images/coupdecoeur_05.jpg' %}",
+                    "{% static 'images/coupdecoeur_06.jpg' %}",
+                    "{% static 'images/coupdecoeur_07.jpg' %}",
+                    "{% static 'images/coupdecoeur_08.jpg' %}",
+                    "{% static 'images/coupdecoeur_09.jpg' %}",
+                    "{% static 'images/coupdecoeur_10.jpg' %}",
+                    "{% static 'images/coupdecoeur_11.jpg' %}"
                 ]
             }
         ];
