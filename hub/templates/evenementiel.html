@@ -3,48 +3,156 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAGE EMPIRE | Événementiel de Prestige</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #B5935E; --charcoal: #1A1A1A; --ivory: #F9F8F6; }
-        body { margin: 0; font-family: 'Lato', sans-serif; background: var(--ivory); color: var(--charcoal); line-height: 1.6; }
+        :root {
+            --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+        }
 
-        /* Hero Section */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.7;
+        }
+
+        /* Hero */
         .hero-event {
-            height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{% static "images/event-bg.jpg" %}') center/cover;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
+            height: 65vh;
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
         }
-        .hero-event h1 { font-family: 'Cinzel'; font-size: 3rem; letter-spacing: 10px; margin: 0; }
-        .hero-event p { font-size: 0.9rem; letter-spacing: 4px; color: var(--gold); margin-top: 20px; }
+        .hero-event h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.2rem;
+            letter-spacing: 8px;
+            margin: 0;
+        }
+        .hero-event p {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
 
-        /* Description */
-        .content-section { padding: 80px 10%; text-align: center; max-width: 900px; margin: 0 auto; }
-        .content-section h2 { font-family: 'Cinzel'; font-size: 1.8rem; letter-spacing: 3px; margin-bottom: 30px; }
-        .content-section p { font-size: 1.1rem; color: #555; font-style: italic; }
+        /* Introduction */
+        .intro {
+            padding: 80px 10%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .intro h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: var(--charcoal);
+        }
+        .intro p {
+            font-size: 1.1rem;
+            color: #444;
+            font-style: italic;
+        }
 
-        /* Galerie Photos */
-        .event-gallery {
+        /* Events Grid */
+        .events-grid {
+            padding: 40px 5%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px; padding: 20px; background: white;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .gallery-item { height: 450px; overflow: hidden; position: relative; cursor: pointer; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; filter: grayscale(30%); }
-        .gallery-item:hover img { transform: scale(1.1); filter: grayscale(0%); }
-        .gallery-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0; padding: 30px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; opacity: 0; transition: 0.4s;
-        }
-        .gallery-item:hover .gallery-overlay { opacity: 1; }
 
-        /* CTA */
-        .cta-section { padding: 100px 10%; text-align: center; background: var(--charcoal); color: white; }
-        .btn-contact {
-            display: inline-block; padding: 20px 40px; border: 1px solid var(--gold); color: var(--gold);
-            text-decoration: none; letter-spacing: 3px; font-size: 0.8rem; transition: 0.4s;
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.4s;
         }
-        .btn-contact:hover { background: var(--gold); color: white; }
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+        .event-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .event-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .event-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+        .event-info p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+        }
+
+        #lightbox-image {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.8rem;
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            user-select: none;
+        }
+        .prev { left: -70px; }
+        .next { right: -70px; }
+
+        .close-lightbox {
+            position: absolute;
+            top: -55px;
+            right: 10px;
+            color: white;
+            font-size: 2.2rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -54,40 +162,78 @@
         <p>CRÉATEUR DE MOMENTS ÉTERNELS</p>
     </section>
 
-    <section class="content-section">
+    <section class="intro">
         <h2>L'Art de Recevoir</h2>
-        <p>"Nous transformons vos visions en réalités mémorables. Mariages d'exception, galas d'entreprise ou soirées privées : chaque détail est une signature de l'Empire."</p>
+        <p>Nous transformons vos visions en expériences inoubliables. Chaque mariage, gala, soirée privée ou événement d’entreprise est pensé comme une œuvre d’art. Chez Sage Empire, le luxe n’est pas une option, c’est notre signature.</p>
     </section>
 
-    <div class="event-gallery">
-        <div class="gallery-item">
-            <img src="{% static 'images/event1.jpg' %}" alt="Décoration Luxe">
-            <div class="gallery-overlay">
-                <h3>Dîners de Gala</h3>
-                <p>Scénographie et Art de la table</p>
+    <section class="events-grid">
+        <!-- Événement Coup de Cœur 2022 -->
+        <div class="event-card" onclick="openEventGallery(0)">
+            <img src="{% static 'images/event1.jpg' %}" alt="Coup de Coeur 2022">
+            <div class="event-info">
+                <h3>COUP DE CŒUR - 2022</h3>
+                <p>Soirée dédiée à l’amour dans un cadre somptueusement décoré. Scénographie florale, lumière dorée et ambiance feutrée et glamour.</p>
             </div>
         </div>
-        <div class="gallery-item">
-            <img src="{% static 'images/event2.jpg' %}" alt="Soirée VIP">
-            <div class="gallery-overlay">
-                <h3>Soirées Privées</h3>
-                <p>Ambiance exclusive et sur-mesure</p>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="{% static 'images/event3.jpg' %}" alt="Mariage">
-            <div class="gallery-overlay">
-                <h3>Mariages Impériaux</h3>
-                <p>L'excellence pour votre plus beau jour</p>
-            </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="if(event.target.id === 'lightbox') closeLightbox()">
+        <div id="lightbox-content" onclick="event.stopImmediatePropagation()">
+            <span class="close-lightbox" onclick="closeLightbox()">✕</span>
+            <span class="lightbox-nav prev" onclick="prevImage()">‹</span>
+            <img id="lightbox-image" src="" alt="Événement">
+            <span class="lightbox-nav next" onclick="nextImage()">›</span>
         </div>
     </div>
 
-    <section class="cta-section">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 3px;">UN PROJET D'EXCEPTION ?</h2>
-        <p style="margin-bottom: 40px; color: #888;">Discutons de votre prochain événement sur WhatsApp pour un devis personnalisé.</p>
-        <a href="https://wa.me/22891645869" class="btn-contact">NOUS CONTACTER</a>
-    </section>
+    <script>
+        let currentEvent = 0;
+        let currentImage = 0;
+
+        const events = [
+            {
+                title: "COUP DE CŒUR - 2022",
+                images: [
+                    "{% static 'images/coupdecoeur_01.jpg' %}",
+                    "{% static 'images/coupdecoeur_02.jpg' %}",
+                    "{% static 'images/coupdecoeur_03.jpg' %}"
+                    "{% static 'images/coupdecoeur_04.jpg' %}"
+                    "{% static 'images/coupdecoeur_05.jpg' %}"
+                    "{% static 'images/coupdecoeur_06.jpg' %}"
+                    "{% static 'images/coupdecoeur_07.jpg' %}"
+                    "{% static 'images/coupdecoeur_08.jpg' %}"
+                    "{% static 'images/coupdecoeur_09.jpg' %}"
+                    "{% static 'images/coupdecoeur_10.jpg' %}"
+                    "{% static 'images/coupdecoeur_11.jpg' %}"
+                    // Ajoute ici les autres photos de l'événement
+                ]
+            }
+            // Tu pourras ajouter d'autres événements ici plus tard
+        ];
+
+        function openEventGallery(eventIndex) {
+            currentEvent = eventIndex;
+            currentImage = 0;
+            document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function nextImage() {
+            currentImage = (currentImage + 1) % events[currentEvent].images.length;
+            document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
+        }
+
+        function prevImage() {
+            currentImage = (currentImage - 1 + events[currentEvent].images.length) % events[currentEvent].images.length;
+            document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
+        }
+    </script>
 
 </body>
 </html>
