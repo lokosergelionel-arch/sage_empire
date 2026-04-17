@@ -19,13 +19,12 @@
             font-family: 'Inter', sans-serif;
             background: var(--ivory);
             color: var(--charcoal);
-            line-height: 1.7;
         }
 
         /* Hero */
         .hero-event {
-            height: 65vh;
-            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
+            height: 70vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -35,76 +34,87 @@
         }
         .hero-event h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3.2rem;
-            letter-spacing: 8px;
-            margin: 0;
+            font-size: 3.4rem;
+            letter-spacing: 10px;
+            margin-bottom: 12px;
         }
         .hero-event p {
-            font-size: 1rem;
-            letter-spacing: 4px;
+            font-size: 1.05rem;
+            letter-spacing: 5px;
             color: var(--gold);
-            margin-top: 15px;
             text-transform: uppercase;
         }
 
         /* Introduction */
         .intro {
-            padding: 80px 10%;
+            padding: 90px 10% 70px;
             text-align: center;
-            max-width: 900px;
+            max-width: 850px;
             margin: 0 auto;
         }
         .intro h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            margin-bottom: 25px;
+            font-size: 2.1rem;
+            margin-bottom: 28px;
             color: var(--charcoal);
         }
         .intro p {
             font-size: 1.1rem;
             color: #444;
-            font-style: italic;
+            line-height: 1.85;
         }
 
         /* Events Grid */
         .events-grid {
-            padding: 40px 5%;
+            padding: 40px 5% 100px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 35px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .event-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            transition: all 0.5s ease;
             cursor: pointer;
-            transition: transform 0.4s;
         }
+
         .event-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.18);
         }
+
         .event-card img {
             width: 100%;
-            height: 280px;
+            height: 340px;
             object-fit: cover;
+            transition: transform 0.6s ease;
         }
+
+        .event-card:hover img {
+            transform: scale(1.05);
+        }
+
         .event-info {
-            padding: 20px;
+            padding: 28px 25px;
             text-align: center;
         }
+
         .event-info h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            margin-bottom: 8px;
+            font-size: 1.55rem;
+            margin-bottom: 12px;
             color: var(--charcoal);
         }
+
         .event-info p {
             color: #555;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
+            line-height: 1.75;
         }
 
         /* Lightbox */
@@ -113,44 +123,46 @@
             position: fixed;
             z-index: 10000;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.96);
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
-        #lightbox-content {
+        .lightbox-content {
             position: relative;
-            max-width: 90%;
-            max-height: 85vh;
+            max-width: 92%;
+            max-height: 88vh;
         }
 
         #lightbox-image {
             max-width: 100%;
-            max-height: 75vh;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            max-height: 78vh;
+            border-radius: 12px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.7);
         }
 
         .lightbox-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 2.8rem;
-            color: white;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.85);
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 10px 18px;
             user-select: none;
+            transition: 0.3s;
         }
+        .lightbox-nav:hover { color: var(--gold); }
         .prev { left: -70px; }
         .next { right: -70px; }
 
         .close-lightbox {
             position: absolute;
-            top: -55px;
+            top: -60px;
             right: 10px;
             color: white;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             cursor: pointer;
         }
     </style>
@@ -168,7 +180,6 @@
     </section>
 
     <section class="events-grid">
-        <!-- Événement Coup de Cœur 2022 -->
         <div class="event-card" onclick="openEventGallery(0)">
             <img src="{% static 'images/event1.jpg' %}" alt="Coup de Coeur 2022">
             <div class="event-info">
@@ -180,7 +191,7 @@
 
     <!-- Lightbox -->
     <div id="lightbox" onclick="if(event.target.id === 'lightbox') closeLightbox()">
-        <div id="lightbox-content" onclick="event.stopImmediatePropagation()">
+        <div class="lightbox-content" onclick="event.stopImmediatePropagation()">
             <span class="close-lightbox" onclick="closeLightbox()">✕</span>
             <span class="lightbox-nav prev" onclick="prevImage()">‹</span>
             <img id="lightbox-image" src="" alt="Événement">
@@ -198,23 +209,22 @@
                 images: [
                     "{% static 'images/coupdecoeur_01.jpg' %}",
                     "{% static 'images/coupdecoeur_02.jpg' %}",
-                    "{% static 'images/coupdecoeur_03.jpg' %}"
-                    "{% static 'images/coupdecoeur_04.jpg' %}"
-                    "{% static 'images/coupdecoeur_05.jpg' %}"
-                    "{% static 'images/coupdecoeur_06.jpg' %}"
-                    "{% static 'images/coupdecoeur_07.jpg' %}"
-                    "{% static 'images/coupdecoeur_08.jpg' %}"
-                    "{% static 'images/coupdecoeur_09.jpg' %}"
-                    "{% static 'images/coupdecoeur_10.jpg' %}"
-                    "{% static 'images/coupdecoeur_11.jpg' %}"
-                    // Ajoute ici les autres photos de l'événement
+                    "{% static 'images/coupdecoeur_03.jpg' %}",
+                    "{% static 'images/coupdecoeur_04.jpg' %}",
+                    "{% static 'images/coupdecoeur_05.jpg' %}",
+                    "{% static 'images/coupdecoeur_06.jpg' %}",
+                    "{% static 'images/coupdecoeur_07.jpg' %}",
+                    "{% static 'images/coupdecoeur_08.jpg' %}",
+                    "{% static 'images/coupdecoeur_09.jpg' %}",
+                    "{% static 'images/coupdecoeur_10.jpg' %}",
+                    "{% static 'images/coupdecoeur_11.jpg' %}",
+                    // Ajoute ici tes autres photos
                 ]
             }
-            // Tu pourras ajouter d'autres événements ici plus tard
         ];
 
-        function openEventGallery(eventIndex) {
-            currentEvent = eventIndex;
+        function openEventGallery(index) {
+            currentEvent = index;
             currentImage = 0;
             document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
             document.getElementById('lightbox').style.display = 'flex';
