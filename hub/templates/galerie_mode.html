@@ -149,47 +149,44 @@
 
  /* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
 @media (max-width: 768px) {
-    /* On empêche le site de dépasser de l'écran */
-    html, body {
-        max-width: 100%;
-        overflow-x: hidden;
+    header {
+        padding: 40px 15px 20px; /* Moins de vide en haut, plus sur les côtés */
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
     }
 
     .gallery-grid {
-        display: grid !important;
-        /* repeat(3, 1fr) force les 3 colonnes à se partager l'espace SANS déborder */
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 5px;
-        padding: 0 10px; /* Voici tes marges pour ne plus que ce soit rogné */
-        box-sizing: border-box; /* INDISPENSABLE : inclut le padding dans la largeur */
-        width: 100%;
-    }
-
-    .product-card {
-        width: 100%;
-        box-sizing: border-box;
+        grid-template-columns: repeat(2, 1fr); /* 2 COLONNES : C'est le standard luxe mobile */
+        gap: 15px; /* Plus d'espace entre les cartes pour l'aération */
+        padding: 15px; /* Marges réelles sur les côtés de l'écran */
     }
 
     .product-image-wrapper {
-        height: 100px; /* On baisse un peu la hauteur pour garder la proportion */
-        width: 100%;
+        height: 220px; /* Plus de hauteur pour que l'image soit belle */
     }
 
-    /* Pour éviter que le texte soit rogné, on le force à rester dedans */
-    .product-info h3, .price {
-        white-space: normal; /* Permet au texte de revenir à la ligne si trop long */
-        word-wrap: break-word;
-        font-size: 0.55rem;
-        text-align: center;
+    .product-info {
+        padding: 10px 5px;
+    }
+
+    .product-info h3 {
+        font-size: 0.75rem; /* Plus lisible */
+        margin-bottom: 4px;
+        line-height: 1.2;
     }
 
     .price {
-        font-size: 0.6rem;
+        font-size: 0.8rem;
+        margin-bottom: 8px;
     }
 
     .btn-order {
-        padding: 6px 2px;
-        font-size: 0.5rem;
+        padding: 10px 5px;
+        font-size: 0.65rem;
+        letter-spacing: 1px;
     }
 }
 
