@@ -23,27 +23,30 @@
 
         /* Hero - Réduit */
         .hero-event {
-            height: 55vh; /* Réduit comme demandé */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-        }
-        .hero-event h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
-            letter-spacing: 8px;
-        }
-        .hero-event p {
-            font-size: 1rem;
-            letter-spacing: 4px;
-            color: var(--gold);
-            margin-top: 15px;
-            text-transform: uppercase;
-        }
+    height: 55vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-event h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.8rem;
+    letter-spacing: 8px;
+}
+
+.hero-event p {
+    font-size: 1rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-top: 15px;
+    text-transform: uppercase;
+}
 
         /* Introduction */
         .intro {
@@ -67,10 +70,26 @@
 .events-grid {
     padding: 40px 5% 80px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
     max-width: 1300px;
     margin: 0 auto;
+}
+
+/* Force 2 colonnes sur les écrans moyens et petits */
+@media (max-width: 900px) {
+    .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 30px 5% 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .events-grid {
+        grid-template-columns: 1fr;        /* 1 seule colonne sur très petit téléphone */
+        gap: 25px;
+    }
 }
 
 .event-card {
@@ -156,21 +175,17 @@
         /* ===================== RESPONSIVE - BANNER MOBILE ===================== */
 @media (max-width: 768px) {
     .hero-event {
-        height: 68vh;
-        min-height: 480px;
-        padding: 0 20px;
+        height: 48vh;           /* Hauteur réduite sur téléphone */
+        min-height: 380px;
     }
-
     .hero-event h1 {
-        font-size: 2.05rem;
-        letter-spacing: 5px;
-        line-height: 1.15;
+        font-size: 2rem;
+        letter-spacing: 4px;
     }
-
     .hero-event p {
-        font-size: 0.96rem;
-        letter-spacing: 3px;
-        margin-top: 12px;
+        font-size: 0.95rem;
+        letter-spacing: 2px;
+        margin-top: 10px;
     }
 }
 
