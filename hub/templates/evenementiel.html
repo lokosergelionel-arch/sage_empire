@@ -21,9 +21,8 @@
             color: var(--charcoal);
         }
 
-        /* Hero - Réduit */
         .hero-event {
-            height: 55vh; /* Réduit comme demandé */
+            height: 55vh;
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
@@ -45,9 +44,8 @@
             text-transform: uppercase;
         }
 
-        /* Introduction */
         .intro {
-            padding: 70px 10% 60px;
+            padding: 70px 10%;
             text-align: center;
             max-width: 850px;
             margin: 0 auto;
@@ -63,55 +61,46 @@
             line-height: 1.8;
         }
 
-        /* Events Grid */
-.events-grid {
-    padding: 40px 5% 80px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
+        .events-grid {
+            padding: 30px 5% 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
 
-.event-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    cursor: pointer;
-    transition: all 0.4s ease;
-    max-width: 420px;           /* Limite la largeur */
-    margin: 0 auto;
-}
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
 
-.event-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-}
+        .event-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
 
-.event-card img {
-    width: 100%;
-    height: 500px;              /* Hauteur réduite pour un rectangle plus équilibré */
-    object-fit: cover;
-}
+        .event-info {
+            padding: 18px;
+            text-align: center;
+        }
 
-.event-info {
-    padding: 20px;
-    text-align: center;
-}
+        .event-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: var(--gold);
+        }
 
-.event-info h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 1.35rem;
-    margin-bottom: 10px;
-    color: var(--gold);
-}
-
-.event-info p {
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
+        .event-info p {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
         /* Lightbox */
         #lightbox {
@@ -227,6 +216,35 @@
         function prevImage() {
             currentImage = (currentImage - 1 + events[currentEvent].images.length) % events[currentEvent].images.length;
             document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
+        }
+
+        // === Navigation au clavier (PC) ===
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (e.key === "ArrowRight") nextImage();
+                if (e.key === "ArrowLeft") prevImage();
+                if (e.key === "Escape") closeLightbox();
+            }
+        });
+
+        // === Swipe sur mobile (glisser avec le doigt) ===
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const lightbox = document.getElementById('lightbox');
+
+        lightbox.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        lightbox.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextImage();      // Swipe gauche
+            if (touchEndX > touchStartX + 50) prevImage();      // Swipe droite
         }
     </script>
 
