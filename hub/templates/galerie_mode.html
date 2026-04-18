@@ -157,7 +157,10 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* On garde tes 3 colonnes */
         gap: 6px; /* Espace très fin entre les photos */
-        padding: 0 15px; /* Les marges sur les côtés (le "dézoom") */
+        padding-left: 20px !important;  /* Marge fixe à gauche */
+        padding-right: 20px !important; /* Marge fixe à droite */
+        box-sizing: border-box;         /* Empêche la grille de déborder à cause du padding */
+
         width: 92%; /* On ne prend pas toute la largeur de l'écran */
         margin: 0 auto; /* On centre la grille */
     }
