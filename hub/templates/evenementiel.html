@@ -23,30 +23,30 @@
 
         /* Hero - Réduit */
         .hero-event {
-    height: 55vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-    padding: 0 20px;
-}
+            height: 55vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/event-bg.jpg" %}') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
 
-.hero-event h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 2.8rem;
-    letter-spacing: 8px;
-}
+        .hero-event h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            letter-spacing: 8px;
+        }
 
-.hero-event p {
-    font-size: 1rem;
-    letter-spacing: 4px;
-    color: var(--gold);
-    margin-top: 15px;
-    text-transform: uppercase;
-}
+        .hero-event p {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
 
         /* Introduction */
         .intro {
@@ -67,73 +67,61 @@
         }
 
         /* Events Grid */
-.events-grid {
-    padding: 40px 5% 80px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
+        .events-grid {
+            padding: 40px 5% 80px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
 
-/* Force 2 colonnes sur les écrans moyens et petits */
-.events-grid {
-    padding: 40px 5% 80px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);     /* Force 2 colonnes par défaut */
-    gap: 25px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
+        @media (max-width: 420px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
 
-/* Passe à 1 colonne uniquement sur très petit écran */
-@media (max-width: 580px) {
-    .events-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 30px 5% 70px;
-    }
-}
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            max-width: 420px;
+            margin: 0 auto;
+        }
 
-.event-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    cursor: pointer;
-    transition: all 0.4s ease;
-    max-width: 420px;           /* Limite la largeur */
-    margin: 0 auto;
-}
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+        }
 
-.event-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-}
+        .event-card img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
 
-.event-card img {
-    width: 100%;
-    height: 500px;              /* Hauteur réduite pour un rectangle plus équilibré */
-    object-fit: cover;
-}
+        .event-info {
+            padding: 20px;
+            text-align: center;
+        }
 
-.event-info {
-    padding: 20px;
-    text-align: center;
-}
+        .event-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            color: var(--gold);
+        }
 
-.event-info h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 1.35rem;
-    margin-bottom: 10px;
-    color: var(--gold);           /* Titre en couleur or */
-}
-
-.event-info p {
-    color: #555;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
+        .event-info p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
         /* Lightbox */
         #lightbox {
@@ -176,49 +164,54 @@
         }
 
         /* ===================== RESPONSIVE - BANNER MOBILE ===================== */
-@media (max-width: 768px) {
-    .hero-event {
-        height: 48vh;           /* Hauteur réduite sur téléphone */
-        min-height: 380px;
-    }
-    .hero-event h1 {
-        font-size: 2rem;
-        letter-spacing: 4px;
-    }
-    .hero-event p {
-        font-size: 0.95rem;
-        letter-spacing: 2px;
-        margin-top: 10px;
-    }
-}
+        @media (max-width: 768px) {
+            .hero-event {
+                height: 48vh;
+                min-height: 380px;
+            }
+            .hero-event h1 {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+            .hero-event p {
+                font-size: 0.95rem;
+                letter-spacing: 2px;
+                margin-top: 10px;
+            }
+        }
 
-@media (max-width: 480px) {
-    .hero-event h1 {
-        font-size: 1.75rem;
-        letter-spacing: 3px;
-    }
+        @media (max-width: 480px) {
+            .hero-event h1 {
+                font-size: 1.75rem;
+                letter-spacing: 3px;
+            }
+            .hero-event p {
+                font-size: 0.9rem;
+            }
+        }
 
-    .hero-event p {
-        font-size: 0.9rem;
-    }
-}
-        /* Events Grid - 2 cartes par ligne même sur téléphone */
-.events-grid {
-    padding: 40px 5% 80px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);     /* 2 cartes par ligne par défaut */
-    gap: 18px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
+        /* ===================== CORRECTION CARTE MOBILE ===================== */
+        @media (max-width: 768px) {
+            .event-card {
+                max-width: 100%;
+                margin: 0 auto;
+                border-radius: 10px;
+            }
 
-/* Passe à 1 seule colonne uniquement sur très petits écrans */
-@media (max-width: 420px) {
-    .events-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
+            .event-card img {
+                height: 320px;
+                object-fit: cover;
+            }
+
+            .event-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .event-info p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+        }
     </style>
 </head>
 <body>
@@ -271,7 +264,7 @@
                     "{% static 'images/coupdecoeur_10.jpg' %}",
                     "{% static 'images/coupdecoeur_11.jpg' %}",
                     "{% static 'images/coupdecoeur_11.jpg' %}",
-                    "{% static 'images/coupdecoeur_12.jpg' %}",
+                    "{% static 'images/coupdecoeur_12.jpg' %}"
                 ]
             }
         ];
