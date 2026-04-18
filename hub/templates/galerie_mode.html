@@ -290,85 +290,45 @@ color: black;
 /* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
 
 @media (max-width: 768px) {
+    header {
+        padding: 40px 15px 20px;
+    }
 
-header {
+    header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
 
-padding: 40px 15px 20px; /* Moins de vide en haut, plus sur les côtés */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 COLONNES STRICTES */
+        gap: 12px; /* Espace entre les deux photos */
+        padding: 0 15px !important; /* MARGE À GAUCHE ET À DROITE (L'EFFET DEZOOM) */
+        width: 100%;
+        box-sizing: border-box; /* EMPÊCHE QUE CE SOIT ROGNÉ */
+    }
 
-}
+    .product-image-wrapper {
+        height: 220px; /* Hauteur adaptée pour les 2 colonnes */
+    }
 
+    .product-info {
+        padding: 10px 5px;
+    }
 
+    .product-info h3 {
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
 
-header h1 {
+    .price {
+        font-size: 0.8rem;
+    }
 
-font-size: 1.5rem;
-
-letter-spacing: 2px;
-
-}
-
-
-
-.gallery-grid {
-
-grid-template-columns: repeat(2, 1fr); /* 2 COLONNES : C'est le standard luxe mobile */
-
-gap: 15px; /* Plus d'espace entre les cartes pour l'aération */
-
-padding: 15px; /* Marges réelles sur les côtés de l'écran */
-
-}
-
-
-
-.product-image-wrapper {
-
-height: 220px; /* Plus de hauteur pour que l'image soit belle */
-
-}
-
-
-
-.product-info {
-
-padding: 10px 5px;
-
-}
-
-
-
-.product-info h3 {
-
-font-size: 0.75rem; /* Plus lisible */
-
-margin-bottom: 4px;
-
-line-height: 1.2;
-
-}
-
-
-
-.price {
-
-font-size: 0.8rem;
-
-margin-bottom: 8px;
-
-}
-
-
-
-.btn-order {
-
-padding: 10px 5px;
-
-font-size: 0.65rem;
-
-letter-spacing: 1px;
-
-}
-
+    .btn-commander {
+        padding: 10px 5px;
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
 }
 
 
@@ -467,25 +427,6 @@ overflow: hidden;
 
 }
 
-
-
-@media (max-width: 768px) {
-
-.gallery-grid {
-
-display: grid;
-
-grid-template-columns: repeat(3, 1fr);
-
-gap: 8px;
-
-padding: 10px 0;
-
-width: 100%; /* La largeur est gérée par le wrapper au-dessus */
-
-}
-
-}
 
  </style>
 </head>
