@@ -212,6 +212,10 @@
                 line-height: 1.5;
             }
         }
+        /* Masquer les flèches de navigation */
+.lightbox-nav {
+    display: none !important;
+}
     </style>
 </head>
 <body>
@@ -289,6 +293,45 @@
             currentImage = (currentImage - 1 + events[currentEvent].images.length) % events[currentEvent].images.length;
             document.getElementById('lightbox-image').src = events[currentEvent].images[currentImage];
         }
+
+        /* ===================== KEYBOARD + SWIPE NAVIGATION ===================== */
+
+// Navigation au clavier (ordinateur)
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('lightbox').style.display === 'flex') {
+        if (e.key === 'ArrowRight') {
+            nextImage();
+        } else if (e.key === 'ArrowLeft') {
+            prevImage();
+        } else if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    }
+});
+
+// Swipe sur téléphone (touch)
+let touchStartX = 0;
+let touchEndX = 0;
+
+const lightbox = document.getElementById('lightbox');
+
+lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    if (touchEndX < touchStartX - 50) {
+        nextImage();        // Swipe gauche = photo suivante
+    }
+    if (touchEndX > touchStartX + 50) {
+        prevImage();        // Swipe droite = photo précédente
+    }
+}
     </script>
 
 </body>
