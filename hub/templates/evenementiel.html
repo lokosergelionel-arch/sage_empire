@@ -77,18 +77,21 @@
 }
 
 /* Force 2 colonnes sur les écrans moyens et petits */
-@media (max-width: 900px) {
-    .events-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        padding: 30px 5% 70px;
-    }
+.events-grid {
+    padding: 40px 5% 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);     /* Force 2 colonnes par défaut */
+    gap: 25px;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
-@media (max-width: 480px) {
+/* Passe à 1 colonne uniquement sur très petit écran */
+@media (max-width: 580px) {
     .events-grid {
-        grid-template-columns: 1fr;        /* 1 seule colonne sur très petit téléphone */
-        gap: 25px;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 30px 5% 70px;
     }
 }
 
