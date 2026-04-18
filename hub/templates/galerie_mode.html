@@ -149,39 +149,40 @@
 
  /* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
 @media (max-width: 768px) {
-header { padding: 60px 5% 30px; }
-header h1 { font-size: 1.8rem; letter-spacing: 4px; }
+    header {
+        padding: 40px 20px 20px;
+    }
 
-.gallery-grid {
-grid-template-columns: repeat(3, 1fr); /* FORCE 3 COLONNES /
-gap: 8px; / Espace réduit pour gagner de la place */
-padding: 5px;
-}
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* On garde tes 3 colonnes */
+        gap: 6px; /* Espace très fin entre les photos */
+        padding: 0 15px; /* Les marges sur les côtés (le "dézoom") */
+        width: 92%; /* On ne prend pas toute la largeur de l'écran */
+        margin: 0 auto; /* On centre la grille */
+    }
 
-.product-image-wrapper {
-height: 160px; /* Hauteur réduite pour le format grille mobile */
-}
+    .product-image-wrapper {
+        height: 120px; /* Hauteur ajustée pour ne pas déformer en 3 colonnes */
+    }
 
-.product-info {
-padding: 8px 4px;
-}
+    .product-info {
+        padding: 5px 2px;
+    }
 
-.product-info h3 {
-font-size: 0.65rem; /* Texte plus petit pour tenir sur une ligne */
-letter-spacing: 0;
-margin-bottom: 2px;
-}
+    .product-info h3 {
+        font-size: 0.55rem; /* Obligatoire pour que le texte ne se chevauche pas */
+        line-height: 1.1;
+    }
 
-.price {
-font-size: 0.7rem;
-margin-bottom: 6px;
-}
+    .price {
+        font-size: 0.6rem;
+    }
 
-.btn-order {
-padding: 8px 2px;
-font-size: 0.55rem; /* Bouton compact */
-letter-spacing: 0;
-}
+    .btn-order {
+        padding: 6px 2px;
+        font-size: 0.5rem;
+    }
 }
 
  #lightbox {
