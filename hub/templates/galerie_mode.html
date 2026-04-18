@@ -229,6 +229,22 @@
  font-style: italic;
  text-align: center;
  }
+
+  .main-wrapper {
+        max-width: 94%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 10px 0;
+            width: 100%; /* La largeur est gérée par le wrapper au-dessus */
+        }
+    }
  </style>
 </head>
 <body>
@@ -244,7 +260,7 @@
  </header>
 
  <section class="container">
- <div class="gallery-grid">
+ <div class="main-wrapper"> <div class="gallery-grid">
  {% for produit in produits_sage %}
  <div class="collection-item">
  <div class="product-image-wrapper"
