@@ -28,16 +28,16 @@
                 url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
     background-size: cover;
     color: white;
-    padding: 180px 5% 130px;        /* Augmentation du padding-top pour PC */
+    padding: 130px 5% 100px;        /* Réduit pour ne plus être trop large */
     text-align: center;
     border-bottom: 2px solid var(--gold);
-    min-height: 70vh;
+    min-height: auto;               /* Retiré le 70vh qui forçait trop de hauteur */
 }
 
 .digital-hero h1 {
     font-family: 'Cinzel';
-    font-size: 3.2rem;
-    letter-spacing: 7px;
+    font-size: 2.8rem;              /* Taille réduite */
+    letter-spacing: 6px;
     margin-bottom: 15px;
     text-transform: uppercase;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
