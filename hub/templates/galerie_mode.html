@@ -149,33 +149,38 @@
 
  /* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
 @media (max-width: 768px) {
-    header {
-        padding: 40px 20px 20px;
+    /* On empêche le site de dépasser de l'écran */
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* On garde tes 3 colonnes */
-        gap: 6px; /* Espace très fin entre les photos */
-        padding-left: 20px !important;  /* Marge fixe à gauche */
-        padding-right: 20px !important; /* Marge fixe à droite */
-        box-sizing: border-box;         /* Empêche la grille de déborder à cause du padding */
+        display: grid !important;
+        /* repeat(3, 1fr) force les 3 colonnes à se partager l'espace SANS déborder */
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 5px;
+        padding: 0 10px; /* Voici tes marges pour ne plus que ce soit rogné */
+        box-sizing: border-box; /* INDISPENSABLE : inclut le padding dans la largeur */
+        width: 100%;
+    }
 
-        width: 92%; /* On ne prend pas toute la largeur de l'écran */
-        margin: 0 auto; /* On centre la grille */
+    .product-card {
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .product-image-wrapper {
-        height: 120px; /* Hauteur ajustée pour ne pas déformer en 3 colonnes */
+        height: 100px; /* On baisse un peu la hauteur pour garder la proportion */
+        width: 100%;
     }
 
-    .product-info {
-        padding: 5px 2px;
-    }
-
-    .product-info h3 {
-        font-size: 0.55rem; /* Obligatoire pour que le texte ne se chevauche pas */
-        line-height: 1.1;
+    /* Pour éviter que le texte soit rogné, on le force à rester dedans */
+    .product-info h3, .price {
+        white-space: normal; /* Permet au texte de revenir à la ligne si trop long */
+        word-wrap: break-word;
+        font-size: 0.55rem;
+        text-align: center;
     }
 
     .price {
