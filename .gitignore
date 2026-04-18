@@ -3,4 +3,5 @@ __pycache__/
 staticfiles/
 media/
 .env
-*.pyc
+*.pyc.DS_Store
+**/.DS_Store
