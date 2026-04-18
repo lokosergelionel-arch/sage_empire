@@ -24,31 +24,33 @@
 
         /* Hero Section avec Image de Fond */
         .digital-hero {
-            /* L'image est placée ici avec un dégradé pour la lisibilité */
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                        url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 150px 5% 110px;
-            text-align: center;
-            border-bottom: 2px solid var(--gold);
-        }
-        .digital-hero h1 {
-            font-family: 'Cinzel';
-            font-size: 3.5rem;
-            letter-spacing: 7px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-        .digital-hero p {
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.9rem;
-            font-weight: 400;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-        }
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
+    background-size: cover;
+    color: white;
+    padding: 180px 5% 130px;        /* Augmentation du padding-top pour PC */
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    min-height: 70vh;
+}
+
+.digital-hero h1 {
+    font-family: 'Cinzel';
+    font-size: 3.2rem;
+    letter-spacing: 7px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.digital-hero p {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
 
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
 
