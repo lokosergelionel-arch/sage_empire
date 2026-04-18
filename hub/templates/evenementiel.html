@@ -202,6 +202,23 @@
         font-size: 0.9rem;
     }
 }
+        /* Events Grid - 2 cartes par ligne même sur téléphone */
+.events-grid {
+    padding: 40px 5% 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);     /* 2 cartes par ligne par défaut */
+    gap: 18px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Passe à 1 seule colonne uniquement sur très petits écrans */
+@media (max-width: 420px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
     </style>
 </head>
 <body>
