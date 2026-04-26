@@ -22,7 +22,7 @@ SECRET_KEY = "django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['sage-empire.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sage-empire.onrender.com', 'sage-empire.com', 'www.sage-empire.com', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://sage-empire.onrender.com']
 
