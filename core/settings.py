@@ -190,16 +190,19 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email
 
+# ===================== EMAIL CONFIGURATION =====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
-
 EMAIL_PORT = 587
-
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
 EMAIL_HOST_USER = 'loko.sergelionel@gmail.com'
-
 EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
+SERVER_EMAIL = 'loko.sergelionel@gmail.com'
+
+# Option importante pour Render
+EMAIL_TIMEOUT = 30
