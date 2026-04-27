@@ -183,9 +183,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
-# ===================== EMAIL CONFIGURATION =====================
+# ===================== EMAIL CONFIGURATION (Gmail) =====================
 print("=== CONFIG EMAIL CHARGÉE ===")
-print("EMAIL_BACKEND =", 'django.core.mail.backends.smtp.EmailBackend')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -203,5 +202,11 @@ SERVER_EMAIL = 'loko.sergelionel@gmail.com'
 print("=== EMAIL CONFIG SUCCESSFULLY LOADED ===")
 print("From email:", DEFAULT_FROM_EMAIL)
 print("========== SETTINGS.PY CHARGÉ AVEC SUCCÈS ==========")
-print("Ceci doit apparaître dans les logs Render")
+
+
+# Logging détaillé pour voir les erreurs d'envoi
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('django.core.mail')
+logger.setLevel(logging.DEBUG)
 
