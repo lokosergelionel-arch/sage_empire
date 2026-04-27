@@ -11,563 +11,351 @@
  <meta property="og:type" content="website">
 
  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
    <style>
-
     :root {
-
     --ivory: #F9F8F6;
-
     --charcoal: #1A1A1A;
-
     --gold-subtle: #B5935E;
-
     --border: #E5E2DA;
-
     --white: #ffffff;
-
     }
 
     html { scroll-behavior: smooth; }
-
     body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
     /* NAV */
-
     nav {
-
     padding: 15px 8%;
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     background: var(--white);
-
     border-bottom: 1px solid var(--border);
-
     position: sticky; top: 0; z-index: 1000;
-
     }
 
     .nav-logo-container { height: 50px; }
-
     .nav-logo-container img { height: 100%; width: auto; }
-
     .nav-links { display: flex; align-items: center; }
-
     .nav-links a {
-
     margin-left: 25px;
-
     text-decoration: none;
-
     color: var(--charcoal);
-
     font-size: 0.75rem;
-
     text-transform: uppercase;
-
     letter-spacing: 2px;
-
     transition: 0.3s;
-
     }
-
     .nav-links a:hover { color: var(--gold-subtle); }
-
     .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
     /* --- MOBILE OPTIMISÉ --- */
-
     .hamburger {
-
     display: none;
-
     flex-direction: column;
-
     gap: 6px;
-
     cursor: pointer;
-
     z-index: 2100;
-
     padding: 10px;
-
     }
-
     .hamburger span {
-
     width: 30px;
-
     height: 2px;
-
     background: var(--charcoal);
-
     transition: 0.4s;
-
     border-radius: 2px;
-
     }
-
-    /* Transformation en X */
 
     .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-
     .hamburger.open span:nth-child(2) { opacity: 0; }
-
     .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-    /* --- MOBILE OVERLAY TRANSPARENT --- */
-
    .mobile-overlay {
-
        position: fixed; top: 0; left: 0;
-
        width: 100%; height: 100%;
-
-       background: rgba(255, 255, 255, 0.98); /* Fond blanc quasi transparent */
-
-       backdrop-filter: blur(15px); /* Flou artistique pro */
-
+       background: rgba(255, 255, 255, 0.98);
+       backdrop-filter: blur(15px);
        z-index: 2500;
-
        opacity: 0; visibility: hidden;
-
        transition: all 0.4s ease;
-
        display: flex; flex-direction: column;
-
        justify-content: center; align-items: center;
-
    }
-
    .mobile-overlay.active { opacity: 1; visibility: visible; }
 
 .mobile-overlay a {
-
  padding: 15px 0;
-
  width: 80%;
-
  text-align: center;
-
  text-decoration: none;
-
  color: var(--charcoal);
-
  font-family: 'Cinzel', serif;
-
  text-transform: uppercase;
-
  font-size: 1.3rem;
-
  letter-spacing: 4px;
-
  border-bottom: 1px solid rgba(0,0,0,0.05);
-
 }
 
-.mobile-overlay a:last-child {
-
- border-bottom: none;
-
-}
-
- /* ------------------------------ */
-
- /* HERO & VISION */
+.mobile-overlay a:last-child { border-bottom: none; }
 
  .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-
  .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
-
  .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
-
  .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
-
  .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
-
  .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
-
  .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
-
  .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
 
- /* SERVICES */
-
  .services { padding: 80px 8%; }
-
  .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
-
  .service-card {
-
  background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
-
  border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
-
  text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
-
  }
-
  .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-
  .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
-
  .service-card p { font-size: 0.8rem; color: #888; }
-
  .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
-
  .service-card:hover .line { width: 80px; }
 
- /* MARKETPLACE */
-
  .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
-
  .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
-
  .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
-
  .btn-enter:hover { background: var(--charcoal); color: white; }
 
- /* CTA STYLISTE */
-
  .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
-
  .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
-
  .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
-
  footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
 
  [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
-
  [data-animate].animated { opacity: 1; transform: translateY(0); }
 
  @media (max-width: 768px) {
-
  .nav-links { display: none; }
-
  .hamburger { display: flex; }
-
  .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
-
  .vision-grid { grid-template-columns: 1fr; }
-
  .service-card { flex: 0 1 100%; }
+  }
 
-    }
-
+ .btn-contact-choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 15px;
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: transform 0.2s;
+    border: none;
+}
+.btn-contact-choice:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
 </style>
-
 </head>
 
 <body>
 
 <nav>
-
 <div class="nav-logo-container">
-
 <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Sage Empire"></a>
-
 </div>
-
 <div class="nav-links">
-
 <a href="#services">Hub Services</a>
-
 <a href="{% url 'liste_stylistes' %}">Marketplace</a>
-
-<a href="https://wa.me/22891645869" target="_blank" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
 
 {% if user.is_authenticated %}
-
 <a href="{% url 'dashboard_styliste' %}" class="btn-gold-nav">MON ESPACE</a>
-
 {% else %}
-
 <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
-
 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
-
 {% endif %}
-
 </div>
-
 <div class="hamburger" onclick="toggleMenu()">
-
 <span></span><span></span><span></span>
-
 </div>
-
 </nav>
 
 <div class="mobile-overlay" id="mobileMenu">
-
 <a href="#services" onclick="toggleMenu()">Hub Services</a>
-
 <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
-
-<a href="https://wa.me/22891645869" target="_blank" onclick="toggleMenu()">Contact Privé</a>
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="toggleMenu()">Contact Privé</a>
 
 {% if user.is_authenticated %}
-
 <a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
-
 {% else %}
-
 <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
-
 <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
-
 {% endif %}
-
 </div>
 
 <section class="hero" data-animate>
-
 <h1>SAGE EMPIRE</h1>
-
 <p style="font-size: 0.7rem; letter-spacing: 4px; color: var(--gold-subtle);">L'EXCELLENCE SUR MESURE</p>
-
 </section>
 
 <section class="vision" data-animate>
-
 <h2>Notre Vision</h2>
-
 <div class="vision-grid">
-
 <div class="vision-item">
-
 <h3>Prestige & Qualité</h3>
-
 <p>Offrir des services haut de gamme dans chaque domaine d'intervention.</p>
-
 </div>
-
 <div class="vision-item">
-
 <h3>Innovation</h3>
-
 <p>Créer un écosystème où chaque besoin expert trouve une réponse fluide et mémorable.</p>
-
 </div>
-
 </div>
-
 </section>
 
 <section id="services" class="services">
-
 <div class="services-grid">
-
 <a href="{% url 'evenementiel' %}" class="service-card" data-animate>
-
 <h3>ÉVÉNEMENTIEL</h3>
-
 <p>Conception de moments d'exception.</p>
-
 <div class="line"></div>
-
 </a>
-
 <a href="{% url 'immobilier' %}" class="service-card" data-animate>
-
 <h3>IMMOBILIER</h3>
-
 <p>Résidences de prestige et foncier.</p>
-
 <div class="line"></div>
-
 </a>
-
 <a href="{% url 'galerie_mode' %}" class="service-card" data-animate>
-
 <h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives.</p>
-
 <div class="line"></div>
-
 </a>
-
 <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
-
 <h3>MAKO SERVICES</h3>
-
 <p>Entretien expert post-évènement.</p>
-
 <div class="line"></div>
-
 </a>
-
 <a href="{% url 'sage_digital' %}" class="service-card" data-animate>
-
 <h3>SAGE DIGITAL</h3>
-
 <p>Solutions Web & Formations d'Excellence</p>
-
 <div class="line"></div>
-
 </a>
-
 </div>
-
 </section>
 
 <section id="marketplace" class="marketplace-banner" data-animate>
-
 <h2>MARKETPLACE</h2>
-
 <div style="width: 40px; height: 1px; background: var(--gold-subtle); margin: 0 auto 30px;"></div>
-
 <p style="font-size: 0.9rem; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8;">
-
 L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
-
 </p>
-
 <a href="{% url 'liste_stylistes' %}" class="btn-enter">Entrer dans la Marketplace →</a>
-
 </section>
 
 {% if not user.is_authenticated %}
-
 <section class="cta-styliste">
-
 <h3>VOUS ÊTES CRÉATEUR ?</h3>
-
 <a href="{% url 'inscription_styliste' %}">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
-
 </section>
-
 {% endif %}
 
 <section style="background: #0A0A0A; color: white; padding: 120px 10%; text-align: center; border-top: 1px solid #1A1A1A;">
-
 <h2 style="font-family: 'Cinzel'; letter-spacing: 6px; color: #B5935E; margin-bottom: 40px;">POURQUOI SAGE EMPIRE ?</h2>
-
 <div style="max-width: 850px; margin: 0 auto; font-family: 'Lato'; line-height: 2.2; color: #EEE; font-size: 1.1rem;">
-
 <p style="margin-bottom: 30px;">
-
 Parce que la réussite exige une <strong>structure sans faille</strong>. SAGE EMPIRE ne se contente pas de l’esthétique ; nous bâtissons des standards de haute performance.
-
 </p>
-
 <p style="margin-bottom: 30px; color: #AAA; font-style: italic;">
-
 "Nous croyons que l’excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la <strong>précision d’un code informatique</strong> que dans la <strong>solidité d’un patrimoine immobilier</strong> ou l’élégance d’une silhouette."
-
 </p>
-
 <p>
-
 En unifiant le luxe, l’expertise immobilière et la haute technologie, nous offrons bien plus que des services : nous forgeons un écosystème de confiance pour ceux qui visent le sommet.
-
 </p>
-
 <div style="margin-top: 50px; font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold; font-size: 1.2rem;">
-
 UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
-
 </div>
-
 </div>
-
 </section>
 
 <footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
-
 <div style="margin-bottom: 50px;">
-
 <h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px; font-size: 1.4rem;">SAGE EMPIRE</h4>
-
 <p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; text-transform: uppercase;">L'Excellence comme Référence</p>
-
 </div>
 
 <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
-
 <a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE MODE</a>
-
 <a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">IMMOBILIER</a>
-
 <a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">ÉVÉNEMENTIEL</a>
-
 <a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE DIGITAL</a>
-
 <a href="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">MAKO SERVICES</a>
-
 </div>
 
 <div style="margin-bottom: 50px;">
-
-<a href="https://wa.me/22891645869" target="_blank" style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase; transition: 0.3s; display: inline-block;">
-
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase; transition: 0.3s; display: inline-block;">
 CONTACTEZ L'EMPIRE
-
 </a>
-
 </div>
 
 <p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; border-top: 1px solid #f0f0f0; display: inline-block; padding-top: 20px;">
-
 &copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
-
 </p>
-
 </footer>
 
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden; background-color: white;">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center pt-0 pb-5">
+        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
+
+        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">
+          <span class="me-2">📱</span> WHATSAPP
+        </a>
+
+        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">
+          <span class="me-2">📧</span> EMAIL
+        </a>
+
+        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal" style="font-size: 0.8rem; letter-spacing: 1px;">FERMER</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-
 function toggleMenu() {
-
 const menu = document.getElementById('mobileMenu');
-
 const hamburger = document.querySelector('.hamburger');
-
 menu.classList.toggle('active');
-
 hamburger.classList.toggle('open');
-
-// Bloque le scroll uniquement quand le menu est ouvert
-
 document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
-
 }
-
-// Fermeture si on clique sur le fond transparent
 
 document.getElementById('mobileMenu').addEventListener('click', function(e) {
-
 if (e.target === this) {
-
 toggleMenu();
-
-// Redirige vers la page principale après fermeture
-
-window.location.href = "{% url 'home' %}";
-
 }
-
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-
 const elements = document.querySelectorAll('[data-animate]');
-
 elements.forEach((el, index) => {
-
 setTimeout(() => { el.classList.add('animated'); }, 200 * index);
-
 });
-
 });
-
 </script>
 
 </body>
-
 </html>
