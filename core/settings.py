@@ -184,8 +184,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # ===================== EMAIL CONFIGURATION =====================
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+print("=== CONFIG EMAIL CHARGÉE ===")
+print("EMAIL_BACKEND =", 'django.core.mail.backends.smtp.EmailBackend')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -198,9 +200,6 @@ EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 SERVER_EMAIL = 'loko.sergelionel@gmail.com'
 
-# Logging agressif pour voir ce qui se passe
-import logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger('django.core.mail')
-logger.setLevel(logging.DEBUG)
+print("=== EMAIL CONFIG SUCCESSFULLY LOADED ===")
+print("From email:", DEFAULT_FROM_EMAIL)
 
