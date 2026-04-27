@@ -183,7 +183,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
-# ===================== EMAIL CONFIGURATION (Gmail) =====================
+# ===================== EMAIL CONFIGURATION =====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
@@ -198,21 +198,9 @@ EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 SERVER_EMAIL = 'loko.sergelionel@gmail.com'
 
-# Logging pour voir les erreurs d'envoi
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.core.mail': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+# Logging agressif pour voir ce qui se passe
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('django.core.mail')
+logger.setLevel(logging.DEBUG)
 
