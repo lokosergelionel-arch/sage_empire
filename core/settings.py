@@ -182,25 +182,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
-# Email
 
-# ===================== EMAIL CONFIGURATION =====================
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# ===================== EMAIL CONFIGURATION (MODE TEST) =====================
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
-EMAIL_HOST_USER = 'loko.sergelionel@gmail.com'
-EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
-
+# Configuration temporaire pour voir si l'email est généré
 DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
 SERVER_EMAIL = 'loko.sergelionel@gmail.com'
-
-# === Debug & Logging ===
-EMAIL_DEBUG = True
-EMAIL_TIMEOUT = 30
 
 # Logging des emails pour voir les erreurs
 LOGGING = {
