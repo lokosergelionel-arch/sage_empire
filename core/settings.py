@@ -202,4 +202,6 @@ SERVER_EMAIL = 'loko.sergelionel@gmail.com'
 
 print("=== EMAIL CONFIG SUCCESSFULLY LOADED ===")
 print("From email:", DEFAULT_FROM_EMAIL)
+print("========== SETTINGS.PY CHARGÉ AVEC SUCCÈS ==========")
+print("Ceci doit apparaître dans les logs Render")
 
