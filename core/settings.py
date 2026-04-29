@@ -206,7 +206,7 @@ EMAIL_TIMEOUT = 30
 EMAIL_HOST_USER = 'a9b395001@smtp-brevo.com'
 EMAIL_HOST_PASSWORD = 'U3phWGgtywIP2KqZ'
 
-DEFAULT_FROM_EMAIL = 'Sage Empire <noreply@sage-empire.com>'
-SERVER_EMAIL = 'noreply@sage-empire.com'
+DEFAULT_FROM_EMAIL = 'loko.sergelionel@gmail.com'
+SERVER_EMAIL = 'loko.sergelionel@gmail.com'
 
 print("=== EMAIL BREVO CONFIGURÉ AVEC SUCCÈS ===")
