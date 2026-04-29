@@ -3,7 +3,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.http import HttpResponsePermanentRedirect
 
+def redirect_to_custom_domain(request):
+    return HttpResponsePermanentRedirect('https://www.sage-empire.com' + request.get_full_path())
+
+    # Redirection du sous-domaine Render vers le domaine principal
+    path('', redirect_to_custom_domain, name='redirect_custom_domain'),
 # Imports de tes vues
 from hub.views import (
     home,
