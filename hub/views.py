@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import EditProfilForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from .forms import InscriptionStylisteForm, EditProfilForm, CreationForm
 from .models import ProfilStyliste, Creation, Immobilier, Event
-from .forms import InscriptionStylisteForm, CreationForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.urls import reverse
 
 
 # ===================== PAGES PUBLIQUES =====================
@@ -47,24 +53,61 @@ def portfolio_styliste(request, styliste_id):
     })
 
 
-# ===================== GESTION STYLISTES =====================
+# ===================== INSCRIPTION =====================
 def inscription_styliste(request):
     if request.method == 'POST':
         form = InscriptionStylisteForm(request.POST, request.FILES)
         if form.is_valid():
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
                 password=form.cleaned_data['password']
             )
             profil = form.save(commit=False)
             profil.user = user
+            profil.email_verifie = False
             profil.save()
-            return redirect('login')
+
+            # Envoi du lien de confirmation
+            email_envoye = send_verification_email(request, user)
+
+            if email_envoye:
+                return redirect('verification_sent')
+            else:
+                # Si l'email n'a pas pu être envoyé, on continue mais on prévient
+                return redirect('login')
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
 
+# ===================== MODIFIER PROFIL =====================
+@login_required
+def edit_profil(request):
+    styliste = get_object_or_404(ProfilStyliste, user=request.user)
 
+    if request.method == 'POST':
+        form = EditProfilForm(request.POST, request.FILES, instance=styliste)
+        if form.is_valid():
+            form.save()
+
+            # Mise à jour de l'email dans le modèle User
+            email = form.cleaned_data.get('email')
+            if email and email != request.user.email:
+                request.user.email = email
+                request.user.save()
+
+            return redirect('dashboard_styliste')
+    else:
+        # Pré-remplir l'email actuel de l'utilisateur
+        form = EditProfilForm(instance=styliste, initial={'email': request.user.email})
+
+    return render(request, 'edit_profil.html', {
+        'form': form,
+        'styliste': styliste
+    })
+
+
+# ===================== AUTRES VUES =====================
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
@@ -98,7 +141,6 @@ def dashboard_styliste(request):
 def mes_publications(request):
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
     creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-
     return render(request, 'mes_publications.html', {
         'styliste': styliste,
         'creations': creations
@@ -114,7 +156,6 @@ def supprimer_creation(request, creation_id):
     return redirect('dashboard_styliste')
 
 
-# ===================== AUTH =====================
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
@@ -127,7 +168,6 @@ def login_view(request):
         )
         if user is not None:
             login(request, user)
-
             return redirect('dashboard_styliste')
         return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
 
@@ -138,25 +178,62 @@ def sage_digital(request):
     return render(request, 'sage_digital.html')
 
 
-@login_required
-def edit_profil(request):
-    # On récupère le profil du styliste
-    styliste = get_object_or_404(ProfilStyliste, user=request.user)
+# ===================== ENVOI EMAIL DE VERIFICATION =====================
+def send_verification_email(request, user):
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    current_site = get_current_site(request)
 
-    if request.method == 'POST':
-        # Si le formulaire est envoyé
-        form = EditProfilForm(request.POST, request.FILES, instance=styliste)
-        if form.is_valid():
-            form.save()
-            # C'est ICI qu'on redirige vers le dashboard après l'enregistrement
-            return redirect('dashboard_styliste')
-    else:
-        # Si on arrive juste sur la page (méthode GET)
-        form = EditProfilForm(instance=styliste)
+    # Détection automatique du protocole (http en local, https en production)
+    protocol = 'https' if request.is_secure() else 'http'
 
-    # On garde cette ligne pour afficher la page si on n'a pas encore validé
-    return render(request, 'edit_profil.html', {
-        'form': form,
-        'styliste': styliste
+    subject = "Confirmez votre adresse email - Sage Empire"
+    message = render_to_string('email_verification.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'protocol': protocol,
+        'uid': uid,
+        'token': token,
     })
 
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email='Sage Empire <loko.sergelionel@gmail.com>',
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        print(f"✅ Email de vérification envoyé à {user.email}")
+        return True
+    except Exception as e:
+        print(f"❌ Erreur lors de l'envoi de l'email : {e}")
+        return False
+
+
+# ===================== CONFIRMATION EMAIL =====================
+def verify_email(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        profil = user.profil
+        profil.email_verifie = True
+        profil.save()
+        return render(request, 'email_verified_success.html')
+    else:
+        return render(request, 'email_verified_failed.html')
+
+@login_required
+def renvoyer_email_verification(request):
+    user = request.user
+    if user.email:
+        email_envoye = send_verification_email(request, user)
+        if email_envoye:
+            return render(request, 'verification_sent.html', {'email_renvoye': True})
+        else:
+            return render(request, 'verification_sent.html', {'erreur': True})
+    return redirect('edit_profil')

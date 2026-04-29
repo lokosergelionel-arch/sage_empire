@@ -119,16 +119,26 @@ TEMPLATES = [
 
 # ====================== BASE DE DONNÉES ======================
 import dj_database_url
+import os
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
-}
-
+# Configuration qui marche à la fois en local et sur Render
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True
+        )
+    }
+else:
+    # Base de données locale (SQLite) quand on est en développement
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # ====================== STATIC & MEDIA ======================
 
@@ -183,30 +193,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
-# ===================== EMAIL CONFIGURATION (Gmail) =====================
-print("=== CONFIG EMAIL CHARGÉE ===")
-
+# ===================== EMAIL CONFIGURATION (BREVO) =====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_TIMEOUT = 30
 
-EMAIL_HOST_USER = 'loko.sergelionel@gmail.com'
-EMAIL_HOST_PASSWORD = 'ppesinbmtjzuajak'
+# Identifiants Brevo
+EMAIL_HOST_USER = 'a9b395001@smtp-brevo.com'
+EMAIL_HOST_PASSWORD = 'U3phWGgtywIP2KqZ'
 
-DEFAULT_FROM_EMAIL = 'Sage Empire <loko.sergelionel@gmail.com>'
-SERVER_EMAIL = 'loko.sergelionel@gmail.com'
+DEFAULT_FROM_EMAIL = 'Sage Empire <noreply@sage-empire.com>'
+SERVER_EMAIL = 'noreply@sage-empire.com'
 
-print("=== EMAIL CONFIG SUCCESSFULLY LOADED ===")
-print("From email:", DEFAULT_FROM_EMAIL)
-print("========== SETTINGS.PY CHARGÉ AVEC SUCCÈS ==========")
-
-
-# Logging détaillé pour voir les erreurs d'envoi
-import logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger('django.core.mail')
-logger.setLevel(logging.DEBUG)
-
+print("=== EMAIL BREVO CONFIGURÉ AVEC SUCCÈS ===")

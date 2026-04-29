@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Email vérifié{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 80px auto; text-align: center;">
+    <h2>✅ Email vérifié avec succès !</h2>
+    <p>Votre adresse email a été confirmée.</p>
+    <a href="{% url 'login' %}" class="btn btn-success">Aller à la connexion</a>
+</div>
+{% endblock %}

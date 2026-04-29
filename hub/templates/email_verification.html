@@ -1,0 +1,12 @@
+Bonjour {{ user.username }},
+
+Merci de vous être inscrit sur Sage Empire.
+
+Pour confirmer votre adresse email, veuillez cliquer sur le lien ci-dessous :
+
+{{ protocol }}://{{ domain }}{% url 'verify_email' uid=uid token=token %}
+
+Ce lien est valide pendant 24 heures.
+
+Cordialement,
+L'équipe Sage Empire

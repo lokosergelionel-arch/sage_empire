@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 import cloudinary.uploader
+from django.utils.timezone import now
 
 
 class ProfilStyliste(models.Model):
@@ -10,6 +11,10 @@ class ProfilStyliste(models.Model):
     contact_whatsapp = models.CharField(max_length=20)
     photo_profil = CloudinaryField('image', null=True, blank=True)
     biographie = models.TextField(blank=True)
+
+    # === NOUVEAUX CHAMPS ===
+    email_verifie = models.BooleanField(default=False)  # Pour savoir si l'email est confirmé
+    date_inscription = models.DateTimeField(default=now)
 
     @property
     def get_photo_url(self):

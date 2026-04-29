@@ -1,9 +1,13 @@
+import render
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.shortcuts import render
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-
+from django.urls import path
+from hub.views import renvoyer_email_verification
+from .views import verify_email   # Assure-toi que cette ligne est bien en haut
 from hub import views
 
 urlpatterns = [
@@ -13,6 +17,9 @@ urlpatterns = [
     path('admin/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
+    path('verification-sent/', lambda r: render(r, 'verification_sent.html'), name='verification_sent'),
+    path('renvoyer-verification/', renvoyer_email_verification, name='renvoyer_email_verification'),
 
     # Administration
     path('admin/', admin.site.urls),

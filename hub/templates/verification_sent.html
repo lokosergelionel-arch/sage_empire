@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Vérification envoyée{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 50px auto; text-align: center;">
+    <h2>📧 Vérification envoyée !</h2>
+    <p>Un email de confirmation a été envoyé à <strong>{{ request.user.email }}</strong>.</p>
+    <p>Veuillez vérifier votre boîte de réception (et les spams).</p>
+    <a href="{% url 'login' %}" class="btn btn-primary">Retour à la connexion</a>
+</div>
+{% endblock %}
