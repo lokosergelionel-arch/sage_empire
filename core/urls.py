@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -10,6 +11,7 @@ def redirect_to_custom_domain(request):
 
     # Redirection du sous-domaine Render vers le domaine principal
     path('', redirect_to_custom_domain, name='redirect_custom_domain'),
+    path('verification-sent/', lambda r: render(r, 'verification_sent.html'), name='verification_sent'),
 # Imports de tes vues
 from hub.views import (
     home,
