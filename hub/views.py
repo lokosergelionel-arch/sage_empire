@@ -242,6 +242,10 @@ class CustomPasswordResetView(PasswordResetView):
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('password_reset_done')
 
+    def get(self, request, *args, **kwargs):
+        print("✅ CustomPasswordResetView EST UTILISÉE")  # <--- Ajoute cette ligne
+        return super().get(request, *args, **kwargs)
+
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'registration/password_reset_done.html'
