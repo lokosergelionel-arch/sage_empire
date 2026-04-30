@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sage Empire - {% block auth_title %}Authentification{% endblock %}{% endblock %}
+
+{% block content %}
+
+    <div class="auth-page">
+        <div class="auth-wrapper">
+            <!-- Logo centré en haut de la carte -->
+            <div class="auth-logo">
+                <a href="{% url 'home' %}">
+                    <h1 style="font-family: 'Cinzel', serif; font-size: 2.4rem; color: var(--charcoal); margin: 0;">
+                        SAGE EMPIRE
+                    </h1>
+                </a>
+            </div>
+
+            <div class="auth-card">
+                {% block auth_content %}
+                {% endblock auth_content %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .auth-page {
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F9F8F6 0%, #f0ede6 100%);
+            padding: 40px 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            padding: 45px 40px;
+            border: 1px solid #f0ede6;
+        }
+
+        .auth-card h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--charcoal);
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.65rem;
+        }
+
+        .auth-card p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+
+        .btn-gold {
+            width: 100%;
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-gold:hover {
+            background: #9f7d4f;
+            transform: translateY(-2px);
+        }
+
+        .link-back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .link-back:hover {
+            text-decoration: underline;
+        }
+
+        .success-icon {
+            font-size: 3.5rem;
+            text-align: center;
+            display: block;
+            margin-bottom: 15px;
+        }
+    </style>
+
+{% endblock %}
