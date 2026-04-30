@@ -2,6 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
+from django.urls import reverse_lazy
 from .forms import InscriptionStylisteForm, EditProfilForm, CreationForm
 from .models import ProfilStyliste, Creation, Immobilier, Event
 from django.contrib.auth.tokens import default_token_generator
@@ -68,17 +75,15 @@ def inscription_styliste(request):
             profil.email_verifie = False
             profil.save()
 
-            # Envoi du lien de confirmation
             email_envoye = send_verification_email(request, user)
-
             if email_envoye:
                 return redirect('verification_sent')
             else:
-                # Si l'email n'a pas pu être envoyé, on continue mais on prévient
                 return redirect('login')
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
+
 
 # ===================== MODIFIER PROFIL =====================
 @login_required
@@ -89,16 +94,12 @@ def edit_profil(request):
         form = EditProfilForm(request.POST, request.FILES, instance=styliste)
         if form.is_valid():
             form.save()
-
-            # Mise à jour de l'email dans le modèle User
             email = form.cleaned_data.get('email')
             if email and email != request.user.email:
                 request.user.email = email
                 request.user.save()
-
             return redirect('dashboard_styliste')
     else:
-        # Pré-remplir l'email actuel de l'utilisateur
         form = EditProfilForm(instance=styliste, initial={'email': request.user.email})
 
     return render(request, 'edit_profil.html', {
@@ -107,7 +108,7 @@ def edit_profil(request):
     })
 
 
-# ===================== AUTRES VUES =====================
+# ===================== DASHBOARD & CREATIONS =====================
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
@@ -122,10 +123,7 @@ def dashboard_styliste(request):
             creation.public_id = request.POST.get('public_id') or ""
 
             if request.POST.get('public_id_dos'):
-                if creation.public_id:
-                    creation.public_id += f",{request.POST.get('public_id_dos')}"
-                else:
-                    creation.public_id = request.POST.get('public_id_dos')
+                creation.public_id = f"{creation.public_id},{request.POST.get('public_id_dos')}".strip(',')
 
             creation.save()
             return redirect('dashboard_styliste')
@@ -178,13 +176,11 @@ def sage_digital(request):
     return render(request, 'sage_digital.html')
 
 
-# ===================== ENVOI EMAIL DE VERIFICATION =====================
+# ===================== EMAIL VERIFICATION =====================
 def send_verification_email(request, user):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     current_site = get_current_site(request)
-
-    # Détection automatique du protocole (http en local, https en production)
     protocol = 'https' if request.is_secure() else 'http'
 
     subject = "Confirmez votre adresse email - Sage Empire"
@@ -211,7 +207,6 @@ def send_verification_email(request, user):
         return False
 
 
-# ===================== CONFIRMATION EMAIL =====================
 def verify_email(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -227,6 +222,7 @@ def verify_email(request, uidb64, token):
     else:
         return render(request, 'email_verified_failed.html')
 
+
 @login_required
 def renvoyer_email_verification(request):
     user = request.user
@@ -237,3 +233,24 @@ def renvoyer_email_verification(request):
         else:
             return render(request, 'verification_sent.html', {'erreur': True})
     return redirect('edit_profil')
+
+
+# ===================== PASSWORD RESET EXTERNES (Beau Design) =====================
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset_form.html'
+    email_template_name = 'registration/password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'
