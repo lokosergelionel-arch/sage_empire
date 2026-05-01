@@ -18,8 +18,8 @@ urlpatterns = [
     path('', home, name='home'),
 
     # ===================== PASSWORD RESET EXTERNES (Design Sage Empire) =====================
-    path('password-reset/', CustomPasswordResetView.as_view(), name='password_reset'),
-    path('password-reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('mot-de-passe-oublie/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('mot-de-passe-oublie/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
