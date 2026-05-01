@@ -47,11 +47,12 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div style="max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-            <a href="{% url 'home' %}" class="logo">Sage Empire</a>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Sage Empire" height="45">
+            </a>
             <div>
                 <a href="{% url 'home' %}" class="nav-link">Hub Services</a>
                 <a href="{% url 'galerie_mode' %}" class="nav-link">Marketplace</a>
-                <a href="{% url 'sage_digital' %}" class="nav-link">Sage Digital</a>
                 <a href="{% url 'login' %}" class="nav-link">Mon Espace</a>
             </div>
         </div>
