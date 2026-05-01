@@ -13,20 +13,16 @@ from hub.views import (
     CustomPasswordResetConfirmView, CustomPasswordResetCompleteView,
 )
 
-
 urlpatterns = [
     path('', home, name='home'),
 
-    # ===================== PASSWORD RESET EXTERNES (Design Sage Empire) =====================
+    # Password Reset Externe (Styliste)
     path('mot-de-passe-oublie/', CustomPasswordResetView.as_view(), name='styliste_password_reset'),
     path('mot-de-passe-oublie/done/', CustomPasswordResetDoneView.as_view(), name='styliste_password_reset_done'),
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='styliste_password_reset_confirm'),
     path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='styliste_password_reset_complete'),
 
-    # ===================== ADMIN =====================
     path('admin/', admin.site.urls),
-
-    # ===================== AUTRES PAGES =====================
     path('login/', login_view, name='login'),
     path('rejoindre/', inscription_styliste, name='inscription_styliste'),
     path('mon-espace/', dashboard_styliste, name='dashboard_styliste'),
@@ -43,7 +39,6 @@ urlpatterns = [
     path('marketplace/annuaire/', liste_stylistes, name='liste_stylistes'),
     path('styliste/<int:styliste_id>/', portfolio_styliste, name='portfolio_styliste'),
 
-    # Dernier pour éviter les conflits
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
