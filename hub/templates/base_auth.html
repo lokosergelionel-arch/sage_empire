@@ -9,8 +9,7 @@
     <div class="auth-card">
 
         <div class="auth-brand">
-            <!-- Vérifie que l'image existe ou mets un fallback texte -->
-            <img src="{% static 'images/logo.png' %}" alt="Sage Empire" onerror="this.style.display='none';">
+            <img src="{% static 'images/logo.png' %}" alt="Sage Empire">
         </div>
 
         {% block auth_content %}
@@ -20,13 +19,12 @@
 </section>
 
 <style>
-    /* Layout général */
     .auth-shell {
         min-height: calc(100vh - 90px);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--ivory, #fdfcf8); /* Fallback color */
+        background: var(--ivory, #fdfcf8);
         padding: 80px 20px;
     }
 
@@ -50,7 +48,6 @@
     .auth-brand img {
         height: 62px;
         width: auto;
-        max-width: 100%;
     }
 
     .auth-card h2 {
@@ -61,7 +58,6 @@
         color: var(--charcoal, #333);
         margin: 0 0 18px;
         font-weight: 700;
-        line-height: 1.2;
     }
 
     .auth-subtitle {
@@ -78,7 +74,6 @@
     .auth-field {
         margin-bottom: 26px;
         text-align: left;
-        position: relative;
     }
 
     .auth-field label {
@@ -90,67 +85,31 @@
         letter-spacing: 0.3px;
     }
 
-    /* Input Style */
+    /* Force TOUS les inputs dans auth-field à prendre toute la largeur */
+    .auth-field input,
+    .auth-field select,
+    .auth-field textarea,
     .auth-input {
         width: 100%;
         height: 58px;
-        padding: 0 45px 0 18px; /* Padding droit augmenté pour laisser place à l'icône */
-        box-sizing: border-box; /* Important pour respecter la hauteur */
+        padding: 0 18px;
+        box-sizing: border-box;
         border: 1.5px solid var(--border, #ddd);
         background: #fff;
         border-radius: 8px;
         font-size: 1rem;
+        font-family: inherit;
         outline: none;
         transition: all 0.3s ease;
         color: #333;
     }
 
+    .auth-field input:focus,
     .auth-input:focus {
         border-color: var(--gold, #d4af37);
         box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
     }
 
-    /* --- Gestion de l'icône œil (UNIFIÉE) --- */
-    .password-wrapper {
-        position: relative;
-        width: 100%;
-        height: 58px;
-    }
-
-    /* Le bouton SVG doit avoir la même hauteur et être centré verticalement */
-    .toggle-password {
-        position: absolute;
-        top: 50%;
-        right: 18px;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-    }
-
-    .toggle-password svg {
-        width: 20px;
-        height: 20px;
-        stroke: #888;
-        fill: none;
-        stroke-width: 2.5;
-        transition: stroke 0.3s ease;
-    }
-
-    .toggle-password:hover svg {
-        stroke: var(--gold, #d4af37);
-    }
-
-    .toggle-password.active svg {
-        stroke: var(--gold, #d4af37);
-    }
-
-    /* Bouton Submit */
     .auth-button {
         width: 100%;
         height: 58px;
@@ -180,7 +139,6 @@
         text-decoration: none;
         font-weight: 600;
         font-size: 0.9rem;
-        transition: opacity 0.3s;
     }
 
     .auth-link:hover {
@@ -192,24 +150,17 @@
         color: #c23a3a;
         font-size: 0.8rem;
         margin-top: 6px;
-        padding: 5px;
-        background: rgba(194, 58, 58, 0.05);
-        border-radius: 4px;
-        text-align: left;
     }
 
     @media (max-width: 600px) {
         .auth-card {
             padding: 40px 25px;
-            margin: 0 15px;
         }
         .auth-shell {
             padding: 40px 15px;
-            min-height: auto;
-            align-items: start;
         }
         .auth-card h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
     }
 </style>
