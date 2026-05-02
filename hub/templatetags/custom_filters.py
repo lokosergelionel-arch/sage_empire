@@ -16,3 +16,11 @@ def multiply(value, arg):
         return int(value) * int(arg)
     except (ValueError, TypeError):
         return 0
+
+
+@register.filter(name='add_class')
+def add_class(field, css):
+    """Ajoute une ou plusieurs classes CSS à un champ de formulaire Django"""
+    if not field:
+        return ''
+    return field.as_widget(attrs={'class': css})
