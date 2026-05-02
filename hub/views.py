@@ -455,7 +455,7 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
         else:
             form = CompleteProprietaireForm()
 
-        return render(request, 'proprietaire/complete_inscription.html', {'form': form})
+        return render(request, 'proprietaire/complete_inscription_proprietaire.html', {'form': form})
 
     # ===================== GESTION DU CALENDRIER =====================
     @login_required
