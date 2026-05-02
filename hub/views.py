@@ -69,6 +69,9 @@ def page_evenementiel(request):
     evenements = Event.objects.all().order_by('-date')
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
+def sage_digital(request):
+    return render(request, 'sage_digital.html')
+
 
 # ===================== SAGE MODE =====================
 def galerie_mode(request):
@@ -186,6 +189,7 @@ def supprimer_creation(request, creation_id):
     if request.method == 'POST':
         creation.delete()
     return redirect('dashboard_styliste')
+
 
 
 # ===================== LOGIN =====================
