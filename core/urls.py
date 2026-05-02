@@ -12,10 +12,8 @@ from hub.views import (
     CustomPasswordResetView, CustomPasswordResetDoneView,
     CustomPasswordResetConfirmView, CustomPasswordResetCompleteView,
 
-    # Vues Propriétaire
     dashboard_proprietaire, mes_biens, creer_bien, gestion_bien,
-    demandes_visite, inscription_proprietaire, complete_inscription_proprietaire,
-    ajouter_disponibilite, supprimer_disponibilite,
+    demandes_visite, inscription_proprietaire,
 )
 
 urlpatterns = [
@@ -25,7 +23,6 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('rejoindre/', inscription_styliste, name='inscription_styliste'),
     path('inscription-proprietaire/', inscription_proprietaire, name='inscription_proprietaire'),
-    path('complete-inscription/', complete_inscription_proprietaire, name='complete_inscription_proprietaire'),
 
     # Password Reset
     path('mot-de-passe-oublie/', CustomPasswordResetView.as_view(), name='styliste_password_reset'),
