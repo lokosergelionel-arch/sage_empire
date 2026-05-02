@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.migrations import Migration
+from django.db.migrations.operations import CreateModel
 import cloudinary.models
 
 
@@ -9,7 +10,7 @@ class Migration(Migration):
     ]
 
     operations = [
-        models.CreateModel(
+        CreateModel(
             name='Property',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -30,7 +31,7 @@ class Migration(Migration):
                 'ordering': ['-date_creation'],
             },
         ),
-        models.CreateModel(
+        CreateModel(
             name='PropertyMedia',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -45,7 +46,7 @@ class Migration(Migration):
                 'ordering': ['order'],
             },
         ),
-        models.CreateModel(
+        CreateModel(
             name='PropertyAvailability',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -61,7 +62,7 @@ class Migration(Migration):
                 'ordering': ['start_date'],
             },
         ),
-        models.CreateModel(
+        CreateModel(
             name='VisitRequest',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -75,7 +76,7 @@ class Migration(Migration):
                 ('property', models.ForeignKey(on_delete=models.CASCADE, related_name='visit_requests', to='hub.property')),
             ],
         ),
-        models.CreateModel(
+        CreateModel(
             name='InvitationCode',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
