@@ -9,14 +9,49 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView
 )
 from django.urls import reverse_lazy
-from .forms import InscriptionStylisteForm, EditProfilForm, CreationForm
-from .models import ProfilStyliste, Creation, Immobilier, Event
+from django.contrib import messages
+
+from .forms import (
+    InscriptionStylisteForm,
+    EditProfilForm,
+    CreationForm,
+    PropertyForm,  # Nouveau
+    PropertyAvailabilityForm  # Nouveau
+)
+from .models import (
+    ProfilStyliste,
+    Creation,
+    Immobilier,
+    Event,
+    ProfilProprietaire,  # Nouveau
+    Property,  # Nouveau
+    PropertyMedia,  # Nouveau
+    PropertyAvailability,  # Nouveau
+    VisitRequest,  # Nouveau
+    InvitationCode  # Nouveau
+)
+
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+
+
+# ===================== DECORATEUR PROPRIETAIRE =====================
+def proprietaire_required(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        if not hasattr(request.user, 'profil_proprietaire'):
+            messages.warning(request, "Vous n'avez pas accès à cet espace.")
+            return redirect('dashboard_styliste')
+
+        return view_func(request, *args, **kwargs)
+
+    return wrapper_func
 
 
 # ===================== PAGES PUBLIQUES =====================
@@ -59,7 +94,7 @@ def portfolio_styliste(request, styliste_id):
     })
 
 
-# ===================== INSCRIPTION =====================
+# ===================== INSCRIPTION STYLISTE =====================
 def inscription_styliste(request):
     if request.method == 'POST':
         form = InscriptionStylisteForm(request.POST, request.FILES)
@@ -84,7 +119,7 @@ def inscription_styliste(request):
     return render(request, 'inscription.html', {'form': form})
 
 
-# ===================== MODIFIER PROFIL =====================
+# ===================== MODIFIER PROFIL STYLISTE =====================
 @login_required
 def edit_profil(request):
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
@@ -107,7 +142,7 @@ def edit_profil(request):
     })
 
 
-# ===================== DASHBOARD =====================
+# ===================== DASHBOARD STYLISTE =====================
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
@@ -153,6 +188,7 @@ def supprimer_creation(request, creation_id):
     return redirect('dashboard_styliste')
 
 
+# ===================== LOGIN =====================
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
@@ -165,14 +201,114 @@ def login_view(request):
         )
         if user is not None:
             login(request, user)
+            if hasattr(user, 'profil_proprietaire'):
+                return redirect('dashboard_proprietaire')
             return redirect('dashboard_styliste')
         return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
 
     return render(request, 'registration/login.html')
 
 
-def sage_digital(request):
-    return render(request, 'sage_digital.html')
+# ===================== ESPACE PROPRIETAIRE =====================
+
+@login_required
+@proprietaire_required
+def dashboard_proprietaire(request):
+    profil = request.user.profil_proprietaire
+    properties = Property.objects.filter(owner=profil).order_by('-date_creation')
+    visit_requests = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')[:5]
+
+    context = {
+        'profil': profil,
+        'properties': properties,
+        'visit_requests': visit_requests,
+        'total_biens': properties.count(),
+        'total_visites': visit_requests.count(),
+    }
+    return render(request, 'proprietaire/dashboard_proprietaire.html', context)
+
+
+@login_required
+@proprietaire_required
+def mes_biens(request):
+    profil = request.user.profil_proprietaire
+    properties = Property.objects.filter(owner=profil).order_by('-date_creation')
+
+    context = {
+        'profil': profil,
+        'properties': properties,
+    }
+    return render(request, 'proprietaire/mes_biens.html', context)
+
+
+@login_required
+@proprietaire_required
+def creer_bien(request):
+    profil = request.user.profil_proprietaire
+
+    if request.method == 'POST':
+        form = PropertyForm(request.POST)
+        if form.is_valid():
+            bien = form.save(commit=False)
+            bien.owner = profil
+            bien.status = 'pending'
+            bien.save()
+            messages.success(request, "Votre bien a été créé avec succès et est en attente de validation.")
+            return redirect('mes_biens')
+    else:
+        form = PropertyForm()
+
+    context = {
+        'form': form,
+        'profil': profil,
+    }
+    return render(request, 'proprietaire/creer_bien.html', context)
+
+
+@login_required
+@proprietaire_required
+def gestion_bien(request, property_id):
+    profil = request.user.profil_proprietaire
+    bien = get_object_or_404(Property, id=property_id, owner=profil)
+    medias = bien.medias.all().order_by('order')
+    availabilities = bien.availabilities.all()
+    visit_requests = VisitRequest.objects.filter(property=bien).order_by('-created_at')
+
+    context = {
+        'profil': profil,
+        'bien': bien,
+        'medias': medias,
+        'availabilities': availabilities,
+        'visit_requests': visit_requests,
+    }
+    return render(request, 'proprietaire/gestion_bien.html', context)
+
+
+@login_required
+@proprietaire_required
+def demandes_visite(request):
+    profil = request.user.profil_proprietaire
+    visites = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')
+
+    context = {
+        'profil': profil,
+        'visites': visites,
+    }
+    return render(request, 'proprietaire/demandes_visite.html', context)
+
+
+# ===================== INSCRIPTION PROPRIETAIRE =====================
+def inscription_proprietaire(request):
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        try:
+            invitation = InvitationCode.objects.get(code=code, is_used=False)
+            messages.success(request, "Code valide ! Veuillez compléter votre inscription.")
+            return redirect('complete_inscription_proprietaire')
+        except InvitationCode.DoesNotExist:
+            messages.error(request, "Code d'invitation invalide ou déjà utilisé.")
+
+    return render(request, 'proprietaire/inscription_proprietaire.html')
 
 
 # ===================== EMAIL VERIFICATION =====================
@@ -234,7 +370,7 @@ def renvoyer_email_verification(request):
     return redirect('edit_profil')
 
 
-# ===================== PASSWORD RESET EXTERNES =====================
+# ===================== PASSWORD RESET =====================
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/styliste_password_reset.html'
     email_template_name = 'registration/styliste_password_reset_email.html'

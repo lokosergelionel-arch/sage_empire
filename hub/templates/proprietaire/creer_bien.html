@@ -1,0 +1,45 @@
+{% extends 'proprietaire/base_proprietaire.html' %}
+
+{% block proprietaire_content %}
+<div class="p-8 max-w-3xl">
+    <h1 class="text-3xl font-serif text-[#D4AF37] mb-2">Ajouter un nouveau bien</h1>
+    <p class="text-gray-400 mb-8">Remplissez les informations ci-dessous</p>
+
+    <form method="POST" class="bg-[#1A1A1A] rounded-3xl p-10">
+        {% csrf_token %}
+        <div class="space-y-8">
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Titre du bien</label>
+                {{ form.titre }}
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Type de bien</label>
+                    {{ form.type_bien }}
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Quartier</label>
+                    {{ form.quartier }}
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Prix (FCFA)</label>
+                {{ form.prix }}
+            </div>
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Description</label>
+                {{ form.description }}
+            </div>
+        </div>
+
+        <div class="mt-10 flex gap-4">
+            <button type="submit" class="flex-1 bg-[#B8860B] text-black py-4 rounded-2xl font-semibold">
+                Créer le bien
+            </button>
+            <a href="{% url 'mes_biens' %}" class="flex-1 text-center py-4 border border-[#B8860B]/30 rounded-2xl">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

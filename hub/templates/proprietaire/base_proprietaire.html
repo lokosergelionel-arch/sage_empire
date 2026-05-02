@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-[#0B0B0B] flex">
+
+    <!-- Sidebar Navigation -->
+    <div class="w-72 bg-[#1A1A1A] border-r border-[#B8860B]/10 py-8 px-6 hidden lg:flex flex-col">
+        <div class="mb-12">
+            <h2 class="text-[#D4AF37] text-2xl font-serif">Sage Empire</h2>
+            <p class="text-xs text-gray-500">Espace Propriétaire</p>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <a href="{% url 'dashboard_proprietaire' %}"
+               class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-[#252525] transition {% if request.resolver_match.url_name == 'dashboard_proprietaire' %}bg-[#252525] text-[#D4AF37]{% endif %}">
+                📊 Tableau de bord
+            </a>
+            <a href="{% url 'mes_biens' %}"
+               class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-[#252525] transition {% if request.resolver_match.url_name == 'mes_biens' %}bg-[#252525] text-[#D4AF37]{% endif %}">
+                🏠 Mes Biens
+            </a>
+            <a href="{% url 'demandes_visite' %}"
+               class="flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-[#252525] transition {% if request.resolver_match.url_name == 'demandes_visite' %}bg-[#252525] text-[#D4AF37]{% endif %}">
+                📅 Demandes de visite
+            </a>
+        </nav>
+
+        <div class="pt-8 border-t border-[#B8860B]/10">
+            <a href="{% url 'logout' %}"
+               class="text-red-400 hover:text-red-500 flex items-center gap-2 text-sm">
+                Déconnexion
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="flex-1">
+        {% block proprietaire_content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

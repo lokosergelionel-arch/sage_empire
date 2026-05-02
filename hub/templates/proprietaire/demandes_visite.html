@@ -1,0 +1,51 @@
+{% extends 'proprietaire/base_proprietaire.html' %}
+
+{% block proprietaire_content %}
+<div class="min-h-screen bg-[#0B0B0B] text-white">
+    <!-- Header -->
+    <div class="bg-[#1A1A1A] border-b border-[#B8860B]/20 py-6">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-serif text-[#D4AF37]">Demandes de Visite</h1>
+                    <p class="text-gray-400">Toutes les demandes reçues par vos biens</p>
+                </div>
+                <a href="{% url 'dashboard_proprietaire' %}" class="text-gray-400 hover:text-white">← Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-8 py-10">
+        {% if visites %}
+            <div class="space-y-4">
+                {% for visite in visites %}
+                <div class="bg-[#1A1A1A] p-6 rounded-3xl border-l-4 border-emerald-500 hover:border-l-emerald-400 transition">
+                    <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold mb-2">{{ visite.property.titre }}</h3>
+                            <p class="text-gray-400 mb-2">{{ visite.visitor_name }} • {{ visite.visitor_phone }}</p>
+                            <p class="text-sm text-gray-500">{{ visite.visitor_message|default:"Pas de message" }}</p>
+                        </div>
+                        <div class="text-right min-w-[200px]">
+                            <p class="text-2xl font-semibold text-emerald-400 mb-2">{{ visite.amount }} FCFA</p>
+                            <p class="text-xs text-gray-400 mb-3">{{ visite.requested_date|date:"d M Y" }}</p>
+                            <a href="https://wa.me/{{ visite.visitor_phone }}"
+                               target="_blank"
+                               class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-2xl font-medium inline-block">
+                                Contacter sur WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-20">
+                <div class="text-6xl mb-6 opacity-20">📞</div>
+                <h3 class="text-2xl text-gray-300 mb-3">Aucune demande de visite</h3>
+                <p class="text-gray-500 mb-8">Les premières demandes arriveront bientôt !</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

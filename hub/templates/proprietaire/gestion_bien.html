@@ -1,0 +1,73 @@
+{% extends 'proprietaire/base_proprietaire.html' %}
+
+{% block proprietaire_content %}
+<div class="p-8">
+    <a href="{% url 'mes_biens' %}" class="text-gray-400 hover:text-white mb-6 inline-flex items-center gap-2">
+        ← Retour à mes biens
+    </a>
+
+    <h1 class="text-3xl font-serif text-[#D4AF37]">{{ bien.titre }}</h1>
+    <p class="text-gray-400">{{ bien.quartier }} • {{ bien.get_type_bien_display }}</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
+
+        <!-- Médias -->
+        <div class="lg:col-span-7 bg-[#1A1A1A] rounded-3xl p-8">
+            <h2 class="text-xl font-semibold mb-6">Photos & Vidéos</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {% for media in medias %}
+                <div class="aspect-video bg-gray-800 rounded-2xl overflow-hidden">
+                    {% if media.is_video %}
+                        <video src="{{ media.image.url }}" controls class="w-full h-full object-cover"></video>
+                    {% else %}
+                        <img src="{{ media.image.url }}" alt="Photo" class="w-full h-full object-cover">
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-gray-500 col-span-3 py-12 text-center">Aucune photo pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Informations + Calendrier -->
+        <div class="lg:col-span-5 space-y-8">
+
+            <!-- Informations -->
+            <div class="bg-[#1A1A1A] rounded-3xl p-8">
+                <h2 class="text-xl font-semibold mb-6">Informations du bien</h2>
+                <div class="space-y-5">
+                    <div>
+                        <p class="text-gray-400 text-sm">Prix</p>
+                        <p class="text-3xl font-semibold text-[#D4AF37]">{{ bien.prix }} FCFA</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Description</p>
+                        <p class="text-gray-300">{{ bien.description|default:"Aucune description ajoutée." }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendrier -->
+            <div class="bg-[#1A1A1A] rounded-3xl p-8">
+                <h2 class="text-xl font-semibold mb-6">Calendrier de disponibilité</h2>
+
+                {% if availabilities %}
+                    <div class="space-y-3">
+                        {% for period in availabilities %}
+                        <div class="flex justify-between bg-[#0F0F0F] p-4 rounded-2xl">
+                            <span>{{ period.start_date|date:"d M Y" }} — {{ period.end_date|date:"d M Y" }}</span>
+                            <span class="{% if period.is_available %}text-emerald-400{% else %}text-red-400{% endif %}">
+                                {{ period.is_available|yesno:"Disponible,Non disponible" }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-400">Aucune période définie.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

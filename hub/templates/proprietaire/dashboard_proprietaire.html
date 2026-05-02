@@ -1,0 +1,61 @@
+{% extends 'proprietaire/base_proprietaire.html' %}
+
+{% block proprietaire_content %}
+<div class="p-8">
+    <h1 class="text-3xl font-serif text-[#D4AF37]">Bonjour, {{ profil.nom_complet|split:" "|first }}.</h1>
+    <p class="text-gray-400">Voici l'état de vos biens immobiliers.</p>
+
+<div class="min-h-screen bg-[#0B0B0B] text-white">
+    <div class="bg-[#1A1A1A] border-b border-[#B8860B]/20 py-6">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-serif text-[#D4AF37]">
+                        Bonjour, {{ profil.nom_complet|split:" "|first }}.
+                    </h1>
+                    <p class="text-gray-400 mt-1">Bienvenue sur votre espace propriétaire</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <img src="{{ profil.get_photo_url }}"
+                         alt="Profil" class="w-12 h-12 rounded-full object-cover border border-[#B8860B]/30">
+                    <div>
+                        <p class="font-medium">{{ profil.nom_complet }}</p>
+                        <p class="text-xs text-emerald-400">Compte vérifié</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-8 py-10">
+        <!-- Statistiques -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
+                <p class="text-gray-400 text-sm">Biens publiés</p>
+                <p class="text-4xl font-semibold text-white mt-3">{{ total_biens }}</p>
+            </div>
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
+                <p class="text-gray-400 text-sm">Demandes de visite</p>
+                <p class="text-4xl font-semibold text-white mt-3">{{ total_visites }}</p>
+            </div>
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
+                <p class="text-gray-400 text-sm">Revenu estimé</p>
+                <p class="text-4xl font-semibold text-white mt-3">{{ total_visites|multiply:5000 }} FCFA</p>
+            </div>
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
+                <a href="{% url 'mes_biens' %}"
+                   class="block text-center bg-[#B8860B] hover:bg-amber-400 text-black font-semibold py-6 rounded-2xl transition">
+                    Voir tous mes biens
+                </a>
+            </div>
+        </div>
+
+        <div class="flex gap-4">
+            <a href="{% url 'creer_bien' %}"
+               class="bg-[#B8860B] hover:bg-amber-400 text-black font-semibold px-10 py-4 rounded-2xl flex items-center gap-3">
+                <span class="text-2xl leading-none">+</span> Ajouter un nouveau bien
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
