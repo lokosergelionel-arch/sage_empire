@@ -26,15 +26,13 @@ from hub.views import (
     CustomPasswordResetConfirmView,
     CustomPasswordResetCompleteView,
 
-    # === NOUVELLES VUES - ESPACE PROPRIETAIRE ===
+    # === Vues Propriétaire ===
     dashboard_proprietaire,
     mes_biens,
     creer_bien,
     gestion_bien,
     demandes_visite,
     inscription_proprietaire,
-    ajouter_disponibilite,
-    supprimer_disponibilite,
 )
 
 urlpatterns = [
@@ -45,7 +43,7 @@ urlpatterns = [
     path('rejoindre/', inscription_styliste, name='inscription_styliste'),
     path('inscription-proprietaire/', inscription_proprietaire, name='inscription_proprietaire'),
 
-    # Password Reset (Styliste)
+    # Password Reset
     path('mot-de-passe-oublie/', CustomPasswordResetView.as_view(), name='styliste_password_reset'),
     path('mot-de-passe-oublie/done/', CustomPasswordResetDoneView.as_view(), name='styliste_password_reset_done'),
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='styliste_password_reset_confirm'),
@@ -75,12 +73,6 @@ urlpatterns = [
     path('proprietaire/creer-bien/', creer_bien, name='creer_bien'),
     path('proprietaire/bien/<int:property_id>/', gestion_bien, name='gestion_bien'),
     path('proprietaire/demandes-visite/', demandes_visite, name='demandes_visite'),
-
-    # Gestion du calendrier
-    path('proprietaire/bien/<int:property_id>/ajouter-disponibilite/',
-         ajouter_disponibilite, name='ajouter_disponibilite'),
-    path('proprietaire/supprimer-disponibilite/<int:disponibilite_id>/',
-         supprimer_disponibilite, name='supprimer_disponibilite'),
 
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),

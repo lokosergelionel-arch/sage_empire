@@ -393,3 +393,32 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'registration/styliste_password_reset_complete.html'
+
+    # ===================== INSCRIPTION PROPRIETAIRE =====================
+    @login_required
+    @proprietaire_required
+    def ajouter_disponibilite(request, property_id):
+        bien = get_object_or_404(Property, id=property_id, owner=request.user.profil_proprietaire)
+
+        if request.method == 'POST':
+            form = PropertyAvailabilityForm(request.POST)
+            if form.is_valid():
+                disponibilite = form.save(commit=False)
+                disponibilite.property = bien
+                disponibilite.save()
+                messages.success(request, "Période ajoutée avec succès.")
+                return redirect('gestion_bien', property_id=bien.id)
+
+        return redirect('gestion_bien', property_id=bien.id)
+
+    @login_required
+    @proprietaire_required
+    def supprimer_disponibilite(request, disponibilite_id):
+        disponibilite = get_object_or_404(PropertyAvailability, id=disponibilite_id)
+        property_id = disponibilite.property.id
+
+        if disponibilite.property.owner == request.user.profil_proprietaire:
+            disponibilite.delete()
+            messages.success(request, "Période supprimée.")
+
+        return redirect('gestion_bien', property_id=property_id)
