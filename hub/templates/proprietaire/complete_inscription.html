@@ -1,0 +1,50 @@
+{% extends 'proprietaire/base_proprietaire.html' %}
+{% load custom_filters %}
+
+{% block proprietaire_content %}
+<div class="p-8 max-w-2xl mx-auto">
+    <h1 class="text-3xl font-serif text-[#D4AF37] mb-2">Finalisez votre inscription</h1>
+    <p class="text-gray-400 mb-8">Complétez vos informations pour activer votre espace propriétaire</p>
+
+    <form method="POST" enctype="multipart/form-data" class="bg-[#1A1A1A] rounded-3xl p-10">
+        {% csrf_token %}
+
+        <div class="space-y-6">
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Nom complet</label>
+                {{ form.nom_complet }}
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Email</label>
+                <input type="email" name="email" class="w-full bg-[#0F0F0F] border border-[#B8860B]/30 rounded-2xl px-5 py-4 text-white" required>
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Mot de passe</label>
+                <input type="password" name="password" class="w-full bg-[#0F0F0F] border border-[#B8860B]/30 rounded-2xl px-5 py-4 text-white" required>
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Numéro WhatsApp</label>
+                {{ form.contact_whatsapp }}
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Photo de profil (optionnel)</label>
+                {{ form.photo_profil }}
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-400 mb-2">Présentation / Biographie</label>
+                {{ form.biographie }}
+            </div>
+        </div>
+
+        <button type="submit" 
+                class="w-full mt-10 bg-[#B8860B] hover:bg-amber-400 text-black font-semibold py-4 rounded-2xl text-lg">
+            Créer mon compte propriétaire
+        </button>
+    </form>
+</div>
+{% endblock %}

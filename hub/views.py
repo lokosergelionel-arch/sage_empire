@@ -61,8 +61,13 @@ def home(request):
 
 
 def page_immobilier(request):
-    biens = Immobilier.objects.all()
-    return render(request, 'immobilier.html', {'biens': biens})
+    # On utilise le nouveau modèle Property au lieu de l'ancien Immobilier
+    properties = Property.objects.filter(status='published', is_active=True).order_by('-date_creation')
+
+    context = {
+        'properties': properties,
+    }
+    return render(request, 'immobilier.html', context)
 
 
 def page_evenementiel(request):
@@ -395,6 +400,64 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'registration/styliste_password_reset_complete.html'
 
     # ===================== INSCRIPTION PROPRIETAIRE =====================
+    def inscription_proprietaire(request):
+        """Page où le propriétaire entre son code d'invitation"""
+        if request.method == 'POST':
+            form = InvitationCodeForm(request.POST)
+            if form.is_valid():
+                code = form.cleaned_data['code'].strip().upper()
+                try:
+                    invitation = InvitationCode.objects.get(code=code, is_used=False)
+                    request.session['invitation_code'] = code
+                    return redirect('complete_inscription_proprietaire')
+                except InvitationCode.DoesNotExist:
+                    messages.error(request, "Ce code d'invitation est invalide ou déjà utilisé.")
+        else:
+            form = InvitationCodeForm()
+
+        return render(request, 'proprietaire/inscription_proprietaire.html', {'form': form})
+
+    def complete_inscription_proprietaire(request):
+        """Page où le propriétaire remplit ses informations après validation du code"""
+        code = request.session.get('invitation_code')
+        if not code:
+            messages.error(request, "Session expirée. Veuillez recommencer.")
+            return redirect('inscription_proprietaire')
+
+        try:
+            invitation = InvitationCode.objects.get(code=code, is_used=False)
+        except InvitationCode.DoesNotExist:
+            messages.error(request, "Code invalide.")
+            return redirect('inscription_proprietaire')
+
+        if request.method == 'POST':
+            form = CompleteProprietaireForm(request.POST, request.FILES)
+            if form.is_valid():
+                user = User.objects.create_user(
+                    username=form.cleaned_data['nom_complet'].lower().replace(" ", ""),
+                    email=request.POST.get('email'),
+                    password=request.POST.get('password')
+                )
+
+                profil = form.save(commit=False)
+                profil.user = user
+                profil.est_verifie = True
+                profil.save()
+
+                invitation.is_used = True
+                invitation.proprietaire = profil
+                invitation.used_at = now()
+                invitation.save()
+
+                login(request, user)
+                messages.success(request, "Votre compte propriétaire a été créé avec succès !")
+                return redirect('dashboard_proprietaire')
+        else:
+            form = CompleteProprietaireForm()
+
+        return render(request, 'proprietaire/complete_inscription.html', {'form': form})
+
+    # ===================== GESTION DU CALENDRIER =====================
     @login_required
     @proprietaire_required
     def ajouter_disponibilite(request, property_id):

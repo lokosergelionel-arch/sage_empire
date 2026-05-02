@@ -20,19 +20,17 @@
             color: var(--charcoal);
         }
 
-        /* Header Immobilier */
         .immo-hero {
-    height: 55vh;                          /* Hauteur réduite sur PC */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                url('{% static "images/immo-hero.jpg" %}') center/cover no-repeat;
-    background-position: center center;    /* Centré sur ordinateur */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-}
+            height: 55vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('{% static "images/immo-hero.jpg" %}') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
         .immo-hero h1 {
             font-family: 'Cinzel';
             font-size: 3rem;
@@ -40,46 +38,47 @@
             text-transform: uppercase;
         }
 
-        /* Message Aucun Bien */
-        .no-property {
-            padding: 120px 10% 100px;
-            text-align: center;
-            background: var(--ivory);
-        }
-        .no-property h2 {
-            font-family: 'Cinzel';
-            font-size: 2.2rem;
-            color: var(--charcoal);
-            margin-bottom: 20px;
-        }
-        .no-property p {
-            font-size: 1.1rem;
-            color: #555;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-        .no-property .gold-line {
-            width: 80px;
-            height: 2px;
-            background: var(--gold);
-            margin: 0 auto 40px;
-        }
-        .btn-contact {
-            display: inline-block;
-            padding: 16px 40px;
-            background: var(--charcoal);
-            color: white;
-            text-decoration: none;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        .btn-contact:hover {
-            background: var(--gold);
+        .properties-grid {
+            padding: 80px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
         }
 
-        /* Section Partenaire */
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .property-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .property-info {
+            padding: 20px;
+        }
+        .property-info h3 {
+            margin: 0 0 8px 0;
+            font-family: 'Cinzel';
+        }
+        .owner {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--charcoal);
+        }
+
         .partner-section {
             background: var(--charcoal);
             color: white;
@@ -89,67 +88,64 @@
         .partner-section h2 {
             font-family: 'Cinzel';
             letter-spacing: 4px;
-            margin-bottom: 20px;
-        }
-        .partner-section p {
-            color: #aaa;
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .btn-partner {
             color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 16px 40px;
             text-decoration: none;
-            border: 1px solid var(--gold);
-            padding: 15px 40px;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+            font-size: 1rem;
+            margin-top: 20px;
+            display: inline-block;
             transition: 0.3s;
         }
         .btn-partner:hover {
             background: var(--gold);
             color: white;
         }
-
-        /* ===================== CORRECTION BANNER MOBILE ===================== */
-@media (max-width: 768px) {
-    .immo-hero {
-        height: 60vh;
-        background-position: center 38%;   /* Rogne mieux le haut à gauche */
-        background-size: cover;
-    }
-
-    .immo-hero h1 {
-        font-size: 2.1rem;
-        letter-spacing: 6px;
-    }
-}
     </style>
 </head>
 <body>
 
     <section class="immo-hero">
         <h1>IMMOBILIER</h1>
-        <p style="letter-spacing: 5px; font-size: 0.8rem;">VIVEZ L'EXCEPTION AU QUOTIDIEN</p>
+        <p style="letter-spacing: 5px; font-size: 0.9rem; margin-top: 10px;">VIVEZ L'EXCEPTION AU QUOTIDIEN</p>
     </section>
 
-    <!-- Message Aucun Bien Disponible -->
-    <div class="no-property">
-        <h2>Aucun bien disponible pour le moment</h2>
-        <div class="gold-line"></div>
-        <p>
-            Notre sélection de propriétés d’exception est actuellement en cours de renouvellement.<br>
-            Nous travaillons avec soin pour vous proposer les plus belles opportunités immobilières de luxe à Lomé.
-        </p>
-        <a href="https://wa.me/22891645869" class="btn-contact">ÊTRE INFORMÉ EN PRIORITÉ</a>
+    <!-- Liste des biens -->
+    <div class="properties-grid">
+        {% for bien in properties %}
+        <div class="property-card">
+            {% if bien.medias.first %}
+                <img src="{{ bien.medias.first.image.url }}" alt="{{ bien.titre }}">
+            {% else %}
+                <img src="{% static 'images/default-property.jpg' %}" alt="{{ bien.titre }}">
+            {% endif %}
+            <div class="property-info">
+                <div class="owner">Par {{ bien.owner.nom_complet }}</div>
+                <h3>{{ bien.titre }}</h3>
+                <p class="price">{{ bien.prix }} FCFA</p>
+                <p>{{ bien.quartier }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+            <h2>Aucun bien disponible pour le moment</h2>
+            <p>Nous travaillons à vous proposer les plus belles propriétés.</p>
+        </div>
+        {% endfor %}
     </div>
 
-    <!-- Section Partenaire -->
+    <!-- Section Propriétaire -->
     <section class="partner-section">
-        <h2>VOUS AVEZ UN BIEN À PROPOSER ?</h2>
-        <p>Confiez la gestion ou la vente de votre propriété à l'expertise Sage Empire.</p>
-        <a href="https://wa.me/22891645869" class="btn-partner">DEVENIR PARTENAIRE IMMO</a>
+        <h2>VOUS ÊTES PROPRIÉTAIRE ?</h2>
+        <p style="color:#aaa; max-width: 700px; margin: 0 auto 30px;">
+            Mettez votre bien en location ou en vente avec Sage Empire.<br>
+            Bénéficiez de notre expertise et de notre visibilité.
+        </p>
+        <a href="/inscription-proprietaire/" class="btn-partner">
+            REJOINDRE L'ESPACE PROPRIÉTAIRE
+        </a>
     </section>
 
 </body>
