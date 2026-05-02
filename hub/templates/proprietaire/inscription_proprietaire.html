@@ -2,46 +2,72 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<div class="min-h-screen bg-[#0B0B0B] flex items-center justify-center py-20">
-    <div class="max-w-lg w-full px-6">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-serif text-[#D4AF37]">Espace Propriétaire</h1>
-            <p class="text-gray-400 mt-3">Rejoignez Sage Empire en tant que propriétaire</p>
+<div class="min-h-screen bg-[#0A0A0A] flex items-center justify-center py-16 px-6">
+    <div class="max-w-md w-full">
+
+        <!-- En-tête -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-2xl flex items-center justify-center">
+                    <span class="text-black text-2xl font-bold">S</span>
+                </div>
+                <h1 class="text-4xl font-serif text-white tracking-tight">Sage Empire</h1>
+            </div>
+            <p class="text-gray-400 text-lg">Espace Propriétaire</p>
         </div>
 
-        <div class="bg-[#1A1A1A] rounded-3xl p-10">
-            <h2 class="text-2xl font-medium mb-8 text-center">Entrez votre code d'invitation</h2>
+        <!-- Card principale -->
+        <div class="bg-[#111111] border border-[#222222] rounded-3xl p-10 shadow-2xl">
+            <h2 class="text-2xl font-medium text-center text-white mb-2">
+                Code d'invitation
+            </h2>
+            <p class="text-center text-gray-400 text-sm mb-10">
+                Veuillez entrer le code qui vous a été transmis
+            </p>
 
-            <form method="POST">
+            <form method="POST" class="space-y-8">
                 {% csrf_token %}
 
-                <div class="mb-8">
-                    <label class="block text-sm text-gray-400 mb-3">Code d'invitation</label>
-                    {{ form.code }}
-                    <p class="text-xs text-gray-500 mt-2">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+                        Code d'invitation
+                    </label>
+                    {{ form.code|add_class:"w-full bg-transparent border border-[#333333] focus:border-[#D4AF37] text-white rounded-2xl px-6 py-4 text-lg outline-none transition-all" }}
+
+                    {% if form.code.errors %}
+                        <p class="text-red-500 text-sm mt-2">{{ form.code.errors.0 }}</p>
+                    {% endif %}
+
+                    <p class="text-xs text-gray-500 mt-3">
                         Ce code vous a été envoyé après la signature du contrat.
                     </p>
                 </div>
 
                 <button type="submit"
-                        class="w-full bg-[#B8860B] hover:bg-amber-400 text-black font-semibold py-4 rounded-2xl transition text-lg">
+                        class="w-full bg-gradient-to-r from-[#D4AF37] to-[#B8860B] hover:from-[#E5C56B] hover:to-[#C99A1F]
+                               text-black font-semibold py-4 rounded-2xl text-lg transition-all duration-300 shadow-lg shadow-amber-900/30">
                     Valider mon code
                 </button>
             </form>
 
             <div class="mt-10 text-center">
-                <p class="text-gray-400 text-sm">
+                <p class="text-gray-400 text-sm leading-relaxed">
                     Vous n'avez pas encore de code ?<br>
-                    Contactez notre équipe pour devenir partenaire.
+                    <a href="#" class="text-[#D4AF37] hover:text-amber-300 transition">
+                        Contactez notre équipe pour devenir partenaire
+                    </a>
                 </p>
             </div>
         </div>
 
+        <!-- Lien vers connexion -->
         <div class="text-center mt-8">
-            <a href="{% url 'login' %}" class="text-gray-400 hover:text-white text-sm">
+            <a href="{% url 'login' %}"
+               class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
                 ← J'ai déjà un compte
             </a>
         </div>
+
     </div>
 </div>
 {% endblock %}
