@@ -1,9 +1,9 @@
 from django.db import models
+from django.db.migrations import Migration
 import cloudinary.models
-from django.utils.timezone import now
 
 
-class Migration(models.Migration):
+class Migration(Migration):
     dependencies = [
         ('hub', '0013_alter_profilstyliste_user_profilproprietaire_and_more'),
     ]
