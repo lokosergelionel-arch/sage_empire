@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -8,20 +7,14 @@ from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
     mes_publications, supprimer_creation, galerie_mode, liste_stylistes,
     portfolio_styliste, page_immobilier, page_evenementiel, sage_digital,
-    verify_email, renvoyer_email_verification,
+    verify_email, renvoyer_email_verification, verification_sent,
     CustomPasswordResetView, CustomPasswordResetDoneView,
     CustomPasswordResetConfirmView, CustomPasswordResetCompleteView,
 
     # Vues Propriétaire
-    dashboard_proprietaire,
-    mes_biens,
-    creer_bien,
-    gestion_bien,
-    demandes_visite,
-    inscription_proprietaire,
-    complete_inscription_proprietaire,
-    ajouter_disponibilite,
-    supprimer_disponibilite,
+    dashboard_proprietaire, mes_biens, creer_bien, gestion_bien,
+    demandes_visite, inscription_proprietaire, complete_inscription_proprietaire,
+    ajouter_disponibilite, supprimer_disponibilite,
 )
 
 urlpatterns = [
@@ -39,8 +32,9 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='styliste_password_reset_confirm'),
     path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='styliste_password_reset_complete'),
 
+    # Email Verification
     path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
-    path('verification-sent/', lambda r: render(r, 'verification_sent.html'), name='verification_sent'),
+    path('verification-sent/', verification_sent, name='verification_sent'),
     path('renvoyer-verification/', renvoyer_email_verification, name='renvoyer_email_verification'),
 
     # Espace Styliste

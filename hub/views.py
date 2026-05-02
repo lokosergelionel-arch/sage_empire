@@ -10,25 +10,27 @@ from django.contrib.auth.views import (
 )
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.utils.timezone import now
 
 from .forms import (
     InscriptionStylisteForm,
     EditProfilForm,
     CreationForm,
-    PropertyForm,  # Nouveau
-    PropertyAvailabilityForm  # Nouveau
+    PropertyForm,
+    PropertyAvailabilityForm,
+    InvitationCodeForm,
+    CompleteProprietaireForm,
 )
+
 from .models import (
     ProfilStyliste,
     Creation,
-    Immobilier,
     Event,
-    ProfilProprietaire,  # Nouveau
-    Property,  # Nouveau
-    PropertyMedia,  # Nouveau
-    PropertyAvailability,  # Nouveau
-    VisitRequest,  # Nouveau
-    InvitationCode  # Nouveau
+    ProfilProprietaire,
+    Property,
+    PropertyAvailability,
+    VisitRequest,
+    InvitationCode
 )
 
 from django.contrib.auth.tokens import default_token_generator
@@ -44,11 +46,9 @@ def proprietaire_required(view_func):
     def wrapper_func(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
-
         if not hasattr(request.user, 'profil_proprietaire'):
             messages.warning(request, "Vous n'avez pas accès à cet espace.")
             return redirect('dashboard_styliste')
-
         return view_func(request, *args, **kwargs)
 
     return wrapper_func
@@ -61,21 +61,22 @@ def home(request):
 
 
 def page_immobilier(request):
-    # On utilise le nouveau modèle Property au lieu de l'ancien Immobilier
     properties = Property.objects.filter(status='published', is_active=True).order_by('-date_creation')
-
-    context = {
-        'properties': properties,
-    }
-    return render(request, 'immobilier.html', context)
+    return render(request, 'immobilier.html', {'properties': properties})
 
 
 def page_evenementiel(request):
     evenements = Event.objects.all().order_by('-date')
     return render(request, 'evenementiel.html', {'evenements': evenements})
 
+
 def sage_digital(request):
     return render(request, 'sage_digital.html')
+
+
+def verification_sent(request):
+    """Vue simple pour la page de confirmation d'envoi d'email"""
+    return render(request, 'verification_sent.html')
 
 
 # ===================== SAGE MODE =====================
@@ -117,21 +118,18 @@ def inscription_styliste(request):
             profil.email_verifie = False
             profil.save()
 
-            email_envoye = send_verification_email(request, user)
-            if email_envoye:
+            if send_verification_email(request, user):
                 return redirect('verification_sent')
-            else:
-                return redirect('login')
+            return redirect('login')
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
 
 
-# ===================== MODIFIER PROFIL STYLISTE =====================
+# ===================== PROFIL & DASHBOARD STYLISTE =====================
 @login_required
 def edit_profil(request):
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
-
     if request.method == 'POST':
         form = EditProfilForm(request.POST, request.FILES, instance=styliste)
         if form.is_valid():
@@ -144,13 +142,9 @@ def edit_profil(request):
     else:
         form = EditProfilForm(instance=styliste, initial={'email': request.user.email})
 
-    return render(request, 'edit_profil.html', {
-        'form': form,
-        'styliste': styliste
-    })
+    return render(request, 'edit_profil.html', {'form': form, 'styliste': styliste})
 
 
-# ===================== DASHBOARD STYLISTE =====================
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
@@ -163,10 +157,8 @@ def dashboard_styliste(request):
             creation.image_url = request.POST.get('image_url')
             creation.image_dos_url = request.POST.get('image_dos_url')
             creation.public_id = request.POST.get('public_id') or ""
-
             if request.POST.get('public_id_dos'):
                 creation.public_id = f"{creation.public_id},{request.POST.get('public_id_dos')}".strip(',')
-
             creation.save()
             return redirect('dashboard_styliste')
 
@@ -181,10 +173,7 @@ def dashboard_styliste(request):
 def mes_publications(request):
     styliste = get_object_or_404(ProfilStyliste, user=request.user)
     creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-    return render(request, 'mes_publications.html', {
-        'styliste': styliste,
-        'creations': creations
-    })
+    return render(request, 'mes_publications.html', {'styliste': styliste, 'creations': creations})
 
 
 @login_required
@@ -196,30 +185,22 @@ def supprimer_creation(request, creation_id):
     return redirect('dashboard_styliste')
 
 
-
 # ===================== LOGIN =====================
 def login_view(request):
     if not User.objects.filter(username='sagemode_admin').exists():
         User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
 
     if request.method == 'POST':
-        user = authenticate(
-            request,
-            username=request.POST.get('username'),
-            password=request.POST.get('password')
-        )
+        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
         if user is not None:
             login(request, user)
-            if hasattr(user, 'profil_proprietaire'):
-                return redirect('dashboard_proprietaire')
-            return redirect('dashboard_styliste')
-        return render(request, 'registration/login.html', {'error': 'Identifiants invalides'})
+            return redirect('dashboard_proprietaire' if hasattr(user, 'profil_proprietaire') else 'dashboard_styliste')
+        messages.error(request, 'Identifiants invalides')
 
     return render(request, 'registration/login.html')
 
 
 # ===================== ESPACE PROPRIETAIRE =====================
-
 @login_required
 @proprietaire_required
 def dashboard_proprietaire(request):
@@ -242,19 +223,13 @@ def dashboard_proprietaire(request):
 def mes_biens(request):
     profil = request.user.profil_proprietaire
     properties = Property.objects.filter(owner=profil).order_by('-date_creation')
-
-    context = {
-        'profil': profil,
-        'properties': properties,
-    }
-    return render(request, 'proprietaire/mes_biens.html', context)
+    return render(request, 'proprietaire/mes_biens.html', {'profil': profil, 'properties': properties})
 
 
 @login_required
 @proprietaire_required
 def creer_bien(request):
     profil = request.user.profil_proprietaire
-
     if request.method == 'POST':
         form = PropertyForm(request.POST)
         if form.is_valid():
@@ -267,11 +242,7 @@ def creer_bien(request):
     else:
         form = PropertyForm()
 
-    context = {
-        'form': form,
-        'profil': profil,
-    }
-    return render(request, 'proprietaire/creer_bien.html', context)
+    return render(request, 'proprietaire/creer_bien.html', {'form': form, 'profil': profil})
 
 
 @login_required
@@ -279,16 +250,12 @@ def creer_bien(request):
 def gestion_bien(request, property_id):
     profil = request.user.profil_proprietaire
     bien = get_object_or_404(Property, id=property_id, owner=profil)
-    medias = bien.medias.all().order_by('order')
-    availabilities = bien.availabilities.all()
-    visit_requests = VisitRequest.objects.filter(property=bien).order_by('-created_at')
-
     context = {
         'profil': profil,
         'bien': bien,
-        'medias': medias,
-        'availabilities': availabilities,
-        'visit_requests': visit_requests,
+        'medias': bien.medias.all().order_by('order'),
+        'availabilities': bien.availabilities.all(),
+        'visit_requests': VisitRequest.objects.filter(property=bien).order_by('-created_at'),
     }
     return render(request, 'proprietaire/gestion_bien.html', context)
 
@@ -298,29 +265,66 @@ def gestion_bien(request, property_id):
 def demandes_visite(request):
     profil = request.user.profil_proprietaire
     visites = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')
-
-    context = {
-        'profil': profil,
-        'visites': visites,
-    }
-    return render(request, 'proprietaire/demandes_visite.html', context)
+    return render(request, 'proprietaire/demandes_visite.html', {'profil': profil, 'visites': visites})
 
 
 # ===================== INSCRIPTION PROPRIETAIRE =====================
 def inscription_proprietaire(request):
     if request.method == 'POST':
-        code = request.POST.get('code')
-        try:
-            invitation = InvitationCode.objects.get(code=code, is_used=False)
-            messages.success(request, "Code valide ! Veuillez compléter votre inscription.")
-            return redirect('complete_inscription_proprietaire')
-        except InvitationCode.DoesNotExist:
-            messages.error(request, "Code d'invitation invalide ou déjà utilisé.")
+        form = InvitationCodeForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code'].strip().upper()
+            try:
+                InvitationCode.objects.get(code=code, is_used=False)
+                request.session['invitation_code'] = code
+                return redirect('complete_inscription_proprietaire')
+            except InvitationCode.DoesNotExist:
+                messages.error(request, "Ce code d'invitation est invalide ou déjà utilisé.")
+    else:
+        form = InvitationCodeForm()
+    return render(request, 'proprietaire/inscription_proprietaire.html', {'form': form})
 
-    return render(request, 'proprietaire/inscription_proprietaire.html')
+
+def complete_inscription_proprietaire(request):
+    code = request.session.get('invitation_code')
+    if not code:
+        messages.error(request, "Session expirée. Veuillez recommencer.")
+        return redirect('inscription_proprietaire')
+
+    try:
+        invitation = InvitationCode.objects.get(code=code, is_used=False)
+    except InvitationCode.DoesNotExist:
+        messages.error(request, "Code invalide.")
+        return redirect('inscription_proprietaire')
+
+    if request.method == 'POST':
+        form = CompleteProprietaireForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['nom_complet'].lower().replace(" ", ""),
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+            profil = form.save(commit=False)
+            profil.user = user
+            profil.est_verifie = True
+            profil.save()
+
+            invitation.is_used = True
+            invitation.proprietaire = profil
+            invitation.used_at = now()
+            invitation.save()
+
+            login(request, user)
+            messages.success(request, "Votre compte propriétaire a été créé avec succès !")
+            return redirect('dashboard_proprietaire')
+    else:
+        form = CompleteProprietaireForm()
+
+    return render(request, 'proprietaire/complete_inscription_proprietaire.html', {'form': form})
 
 
-# ===================== EMAIL VERIFICATION =====================
+# ===================== EMAIL & PASSWORD =====================
 def send_verification_email(request, user):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -337,17 +341,10 @@ def send_verification_email(request, user):
     })
 
     try:
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email='Sage Empire <loko.sergelionel@gmail.com>',
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
-        print(f"✅ Email de vérification envoyé à {user.email}")
+        send_mail(subject, message, 'Sage Empire <loko.sergelionel@gmail.com>', [user.email], fail_silently=False)
         return True
     except Exception as e:
-        print(f"❌ Erreur lors de l'envoi de l'email : {e}")
+        print(f"Erreur email : {e}")
         return False
 
 
@@ -355,27 +352,22 @@ def verify_email(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except Exception:
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        profil = user.profil
-        profil.email_verifie = True
-        profil.save()
+    if user and default_token_generator.check_token(user, token):
+        profil = getattr(user, 'profil', None) or getattr(user, 'profil_proprietaire', None)
+        if profil:
+            profil.email_verifie = True
+            profil.save()
         return render(request, 'email_verified_success.html')
-    else:
-        return render(request, 'email_verified_failed.html')
+    return render(request, 'email_verified_failed.html')
 
 
 @login_required
 def renvoyer_email_verification(request):
-    user = request.user
-    if user.email:
-        email_envoye = send_verification_email(request, user)
-        if email_envoye:
-            return render(request, 'verification_sent.html', {'email_renvoye': True})
-        else:
-            return render(request, 'verification_sent.html', {'erreur': True})
+    if send_verification_email(request, request.user):
+        return render(request, 'verification_sent.html', {'email_renvoye': True})
     return redirect('edit_profil')
 
 
@@ -399,89 +391,28 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'registration/styliste_password_reset_complete.html'
 
-    # ===================== INSCRIPTION PROPRIETAIRE =====================
-    def inscription_proprietaire(request):
-        """Page où le propriétaire entre son code d'invitation"""
-        if request.method == 'POST':
-            form = InvitationCodeForm(request.POST)
-            if form.is_valid():
-                code = form.cleaned_data['code'].strip().upper()
-                try:
-                    invitation = InvitationCode.objects.get(code=code, is_used=False)
-                    request.session['invitation_code'] = code
-                    return redirect('complete_inscription_proprietaire')
-                except InvitationCode.DoesNotExist:
-                    messages.error(request, "Ce code d'invitation est invalide ou déjà utilisé.")
-        else:
-            form = InvitationCodeForm()
 
-        return render(request, 'proprietaire/inscription_proprietaire.html', {'form': form})
+# ===================== GESTION DU CALENDRIER =====================
+@login_required
+@proprietaire_required
+def ajouter_disponibilite(request, property_id):
+    bien = get_object_or_404(Property, id=property_id, owner=request.user.profil_proprietaire)
+    if request.method == 'POST':
+        form = PropertyAvailabilityForm(request.POST)
+        if form.is_valid():
+            disponibilite = form.save(commit=False)
+            disponibilite.property = bien
+            disponibilite.save()
+            messages.success(request, "Période ajoutée avec succès.")
+            return redirect('gestion_bien', property_id=bien.id)
+    return redirect('gestion_bien', property_id=bien.id)
 
-    def complete_inscription_proprietaire(request):
-        """Page où le propriétaire remplit ses informations après validation du code"""
-        code = request.session.get('invitation_code')
-        if not code:
-            messages.error(request, "Session expirée. Veuillez recommencer.")
-            return redirect('inscription_proprietaire')
 
-        try:
-            invitation = InvitationCode.objects.get(code=code, is_used=False)
-        except InvitationCode.DoesNotExist:
-            messages.error(request, "Code invalide.")
-            return redirect('inscription_proprietaire')
-
-        if request.method == 'POST':
-            form = CompleteProprietaireForm(request.POST, request.FILES)
-            if form.is_valid():
-                user = User.objects.create_user(
-                    username=form.cleaned_data['nom_complet'].lower().replace(" ", ""),
-                    email=request.POST.get('email'),
-                    password=request.POST.get('password')
-                )
-
-                profil = form.save(commit=False)
-                profil.user = user
-                profil.est_verifie = True
-                profil.save()
-
-                invitation.is_used = True
-                invitation.proprietaire = profil
-                invitation.used_at = now()
-                invitation.save()
-
-                login(request, user)
-                messages.success(request, "Votre compte propriétaire a été créé avec succès !")
-                return redirect('dashboard_proprietaire')
-        else:
-            form = CompleteProprietaireForm()
-
-        return render(request, 'proprietaire/complete_inscription_proprietaire.html', {'form': form})
-
-    # ===================== GESTION DU CALENDRIER =====================
-    @login_required
-    @proprietaire_required
-    def ajouter_disponibilite(request, property_id):
-        bien = get_object_or_404(Property, id=property_id, owner=request.user.profil_proprietaire)
-
-        if request.method == 'POST':
-            form = PropertyAvailabilityForm(request.POST)
-            if form.is_valid():
-                disponibilite = form.save(commit=False)
-                disponibilite.property = bien
-                disponibilite.save()
-                messages.success(request, "Période ajoutée avec succès.")
-                return redirect('gestion_bien', property_id=bien.id)
-
-        return redirect('gestion_bien', property_id=bien.id)
-
-    @login_required
-    @proprietaire_required
-    def supprimer_disponibilite(request, disponibilite_id):
-        disponibilite = get_object_or_404(PropertyAvailability, id=disponibilite_id)
-        property_id = disponibilite.property.id
-
-        if disponibilite.property.owner == request.user.profil_proprietaire:
-            disponibilite.delete()
-            messages.success(request, "Période supprimée.")
-
-        return redirect('gestion_bien', property_id=property_id)
+@login_required
+@proprietaire_required
+def supprimer_disponibilite(request, disponibilite_id):
+    disponibilite = get_object_or_404(PropertyAvailability, id=disponibilite_id)
+    if disponibilite.property.owner == request.user.profil_proprietaire:
+        disponibilite.delete()
+        messages.success(request, "Période supprimée.")
+    return redirect('gestion_bien', property_id=disponibilite.property.id)
