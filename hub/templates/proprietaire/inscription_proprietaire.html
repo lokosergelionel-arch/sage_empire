@@ -2,7 +2,35 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<div class="min-h-screen bg-[#0A0A0A] flex items-center justify-center py-16 px-6">
+<style>
+    /* Correction du design pour coller au branding Sage Empire */
+    .empire-container { background-color: #0A0A0A; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .empire-card {
+        background: #111111;
+        border: 1px solid #222222;
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .empire-input {
+        width: 100%;
+        background: transparent !important;
+        border: 1px solid #333333 !important;
+        color: white !important;
+        border-radius: 1rem !important;
+        padding: 1rem 1.5rem !important;
+        outline: none;
+        transition: all 0.3s;
+    }
+    .empire-input:focus { border-color: #D4AF37 !important; }
+    .empire-btn {
+        background: linear-gradient(to right, #D4AF37, #B8860B);
+        transition: all 0.3s;
+    }
+    .empire-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+</style>
+
+<div class="empire-container py-16 px-6">
     <div class="max-w-md w-full">
 
         <!-- Header -->
@@ -17,7 +45,7 @@
         </div>
 
         <!-- Card -->
-        <div class="bg-[#111111] border border-[#222222] rounded-3xl p-10 shadow-2xl">
+        <div class="empire-card shadow-2xl">
             <h2 class="text-2xl font-medium text-center text-white mb-2">
                 Code d'invitation
             </h2>
@@ -32,7 +60,9 @@
                     <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">
                         Code d'invitation
                     </label>
-                    {{ form.code|add_class:"w-full bg-transparent border border-[#333333] focus:border-[#D4AF37] text-white rounded-2xl px-6 py-4 text-lg outline-none transition-all" }}
+
+                    {# On garde ton filtre add_class et on ajoute la classe empire-input #}
+                    {{ form.code|add_class:"empire-input" }}
 
                     {% if form.code.errors %}
                         <p class="text-red-500 text-sm mt-2">{{ form.code.errors.0 }}</p>
@@ -44,8 +74,7 @@
                 </div>
 
                 <button type="submit"
-                        class="w-full bg-gradient-to-r from-[#D4AF37] to-[#B8860B] hover:from-[#E5C56B] hover:to-[#C99A1F]
-                               text-black font-semibold py-4 rounded-2xl text-lg transition-all duration-300 shadow-lg shadow-amber-900/30">
+                        class="empire-btn w-full text-black font-semibold py-4 rounded-2xl text-lg shadow-lg shadow-amber-900/30">
                     Valider mon code
                 </button>
             </form>
