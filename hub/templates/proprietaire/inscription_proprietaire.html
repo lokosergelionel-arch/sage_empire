@@ -3,100 +3,137 @@
 
 {% block proprietaire_content %}
 <style>
-    /* Correction du design pour coller au branding Sage Empire */
-    .empire-container { background-color: #0A0A0A; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .empire-card {
-        background: #111111;
-        border: 1px solid #222222;
-        border-radius: 1.5rem;
-        padding: 2.5rem;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    /* Charte Graphique Sage Empire */
+    :root {
+        --empire-gold: #D4AF37;
+        --empire-dark: #0A0A0A;
+        --empire-card: #161616;
+        --empire-text: #E0E0E0;
+        --empire-muted: #888888;
     }
+
+    .main-wrapper {
+        background-color: var(--empire-dark);
+        min-height: 100vh;
+        color: var(--empire-text);
+        font-family: 'Lato', sans-serif;
+    }
+
+    /* Menu de navigation propriétaire épuré */
+    .proprio-nav {
+        background: #111;
+        padding: 15px 30px;
+        border-bottom: 1px solid #222;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .proprio-nav a {
+        color: var(--empire-muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .proprio-nav a:hover { color: var(--empire-gold); }
+
+    /* Carte de formulaire */
+    .empire-card {
+        background: var(--empire-card);
+        border: 1px solid #282828;
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 50px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
     .empire-input {
         width: 100%;
-        background: transparent !important;
-        border: 1px solid #333333 !important;
+        background: #1f1f1f !important; /* Gris foncé pour être visible sur le noir */
+        border: 1px solid #333 !important;
         color: white !important;
-        border-radius: 1rem !important;
-        padding: 1rem 1.5rem !important;
+        border-radius: 12px !important;
+        padding: 15px !important;
+        margin-top: 10px;
         outline: none;
-        transition: all 0.3s;
     }
-    .empire-input:focus { border-color: #D4AF37 !important; }
+
+    .empire-input:focus { border-color: var(--empire-gold) !important; }
+
     .empire-btn {
         background: linear-gradient(to right, #D4AF37, #B8860B);
-        transition: all 0.3s;
+        color: black;
+        font-weight: bold;
+        width: 100%;
+        padding: 15px;
+        border-radius: 12px;
+        border: none;
+        margin-top: 25px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    .empire-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 </style>
 
-<div class="empire-container py-16 px-6">
-    <div class="max-w-md w-full">
+<div class="main-wrapper">
 
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <div class="inline-flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-2xl flex items-center justify-center">
-                    <span class="text-black text-2xl font-bold">S</span>
-                </div>
-                <h1 class="text-4xl font-serif text-white tracking-tight">Sage Empire</h1>
-            </div>
-            <p class="text-gray-400 text-lg">Espace Propriétaire</p>
-        </div>
+    <!-- Menu réorganisé (Plus de doublons, plus d'emojis) -->
+    <nav class="proprio-nav">
+        <a href="#">Tableau de bord</a>
+        <a href="#">Mes Biens</a>
+        <a href="#">Demandes de visite</a>
+        <a href="{% url 'logout' %}" style="color: #ff4d4d;">Déconnexion</a>
+    </nav>
 
-        <!-- Card -->
-        <div class="empire-card shadow-2xl">
-            <h2 class="text-2xl font-medium text-center text-white mb-2">
-                Code d'invitation
-            </h2>
-            <p class="text-center text-gray-400 text-sm mb-10">
-                Veuillez entrer le code qui vous a été transmis
-            </p>
+    <div class="flex items-center justify-center px-6">
+        <div class="max-w-md w-full">
 
-            <form method="POST" class="space-y-8">
-                {% csrf_token %}
+            <div class="empire-card">
+                <h2 class="text-xl font-medium text-center text-white mb-2" style="font-family: 'Cinzel', serif;">
+                    Code d'invitation
+                </h2>
+                <p class="text-center text-gray-500 text-sm mb-8">
+                    Veuillez entrer le code qui vous a été transmis
+                </p>
 
-                <div>
-                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <label class="text-xs uppercase tracking-widest text-gray-400">
                         Code d'invitation
                     </label>
 
-                    {# On garde ton filtre add_class et on ajoute la classe empire-input #}
                     {{ form.code|add_class:"empire-input" }}
 
                     {% if form.code.errors %}
-                        <p class="text-red-500 text-sm mt-2">{{ form.code.errors.0 }}</p>
+                        <p class="text-red-500 text-xs mt-2">{{ form.code.errors.0 }}</p>
                     {% endif %}
 
-                    <p class="text-xs text-gray-500 mt-3">
-                        Ce code vous a été envoyé après la signature du contrat.
+                    <button type="submit" class="empire-btn">
+                        Valider mon code
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center border-t border-gray-800 pt-6">
+                    <p class="text-gray-500 text-xs">
+                        Vous n'avez pas encore de code ?<br>
+                        <a href="#" class="text-amber-500 hover:text-amber-300 transition no-underline">
+                            Contactez notre équipe partenaire
+                        </a>
                     </p>
                 </div>
-
-                <button type="submit"
-                        class="empire-btn w-full text-black font-semibold py-4 rounded-2xl text-lg shadow-lg shadow-amber-900/30">
-                    Valider mon code
-                </button>
-            </form>
-
-            <div class="mt-10 text-center">
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Vous n'avez pas encore de code ?<br>
-                    <a href="#" class="text-[#D4AF37] hover:text-amber-300 transition">
-                        Contactez notre équipe pour devenir partenaire
-                    </a>
-                </p>
             </div>
-        </div>
 
-        <!-- Login link -->
-        <div class="text-center mt-8">
-            <a href="{% url 'login' %}"
-               class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
-                ← J'ai déjà un compte
-            </a>
-        </div>
+            <div class="text-center mt-6">
+                <a href="{% url 'login' %}" class="text-gray-600 hover:text-white transition text-xs no-underline">
+                    ← J'ai déjà un compte
+                </a>
+            </div>
 
+        </div>
     </div>
 </div>
 {% endblock %}
