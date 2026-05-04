@@ -2,59 +2,87 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<div class="p-8">
-    <h1 class="text-3xl font-serif text-[#D4AF37]">Bonjour, {{ profil.nom_complet|split:" "|first }}.</h1>
-    <p class="text-gray-400">Voici l'état de vos biens immobiliers.</p>
-
-<div class="min-h-screen bg-[#0B0B0B] text-white">
-    <div class="bg-[#1A1A1A] border-b border-[#B8860B]/20 py-6">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-3xl font-serif text-[#D4AF37]">
+<div class="min-h-screen bg-[#0B0B0B] text-white font-sans pb-12">
+    <!-- Header avec Avatar Automatique -->
+    <div class="bg-[#1A1A1A] border-b border-[#D4A017]/20 py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl font-serif text-[#D4A017]">
                         Bonjour, {{ profil.nom_complet|split:" "|first }}.
                     </h1>
-                    <p class="text-gray-400 mt-1">Bienvenue sur votre espace propriétaire</p>
+                    <p class="text-gray-400 mt-2">Bienvenue sur votre espace propriétaire</p>
                 </div>
-                <div class="flex items-center gap-4">
-                    <img src="{{ profil.get_photo_url }}"
-                         alt="Profil" class="w-12 h-12 rounded-full object-cover border border-[#B8860B]/30">
-                    <div>
-                        <p class="font-medium">{{ profil.nom_complet }}</p>
-                        <p class="text-xs text-emerald-400">Compte vérifié</p>
+
+                <!-- Bloc Profil avec Avatar Automatique -->
+                <div class="flex items-center gap-4 bg-[#0B0B0B] p-3 rounded-2xl border border-[#D4A017]/30">
+                    {% if profil.photo_profil %}
+                        <img src="{{ profil.get_photo_url }}" alt="Profil" class="w-14 h-14 rounded-full object-cover border-2 border-[#D4A017]/40">
+                    {% else %}
+                        <div class="w-14 h-14 rounded-full bg-black flex items-center justify-center border-2 border-[#D4A017]/40 text-[#D4A017] font-bold text-xl">
+                            {{ profil.nom_complet|slice:":2"|upper }}
+                        </div>
+                    {% endif %}
+                    <div class="pr-4">
+                        <p class="font-bold text-white">{{ profil.nom_complet }}</p>
+                        <p class="text-xs text-emerald-400 flex items-center gap-1">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span> Compte vérifié
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-8 py-10">
-        <!-- Statistiques -->
+    <div class="max-w-7xl mx-auto px-6 py-10">
+        <!-- Introduction -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-serif text-[#D4A017]">Bonjour, {{ profil.nom_complet|split:" "|first }}.</h2>
+            <p class="text-gray-400">Voici l'état de vos biens immobiliers.</p>
+        </div>
+
+        <!-- Grille de Statistiques "Cartes" Responsive -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
-                <p class="text-gray-400 text-sm">Biens publiés</p>
-                <p class="text-4xl font-semibold text-white mt-3">{{ total_biens }}</p>
+
+            <!-- Carte Biens -->
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border-l-4 border-[#D4A017] shadow-lg transform hover:scale-105 transition-all">
+                <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Biens publiés</p>
+                <div class="flex justify-between items-end mt-4">
+                    <p class="text-5xl font-bold text-white">{{ total_biens }}</p>
+                    <i class="fas fa-home text-[#D4A017] text-2xl opacity-50"></i>
+                </div>
             </div>
-            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
-                <p class="text-gray-400 text-sm">Demandes de visite</p>
-                <p class="text-4xl font-semibold text-white mt-3">{{ total_visites }}</p>
+
+            <!-- Carte Visites -->
+            <div class="bg-[#1A1A1A] p-6 rounded-2xl border-l-4 border-white/20 shadow-lg transform hover:scale-105 transition-all">
+                <p class="text-gray-400 text-sm font-medium uppercase tracking-wider">Demandes de visite</p>
+                <div class="flex justify-between items-end mt-4">
+                    <p class="text-5xl font-bold text-white">{{ total_visites }}</p>
+                    <i class="fas fa-calendar-alt text-gray-400 text-2xl opacity-50"></i>
+                </div>
             </div>
-            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
-                <p class="text-gray-400 text-sm">Revenu estimé</p>
-                <p class="text-4xl font-semibold text-white mt-3">{{ total_visites|multiply:5000 }} FCFA</p>
+
+            <!-- Carte Revenu -->
+            <div class="bg-gradient-to-br from-[#1A1A1A] to-[#000] p-6 rounded-2xl border border-[#D4A017]/30 shadow-xl transform hover:scale-105 transition-all">
+                <p class="text-[#D4A017] text-sm font-bold uppercase tracking-wider">Revenu estimé</p>
+                <div class="mt-4">
+                    <p class="text-3xl font-bold text-white">{{ total_visites|multiply:5000 }} <span class="text-lg">FCFA</span></p>
+                </div>
             </div>
-            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#B8860B]/10">
-                <a href="{% url 'mes_biens' %}"
-                   class="block text-center bg-[#B8860B] hover:bg-amber-400 text-black font-semibold py-6 rounded-2xl transition">
+
+            <!-- Carte Action Rapide -->
+            <div class="flex items-stretch">
+                <a href="{% url 'mes_biens' %}" class="w-full bg-[#D4A017] hover:bg-amber-500 text-black font-bold py-6 rounded-2xl transition-all flex items-center justify-center text-center shadow-lg hover:shadow-amber-500/20">
                     Voir tous mes biens
                 </a>
             </div>
         </div>
 
-        <div class="flex gap-4">
-            <a href="{% url 'creer_bien' %}"
-               class="bg-[#B8860B] hover:bg-amber-400 text-black font-semibold px-10 py-4 rounded-2xl flex items-center gap-3">
-                <span class="text-2xl leading-none">+</span> Ajouter un nouveau bien
+        <!-- Bouton Ajouter un nouveau bien -->
+        <div class="flex justify-center md:justify-start">
+            <a href="{% url 'creer_bien' %}" class="group bg-white hover:bg-[#D4A017] text-black font-bold px-10 py-4 rounded-2xl flex items-center gap-3 transition-all transform hover:-translate-y-1 shadow-2xl">
+                <span class="text-2xl font-light transition-transform group-hover:rotate-90">+</span>
+                Ajouter un nouveau bien
             </a>
         </div>
     </div>
