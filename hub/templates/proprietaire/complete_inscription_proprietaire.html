@@ -2,49 +2,92 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<div class="p-8 max-w-2xl mx-auto">
-    <h1 class="text-3xl font-serif text-[#D4AF37] mb-2">Finalisez votre inscription</h1>
-    <p class="text-gray-400 mb-8">Complétez vos informations pour activer votre espace propriétaire</p>
+<div class="container-fluid">
+    <div class="row justify-content-center py-4">
+        <div class="col-md-10 col-lg-8">
+            <div class="auth-card p-4 p-md-5" style="background: #1a1a1a; border: 1px solid #b8860b; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.7);">
 
-    <form method="POST" enctype="multipart/form-data" class="bg-[#1A1A1A] rounded-3xl p-10">
-        {% csrf_token %}
+                <div class="text-center mb-5">
+                    <h2 style="color: #b8860b; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Finalisez votre inscription</h2>
+                    <p class="text-muted">Complétez votre profil pour commencer à gérer vos biens sur Sage Empire</p>
+                </div>
 
-        <div class="space-y-6">
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Nom complet</label>
-                {{ form.nom_complet }}
-            </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Email</label>
-                <input type="email" name="email" class="w-full bg-[#0F0F0F] border border-[#B8860B]/30 rounded-2xl px-5 py-4 text-white" required>
-            </div>
+                    <div class="row">
+                        <!-- Colonne Gauche -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Nom complet</label>
+                                <input type="text" name="nom_complet" class="form-control custom-input" placeholder="Ex: Jean Dupont" required>
+                            </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Mot de passe</label>
-                <input type="password" name="password" class="w-full bg-[#0F0F0F] border border-[#B8860B]/30 rounded-2xl px-5 py-4 text-white" required>
-            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Adresse Email</label>
+                                <input type="email" name="email" class="form-control custom-input" placeholder="votre@email.com" required>
+                            </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Numéro WhatsApp</label>
-                {{ form.contact_whatsapp }}
-            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Mot de passe</label>
+                                <input type="password" name="password" class="form-control custom-input" placeholder="********" required>
+                            </div>
+                        </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Photo de profil (optionnel)</label>
-                {{ form.photo_profil }}
-            </div>
+                        <!-- Colonne Droite -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Numéro WhatsApp</label>
+                                <input type="text" name="contact_whatsapp" class="form-control custom-input" placeholder="Ex: 22890000000" required>
+                            </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Présentation / Biographie</label>
-                {{ form.biographie }}
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Photo de profil (optionnel)</label>
+                                <input type="file" name="photo_profil" class="form-control custom-input">
+                            </div>
+                        </div>
+
+                        <!-- Biographie sur toute la largeur -->
+                        <div class="col-12 mt-2">
+                            <div class="mb-4">
+                                <label class="form-label text-white-50 small">Présentation / Biographie</label>
+                                <textarea name="biographie" class="form-control custom-input" rows="4" placeholder="Décrivez votre activité ou vos types de biens immobiliers..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn px-5 py-3" style="background: #b8860b; color: #000; font-weight: 800; border-radius: 5px; border: none; transition: all 0.3s ease; width: 100%; max-width: 400px;">
+                            ACTIVER MON COMPTE PROPRIÉTAIRE
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
-
-        <button type="submit" 
-                class="w-full mt-10 bg-[#B8860B] hover:bg-amber-400 text-black font-semibold py-4 rounded-2xl text-lg">
-            Créer mon compte propriétaire
-        </button>
-    </form>
+    </div>
 </div>
+
+<style>
+    .custom-input {
+        background: #000 !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        padding: 12px !important;
+        border-radius: 5px !important;
+    }
+    .custom-input:focus {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 10px rgba(184, 134, 11, 0.3) !important;
+        background: #050505 !important;
+    }
+    .custom-input::placeholder {
+        color: #555 !important;
+    }
+    .btn:hover {
+        background: #d4a017 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4);
+    }
+</style>
 {% endblock %}
