@@ -1,17 +1,19 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views
 from django.urls import path, include
-from . import views
 
+# On importe tout directement depuis hub.views pour éviter les conflits
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
     mes_publications, supprimer_creation, galerie_mode, liste_stylistes,
     portfolio_styliste, page_immobilier, page_evenementiel, sage_digital,
     verify_email, renvoyer_email_verification, verification_sent,
-    CustomPasswordResetView, CustomPasswordResetDoneView,
-    CustomPasswordResetConfirmView, CustomPasswordResetCompleteView,
+    CustomPassword_reset_view, CustomPassword_reset_done_view,
+    CustomPassword_reset_confirm_view, CustomPassword_reset_complete_view,
+
+    # La nouvelle vue de tri
+    redirection_apres_login,
 
     # Vues Propriétaire
     dashboard_proprietaire, mes_biens, creer_bien, gestion_bien,
@@ -21,7 +23,9 @@ from hub.views import (
 
 urlpatterns = [
     path('', home, name='home'),
-    path('redirect-user/', views.redirection_apres_login, name='redirect_user'),
+
+    # Route de redirection intelligente après connexion
+    path('redirect-user/', redirection_apres_login, name='redirect_user'),
 
     # Authentification
     path('login/', login_view, name='login'),
@@ -30,10 +34,11 @@ urlpatterns = [
     path('complete-inscription/', complete_inscription_proprietaire, name='complete_inscription_proprietaire'),
 
     # Password Reset
-    path('mot-de-passe-oublie/', CustomPasswordResetView.as_view(), name='styliste_password_reset'),
-    path('mot-de-passe-oublie/done/', CustomPasswordResetDoneView.as_view(), name='styliste_password_reset_done'),
-    path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='styliste_password_reset_confirm'),
-    path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='styliste_password_reset_complete'),
+    path('mot-de-passe-oublie/', CustomPassword_reset_view.as_view(), name='styliste_password_reset'),
+    path('mot-de-passe-oublie/done/', CustomPassword_reset_done_view.as_view(), name='styliste_password_reset_done'),
+    path('reset/<uidb64>/<token>/', CustomPassword_reset_confirm_view.as_view(),
+         name='styliste_password_reset_confirm'),
+    path('reset/done/', CustomPassword_reset_complete_view.as_view(), name='styliste_password_reset_complete'),
 
     # Email Verification
     path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),

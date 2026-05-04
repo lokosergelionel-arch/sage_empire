@@ -28,6 +28,7 @@ from .models import (
     Event,
     ProfilProprietaire,
     Property,
+    PropertyMedia, # Ajouté si nécessaire
     PropertyAvailability,
     VisitRequest,
     InvitationCode
@@ -41,6 +42,20 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
 
+# ===================== REDIRECTION INTELLIGENTE =====================
+@login_required
+def redirection_apres_login(request):
+    """Redirige l'utilisateur vers son dashboard selon son profil"""
+    try:
+        if hasattr(request.user, 'profil_proprietaire'):
+            return redirect('dashboard_proprietaire')
+        elif hasattr(request.user, 'profil_styliste'):
+            return redirect('dashboard_styliste')
+        return redirect('home')
+    except Exception:
+        return redirect('home')
+
+
 # ===================== DECORATEUR PROPRIETAIRE =====================
 def proprietaire_required(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -50,7 +65,6 @@ def proprietaire_required(view_func):
             messages.warning(request, "Vous n'avez pas accès à cet espace.")
             return redirect('dashboard_styliste')
         return view_func(request, *args, **kwargs)
-
     return wrapper_func
 
 
@@ -75,7 +89,6 @@ def sage_digital(request):
 
 
 def verification_sent(request):
-    """Vue simple pour la page de confirmation d'envoi d'email"""
     return render(request, 'verification_sent.html')
 
 
@@ -141,14 +154,12 @@ def edit_profil(request):
             return redirect('dashboard_styliste')
     else:
         form = EditProfilForm(instance=styliste, initial={'email': request.user.email})
-
     return render(request, 'edit_profil.html', {'form': form, 'styliste': styliste})
 
 
 @login_required
 def dashboard_styliste(request):
     styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
-
     if request.method == 'POST':
         form = CreationForm(request.POST)
         if form.is_valid():
@@ -194,9 +205,9 @@ def login_view(request):
         user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
         if user is not None:
             login(request, user)
-            return redirect('dashboard_proprietaire' if hasattr(user, 'profil_proprietaire') else 'dashboard_styliste')
+            # Utilisation de la redirection intelligente
+            return redirect('redirect_user')
         messages.error(request, 'Identifiants invalides')
-
     return render(request, 'registration/login.html')
 
 
@@ -241,7 +252,6 @@ def creer_bien(request):
             return redirect('mes_biens')
     else:
         form = PropertyForm()
-
     return render(request, 'proprietaire/creer_bien.html', {'form': form, 'profil': profil})
 
 
@@ -320,11 +330,10 @@ def complete_inscription_proprietaire(request):
             return redirect('dashboard_proprietaire')
     else:
         form = CompleteProprietaireForm()
-
     return render(request, 'proprietaire/complete_inscription_proprietaire.html', {'form': form})
 
 
-# ===================== EMAIL & PASSWORD =====================
+# ===================== EMAIL VERIFICATION =====================
 def send_verification_email(request, user):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -356,9 +365,10 @@ def verify_email(request, uidb64, token):
         user = None
 
     if user and default_token_generator.check_token(user, token):
-        profil = getattr(user, 'profil', None) or getattr(user, 'profil_proprietaire', None)
+        # Correction : on vérifie les deux types de profils possibles
+        profil = getattr(user, 'profil_styliste', None) or getattr(user, 'profil_proprietaire', None)
         if profil:
-            profil.email_verifie = True
+            profil.email_verifie = True if hasattr(profil, 'email_verifie') else profil.est_verifie
             profil.save()
         return render(request, 'email_verified_success.html')
     return render(request, 'email_verified_failed.html')
@@ -371,24 +381,24 @@ def renvoyer_email_verification(request):
     return redirect('edit_profil')
 
 
-# ===================== PASSWORD RESET =====================
-class CustomPasswordResetView(PasswordResetView):
+# ===================== PASSWORD RESET (NOMS SYNCHROS AVEC URLS.PY) =====================
+class CustomPassword_reset_view(PasswordResetView):
     template_name = 'registration/styliste_password_reset.html'
     email_template_name = 'registration/styliste_password_reset_email.html'
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('styliste_password_reset_done')
 
 
-class CustomPasswordResetDoneView(PasswordResetDoneView):
+class CustomPassword_reset_done_view(PasswordResetDoneView):
     template_name = 'registration/styliste_password_reset_done.html'
 
 
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+class CustomPassword_reset_confirm_view(PasswordResetConfirmView):
     template_name = 'registration/styliste_password_reset_confirm.html'
     success_url = reverse_lazy('styliste_password_reset_complete')
 
 
-class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+class CustomPassword_reset_complete_view(PasswordResetCompleteView):
     template_name = 'registration/styliste_password_reset_complete.html'
 
 
@@ -404,7 +414,6 @@ def ajouter_disponibilite(request, property_id):
             disponibilite.property = bien
             disponibilite.save()
             messages.success(request, "Période ajoutée avec succès.")
-            return redirect('gestion_bien', property_id=bien.id)
     return redirect('gestion_bien', property_id=bien.id)
 
 
@@ -413,19 +422,8 @@ def ajouter_disponibilite(request, property_id):
 def supprimer_disponibilite(request, disponibilite_id):
     disponibilite = get_object_or_404(PropertyAvailability, id=disponibilite_id)
     if disponibilite.property.owner == request.user.profil_proprietaire:
+        bien_id = disponibilite.property.id
         disponibilite.delete()
         messages.success(request, "Période supprimée.")
-    return redirect('gestion_bien', property_id=disponibilite.property.id)
-
-
-@login_required
-def redirection_apres_login(request):
-    try:
-        if hasattr(request.user, 'profil_proprietaire'):
-            return redirect('dashboard_proprietaire')
-        elif hasattr(request.user, 'profil_styliste'):
-            return redirect('dashboard_styliste')
-        return redirect('home')
-    except Exception as e:
-        # Si ça plante encore, ça nous renverra au moins à l'accueil
-        return redirect('home')
+        return redirect('gestion_bien', property_id=bien_id)
+    return redirect('dashboard_proprietaire')
