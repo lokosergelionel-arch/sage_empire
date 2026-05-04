@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views
 from django.urls import path, include
+from . import views
 
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
