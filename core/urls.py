@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views
 from django.urls import path, include
 
 from hub.views import (
@@ -19,6 +20,7 @@ from hub.views import (
 
 urlpatterns = [
     path('', home, name='home'),
+    path('redirect-user/', views.redirection_apres_login, name='redirect_user'),
 
     # Authentification
     path('login/', login_view, name='login'),

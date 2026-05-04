@@ -416,3 +416,17 @@ def supprimer_disponibilite(request, disponibilite_id):
         disponibilite.delete()
         messages.success(request, "Période supprimée.")
     return redirect('gestion_bien', property_id=disponibilite.property.id)
+
+
+@login_required
+def redirection_apres_login(request):
+    # On vérifie si l'utilisateur a un profil propriétaire
+    if hasattr(request.user, 'profil_proprietaire'):
+        return redirect('dashboard_proprietaire')
+
+    # On vérifie si l'utilisateur a un profil styliste
+    elif hasattr(request.user, 'profil_styliste'):
+        return redirect('dashboard_styliste')
+
+    # Si c'est un admin ou autre sans profil spécifique
+    return redirect('home')
