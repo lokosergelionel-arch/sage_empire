@@ -2,54 +2,54 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<!-- Fond clair pour respecter la charte du Header -->
-<div class="container-fluid" style="background-color: #ffffff; min-height: 100vh;">
-    <div class="row justify-content-center pt-5">
-        <!-- On limite la largeur à col-md-5 pour que ce soit bien centré et pas trop large -->
+<div class="container-fluid" style="background-color: #f8f9fa; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="row justify-content-center w-100">
         <div class="col-12 col-md-6 col-lg-5">
 
-            <div class="registration-container p-4" style="border: 1px solid #eee; border-radius: 10px; shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <!-- Carte centrée comme sur la 2ème image -->
+            <div class="p-4 p-md-5" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
                 <div class="text-center mb-4">
-                    <h2 style="color: #f39c12; font-weight: 800; text-transform: uppercase;">Finalisez votre inscription</h2>
-                    <p class="text-muted small">Complétez vos informations pour activer votre espace propriétaire</p>
+                    <h2 style="color: #000; font-weight: 700; font-size: 1.8rem; margin-bottom: 10px;">Finalisez votre inscription</h2>
+                    <p style="color: #666; font-size: 0.95rem;">Complétez vos informations pour activer votre espace propriétaire</p>
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small">Nom complet</label>
-                        <input type="text" name="nom_complet" class="form-control" placeholder="Ex: Jean Dupont" required>
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Nom complet</label>
+                        <input type="text" name="nom_complet" class="form-control custom-input" placeholder="Ex: Jean Dupont" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small">Adresse Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="votre@email.com" required>
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Adresse Email</label>
+                        <input type="email" name="email" class="form-control custom-input" placeholder="votre@email.com" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" placeholder="********" required>
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Mot de passe</label>
+                        <input type="password" name="password" class="form-control custom-input" placeholder="********" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small">Numéro WhatsApp</label>
-                        <input type="text" name="contact_whatsapp" class="form-control" placeholder="Ex: 22890000000" required>
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Numéro WhatsApp</label>
+                        <input type="text" name="contact_whatsapp" class="form-control custom-input" placeholder="Ex: 22890000000" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small">Photo de profil (optionnel)</label>
-                        <input type="file" name="photo_profil" class="form-control">
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Photo de profil (optionnel)</label>
+                        <input type="file" name="photo_profil" class="form-control custom-input">
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small">Présentation / Biographie</label>
-                        <textarea name="biographie" class="form-control" rows="3" placeholder="Décrivez brièvement votre activité..."></textarea>
+                        <label class="form-label fw-bold" style="color: #333; font-size: 0.9rem;">Présentation / Biographie</label>
+                        <textarea name="biographie" class="form-control custom-input" rows="3" placeholder="Décrivez brièvement votre activité..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn w-100 py-3 fw-bold" style="background-color: #f39c12; color: #fff; border: none; border-radius: 5px; text-transform: uppercase;">
-                        ACTIVER MON COMPTE PROPRIETAIRE
+                    <!-- Bouton jaune/doré comme sur la 2ème image -->
+                    <button type="submit" class="btn w-100 py-3 fw-bold" style="background-color: #d4a017; color: #000; border: none; border-radius: 10px; font-size: 1rem; text-transform: none;">
+                        Valider mon inscription
                     </button>
                 </form>
 
@@ -59,27 +59,22 @@
 </div>
 
 <style>
-    /* Style propre et standard pour les inputs */
-    .form-control {
+    /* Style des inputs calqué sur la 2ème image */
+    .custom-input {
         border: 1px solid #ced4da !important;
-        padding: 10px !important;
-        border-radius: 4px !important;
+        border-radius: 10px !important;
+        padding: 12px 15px !important;
         background-color: #fff !important;
-        color: #000 !important;
+        font-size: 0.95rem !important;
     }
-    .form-control:focus {
-        border-color: #f39c12 !important;
-        box-shadow: 0 0 5px rgba(243, 156, 18, 0.2) !important;
+    .custom-input:focus {
+        border-color: #d4a017 !important;
+        box-shadow: 0 0 0 0.2rem rgba(212, 160, 23, 0.15) !important;
+        outline: none;
     }
     .btn:hover {
-        background-color: #e67e22 !important;
+        background-color: #b8860b !important;
         transition: 0.3s;
-    }
-    /* On s'assure que le texte des labels est bien aligné à gauche */
-    .form-label {
-        color: #333 !important;
-        display: block;
-        text-align: left;
     }
 </style>
 {% endblock %}
