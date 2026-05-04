@@ -2,63 +2,55 @@
 {% load custom_filters %}
 
 {% block proprietaire_content %}
-<div class="container-fluid" style="background-color: #0a0a0a; min-height: 100vh;">
+<!-- Fond clair pour respecter la charte du Header -->
+<div class="container-fluid" style="background-color: #ffffff; min-height: 100vh;">
     <div class="row justify-content-center pt-5">
-        <div class="col-12 col-md-8 col-lg-6">
-            <!-- La carte centrale -->
-            <div class="auth-card p-4 p-md-5" style="background: #1a1a1a; border: 1px solid #b8860b; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.8);">
+        <!-- On limite la largeur à col-md-5 pour que ce soit bien centré et pas trop large -->
+        <div class="col-12 col-md-6 col-lg-5">
 
-                <div class="text-center mb-5">
-                    <h2 style="color: #b8860b; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Finalisez votre inscription</h2>
-                    <p style="color: #ccc;">Complétez vos informations pour activer votre espace propriétaire sur Sage Empire</p>
+            <div class="registration-container p-4" style="border: 1px solid #eee; border-radius: 10px; shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+                <div class="text-center mb-4">
+                    <h2 style="color: #f39c12; font-weight: 800; text-transform: uppercase;">Finalisez votre inscription</h2>
+                    <p class="text-muted small">Complétez vos informations pour activer votre espace propriétaire</p>
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
-                    <div class="row g-4">
-                        <!-- Nom Complet -->
-                        <div class="col-12">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Nom complet</label>
-                            <input type="text" name="nom_complet" class="form-control custom-input" placeholder="Ex: Jean Dupont" required>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="col-12 col-md-6">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Adresse Email</label>
-                            <input type="email" name="email" class="form-control custom-input" placeholder="votre@email.com" required>
-                        </div>
-
-                        <!-- Mot de passe -->
-                        <div class="col-12 col-md-6">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Mot de passe</label>
-                            <input type="password" name="password" class="form-control custom-input" placeholder="********" required>
-                        </div>
-
-                        <!-- WhatsApp -->
-                        <div class="col-12 col-md-6">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Numéro WhatsApp</label>
-                            <input type="text" name="contact_whatsapp" class="form-control custom-input" placeholder="Ex: 22890000000" required>
-                        </div>
-
-                        <!-- Photo -->
-                        <div class="col-12 col-md-6">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Photo de profil</label>
-                            <input type="file" name="photo_profil" class="form-control custom-input">
-                        </div>
-
-                        <!-- Biographie -->
-                        <div class="col-12">
-                            <label class="form-label d-block text-start mb-2" style="color: #b8860b; font-size: 0.9rem; font-weight: 600;">Présentation / Biographie</label>
-                            <textarea name="biographie" class="form-control custom-input" rows="4" placeholder="Décrivez brièvement votre activité..."></textarea>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nom complet</label>
+                        <input type="text" name="nom_complet" class="form-control" placeholder="Ex: Jean Dupont" required>
                     </div>
 
-                    <div class="text-center mt-5">
-                        <button type="submit" class="btn w-100 py-3" style="background: #b8860b; color: #000; font-weight: 800; border-radius: 5px; border: none; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">
-                            ACTIVER MON COMPTE PROPRIÉTAIRE
-                        </button>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Adresse Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="votre@email.com" required>
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Mot de passe</label>
+                        <input type="password" name="password" class="form-control" placeholder="********" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Numéro WhatsApp</label>
+                        <input type="text" name="contact_whatsapp" class="form-control" placeholder="Ex: 22890000000" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Photo de profil (optionnel)</label>
+                        <input type="file" name="photo_profil" class="form-control">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Présentation / Biographie</label>
+                        <textarea name="biographie" class="form-control" rows="3" placeholder="Décrivez brièvement votre activité..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn w-100 py-3 fw-bold" style="background-color: #f39c12; color: #fff; border: none; border-radius: 5px; text-transform: uppercase;">
+                        ACTIVER MON COMPTE PROPRIETAIRE
+                    </button>
                 </form>
 
             </div>
@@ -67,28 +59,27 @@
 </div>
 
 <style>
-    /* Reset des styles de champ pour la charte graphique */
-    .custom-input {
-        background: #000 !important;
-        border: 1px solid #333 !important;
-        color: #fff !important;
-        padding: 12px 15px !important;
-        border-radius: 5px !important;
-        width: 100% !important;
+    /* Style propre et standard pour les inputs */
+    .form-control {
+        border: 1px solid #ced4da !important;
+        padding: 10px !important;
+        border-radius: 4px !important;
+        background-color: #fff !important;
+        color: #000 !important;
     }
-    .custom-input:focus {
-        border-color: #b8860b !important;
-        box-shadow: 0 0 10px rgba(184, 134, 11, 0.3) !important;
-        outline: none !important;
+    .form-control:focus {
+        border-color: #f39c12 !important;
+        box-shadow: 0 0 5px rgba(243, 156, 18, 0.2) !important;
     }
-    .custom-input::placeholder {
-        color: #555 !important;
-    }
-    /* Correction pour le bouton au survol */
     .btn:hover {
-        background: #d4a017 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4);
+        background-color: #e67e22 !important;
+        transition: 0.3s;
+    }
+    /* On s'assure que le texte des labels est bien aligné à gauche */
+    .form-label {
+        color: #333 !important;
+        display: block;
+        text-align: left;
     }
 </style>
 {% endblock %}
