@@ -3,13 +3,13 @@
 
 {% block proprietaire_content %}
 <div class="container-fluid">
-    <div class="row justify-content-center py-4">
+    <div class="row justify-content-center py-5" style="background-color: #0a0a0a; min-height: 85vh;">
         <div class="col-md-10 col-lg-8">
-            <div class="auth-card p-4 p-md-5" style="background: #1a1a1a; border: 1px solid #b8860b; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.7);">
+            <div class="auth-card p-4 p-md-5" style="background: #1a1a1a; border: 1px solid #b8860b; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); color: #fff;">
 
                 <div class="text-center mb-5">
                     <h2 style="color: #b8860b; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Finalisez votre inscription</h2>
-                    <p class="text-muted">Complétez votre profil pour commencer à gérer vos biens sur Sage Empire</p>
+                    <p class="text-muted">Complétez vos informations pour activer votre espace propriétaire sur Sage Empire</p>
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
@@ -45,19 +45,20 @@
                                 <label class="form-label text-white-50 small">Photo de profil (optionnel)</label>
                                 <input type="file" name="photo_profil" class="form-control custom-input">
                             </div>
+
                         </div>
 
-                        <!-- Biographie sur toute la largeur -->
+                        <!-- Biographie -->
                         <div class="col-12 mt-2">
                             <div class="mb-4">
                                 <label class="form-label text-white-50 small">Présentation / Biographie</label>
-                                <textarea name="biographie" class="form-control custom-input" rows="4" placeholder="Décrivez votre activité ou vos types de biens immobiliers..."></textarea>
+                                <textarea name="biographie" class="form-control custom-input" rows="4" placeholder="Décrivez brièvement votre activité ou le type de biens que vous proposez..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <button type="submit" class="btn px-5 py-3" style="background: #b8860b; color: #000; font-weight: 800; border-radius: 5px; border: none; transition: all 0.3s ease; width: 100%; max-width: 400px;">
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn px-5 py-3" style="background: #b8860b; color: #000; font-weight: 800; border-radius: 5px; border: none; transition: all 0.3s ease; width: 100%; max-width: 450px;">
                             ACTIVER MON COMPTE PROPRIÉTAIRE
                         </button>
                     </div>
@@ -69,6 +70,7 @@
 </div>
 
 <style>
+    /* Intégration du style sombre et doré */
     .custom-input {
         background: #000 !important;
         border: 1px solid #333 !important;
@@ -88,6 +90,10 @@
         background: #d4a017 !important;
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(184, 134, 11, 0.4);
+    }
+    /* Harmonisation avec le header propriétaire */
+    body {
+        background-color: #0a0a0a !important;
     }
 </style>
 {% endblock %}
