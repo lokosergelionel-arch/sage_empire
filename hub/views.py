@@ -340,12 +340,16 @@ def connexion_proprietaire(request):
         user = authenticate(request, username=u, password=p)
 
         if user is not None:
-            # On vérifie s'il a un profil propriétaire
-            if hasattr(user, 'profil_proprietaire'):  # Adapte selon le nom de ton modèle
-                login(request, user)
-                return redirect('dashboard_proprietaire')
-            else:
-                messages.error(request, "Ce compte n'est pas un compte propriétaire.")
+            # On vérifie si l'utilisateur est un propriétaire
+            # Note: Vérifie bien si ton modèle s'appelle 'ProfilProprietaire' ou autre
+            try:
+                if hasattr(user, 'profil_proprietaire'):
+                    login(request, user)
+                    return redirect('dashboard_proprietaire')
+                else:
+                    messages.error(request, "Ce compte n'est pas un compte propriétaire.")
+            except Exception as e:
+                messages.error(request, f"Erreur de profil: {e}")
         else:
             messages.error(request, "Identifiants invalides.")
 
