@@ -333,6 +333,25 @@ def complete_inscription_proprietaire(request):
     return render(request, 'proprietaire/complete_inscription_proprietaire.html', {'form': form})
 
 
+def connexion_proprietaire(request):
+    if request.method == 'POST':
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+        user = authenticate(request, username=u, password=p)
+
+        if user is not None:
+            # On vérifie s'il a un profil propriétaire
+            if hasattr(user, 'profil_proprietaire'):  # Adapte selon le nom de ton modèle
+                login(request, user)
+                return redirect('dashboard_proprietaire')
+            else:
+                messages.error(request, "Ce compte n'est pas un compte propriétaire.")
+        else:
+            messages.error(request, "Identifiants invalides.")
+
+    return render(request, 'proprietaire/connexion_proprietaire.html')
+
+
 # ===================== EMAIL VERIFICATION =====================
 def send_verification_email(request, user):
     token = default_token_generator.make_token(user)
