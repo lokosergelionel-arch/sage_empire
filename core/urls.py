@@ -26,6 +26,7 @@ urlpatterns = [
 
     # Route de redirection intelligente après connexion
     path('redirect-user/', redirection_apres_login, name='redirect_user'),
+    path('acces-proprietaire/', views.connexion_proprietaire, name='connexion_proprietaire'),
 
     # Authentification
     path('login/', login_view, name='login'),
