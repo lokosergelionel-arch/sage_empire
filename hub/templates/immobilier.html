@@ -136,16 +136,38 @@
         {% endfor %}
     </div>
 
-    <!-- Section Propriétaire -->
-    <section class="partner-section">
-        <h2>VOUS ÊTES PROPRIÉTAIRE ?</h2>
-        <p style="color:#aaa; max-width: 700px; margin: 0 auto 30px;">
-            Mettez votre bien en location ou en vente avec Sage Empire.<br>
-            Bénéficiez de notre expertise et de notre visibilité.
-        </p>
-        <a href="/inscription-proprietaire/" class="btn-partner">
-            REJOINDRE L'ESPACE PROPRIÉTAIRE
-        </a>
+    <!-- Section Appel à l'action Propriétaire -->
+<div style="background-color: #1A1A1A; border-top: 2px solid #D4A017; padding: 50px 20px; margin-top: 60px; color: #ffffff;">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px;">
+
+        <!-- Bloc Texte à gauche -->
+        <div style="flex: 1; min-width: 300px;">
+            <h3 style="color: #D4A017; font-size: 22px; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">
+                Vous êtes propriétaire ?
+            </h3>
+            <p style="font-size: 16px; line-height: 1.6; color: #e0e0e0; margin: 0;">
+                Mettez votre bien en location ou en vente avec <strong>Sage Empire</strong>.<br>
+                Bénéficiez de notre expertise et de notre visibilité pour maximiser vos revenus.
+            </p>
+        </div>
+
+        <!-- Bloc Boutons à droite -->
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+
+            <!-- Nouveau Propriétaire -->
+            <a href="{% url 'inscription_proprietaire' %}"
+               style="background-color: #D4A017; color: #000; padding: 15px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; text-align: center;">
+                REJOINDRE L'ESPACE PROPRIÉTAIRE
+            </a>
+
+            <!-- Déjà membre -->
+            <a href="{% url 'dashboard_proprietaire' %}"
+               style="background-color: transparent; color: #D4A017; border: 2px solid #D4A017; padding: 13px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; text-align: center;">
+                SE CONNECTER
+            </a>
+        </div>
+    </div>
+</div>
     </section>
 
 </body>
