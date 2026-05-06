@@ -1,50 +1,68 @@
-{% extends 'proprietaire/base_proprietaire.html' %}
-{% load custom_filters %}
+{% extends 'base.html' %}
 
-{% block proprietaire_content %}
-<div class="p-8">
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-serif text-[#D4AF37]">Mes Biens</h1>
-        <a href="{% url 'creer_bien' %}"
-           class="bg-[#B8860B] hover:bg-amber-400 text-black px-6 py-3 rounded-2xl font-semibold flex items-center gap-2">
-            <span class="text-xl">+</span> Ajouter un bien
-        </a>
-    </div>
+{% block content %}
+<div style="background-color: #0B0B0B; min-height: 100vh; color: #ffffff; padding-bottom: 50px;">
 
-    {% if properties %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for bien in properties %}
-            <div class="bg-[#1A1A1A] rounded-3xl overflow-hidden border border-[#B8860B]/10 hover:border-[#B8860B]/40 transition">
-                <div class="h-56 bg-gray-800 relative">
-                    {% if bien.medias.first %}
-                        <img src="{{ bien.medias.first.image.url }}" alt="{{ bien.titre }}" class="w-full h-full object-cover">
-                    {% else %}
-                        <div class="w-full h-full flex items-center justify-center text-6xl text-gray-700">🏠</div>
-                    {% endif %}
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold">{{ bien.titre }}</h3>
-                    <p class="text-gray-400 text-sm">{{ bien.quartier }} • {{ bien.get_type_bien_display }}</p>
-                    <div class="mt-6 flex justify-between items-end">
-                        <div>
-                            <p class="text-xs text-gray-400">Prix</p>
-                            <p class="text-2xl font-semibold text-[#D4AF37]">{{ bien.prix }} FCFA</p>
-                        </div>
-                        <a href="{% url 'gestion_bien' bien.id %}" class="text-[#D4AF37] hover:text-amber-400 font-medium">
-                            Gérer →
-                        </a>
-                    </div>
-                </div>
+    <!-- Header de la page -->
+    <div style="background-color: #1A1A1A; border-bottom: 1px solid rgba(212, 160, 23, 0.2); padding: 40px 20px;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div>
+                <h1 style="color: #D4A017; font-family: serif; font-size: 32px; margin: 0;">Mes Biens Immobiliers</h1>
+                <p style="color: #a0a0a0; margin-top: 5px;">Gérez vos annonces et leur visibilité</p>
             </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="text-center py-20">
-            <p class="text-2xl text-gray-400">Vous n'avez aucun bien pour le moment.</p>
-            <a href="{% url 'creer_bien' %}" class="inline-block mt-6 bg-[#B8860B] text-black px-8 py-4 rounded-2xl">
-                Ajouter mon premier bien
+
+            <a href="{% url 'creer_bien' %}" style="background-color: #D4A017; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
+                <span>+</span> AJOUTER UN BIEN
             </a>
         </div>
-    {% endif %}
+    </div>
+
+    <!-- Contenu Principal -->
+    <div style="max-width: 1100px; margin: 40px auto; padding: 0 20px;">
+
+        {% if biens %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
+                {% for bien in biens %}
+                <div style="background: #1A1A1A; border-radius: 15px; overflow: hidden; border: 1px solid rgba(212, 160, 23, 0.1); transition: 0.3s;">
+                    <!-- Image du bien -->
+                    <div style="height: 200px; background: #333; position: relative;">
+                        {% if bien.image_principale %}
+                            <img src="{{ bien.image_principale.url }}" alt="{{ bien.titre }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #555;">Aucune image</div>
+                        {% endif %}
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #D4A017; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #D4A017;">
+                            {{ bien.get_statut_display }}
+                        </div>
+                    </div>
+
+                    <!-- Infos du bien -->
+                    <div style="padding: 20px;">
+                        <h3 style="margin: 0 0 10px 0; color: #fff; font-size: 18px;">{{ bien.titre }}</h3>
+                        <p style="color: #a0a0a0; font-size: 14px; margin-bottom: 15px;"><i class="fas fa-map-marker-alt"></i> {{ bien.localisation }}</p>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 15px;">
+                            <span style="color: #D4A017; font-weight: bold; font-size: 18px;">{{ bien.prix }} FCFA</span>
+                            <a href="{% url 'gestion_bien' bien.id %}" style="color: #fff; text-decoration: none; font-size: 14px; border: 1px solid #D4A017; padding: 5px 15px; border-radius: 5px; transition: 0.3s;">
+                                Gérer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- État vide (Ce que tu as sur ta capture d'écran) -->
+            <div style="text-align: center; padding: 80px 20px; background: #1A1A1A; border-radius: 20px; border: 1px dashed rgba(212, 160, 23, 0.3);">
+                <div style="font-size: 50px; margin-bottom: 20px;">🏠</div>
+                <h2 style="color: #fff;">Vous n'avez aucun bien pour le moment</h2>
+                <p style="color: #a0a0a0; margin-bottom: 30px;">Commencez par ajouter votre première propriété pour la mettre en location ou en vente.</p>
+                <a href="{% url 'creer_bien' %}" style="display: inline-block; background-color: #D4A017; color: #000; padding: 15px 35px; border-radius: 10px; text-decoration: none; font-weight: bold;">
+                    AJOUTER MON PREMIER BIEN
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
 </div>
 {% endblock %}
