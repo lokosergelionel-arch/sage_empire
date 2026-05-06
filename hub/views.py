@@ -257,17 +257,44 @@ def creer_bien(request):
 
 @login_required
 @proprietaire_required
-def gestion_bien(request, property_id):
+def creer_bien(request):
     profil = request.user.profil_proprietaire
-    bien = get_object_or_404(Property, id=property_id, owner=profil)
-    context = {
-        'profil': profil,
-        'bien': bien,
-        'medias': bien.medias.all().order_by('order'),
-        'availabilities': bien.availabilities.all(),
-        'visit_requests': VisitRequest.objects.filter(property=bien).order_by('-created_at'),
-    }
-    return render(request, 'proprietaire/gestion_bien.html', context)
+    if request.method == 'POST':
+        # 1. Création du Bien (Property)
+        bien = Property.objects.create(
+            owner=profil,
+            titre=request.POST.get('titre'),
+            prix=request.POST.get('prix'),
+            quartier=request.POST.get('quartier'),
+            type_bien=request.POST.get('type_bien'),
+            description=request.POST.get('description'),
+            status='pending'
+        )
+
+        # 2. Gestion des PHOTOS MULTIPLES
+        images = request.FILES.getlist('images')
+        for index, img in enumerate(images):
+            PropertyMedia.objects.create(
+                property=bien,
+                image=img,  # Champ CloudinaryField dans ton modèle
+                is_video=False,
+                order=index
+            )
+
+        # 3. Gestion de la VIDÉO (si présente)
+        video_file = request.FILES.get('video')
+        if video_file:
+            PropertyMedia.objects.create(
+                property=bien,
+                image=video_file,  # CloudinaryField accepte aussi les vidéos
+                is_video=True,
+                order=99  # On la met à la fin
+            )
+
+        messages.success(request, "Votre bien et vos médias ont été enregistrés avec succès.")
+        return redirect('mes_biens')
+
+    return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
 
 
 @login_required
