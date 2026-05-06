@@ -260,7 +260,7 @@ def creer_bien(request):
 def creer_bien(request):
     profil = request.user.profil_proprietaire
     if request.method == 'POST':
-        # 1. Création du Bien (Property)
+        # 1. Création du Bien
         bien = Property.objects.create(
             owner=profil,
             titre=request.POST.get('titre'),
@@ -271,29 +271,33 @@ def creer_bien(request):
             status='pending'
         )
 
-        # 2. Gestion des PHOTOS MULTIPLES
+        # 2. Gestion des PHOTOS
         images = request.FILES.getlist('images')
         for index, img in enumerate(images):
             PropertyMedia.objects.create(
                 property=bien,
-                image=img,  # Champ CloudinaryField dans ton modèle
+                image=img,
                 is_video=False,
                 order=index
             )
 
-        # 3. Gestion de la VIDÉO (si présente)
+        # 3. Gestion de la VIDÉO
         video_file = request.FILES.get('video')
         if video_file:
             PropertyMedia.objects.create(
                 property=bien,
-                image=video_file,  # CloudinaryField accepte aussi les vidéos
+                image=video_file,
                 is_video=True,
-                order=99  # On la met à la fin
+                order=99
             )
 
-        messages.success(request, "Votre bien et vos médias ont été enregistrés avec succès.")
-        return redirect('mes_biens')
+        messages.success(request, "Votre bien a été créé avec succès.")
 
+        # === AJOUTE LA LIGNE ICI ===
+        return redirect('mes_biens')
+        # ===========================
+
+    # Si ce n'est pas un POST (affichage du formulaire vide)
     return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
 
 
