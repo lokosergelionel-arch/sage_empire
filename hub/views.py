@@ -299,6 +299,22 @@ def creer_bien(request):
 
 @login_required
 @proprietaire_required
+def gestion_bien(request, property_id):
+    profil = request.user.profil_proprietaire
+    bien = get_object_or_404(Property, id=property_id, owner=profil)
+
+    context = {
+        'profil': profil,
+        'bien': bien,
+        'medias': bien.medias.all().order_by('order'),
+        'availabilities': bien.availabilities.all(),
+        'visit_requests': VisitRequest.objects.filter(property=bien).order_by('-created_at'),
+    }
+    return render(request, 'proprietaire/gestion_bien.html', context)
+
+
+@login_required
+@proprietaire_required
 def demandes_visite(request):
     profil = request.user.profil_proprietaire
     visites = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')
