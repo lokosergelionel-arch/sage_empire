@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from hub import views
 # On importe tout directement depuis hub.views pour éviter les conflits
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
@@ -29,6 +30,8 @@ urlpatterns = [
 
     # Route de redirection intelligente après connexion
     path('redirect-user/', redirection_apres_login, name='redirect_user'),
+# À ajouter dans urlpatterns
+    path('immobilier/proprietaire/<int:proprietaire_id>/', views.portfolio_proprietaire, name='portfolio_proprietaire'),
 
     # CORRECTION ICI : On enlève "views." devant car la fonction est importée directement
     path('acces-proprietaire/', connexion_proprietaire, name='connexion_proprietaire'),

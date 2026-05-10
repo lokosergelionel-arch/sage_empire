@@ -28,7 +28,7 @@ from .models import (
     Event,
     ProfilProprietaire,
     Property,
-    PropertyMedia, # Ajouté si nécessaire
+    PropertyMedia,
     PropertyAvailability,
     VisitRequest,
     InvitationCode
@@ -75,12 +75,11 @@ def home(request):
 
 
 def page_immobilier(request):
-    # On récupère les propriétaires qui ont des biens publiés, sans doublons
+    # Vitrine des propriétaires/agences ayant des biens publiés
     proprietaires = ProfilProprietaire.objects.filter(
         properties__status='published',
         properties__is_active=True
     ).distinct()
-
     return render(request, 'immobilier.html', {'proprietaires': proprietaires})
 
 
@@ -210,8 +209,7 @@ def login_view(request):
         user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
         if user is not None:
             login(request, user)
-            # Utilisation de la redirection intelligente
-            return redirect('redirect_user')
+            return redirect('redirection_apres_login')
         messages.error(request, 'Identifiants invalides')
     return render(request, 'registration/login.html')
 
@@ -247,25 +245,6 @@ def mes_biens(request):
 def creer_bien(request):
     profil = request.user.profil_proprietaire
     if request.method == 'POST':
-        form = PropertyForm(request.POST)
-        if form.is_valid():
-            bien = form.save(commit=False)
-            bien.owner = profil
-            bien.status = 'pending'
-            bien.save()
-            messages.success(request, "Votre bien a été créé avec succès et est en attente de validation.")
-            return redirect('mes_biens')
-    else:
-        form = PropertyForm()
-    return render(request, 'proprietaire/creer_bien.html', {'form': form, 'profil': profil})
-
-
-@login_required
-@proprietaire_required
-def creer_bien(request):
-    profil = request.user.profil_proprietaire
-    if request.method == 'POST':
-        # 1. Création du Bien
         bien = Property.objects.create(
             owner=profil,
             titre=request.POST.get('titre'),
@@ -276,34 +255,28 @@ def creer_bien(request):
             status='pending'
         )
 
-        # 2. Gestion des PHOTOS
         images = request.FILES.getlist('images')
         for index, img in enumerate(images):
-            PropertyMedia.objects.create(
-                property=bien,
-                image=img,
-                is_video=False,
-                order=index
-            )
+            PropertyMedia.objects.create(property=bien, image=img, is_video=False, order=index)
 
-        # 3. Gestion de la VIDÉO
         video_file = request.FILES.get('video')
         if video_file:
-            PropertyMedia.objects.create(
-                property=bien,
-                image=video_file,
-                is_video=True,
-                order=99
-            )
+            PropertyMedia.objects.create(property=bien, image=video_file, is_video=True, order=99)
 
         messages.success(request, "Votre bien a été créé avec succès.")
-
-        # === AJOUTE LA LIGNE ICI ===
         return redirect('mes_biens')
-        # ===========================
 
-    # Si ce n'est pas un POST (affichage du formulaire vide)
     return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
+
+
+@login_required
+def portfolio_proprietaire(request, proprietaire_id):
+    proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
+    biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
+    return render(request, 'portfolio_proprietaire.html', {
+        'proprietaire': proprietaire,
+        'biens': biens
+    })
 
 
 @login_required
@@ -328,25 +301,6 @@ def demandes_visite(request):
     profil = request.user.profil_proprietaire
     visites = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')
     return render(request, 'proprietaire/demandes_visite.html', {'profil': profil, 'visites': visites})
-
-@login_required
-def explorer_catalogue(request, proprietaire_id):
-    # Pour l'instant, on redirige vers l'accueil
-    return redirect('home')
-
-# Modifie ensuite la fonction redirection_apres_login pour inclure la nouvelle route
-@login_required
-def redirection_apres_login(request):
-    """Redirige l'utilisateur vers son dashboard selon son profil"""
-    try:
-        if hasattr(request.user, 'profil_proprietaire'):
-            return redirect('dashboard_proprietaire')
-        elif hasattr(request.user, 'profil_styliste'):
-            return redirect('dashboard_styliste')
-        # Si aucun profil n'est trouvé, redirige vers l'accueil
-        return redirect('home')
-    except Exception:
-        return redirect('home')
 
 
 # ===================== INSCRIPTION PROPRIETAIRE =====================
@@ -411,16 +365,11 @@ def connexion_proprietaire(request):
         user = authenticate(request, username=u, password=p)
 
         if user is not None:
-            # On vérifie si l'utilisateur est un propriétaire
-            # Note: Vérifie bien si ton modèle s'appelle 'ProfilProprietaire' ou autre
-            try:
-                if hasattr(user, 'profil_proprietaire'):
-                    login(request, user)
-                    return redirect('dashboard_proprietaire')
-                else:
-                    messages.error(request, "Ce compte n'est pas un compte propriétaire.")
-            except Exception as e:
-                messages.error(request, f"Erreur de profil: {e}")
+            if hasattr(user, 'profil_proprietaire'):
+                login(request, user)
+                return redirect('dashboard_proprietaire')
+            else:
+                messages.error(request, "Ce compte n'est pas un compte propriétaire.")
         else:
             messages.error(request, "Identifiants invalides.")
 
@@ -459,10 +408,12 @@ def verify_email(request, uidb64, token):
         user = None
 
     if user and default_token_generator.check_token(user, token):
-        # Correction : on vérifie les deux types de profils possibles
         profil = getattr(user, 'profil_styliste', None) or getattr(user, 'profil_proprietaire', None)
         if profil:
-            profil.email_verifie = True if hasattr(profil, 'email_verifie') else profil.est_verifie
+            if hasattr(profil, 'email_verifie'):
+                profil.email_verifie = True
+            else:
+                profil.est_verifie = True
             profil.save()
         return render(request, 'email_verified_success.html')
     return render(request, 'email_verified_failed.html')
@@ -475,7 +426,7 @@ def renvoyer_email_verification(request):
     return redirect('edit_profil')
 
 
-# ===================== PASSWORD RESET (NOMS SYNCHROS AVEC URLS.PY) =====================
+# ===================== PASSWORD RESET =====================
 class CustomPassword_reset_view(PasswordResetView):
     template_name = 'registration/styliste_password_reset.html'
     email_template_name = 'registration/styliste_password_reset_email.html'
