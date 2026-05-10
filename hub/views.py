@@ -329,6 +329,25 @@ def demandes_visite(request):
     visites = VisitRequest.objects.filter(property__owner=profil).order_by('-created_at')
     return render(request, 'proprietaire/demandes_visite.html', {'profil': profil, 'visites': visites})
 
+@login_required
+def explorer_catalogue(request, proprietaire_id):
+    # Pour l'instant, on redirige vers l'accueil
+    return redirect('home')
+
+# Modifie ensuite la fonction redirection_apres_login pour inclure la nouvelle route
+@login_required
+def redirection_apres_login(request):
+    """Redirige l'utilisateur vers son dashboard selon son profil"""
+    try:
+        if hasattr(request.user, 'profil_proprietaire'):
+            return redirect('dashboard_proprietaire')
+        elif hasattr(request.user, 'profil_styliste'):
+            return redirect('dashboard_styliste')
+        # Si aucun profil n'est trouvé, redirige vers l'accueil
+        return redirect('home')
+    except Exception:
+        return redirect('home')
+
 
 # ===================== INSCRIPTION PROPRIETAIRE =====================
 def inscription_proprietaire(request):

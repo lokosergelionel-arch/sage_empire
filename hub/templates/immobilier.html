@@ -21,7 +21,7 @@
             color: white;
         }
 
-        /* Bannière réduite à 35vh */
+        /* Bannière réduite pour plus d'espace */
         .immo-hero {
             height: 35vh;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
@@ -43,88 +43,100 @@
             margin: 0;
         }
 
+        /* Grille centrée et compacte */
         .properties-grid {
-            padding: 40px 10% 80px; /* Réduit le padding haut pour coller à la bannière */
+            padding: 50px 5%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); /* Cartes de taille fixe */
+            justify-content: center; /* Centre les cartes si elles sont peu nombreuses */
+            gap: 30px;
         }
 
+        /* Carte au format Carré */
         .property-card {
             background: var(--card-bg);
             border-radius: 15px;
-            overflow: hidden;
             border: 1px solid rgba(212, 160, 23, 0.1);
             transition: 0.4s;
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1 / 1; /* Force le format carré */
         }
+
         .property-card:hover {
             transform: translateY(-10px);
             border-color: var(--gold);
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
 
-        /* Style spécifique pour le Profil du Propriétaire */
-        .owner-avatar-large {
-            width: 120px;
-            height: 120px;
+        .owner-avatar-medium {
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             border: 2px solid var(--gold);
-            margin: 0 auto 20px;
+            margin-bottom: 15px;
             object-fit: cover;
-            display: block;
         }
 
         .property-info h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             font-family: 'Cinzel';
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .stats-badge {
+            color: var(--gold);
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .biographie {
             color: var(--text-gray);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            min-height: 50px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            max-height: 45px;
+            overflow: hidden;
         }
 
         .btn-view {
             display: inline-block;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 12px 30px;
+            padding: 10px 20px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
+            font-size: 0.75rem;
             letter-spacing: 1px;
-            font-size: 0.8rem;
         }
         .btn-view:hover {
             background: var(--gold);
             color: #000;
         }
 
-        .stats-badge {
-            background: rgba(212, 160, 23, 0.1);
-            color: var(--gold);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
         .cta-section {
             background-color: #1A1A1A;
             border-top: 2px solid #D4A017;
             padding: 50px 20px;
+            margin-top: 60px;
             color: #ffffff;
+        }
+
+        @media (max-width: 480px) {
+            .immo-hero h1 { font-size: 1.8rem; letter-spacing: 4px; }
+            .properties-grid { grid-template-columns: 1fr; }
+            .property-card { aspect-ratio: auto; padding: 40px 20px; }
         }
     </style>
 </head>
@@ -138,7 +150,7 @@
     <div class="properties-grid">
         {% for proprio in proprietaires %}
         <div class="property-card">
-            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="owner-avatar-large">
+            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="owner-avatar-medium">
 
             <div class="property-info">
                 <div class="stats-badge">{{ proprio.properties.count }} BIEN(S) DISPONIBLE(S)</div>
@@ -146,19 +158,19 @@
 
                 <p class="biographie">
                     {% if proprio.biographie %}
-                        {{ proprio.biographie|truncatewords:15 }}
+                        {{ proprio.biographie|truncatewords:12 }}
                     {% else %}
-                        Partenaire certifié Sage Empire spécialisé dans l'immobilier d'exception.
+                        Partenaire certifié Sage Empire.
                     {% endif %}
                 </p>
 
-                <a href="#" class="btn-view">Explorer le catalogue</a>
+                <a href="{% url 'portfolio_styliste' proprio.id %}" class="btn-view">Explorer le catalogue</a>
             </div>
         </div>
         {% empty %}
-        <div style="grid-column: 1 / -1; text-align: center; padding: 100px 20px;">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
             <h2 style="color: var(--gold); font-family: 'Cinzel';">Aucune agence disponible</h2>
-            <p style="color: var(--text-gray);">Nous sélectionnons actuellement nos futurs partenaires immobiliers.</p>
+            <p style="color: var(--text-gray);">Revenez bientôt pour nos nouvelles opportunités.</p>
         </div>
         {% endfor %}
     </div>
