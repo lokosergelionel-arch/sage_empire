@@ -75,7 +75,6 @@ def home(request):
 
 
 def page_immobilier(request):
-    # Vitrine des propriétaires/agences ayant des biens publiés
     proprietaires = ProfilProprietaire.objects.filter(
         properties__status='published',
         properties__is_active=True
@@ -269,16 +268,15 @@ def creer_bien(request):
     return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
 
 
-@login_required
-ddef portfolio_proprietaire(request, proprietaire_id):
+# ACCÈS PUBLIC : On enlève @login_required pour que les clients voient le catalogue
+def portfolio_proprietaire(request, proprietaire_id):
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
 
-    # ON CHANGE ICI : On utilise le dossier 'proprietaire/' et le fichier 'mes_biens.html'
     return render(request, 'proprietaire/mes_biens.html', {
         'proprietaire': proprietaire,
-        'biens': biens, # Attention : vérifie que dans mes_biens.html tu utilises bien la boucle {% for bien in biens %}
-        'properties': biens # On l'ajoute aussi au cas où ton fichier utilise 'properties'
+        'biens': biens,
+        'properties': biens
     })
 
 
