@@ -270,15 +270,15 @@ def creer_bien(request):
 
 
 @login_required
-def portfolio_proprietaire(request, proprietaire_id):
-    # On récupère l'expert immobilier
+ddef portfolio_proprietaire(request, proprietaire_id):
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
-    # On récupère tous ses biens (maisons/apparts) qui sont en ligne
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
 
-    return render(request, 'portfolio_proprietaire.html', {
+    # ON CHANGE ICI : On utilise le dossier 'proprietaire/' et le fichier 'mes_biens.html'
+    return render(request, 'proprietaire/mes_biens.html', {
         'proprietaire': proprietaire,
-        'biens': biens
+        'biens': biens, # Attention : vérifie que dans mes_biens.html tu utilises bien la boucle {% for bien in biens %}
+        'properties': biens # On l'ajoute aussi au cas où ton fichier utilise 'properties'
     })
 
 
