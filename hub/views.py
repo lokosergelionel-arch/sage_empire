@@ -75,8 +75,13 @@ def home(request):
 
 
 def page_immobilier(request):
-    properties = Property.objects.filter(status='published', is_active=True).order_by('-date_creation')
-    return render(request, 'immobilier.html', {'properties': properties})
+    # On récupère les propriétaires qui ont des biens publiés, sans doublons
+    proprietaires = ProfilProprietaire.objects.filter(
+        properties__status='published',
+        properties__is_active=True
+    ).distinct()
+
+    return render(request, 'immobilier.html', {'proprietaires': proprietaires})
 
 
 def page_evenementiel(request):
