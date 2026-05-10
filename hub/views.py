@@ -273,10 +273,9 @@ def portfolio_proprietaire(request, proprietaire_id):
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
 
-    return render(request, 'proprietaire/mes_biens.html', {
+    return render(request, 'proprietaire/catalogue_proprietaire.html', {
         'proprietaire': proprietaire,
         'biens': biens,
-        'properties': biens
     })
 
 

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="background: #1a1a1a; padding: 60px 20px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
+    <h1 style="text-transform: uppercase; letter-spacing: 2px;">Catalogue Immobilier</h1>
+    <p style="color: #c5a059;">Expert : {{ proprietaire.nom_complet }}</p>
+</section>
+
+<div class="container" style="padding: 40px 10px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px;">
+        {% for bien in biens %}
+        <div class="card-bien" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;">
+
+            <div class="media-slider" id="slider-{{ bien.id }}" style="position: relative; height: 280px; background: #000; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+                {% for media in bien.medias.all %}
+                    <div style="min-width: 100%; height: 100%; scroll-snap-align: start; flex-shrink: 0; position: relative;">
+                        {% if media.is_video %}
+                            <video controls style="width: 100%; height: 100%; object-fit: cover;">
+                                <source src="{{ media.image.url }}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <img src="{{ media.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; color: #666;">Pas de média disponible</div>
+                {% endfor %}
+            </div>
+
+            <div style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3 style="margin: 0; font-size: 1.2rem; color: #1a1a1a;">{{ bien.titre }}</h3>
+                    <span style="background: #f0e6d2; color: #c5a059; padding: 4px 10px; border-radius: 5px; font-weight: bold; font-size: 0.9rem;">
+                        {{ bien.prix }} FCFA
+                    </span>
+                </div>
+
+                <p style="color: #666; margin: 10px 0; font-size: 0.9rem;">
+                    <i class="fas fa-map-marker-alt" style="color: #c5a059;"></i> {{ bien.quartier }} | <strong>{{ bien.type_bien }}</strong>
+                </p>
+
+                <p style="font-size: 0.85rem; color: #444; line-height: 1.5; margin-bottom: 20px; height: 45px; overflow: hidden;">
+                    {{ bien.description }}
+                </p>
+
+                <div style="display: flex; gap: 10px;">
+                    <a href="https://wa.me/{{ proprietaire.telephone|cut:' ' }}?text=Bonjour {{ proprietaire.nom_complet }}, je suis intéressé par votre bien : {{ bien.titre }} vu sur Mako Services."
+                       target="_blank"
+                       style="flex: 1; text-align: center; background: #25D366; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+
+                    <button onclick="window.location.href='tel:{{ proprietaire.telephone }}'" style="flex: 1; background: #1a1a1a; color: #c5a059; border: 1px solid #c5a059; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        Appeler
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .media-slider::-webkit-scrollbar { display: none; }
+    .media-slider { -ms-overflow-style: none; scrollbar-width: none; }
+    .card-bien:hover { transform: translateY(-5px); transition: 0.3s; }
+</style>
+
+<script>
+    // Permet de faire défiler avec les flèches du clavier quand on survole la carte
+    document.querySelectorAll('.media-slider').forEach(slider => {
+        slider.addEventListener('mouseenter', () => {
+            window.onkeydown = (e) => {
+                if (e.key === "ArrowRight") slider.scrollBy(300, 0);
+                if (e.key === "ArrowLeft") slider.scrollBy(-300, 0);
+            };
+        });
+        slider.addEventListener('mouseleave', () => { window.onkeydown = null; });
+    });
+</script>
+{% endblock %}
