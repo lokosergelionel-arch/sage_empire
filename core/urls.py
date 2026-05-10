@@ -42,8 +42,7 @@ urlpatterns = [
     # Password Reset
     path('mot-de-passe-oublie/', CustomPassword_reset_view.as_view(), name='styliste_password_reset'),
     path('mot-de-passe-oublie/done/', CustomPassword_reset_done_view.as_view(), name='styliste_password_reset_done'),
-    path('reset/<uidb64>/<token>/', CustomPassword_reset_confirm_view.as_view(),
-         name='styliste_password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', CustomPassword_reset_confirm_view.as_view(), name='styliste_password_reset_confirm'),
     path('reset/done/', CustomPassword_reset_complete_view.as_view(), name='styliste_password_reset_complete'),
 
     # Email Verification

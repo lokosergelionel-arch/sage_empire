@@ -271,8 +271,11 @@ def creer_bien(request):
 
 @login_required
 def portfolio_proprietaire(request, proprietaire_id):
+    # On récupère l'expert immobilier
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
+    # On récupère tous ses biens (maisons/apparts) qui sont en ligne
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
+
     return render(request, 'portfolio_proprietaire.html', {
         'proprietaire': proprietaire,
         'biens': biens
