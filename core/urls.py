@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from hub import views
-# On importe tout directement depuis hub.views pour éviter les conflits
+# On importe tout directement depuis hub.views
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
     mes_publications, supprimer_creation, galerie_mode, liste_stylistes,
@@ -12,17 +12,14 @@ from hub.views import (
     verify_email, renvoyer_email_verification, verification_sent,
     CustomPassword_reset_view, CustomPassword_reset_done_view,
     CustomPassword_reset_confirm_view, CustomPassword_reset_complete_view,
-
-    # La nouvelle vue de tri
     redirection_apres_login,
-
-    # Vues Propriétaire
     dashboard_proprietaire, mes_biens, creer_bien, gestion_bien,
     demandes_visite, inscription_proprietaire, complete_inscription_proprietaire,
     ajouter_disponibilite, supprimer_disponibilite,
-
-    # AJOUT ICI
     connexion_proprietaire,
+
+    # AJOUTÉ ICI POUR FIXER L'ERREUR
+    portfolio_proprietaire,
 )
 
 urlpatterns = [
@@ -30,10 +27,10 @@ urlpatterns = [
 
     # Route de redirection intelligente après connexion
     path('redirect-user/', redirection_apres_login, name='redirect_user'),
-# À ajouter dans urlpatterns
-    path('immobilier/proprietaire/<int:proprietaire_id>/', views.portfolio_proprietaire, name='portfolio_proprietaire'),
 
-    # CORRECTION ICI : On enlève "views." devant car la fonction est importée directement
+    # CATALOGUE IMMOBILIER (C'est cette route qui affiche les biens du proprio)
+    path('immobilier/proprietaire/<int:proprietaire_id>/', portfolio_proprietaire, name='portfolio_proprietaire'),
+
     path('acces-proprietaire/', connexion_proprietaire, name='connexion_proprietaire'),
 
     # Authentification
