@@ -119,7 +119,7 @@ class PropertyAvailabilityForm(forms.ModelForm):
         labels = {
             'start_date': 'Date de début',
             'end_date': 'Date de fin',
-            'is_available': 'Disponible',
+            'is_available': 'Disponible'"Cocher si le bien est LIBRE (laisser vide si OCCUPÉ)",
         }
 
 class InvitationCodeForm(forms.Form):
