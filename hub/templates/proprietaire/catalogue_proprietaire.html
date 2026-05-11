@@ -7,14 +7,14 @@
     <p style="color: #c5a059; font-size: 0.85rem;">Expert : {{ proprietaire.nom_complet }}</p>
 </section>
 
-<div class="container" style="padding: 15px 8px; max-width: 1100px; margin: 0 auto;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px;">
+<div class="container" style="padding: 15px 8px; max-width: 1000px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
 
         {% for bien in biens %}
         <div class="card-bien" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 
-            <!-- Image principale cliquable -->
-            <div style="height: 200px; background: #000; cursor: pointer; position: relative;" onclick="openLightbox({{ bien.id }})">
+            <!-- Image cliquable -->
+            <div style="height: 210px; background: #000; cursor: pointer;" onclick="openLightbox('{{ bien.medias.first.image.url }}')">
                 {% if bien.medias.first %}
                     <img src="{{ bien.medias.first.image.url }}"
                          style="width: 100%; height: 100%; object-fit: cover;"
@@ -35,11 +35,19 @@
 
                 <div style="display: flex; flex-direction: column; gap: 6px;">
                     <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}?text=Bonjour, je suis intéressé par {{ bien.titre }}"
-                       target="_blank" class="btn btn-dark btn-sm">Demander Visite</a>
+                       target="_blank" style="text-align: center; background: #1a1a1a; color: #c5a059; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                        Demander Visite
+                    </a>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                        <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}" target="_blank" class="btn btn-success btn-sm">WhatsApp</a>
-                        <a href="tel:{{ proprietaire.contact_whatsapp }}" class="btn btn-warning btn-sm">Appeler</a>
+                        <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}" target="_blank"
+                           style="background: #25D366; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none;">
+                            WhatsApp
+                        </a>
+                        <a href="tel:{{ proprietaire.contact_whatsapp }}"
+                           style="background: #c5a059; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none;">
+                            Appeler
+                        </a>
                     </div>
                 </div>
             </div>
@@ -48,34 +56,28 @@
     </div>
 </div>
 
-<!-- Lightbox -->
+<!-- Lightbox simple -->
 <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center;">
-    <span onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 35px; cursor: pointer;">&times;</span>
-    <div id="lightbox-content" style="max-width: 90%; max-height: 85%; text-align: center;"></div>
+    <span onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10;">×</span>
+    <img id="lightbox-image" src="" style="max-width: 90%; max-height: 85vh; border-radius: 8px;">
 </div>
 
 <script>
-let currentMedias = [];
-
-function openLightbox(bienId) {
-    // Ici on simule les médias du bien (à améliorer plus tard avec une vraie requête)
-    currentMedias = document.querySelectorAll(`[data-bien-id="${bienId}"]`);
-    if (currentMedias.length === 0) {
-        alert("Aucune image disponible pour ce bien.");
-        return;
-    }
+function openLightbox(imageUrl) {
+    document.getElementById('lightbox-image').src = imageUrl;
     document.getElementById('lightbox').style.display = 'flex';
-    showMedia(0);
 }
 
 function closeLightbox() {
     document.getElementById('lightbox').style.display = 'none';
 }
 
-function showMedia(index) {
-    const content = document.getElementById('lightbox-content');
-    content.innerHTML = `<img src="${currentMedias[index].src}" style="max-height: 85vh; max-width: 100%; border-radius: 8px;">`;
-}
+// Fermer la lightbox avec la touche ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === "Escape") {
+        closeLightbox();
+    }
+});
 </script>
 
 {% endblock %}
