@@ -3,8 +3,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from hub import views
-# On importe tout directement depuis hub.views
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
     mes_publications, supprimer_creation, galerie_mode, liste_stylistes,
@@ -17,8 +15,6 @@ from hub.views import (
     demandes_visite, inscription_proprietaire, complete_inscription_proprietaire,
     ajouter_disponibilite, supprimer_disponibilite,
     connexion_proprietaire,
-
-    # AJOUTÉ ICI POUR FIXER L'ERREUR
     portfolio_proprietaire,
 )
 
@@ -28,7 +24,7 @@ urlpatterns = [
     # Route de redirection intelligente après connexion
     path('redirect-user/', redirection_apres_login, name='redirect_user'),
 
-    # CATALOGUE IMMOBILIER (C'est cette route qui affiche les biens du proprio)
+    # CATALOGUE IMMOBILIER
     path('immobilier/proprietaire/<int:proprietaire_id>/', portfolio_proprietaire, name='portfolio_proprietaire'),
 
     path('acces-proprietaire/', connexion_proprietaire, name='connexion_proprietaire'),

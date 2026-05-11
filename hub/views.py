@@ -234,11 +234,7 @@ def dashboard_proprietaire(request):
 @login_required
 @proprietaire_required
 def mes_biens(request):
-    # On récupère le profil du proprio
     profil = get_object_or_404(ProfilProprietaire, user=request.user)
-
-    # On récupère ses biens
-    # IMPORTANT : Le nom de la variable doit être 'biens' pour correspondre au template
     biens = Property.objects.filter(owner=profil).order_by('-date_creation')
 
     return render(request, 'proprietaire/mes_biens.html', {
@@ -276,7 +272,7 @@ def creer_bien(request):
     return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
 
 
-# ACCÈS PUBLIC : On enlève @login_required pour que les clients voient le catalogue
+# ACCÈS PUBLIC
 def portfolio_proprietaire(request, proprietaire_id):
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
@@ -287,11 +283,11 @@ def portfolio_proprietaire(request, proprietaire_id):
     })
 
 
+# FONCTION CORRIGÉE : Changement de 'gestion_bien_details' en 'gestion_bien'
 @login_required
 @proprietaire_required
-def gestion_bien_details(request, property_id):
+def gestion_bien(request, property_id):
     profil = get_object_or_404(ProfilProprietaire, user=request.user)
-    # On récupère le bien spécifique
     bien = get_object_or_404(Property, id=property_id, owner=profil)
 
     context = {
@@ -302,6 +298,7 @@ def gestion_bien_details(request, property_id):
         'visit_requests': VisitRequest.objects.filter(property=bien).order_by('-created_at'),
     }
     return render(request, 'proprietaire/gestion_bien.html', context)
+
 
 @login_required
 @proprietaire_required
@@ -467,6 +464,7 @@ def ajouter_disponibilite(request, property_id):
             disponibilite.property = bien
             disponibilite.save()
             messages.success(request, "Période ajoutée avec succès.")
+    # Redirection vers le bon nom de fonction
     return redirect('gestion_bien', property_id=bien.id)
 
 
@@ -478,5 +476,6 @@ def supprimer_disponibilite(request, disponibilite_id):
         bien_id = disponibilite.property.id
         disponibilite.delete()
         messages.success(request, "Période supprimée.")
+        # Redirection vers le bon nom de fonction
         return redirect('gestion_bien', property_id=bien_id)
     return redirect('dashboard_proprietaire')
