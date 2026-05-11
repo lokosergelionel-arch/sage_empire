@@ -478,11 +478,9 @@ def ajouter_disponibilite(request, property_id):
 @login_required
 @proprietaire_required
 def supprimer_disponibilite(request, disponibilite_id):
-    disponibilite = get_object_or_404(PropertyAvailability, id=disponibilite_id)
-    if disponibilite.property.owner == request.user.profil_proprietaire:
-        bien_id = disponibilite.property.id
-        disponibilite.delete()
-        messages.success(request, "Période supprimée.")
-        # Redirection vers le bon nom de fonction
-        return redirect('gestion_bien', property_id=bien_id)
-    return redirect('dashboard_proprietaire')
+    # On récupère la dispo et on vérifie que le proprio en est bien le propriétaire
+    dispo = get_object_or_404(PropertyAvailability, id=disponibilite_id, property__owner=request.user.profil_proprietaire)
+    property_id = dispo.property.id
+    dispo.delete()
+    messages.success(request, "La période a été supprimée.")
+    return redirect('gestion_bien', property_id=property_id)
