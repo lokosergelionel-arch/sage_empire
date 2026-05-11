@@ -1,70 +1,107 @@
 {% extends 'proprietaire/base_proprietaire.html' %}
-{% load custom_filters %}
+{% load static %}
 
 {% block proprietaire_content %}
-<div class="p-8">
-    <a href="{% url 'mes_biens' %}" class="text-gray-400 hover:text-white mb-6 inline-flex items-center gap-2">
-        ← Retour à mes biens
+<div class="max-w-7xl mx-auto p-4 md:p-8">
+    <a href="{% url 'mes_biens' %}" class="text-gray-400 hover:text-[#D4AF37] mb-6 inline-flex items-center gap-2 transition-colors">
+        <i class="fas fa-arrow-left"></i> Retour à mes biens
     </a>
 
-    <h1 class="text-3xl font-serif text-[#D4AF37]">{{ bien.titre }}</h1>
-    <p class="text-gray-400">{{ bien.quartier }} • {{ bien.get_type_bien_display }}</p>
+    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-10">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-serif text-[#D4AF37]">{{ bien.titre }}</h1>
+            <p class="text-gray-400 mt-2">
+                <i class="fas fa-map-marker-alt text-[#D4AF37] mr-2"></i>{{ bien.quartier }} • {{ bien.get_type_bien_display }}
+            </p>
+        </div>
+        <div class="flex gap-3">
+             <span class="px-4 py-2 bg-[#D4AF37]/10 border border-[#D4AF37] text-[#D4AF37] rounded-full text-sm font-bold uppercase tracking-wider">
+                {{ bien.get_status_display }}
+             </span>
+        </div>
+    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-        <!-- Médias -->
-        <div class="lg:col-span-7 bg-[#1A1A1A] rounded-3xl p-8">
-            <h2 class="text-xl font-semibold mb-6">Photos & Vidéos</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {% for media in medias %}
-                <div class="aspect-video bg-gray-800 rounded-2xl overflow-hidden">
-                    {% if media.is_video %}
-                        <video src="{{ media.image.url }}" controls class="w-full h-full object-cover"></video>
-                    {% else %}
-                        <img src="{{ media.image.url }}" alt="Photo" class="w-full h-full object-cover">
-                    {% endif %}
+        <div class="lg:col-span-7 space-y-6">
+            <div class="bg-[#1A1A1A] rounded-3xl p-6 border border-white/5">
+                <h2 class="text-xl font-semibold mb-6 flex items-center gap-2">
+                    <i class="fas fa-images text-[#D4AF37]"></i> Photos & Vidéos
+                </h2>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {% for media in medias %}
+                    <div class="group relative aspect-square bg-[#0F0F0F] rounded-2xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all">
+                        {% if media.is_video %}
+                            <video src="{{ media.image.url }}" class="w-full h-full object-cover"></video>
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all cursor-pointer">
+                                <i class="fas fa-play-circle text-3xl text-white"></i>
+                            </div>
+                        {% else %}
+                            <img src="{{ media.image.url }}" alt="Photo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="col-span-full py-20 text-center bg-[#0F0F0F] rounded-2xl border border-dashed border-white/10">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-600 mb-3"></i>
+                        <p class="text-gray-500">Aucun média disponible pour ce bien.</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <p class="text-gray-500 col-span-3 py-12 text-center">Aucune photo pour le moment.</p>
-                {% endfor %}
             </div>
         </div>
 
-        <!-- Informations + Calendrier -->
         <div class="lg:col-span-5 space-y-8">
 
-            <!-- Informations -->
-            <div class="bg-[#1A1A1A] rounded-3xl p-8">
-                <h2 class="text-xl font-semibold mb-6">Informations du bien</h2>
-                <div class="space-y-5">
+            <div class="bg-[#1A1A1A] rounded-3xl p-8 border border-white/5 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 blur-3xl -mr-16 -mt-16"></div>
+
+                <h2 class="text-xl font-semibold mb-6">Détails financiers</h2>
+                <div class="space-y-6">
                     <div>
-                        <p class="text-gray-400 text-sm">Prix</p>
-                        <p class="text-3xl font-semibold text-[#D4AF37]">{{ bien.prix }} FCFA</p>
+                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-1">Prix de location / Vente</p>
+                        <p class="text-4xl font-bold text-[#D4AF37]">{{ bien.prix }} <span class="text-sm font-normal text-gray-400">FCFA</span></p>
                     </div>
-                    <div>
-                        <p class="text-gray-400 text-sm">Description</p>
-                        <p class="text-gray-300">{{ bien.description|default:"Aucune description ajoutée." }}</p>
+                    <div class="pt-6 border-t border-white/5">
+                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-2">Description</p>
+                        <p class="text-gray-300 leading-relaxed italic">
+                            "{{ bien.description|default:"L'élégance et le confort signés Sage Empire." }}"
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Calendrier -->
-            <div class="bg-[#1A1A1A] rounded-3xl p-8">
-                <h2 class="text-xl font-semibold mb-6">Calendrier de disponibilité</h2>
+            <div class="bg-[#1A1A1A] rounded-3xl p-8 border border-white/5">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Disponibilités</h2>
+                    <a href="{% url 'ajouter_disponibilite' bien.id %}" class="text-[#D4AF37] hover:underline text-sm font-bold">
+                        + AJOUTER
+                    </a>
+                </div>
 
                 {% if availabilities %}
                     <div class="space-y-3">
                         {% for period in availabilities %}
-                        <div class="flex justify-between bg-[#0F0F0F] p-4 rounded-2xl">
-                            <span>{{ period.start_date|date:"d M Y" }} — {{ period.end_date|date:"d M Y" }}</span>
-                            <span class="{% if period.is_available %}text-emerald-400{% else %}text-red-400{% endif %}">
-                                {{ period.is_available|yesno:"Disponible,Non disponible" }}
-                            </span>
+                        <div class="group flex justify-between items-center bg-[#0F0F0F] p-4 rounded-2xl border border-white/5 hover:border-[#D4AF37]/30 transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full {% if period.is_available %}bg-emerald-500 animate-pulse{% else %}bg-red-500{% endif %}"></div>
+                                <span class="text-sm text-gray-200">{{ period.start_date|date:"d M" }} — {{ period.end_date|date:"d M Y" }}</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-[10px] uppercase font-bold tracking-tighter {% if period.is_available %}text-emerald-400{% else %}text-red-400{% endif %}">
+                                    {{ period.is_available|yesno:"Libre,Occupé" }}
+                                </span>
+                                <a href="{% url 'supprimer_disponibilite' period.id %}" class="text-gray-600 hover:text-red-500 transition-colors">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </a>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p class="text-gray-400">Aucune période définie.</p>
+                    <div class="text-center py-8 bg-[#0F0F0F] rounded-2xl border border-white/5">
+                        <p class="text-gray-500 text-sm italic">Aucune période définie.</p>
+                    </div>
                 {% endif %}
             </div>
 
