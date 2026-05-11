@@ -2,71 +2,63 @@
 {% load static %}
 
 {% block content %}
-<section style="background: #1a1a1a; padding: 25px 15px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
+<section style="background: #1a1a1a; padding: 30px 15px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
     <h1 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; margin-bottom: 5px;">Catalogue Immobilier</h1>
     <p style="color: #c5a059; font-size: 0.85rem;">Expert : {{ proprietaire.nom_complet }}</p>
 </section>
 
-<div class="container py-4">
-    <div class="row g-4">
+<div class="container" style="padding: 15px 8px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
         {% for bien in biens %}
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card bg-white rounded-3 overflow-hidden shadow h-100">
+        <div class="card-bien" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 
-                <!-- SLIDER MEDIA -->
-                <div class="position-relative" style="height: 240px; background: #000; cursor: pointer;" onclick="viewMedia({{ bien.id }})">
-                    <div id="slider{{ bien.id }}" class="carousel slide h-100" data-bs-ride="false">
-                        <div class="carousel-inner h-100">
-                            {% for media in bien.medias.all %}
-                            <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
-                                {% if media.is_video %}
-                                    <video class="w-100 h-100" style="object-fit: cover;" playsinline muted loop>
-                                        <source src="{{ media.image.url }}" type="video/mp4">
-                                    </video>
-                                {% else %}
-                                    <img src="{{ media.image.url }}"
-                                         class="w-100 h-100"
-                                         style="object-fit: cover;"
-                                         alt="{{ bien.titre }}">
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
+            <!-- Image cliquable -->
+            <div style="position: relative; height: 220px; background: #000; cursor: pointer;" onclick="viewProperty({{ bien.id }})">
+                {% if bien.medias.first %}
+                    <img src="{{ bien.medias.first.image.url }}"
+                         style="width: 100%; height: 100%; object-fit: cover;"
+                         alt="{{ bien.titre }}">
+                {% else %}
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #333; color: #fff;">
+                        Pas d'image
                     </div>
-                </div>
+                {% endif %}
+            </div>
 
-                <!-- Informations -->
-                <div class="p-3">
-                    <h3 class="fs-6 fw-bold text-dark mb-1">{{ bien.titre }}</h3>
-                    <p class="text-success fw-bold fs-5 mb-1">{{ bien.prix }} FCFA</p>
-                    <p class="text-muted small mb-3">
-                        <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}
-                    </p>
+            <div style="padding: 12px;">
+                <h3 style="margin: 0 0 4px 0; font-size: 0.95rem; color: #1a1a1a;">{{ bien.titre }}</h3>
+                <p style="color: #c5a059; font-weight: bold; margin: 4px 0;">{{ bien.prix }} FCFA</p>
+                <p style="color: #666; font-size: 0.8rem; margin-bottom: 12px;">
+                    <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}
+                </p>
 
-                    <div class="d-flex flex-column gap-2">
-                        <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}?text=Bonjour, je suis intéressé par {{ bien.titre }} à {{ bien.quartier }}."
-                           target="_blank"
-                           class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-2">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
+                <div style="display: flex; gap: 6px; flex-direction: column;">
+                    <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}?text=Bonjour, je suis intéressé par {{ bien.titre }}"
+                       target="_blank"
+                       style="text-align: center; background: #1a1a1a; color: #c5a059; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                        Demander Visite
+                    </a>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}" target="_blank"
+                           style="background: #25D366; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.8rem;">
+                            WhatsApp
                         </a>
-
                         <a href="tel:{{ proprietaire.contact_whatsapp }}"
-                           class="btn btn-warning btn-sm d-flex align-items-center justify-content-center gap-2">
-                            <i class="fas fa-phone-alt"></i> Appeler
+                           style="background: #c5a059; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.8rem;">
+                            Appeler
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p class="text-center text-white py-5">Aucun bien disponible pour le moment.</p>
         {% endfor %}
     </div>
 </div>
 
 <script>
-function viewMedia(bienId) {
-    alert("Image cliquée - Bien ID: " + bienId + "\n\n(On pourra ouvrir une grande vue ici plus tard)");
+function viewProperty(id) {
+    alert("Bien " + id + " cliqué - Nous allons ouvrir la vue détaillée bientôt.");
 }
 </script>
 
