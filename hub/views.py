@@ -455,17 +455,24 @@ class CustomPassword_reset_complete_view(PasswordResetCompleteView):
 # ===================== GESTION DU CALENDRIER =====================
 @login_required
 @proprietaire_required
-def ajouter_disponibilite(request, property_id):
+ddef ajouter_disponibilite(request, property_id):
     bien = get_object_or_404(Property, id=property_id, owner=request.user.profil_proprietaire)
+
     if request.method == 'POST':
         form = PropertyAvailabilityForm(request.POST)
         if form.is_valid():
             disponibilite = form.save(commit=False)
             disponibilite.property = bien
             disponibilite.save()
-            messages.success(request, "Période ajoutée avec succès.")
-    # Redirection vers le bon nom de fonction
-    return redirect('gestion_bien', property_id=bien.id)
+            messages.success(request, f"Disponibilité mise à jour pour {bien.titre}")
+            return redirect('gestion_bien', property_id=bien.id)
+    else:
+        form = PropertyAvailabilityForm()
+
+    return render(request, 'proprietaire/ajouter_disponibilite.html', {
+        'form': form,
+        'bien': bien
+    })
 
 
 @login_required

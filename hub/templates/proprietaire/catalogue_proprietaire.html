@@ -28,6 +28,17 @@
             <div style="padding: 10px; flex-grow: 1; display: flex; flex-direction: column;">
                 <h3 style="margin: 0 0 3px 0; font-size: 0.85rem; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ bien.titre }}</h3>
                 <p style="color: #c5a059; font-weight: bold; margin: 2px 0; font-size: 0.8rem;">{{ bien.prix }} FCFA</p>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+    {% for dispo in bien.availabilities.all %}
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <div style="width: 6px; height: 6px; border-radius: 50%; background: {% if dispo.is_available %}#2ecc71{% else %}#e74c3c{% endif %};"></div>
+            <span style="font-size: 11px; color: #444;"> {{ dispo.start_date|date:"d M" }} - {{ dispo.end_date|date:"d M" }} :
+                <strong style="color: #1a1a1a;">{{ dispo.is_available|yesno:"Disponible,Occupé" }}</strong> </span>
+        </div>
+    {% empty %}
+        <p style="font-size: 11px; color: #999; font-style: italic;">Consulter pour disponibilités</p>
+    {% endfor %}
+</div>
                 <p style="color: #666; font-size: 0.7rem; margin-bottom: 8px;">
                     <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}
                 </p>

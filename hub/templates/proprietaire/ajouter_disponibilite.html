@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="background-color: #0B0B0B; min-height: 100vh; padding: 60px 20px;">
+    <div style="max-width: 500px; margin: 0 auto; background: #1A1A1A; padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+
+        <h2 style="color: #D4AF37; font-family: serif; margin-bottom: 10px;">Calendrier de dispo</h2>
+        <p style="color: #888; font-size: 14px; margin-bottom: 30px;">Bien : {{ bien.titre }}</p>
+
+        <form method="post" style="display: flex; flex-direction: column; gap: 20px;">
+            {% csrf_token %}
+
+            <div class="custom-form">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" style="background: #D4AF37; color: #000; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px;">
+                ENREGISTRER LA PÉRIODE
+            </button>
+
+            <a href="{% url 'gestion_bien' bien.id %}" style="color: #888; text-align: center; text-decoration: none; font-size: 13px;">Annuler</a>
+        </form>
+    </div>
+</div>
+
+<style>
+    .custom-form p { margin-bottom: 15px; }
+    .custom-form label { display: block; color: #D4AF37; margin-bottom: 5px; font-size: 13px; text-transform: uppercase; }
+    .custom-form input, .custom-form select {
+        width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #0F0F0F; color: white;
+    }
+</style>
+{% endblock %}
+{% endblock %}
