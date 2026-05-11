@@ -3,7 +3,6 @@
 {% block content %}
 <div style="background-color: #0B0B0B; min-height: 100vh; color: #ffffff; padding-bottom: 50px;">
 
-    <!-- Header de la page -->
     <div style="background-color: #1A1A1A; border-bottom: 1px solid rgba(212, 160, 23, 0.2); padding: 40px 20px;">
         <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
             <div>
@@ -17,29 +16,28 @@
         </div>
     </div>
 
-    <!-- Contenu Principal -->
     <div style="max-width: 1100px; margin: 40px auto; padding: 0 20px;">
 
         {% if biens %}
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
                 {% for bien in biens %}
                 <div style="background: #1A1A1A; border-radius: 15px; overflow: hidden; border: 1px solid rgba(212, 160, 23, 0.1); transition: 0.3s;">
-                    <!-- Image du bien -->
+
                     <div style="height: 200px; background: #333; position: relative;">
-                        {% if bien.image_principale %}
-                            <img src="{{ bien.image_principale.url }}" alt="{{ bien.titre }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% if bien.medias.first %}
+                            <img src="{{ bien.medias.first.image.url }}" alt="{{ bien.titre }}" style="width: 100%; height: 100%; object-fit: cover;">
                         {% else %}
                             <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #555;">Aucune image</div>
                         {% endif %}
+
                         <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #D4A017; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #D4A017;">
-                            {{ bien.get_statut_display }}
+                            {{ bien.get_status_display }}
                         </div>
                     </div>
 
-                    <!-- Infos du bien -->
                     <div style="padding: 20px;">
                         <h3 style="margin: 0 0 10px 0; color: #fff; font-size: 18px;">{{ bien.titre }}</h3>
-                        <p style="color: #a0a0a0; font-size: 14px; margin-bottom: 15px;"><i class="fas fa-map-marker-alt"></i> {{ bien.localisation }}</p>
+                        <p style="color: #a0a0a0; font-size: 14px; margin-bottom: 15px;"><i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}</p>
 
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 15px;">
                             <span style="color: #D4A017; font-weight: bold; font-size: 18px;">{{ bien.prix }} FCFA</span>
@@ -52,7 +50,6 @@
                 {% endfor %}
             </div>
         {% else %}
-            <!-- État vide (Ce que tu as sur ta capture d'écran) -->
             <div style="text-align: center; padding: 80px 20px; background: #1A1A1A; border-radius: 20px; border: 1px dashed rgba(212, 160, 23, 0.3);">
                 <div style="font-size: 50px; margin-bottom: 20px;">🏠</div>
                 <h2 style="color: #fff;">Vous n'avez aucun bien pour le moment</h2>
