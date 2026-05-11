@@ -73,8 +73,7 @@
     </div>
 </div>
 {% endfor %}
-                {% else %}
-                    <p style="color: #555; font-style: italic; font-size: 13px;">Aucune période enregistrée.</p>
+                {% empty %} <p style="color: #555; font-style: italic; font-size: 13px;">Aucune période enregistrée.</p>
                 {% endif %}
             </div>
         </div>
