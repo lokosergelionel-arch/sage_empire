@@ -2,54 +2,52 @@
 {% load static %}
 
 {% block content %}
-<section style="background: #1a1a1a; padding: 40px 15px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
-    <h1 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1.5rem; margin-bottom: 5px;">Catalogue Immobilier</h1>
-    <p style="color: #c5a059; font-size: 0.9rem;">Expert : {{ proprietaire.nom_complet }}</p>
+<section style="background: #1a1a1a; padding: 30px 15px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
+    <h1 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; margin-bottom: 5px;">Catalogue Immobilier</h1>
+    <p style="color: #c5a059; font-size: 0.85rem;">Expert : {{ proprietaire.nom_complet }}</p>
 </section>
 
-<div class="container" style="padding: 20px 10px;">
+<div class="container" style="padding: 15px 8px;">
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
         {% for bien in biens %}
-        <div class="card-bien" style="background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #eee; display: flex; flex-direction: column;">
+        <div class="card-bien" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee; display: flex; flex-direction: column;">
 
-            <div class="media-slider" id="slider-{{ bien.id }}" style="position: relative; height: 150px; background: #000; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+            <div class="media-slider" style="position: relative; height: 160px; background: #f8f8f8; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
                 {% for media in bien.medias.all %}
-                    <div style="min-width: 100%; height: 100%; scroll-snap-align: start; flex-shrink: 0;">
+                    <div style="min-width: 100%; height: 100%; scroll-snap-align: start; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                         {% if media.is_video %}
-                            <video style="width: 100%; height: 100%; object-fit: cover;" playsinline muted loop onclick="this.play()">
+                            <video style="max-width: 100%; max-height: 100%; object-fit: contain;" playsinline muted loop onclick="this.play()">
                                 <source src="{{ media.image.url }}" type="video/mp4">
                             </video>
                         {% else %}
-                            <img src="{{ media.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ media.image.url }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                         {% endif %}
                     </div>
                 {% empty %}
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.7rem;">Pas de média</div>
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #333; color: #fff; font-size: 0.6rem;">Aucune image</div>
                 {% endfor %}
             </div>
 
-            <div style="padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <h3 style="margin: 0; font-size: 0.9rem; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ bien.titre }}</h3>
-                    <p style="color: #c5a059; font-weight: bold; font-size: 0.85rem; margin: 5px 0;">{{ bien.prix }} FCFA</p>
-                    <p style="color: #666; font-size: 0.7rem; margin-bottom: 8px;">
-                        <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }} | <strong>{{ bien.type_bien }}</strong>
-                    </p>
-                </div>
+            <div style="padding: 10px; flex-grow: 1; display: flex; flex-direction: column;">
+                <h3 style="margin: 0; font-size: 0.85rem; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ bien.titre }}</h3>
+                <p style="color: #c5a059; font-weight: bold; font-size: 0.8rem; margin: 3px 0;">{{ bien.prix }} FCFA</p>
+                <p style="color: #666; font-size: 0.65rem; margin-bottom: 10px;">
+                    <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}
+                </p>
 
-                <div style="display: grid; grid-template-columns: 1fr; gap: 5px;">
-                    <a href="https://wa.me/{{ proprietaire.telephone|cut:' ' }}?text=Bonjour, je souhaite demander une visite pour : {{ bien.titre }}"
-                       style="text-align: center; background: #1a1a1a; color: #c5a059; border: 1px solid #c5a059; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.75rem;">
+                <div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px;">
+                    <a href="https://wa.me/{{ proprietaire.telephone|cut:' '|cut:'+' }}?text=Bonjour, je souhaite visiter : {{ bien.titre }}"
+                       style="display: block; text-align: center; background: #1a1a1a; color: #c5a059; border: 1px solid #c5a059; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.75rem;">
                         Demander Visite
                     </a>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-                        <a href="https://wa.me/{{ proprietaire.telephone|cut:' ' }}"
-                           style="display: flex; align-items: center; justify-content: center; background: #25D366; color: white; padding: 7px; border-radius: 5px; text-decoration: none; font-size: 0.65rem; font-weight: bold;">
+                        <a href="https://api.whatsapp.com/send?phone={{ proprietaire.telephone|cut:' '|cut:'+' }}"
+                           style="display: flex; align-items: center; justify-content: center; background: #25D366; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-size: 0.7rem; font-weight: bold;">
                             <i class="fab fa-whatsapp" style="margin-right: 4px;"></i> WhatsApp
                         </a>
                         <a href="tel:{{ proprietaire.telephone|cut:' ' }}"
-                           style="display: flex; align-items: center; justify-content: center; background: #c5a059; color: white; padding: 7px; border-radius: 5px; text-decoration: none; font-size: 0.65rem; font-weight: bold;">
+                           style="display: flex; align-items: center; justify-content: center; background: #c5a059; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-size: 0.7rem; font-weight: bold;">
                             <i class="fas fa-phone-alt" style="margin-right: 4px;"></i> Appeler
                         </a>
                     </div>
@@ -65,10 +63,5 @@
 <style>
     .media-slider::-webkit-scrollbar { display: none; }
     .media-slider { -ms-overflow-style: none; scrollbar-width: none; }
-
-    @media (min-width: 768px) {
-        .container > div { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 20px !important; }
-        .media-slider { height: 200px !important; }
-    }
 </style>
 {% endblock %}
