@@ -8,44 +8,43 @@
 </section>
 
 <div class="container" style="padding: 15px 8px; max-width: 1000px; margin: 0 auto;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+    <div class="grid-catalogue" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
 
         {% for bien in biens %}
-        <div class="card-bien" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div class="card-bien" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column;">
 
-            <!-- Image cliquable -->
-            <div style="height: 210px; background: #000; cursor: pointer;" onclick="openLightbox('{{ bien.medias.first.image.url }}')">
+            <div style="width: 100%; aspect-ratio: 1 / 1; background: #000; cursor: pointer; overflow: hidden;" onclick="openLightbox('{{ bien.medias.first.image.url }}')">
                 {% if bien.medias.first %}
                     <img src="{{ bien.medias.first.image.url }}"
                          style="width: 100%; height: 100%; object-fit: cover;"
                          alt="{{ bien.titre }}">
                 {% else %}
-                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
+                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.7rem;">
                         Pas d'image
                     </div>
                 {% endif %}
             </div>
 
-            <div style="padding: 12px;">
-                <h3 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #1a1a1a;">{{ bien.titre }}</h3>
-                <p style="color: #c5a059; font-weight: bold; margin: 4px 0;">{{ bien.prix }} FCFA</p>
-                <p style="color: #666; font-size: 0.8rem; margin-bottom: 12px;">
+            <div style="padding: 10px; flex-grow: 1; display: flex; flex-direction: column;">
+                <h3 style="margin: 0 0 3px 0; font-size: 0.85rem; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ bien.titre }}</h3>
+                <p style="color: #c5a059; font-weight: bold; margin: 2px 0; font-size: 0.8rem;">{{ bien.prix }} FCFA</p>
+                <p style="color: #666; font-size: 0.7rem; margin-bottom: 8px;">
                     <i class="fas fa-map-marker-alt"></i> {{ bien.quartier }}
                 </p>
 
-                <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}?text=Bonjour, je suis intéressé par {{ bien.titre }}"
-                       target="_blank" style="text-align: center; background: #1a1a1a; color: #c5a059; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                <div style="display: flex; flex-direction: column; gap: 5px; margin-top: auto;">
+                    <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}?text=Bonjour, je souhaite visiter : {{ bien.titre }}"
+                       target="_blank" style="text-align: center; background: #1a1a1a; color: #c5a059; padding: 7px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.7rem;">
                         Demander Visite
                     </a>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
                         <a href="https://wa.me/{{ proprietaire.contact_whatsapp|cut:' '|cut:'+'|cut:'-' }}" target="_blank"
-                           style="background: #25D366; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none;">
+                           style="background: #25D366; color: white; padding: 7px; border-radius: 5px; text-align: center; text-decoration: none; font-size: 0.65rem; font-weight: bold;">
                             WhatsApp
                         </a>
                         <a href="tel:{{ proprietaire.contact_whatsapp }}"
-                           style="background: #c5a059; color: white; padding: 9px; border-radius: 6px; text-align: center; text-decoration: none;">
+                           style="background: #c5a059; color: white; padding: 7px; border-radius: 5px; text-align: center; text-decoration: none; font-size: 0.65rem; font-weight: bold;">
                             Appeler
                         </a>
                     </div>
@@ -56,28 +55,31 @@
     </div>
 </div>
 
-<!-- Lightbox simple -->
 <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center;">
     <span onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10;">×</span>
     <img id="lightbox-image" src="" style="max-width: 90%; max-height: 85vh; border-radius: 8px;">
 </div>
+
+<style>
+/* Sur PC (tablettes et plus), on augmente le nombre de colonnes */
+@media (min-width: 768px) {
+    .grid-catalogue {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+        gap: 20px !important;
+    }
+}
+</style>
 
 <script>
 function openLightbox(imageUrl) {
     document.getElementById('lightbox-image').src = imageUrl;
     document.getElementById('lightbox').style.display = 'flex';
 }
-
 function closeLightbox() {
     document.getElementById('lightbox').style.display = 'none';
 }
-
-// Fermer la lightbox avec la touche ESC
 document.addEventListener('keydown', function(e) {
-    if (e.key === "Escape") {
-        closeLightbox();
-    }
+    if (e.key === "Escape") closeLightbox();
 });
 </script>
-
 {% endblock %}
