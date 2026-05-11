@@ -455,7 +455,7 @@ class CustomPassword_reset_complete_view(PasswordResetCompleteView):
 # ===================== GESTION DU CALENDRIER =====================
 @login_required
 @proprietaire_required
-ddef ajouter_disponibilite(request, property_id):
+def ajouter_disponibilite(request, property_id):
     bien = get_object_or_404(Property, id=property_id, owner=request.user.profil_proprietaire)
 
     if request.method == 'POST':
