@@ -234,9 +234,17 @@ def dashboard_proprietaire(request):
 @login_required
 @proprietaire_required
 def mes_biens(request):
-    profil = request.user.profil_proprietaire
-    properties = Property.objects.filter(owner=profil).order_by('-date_creation')
-    return render(request, 'proprietaire/mes_biens.html', {'profil': profil, 'properties': properties})
+    # On récupère le profil du proprio
+    profil = get_object_or_404(ProfilProprietaire, user=request.user)
+
+    # On récupère ses biens
+    # IMPORTANT : Le nom de la variable doit être 'biens' pour correspondre au template
+    biens = Property.objects.filter(owner=profil).order_by('-date_creation')
+
+    return render(request, 'proprietaire/mes_biens.html', {
+        'biens': biens,
+        'profil': profil
+    })
 
 
 @login_required
