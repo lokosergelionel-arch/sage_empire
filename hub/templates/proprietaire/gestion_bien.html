@@ -2,110 +2,75 @@
 {% load static %}
 
 {% block proprietaire_content %}
-<div class="max-w-7xl mx-auto p-4 md:p-8">
-    <a href="{% url 'mes_biens' %}" class="text-gray-400 hover:text-[#D4AF37] mb-6 inline-flex items-center gap-2 transition-colors">
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px; color: #ffffff; background-color: #0B0B0B;">
+
+    <a href="{% url 'mes_biens' %}" style="color: #a0a0a0; text-decoration: none; margin-bottom: 30px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;">
         <i class="fas fa-arrow-left"></i> Retour à mes biens
     </a>
 
-    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-10">
-        <div>
-            <h1 class="text-3xl md:text-4xl font-serif text-[#D4AF37]">{{ bien.titre }}</h1>
-            <p class="text-gray-400 mt-2">
-                <i class="fas fa-map-marker-alt text-[#D4AF37] mr-2"></i>{{ bien.quartier }} • {{ bien.get_type_bien_display }}
-            </p>
-        </div>
-        <div class="flex gap-3">
-             <span class="px-4 py-2 bg-[#D4AF37]/10 border border-[#D4AF37] text-[#D4AF37] rounded-full text-sm font-bold uppercase tracking-wider">
-                {{ bien.get_status_display }}
-             </span>
-        </div>
+    <div style="border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 20px; margin-bottom: 40px;">
+        <h1 style="color: #D4AF37; font-family: serif; font-size: 32px; margin: 0;">{{ bien.titre }}</h1>
+        <p style="color: #888; margin: 5px 0 0 0;">{{ bien.quartier }} • {{ bien.get_type_bien_display }}</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;">
 
-        <div class="lg:col-span-7 space-y-6">
-            <div class="bg-[#1A1A1A] rounded-3xl p-6 border border-white/5">
-                <h2 class="text-xl font-semibold mb-6 flex items-center gap-2">
-                    <i class="fas fa-images text-[#D4AF37]"></i> Photos & Vidéos
-                </h2>
+        <div style="background: #1A1A1A; border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
+            <h2 style="color: #D4AF37; font-size: 18px; margin-bottom: 20px; border-left: 3px solid #D4AF37; padding-left: 15px;">Photos & Vidéos</h2>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {% for media in medias %}
-                    <div class="group relative aspect-square bg-[#0F0F0F] rounded-2xl overflow-hidden border border-white/10 hover:border-[#D4AF37]/50 transition-all">
-                        {% if media.is_video %}
-                            <video src="{{ media.image.url }}" class="w-full h-full object-cover"></video>
-                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all cursor-pointer">
-                                <i class="fas fa-play-circle text-3xl text-white"></i>
-                            </div>
-                        {% else %}
-                            <img src="{{ media.image.url }}" alt="Photo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        {% endif %}
-                    </div>
-                    {% empty %}
-                    <div class="col-span-full py-20 text-center bg-[#0F0F0F] rounded-2xl border border-dashed border-white/10">
-                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-600 mb-3"></i>
-                        <p class="text-gray-500">Aucun média disponible pour ce bien.</p>
-                    </div>
-                    {% endfor %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
+                {% for media in medias %}
+                <div style="aspect-ratio: 1/1; background: #0F0F0F; border-radius: 12px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.1);">
+                    {% if media.is_video %}
+                        <video src="{{ media.image.url }}" style="width: 100%; height: 100%; object-fit: cover;"></video>
+                    {% else %}
+                        <img src="{{ media.image.url }}" alt="Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
                 </div>
+                {% empty %}
+                <p style="color: #555; text-align: center; grid-column: span 3; padding: 40px 0;">Aucun média.</p>
+                {% endfor %}
             </div>
         </div>
 
-        <div class="lg:col-span-5 space-y-8">
+        <div style="display: flex; flex-direction: column; gap: 30px;">
 
-            <div class="bg-[#1A1A1A] rounded-3xl p-8 border border-white/5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 blur-3xl -mr-16 -mt-16"></div>
-
-                <h2 class="text-xl font-semibold mb-6">Détails financiers</h2>
-                <div class="space-y-6">
-                    <div>
-                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-1">Prix de location / Vente</p>
-                        <p class="text-4xl font-bold text-[#D4AF37]">{{ bien.prix }} <span class="text-sm font-normal text-gray-400">FCFA</span></p>
-                    </div>
-                    <div class="pt-6 border-t border-white/5">
-                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-2">Description</p>
-                        <p class="text-gray-300 leading-relaxed italic">
-                            "{{ bien.description|default:"L'élégance et le confort signés Sage Empire." }}"
-                        </p>
-                    </div>
+            <div style="background: #1A1A1A; border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
+                <h2 style="color: #D4AF37; font-size: 18px; margin-bottom: 20px; border-left: 3px solid #D4AF37; padding-left: 15px;">Détails du bien</h2>
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #888; font-size: 12px; text-transform: uppercase;">Prix</span>
+                    <p style="color: #D4AF37; font-size: 28px; font-weight: bold; margin: 5px 0;">{{ bien.prix }} <span style="font-size: 14px;">FCFA</span></p>
+                </div>
+                <div>
+                    <span style="color: #888; font-size: 12px; text-transform: uppercase;">Description</span>
+                    <p style="color: #ccc; line-height: 1.6; margin-top: 10px; font-size: 14px;">{{ bien.description|default:"Pas de description." }}</p>
                 </div>
             </div>
 
-            <div class="bg-[#1A1A1A] rounded-3xl p-8 border border-white/5">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold">Disponibilités</h2>
-                    <a href="{% url 'ajouter_disponibilite' bien.id %}" class="text-[#D4AF37] hover:underline text-sm font-bold">
-                        + AJOUTER
-                    </a>
+            <div style="background: #1A1A1A; border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: #D4AF37; font-size: 18px; margin: 0; border-left: 3px solid #D4AF37; padding-left: 15px;">Disponibilités</h2>
+                    <a href="{% url 'ajouter_disponibilite' bien.id %}" style="color: #D4AF37; text-decoration: none; font-size: 12px; font-weight: bold;">+ AJOUTER</a>
                 </div>
 
                 {% if availabilities %}
-                    <div class="space-y-3">
-                        {% for period in availabilities %}
-                        <div class="group flex justify-between items-center bg-[#0F0F0F] p-4 rounded-2xl border border-white/5 hover:border-[#D4AF37]/30 transition-all">
-                            <div class="flex items-center gap-3">
-                                <div class="w-2 h-2 rounded-full {% if period.is_available %}bg-emerald-500 animate-pulse{% else %}bg-red-500{% endif %}"></div>
-                                <span class="text-sm text-gray-200">{{ period.start_date|date:"d M" }} — {{ period.end_date|date:"d M Y" }}</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <span class="text-[10px] uppercase font-bold tracking-tighter {% if period.is_available %}text-emerald-400{% else %}text-red-400{% endif %}">
-                                    {{ period.is_available|yesno:"Libre,Occupé" }}
-                                </span>
-                                <a href="{% url 'supprimer_disponibilite' period.id %}" class="text-gray-600 hover:text-red-500 transition-colors">
-                                    <i class="fas fa-trash-alt text-xs"></i>
-                                </a>
-                            </div>
+                    {% for period in availabilities %}
+                    <div style="background: #0F0F0F; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03);">
+                        <span style="font-size: 13px;">{{ period.start_date|date:"d M" }} — {{ period.end_date|date:"d M Y" }}</span>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 10px; color: {% if period.is_available %}#4ade80{% else %}#f87171{% endif %}; text-transform: uppercase; font-weight: bold;">
+                                {{ period.is_available|yesno:"Libre,Occupé" }}
+                            </span>
+                            <a href="{% url 'supprimer_disponibilite' period.id %}" style="color: #555;"><i class="fas fa-trash"></i></a>
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                 {% else %}
-                    <div class="text-center py-8 bg-[#0F0F0F] rounded-2xl border border-white/5">
-                        <p class="text-gray-500 text-sm italic">Aucune période définie.</p>
-                    </div>
+                    <p style="color: #555; font-style: italic; font-size: 13px;">Aucune période enregistrée.</p>
                 {% endif %}
             </div>
-
         </div>
+
     </div>
 </div>
 {% endblock %}
