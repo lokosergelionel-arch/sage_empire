@@ -9,7 +9,7 @@ class HubConfig(AppConfig):
         post_migrate.connect(create_or_update_admin, sender=self)
 
 
-ddef create_or_update_admin(sender, **kwargs):
+def create_or_update_admin(sender, **kwargs):
     from django.contrib.auth.models import User
     from django.db.models.signals import post_save
 
