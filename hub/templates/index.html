@@ -431,4 +431,447 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 </body>
+</html>{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta property="og:title" content="SAGE EMPIRE | Signature d'Excellence">
+ <meta property="og:description" content="Sage Empire — L'art de vivre l'exception. Prestige événementiel, patrimoine d'exception, créations signatures. Un empire, une vision. ">
+ <meta property="og:image" content="{% static 'images/logo.png' %}?v=empire">
+ <meta property="og:url" content="https://makoservicestg.com">
+ <meta property="og:type" content="website">
+
+ <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+   <style>
+    :root {
+    --ivory: #F9F8F6;
+    --charcoal: #1A1A1A;
+    --gold-subtle: #B5935E;
+    --border: #E5E2DA;
+    --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+    padding: 15px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 1000;
+    }
+
+    .nav-logo-container { height: 50px; }
+    .nav-logo-container img { height: 100%; width: auto; }
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: var(--charcoal);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold-subtle); }
+    .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
+
+    /* --- MOBILE OPTIMISÉ --- */
+    .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 3000; /* Augmenté pour être au-dessus de tout */
+    padding: 10px;
+    }
+    .hamburger span {
+    width: 30px;
+    height: 2px;
+    background: var(--charcoal);
+    transition: 0.4s;
+    border-radius: 2px;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+   .mobile-overlay {
+       position: fixed; top: 0; left: 0;
+       width: 100%; height: 100%;
+       background: rgba(255, 255, 255, 0.98);
+       backdrop-filter: blur(15px);
+       z-index: 2500;
+       opacity: 0; visibility: hidden;
+       transition: all 0.4s ease;
+       display: flex; flex-direction: column;
+       justify-content: center; align-items: center;
+   }
+   .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+.mobile-overlay a {
+ padding: 15px 0;
+ width: 80%;
+ text-align: center;
+ text-decoration: none;
+ color: var(--charcoal);
+ font-family: 'Cinzel', serif;
+ text-transform: uppercase;
+ font-size: 1.3rem;
+ letter-spacing: 4px;
+ border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.mobile-overlay a:last-child { border-bottom: none; }
+
+ .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+ .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
+ .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
+ .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
+ .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
+ .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
+ .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
+ .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+
+ .services { padding: 80px 8%; }
+ .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
+ .service-card {
+ background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
+ border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
+ text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
+ }
+ .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+ .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+ .service-card p { font-size: 0.8rem; color: #888; }
+ .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
+ .service-card:hover .line { width: 80px; }
+
+ .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
+ .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
+ .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
+ .btn-enter:hover { background: var(--charcoal); color: white; }
+
+ .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
+ .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
+ .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
+
+ [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
+ [data-animate].animated { opacity: 1; transform: translateY(0); }
+
+ .btn-contact-choice {
+    display: flex; align-items: center; justify-content: center;
+    width: 90%; margin: 0 auto; padding: 15px; border-radius: 15px;
+    color: white !important; font-weight: bold; font-size: 1.1rem;
+    text-decoration: none; transition: transform 0.2s; border: none;
+ }
+
+ /* --- STYLES VERSION ROYALE ORBITALE --- */
+ .orbit-card {
+    position: absolute;
+    left: 50%; top: 50%; /* Centrage forcé sur l'axe du container */
+    width: 220px; height: 240px;
+    perspective: 1000px;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 20;
+ }
+ .hex-content {
+    width: 100%; height: 100%; background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(15px); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 30px; text-align: center; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(181, 147, 94, 0.2);
+ }
+ .hex-content::after {
+    content: ""; position: absolute; inset: 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 1px solid rgba(181, 147, 94, 0.4); pointer-events: none;
+ }
+ .orbit-card:hover .hex-content { transform: scale(1.1) translateZ(50px); background: rgba(20, 20, 20, 0.95); box-shadow: 0 0 40px rgba(181, 147, 94, 0.3); }
+ .hex-icon { color: #B5935E; font-size: 2rem; margin-bottom: 15px; }
+ .hex-label { font-family: 'Cinzel'; font-size: 0.85rem; color: #B5935E; letter-spacing: 3px; margin-bottom: 10px; }
+ .hex-desc { font-size: 0.7rem; color: #AAA; line-height: 1.6; margin: 0; }
+
+ @keyframes pulseCore {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.05); }
+ }
+
+ @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
+    .orbit-container { height: 600px !important; transform: scale(0.7); }
+    .hex-desc { display: none; }
+ }
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="nav-logo-container">
+<a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Sage Empire"></a>
+</div>
+<div class="nav-links">
+<a href="#services">Hub Services</a>
+<a href="{% url 'liste_stylistes' %}">Marketplace</a>
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
+
+{% if user.is_authenticated %}
+<a href="{% url 'dashboard_styliste' %}" class="btn-gold-nav">MON ESPACE</a>
+{% else %}
+<a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
+<a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
+{% endif %}
+</div>
+<div class="hamburger" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</div>
+</nav>
+
+<div class="mobile-overlay" id="mobileMenu">
+<a href="#services" onclick="toggleMenu()">Hub Services</a>
+<a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="toggleMenu()">Contact Privé</a>
+{% if user.is_authenticated %}
+<a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
+{% else %}
+<a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
+<a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
+{% endif %}
+</div>
+
+<section class="hero" data-animate>
+<h1>SAGE EMPIRE</h1>
+<p style="font-size: 0.7rem; letter-spacing: 4px; color: var(--gold-subtle);">L'EXCELLENCE SUR MESURE</p>
+</section>
+
+<section class="vision" data-animate>
+<h2>Notre Vision</h2>
+<div class="vision-grid">
+<div class="vision-item">
+<h3>Prestige & Qualité</h3>
+<p>Offrir des services haut de gamme dans chaque domaine d'intervention.</p>
+</div>
+<div class="vision-item">
+<h3>Innovation</h3>
+<p>Créer un écosystème où chaque besoin expert trouve une réponse fluide et mémorable.</p>
+</div>
+</div>
+</section>
+
+<section id="services" class="services">
+<div class="services-grid">
+<a href="{% url 'evenementiel' %}" class="service-card" data-animate>
+<h3>ÉVÉNEMENTIEL</h3>
+<p>Conception de moments d'exception.</p>
+<div class="line"></div>
+</a>
+<a href="{% url 'immobilier' %}" class="service-card" data-animate>
+<h3>IMMOBILIER</h3>
+<p>Résidences de prestige et foncier.</p>
+<div class="line"></div>
+</a>
+<a href="{% url 'galerie_mode' %}" class="service-card" data-animate>
+<h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives.</p>
+<div class="line"></div>
+</a>
+<a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
+<h3>MAKO SERVICES</h3>
+<p>Entretien expert post-évènement.</p>
+<div class="line"></div>
+</a>
+<a href="{% url 'sage_digital' %}" class="service-card" data-animate>
+<h3>SAGE DIGITAL</h3>
+<p>Solutions Web & Formations d'Excellence</p>
+<div class="line"></div>
+</a>
+</div>
+</section>
+
+<section id="marketplace" class="marketplace-banner" data-animate>
+<h2>MARKETPLACE</h2>
+<div style="width: 40px; height: 1px; background: var(--gold-subtle); margin: 0 auto 30px;"></div>
+<p style="font-size: 0.9rem; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8;">
+L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
+</p>
+<a href="{% url 'liste_stylistes' %}" class="btn-enter">Entrer dans la Marketplace →</a>
+</section>
+
+{% if not user.is_authenticated %}
+<section class="cta-styliste">
+<h3>VOUS ÊTES CRÉATEUR ?</h3>
+<a href="{% url 'inscription_styliste' %}">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
+</section>
+{% endif %}
+
+<section id="why-sage" style="background: #000; color: white; padding: 120px 0; overflow: hidden; position: relative; perspective: 2000px;">
+
+    <div class="bg-lines" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 1000px; opacity: 0.15; pointer-events: none;">
+        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <circle cx="50" cy="50" r="28" fill="none" stroke="#B5935E" stroke-width="0.1" />
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#B5935E" stroke-width="0.1" />
+            <line x1="0" y1="50" x2="100" y2="50" stroke="#B5935E" stroke-width="0.05" />
+            <line x1="50" y1="0" x2="50" y2="100" stroke="#B5935E" stroke-width="0.05" />
+        </svg>
+    </div>
+
+    <div class="orbit-container" style="position: relative; width: 100%; height: 800px; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d;">
+
+        <div class="core-node" style="z-index: 100; width: 260px; height: 260px; background: radial-gradient(circle, #222 0%, #000 100%); border: 1px solid rgba(181, 147, 94, 0.6); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 0 80px rgba(181, 147, 94, 0.2); position: relative;">
+            <div class="core-glow" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 30px #B5935E; opacity: 0.3; animation: pulseCore 4s infinite ease-in-out;"></div>
+            <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 4px; color: #B5935E; margin-bottom: 5px;">POURQUOI</p>
+            <h2 style="font-family: 'Cinzel'; font-size: 1.8rem; letter-spacing: 5px; color: #FFF; margin: 0;">SAGE<br>EMPIRE</h2>
+            <div style="width: 40px; height: 1px; background: #B5935E; margin-top: 15px;"></div>
+        </div>
+
+        <div class="orbit-card" data-angle="0" data-label="STRUCTURE" data-icon="fa-shield-alt" data-desc="Parce que la réussite exige une structure sans faille."></div>
+        <div class="orbit-card" data-angle="60" data-label="EXPERTISE" data-icon="fa-chart-line" data-desc="Une expertise immobilière alliée à une vision d'avant-garde."></div>
+        <div class="orbit-card" data-angle="120" data-label="EXIGENCE" data-icon="fa-gem" data-desc="Une rigueur absolue dans chaque détail. Aucune zone d'ombre."></div>
+        <div class="orbit-card" data-angle="180" data-label="CONFIANCE" data-icon="fa-handshake" data-desc="Nous forgeons un écosystème de confiance pour le sommet."></div>
+        <div class="orbit-card" data-angle="240" data-label="TECHNOLOGIE" data-icon="fa-microchip" data-desc="La haute technologie au service de l'excellence."></div>
+        <div class="orbit-card" data-angle="300" data-label="PERFORMANCE" data-icon="fa-crown" data-desc="Nous bâtissons des standards de haute performance."></div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: -50px; position: relative; z-index: 150; padding: 0 20px;">
+        <p style="color: rgba(255,255,255,0.7); font-style: italic; max-width: 700px; margin: 0 auto 40px; line-height: 1.6; font-size: 0.95rem;">
+            "Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier ou l'élégance d'une silhouette."
+        </p>
+    </div>
+
+    <div class="text-center" style="margin-top: -40px; position: relative; z-index: 150;">
+        <p style="color: #B5935E; font-family: 'Cinzel'; letter-spacing: 5px; font-size: 1.1rem; font-weight: bold;">UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.</p>
+    </div>
+</section>
+
+<footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
+<div style="margin-bottom: 50px;">
+<h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px; font-size: 1.4rem;">SAGE EMPIRE</h4>
+<p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; text-transform: uppercase;">L'Excellence comme Référence</p>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
+<a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none;">SAGE MODE</a>
+<a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none;">IMMOBILIER</a>
+<a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none;">ÉVÉNEMENTIEL</a>
+<a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none;">SAGE DIGITAL</a>
+<a href="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none;">MAKO SERVICES</a>
+</div>
+
+<div style="margin-bottom: 50px;">
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase;">
+CONTACTEZ L'EMPIRE
+</a>
+</div>
+<p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; border-top: 1px solid #f0f0f0; display: inline-block; padding-top: 20px;">
+&copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
+</p>
+</footer>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 25px; border: none; background-color: white;">
+      <div class="modal-body text-center py-5">
+        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px;">CONTACTEZ-NOUS</h4>
+        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">📱 WHATSAPP</a>
+        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">📧 EMAIL</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    const isActive = menu.classList.contains('active');
+
+    if (isActive) {
+        menu.classList.remove('active');
+        hamburger.classList.remove('open');
+        document.body.style.overflow = 'auto';
+    } else {
+        menu.classList.add('active');
+        hamburger.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Fermeture au clic sur l'overlay
+document.getElementById('mobileMenu').addEventListener('click', function(e) {
+    if (e.target === this) {
+        toggleMenu();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const cardsData = document.querySelectorAll('.orbit-card');
+    const container = document.querySelector('.orbit-container');
+    const isMobile = window.innerWidth < 768;
+    const radius = isMobile ? 210 : 330;
+
+    cardsData.forEach(card => {
+        card.innerHTML = `
+            <div class="hex-content">
+                <i class="fas ${card.dataset.icon} hex-icon"></i>
+                <h4 class="hex-label">${card.dataset.label}</h4>
+                <p class="hex-desc">${card.dataset.desc}</p>
+            </div>
+        `;
+    });
+
+    const cards = document.querySelectorAll('.orbit-card');
+
+    // Positionnement et Rotation
+    let orbitRotation = { value: 0 };
+    gsap.to(orbitRotation, {
+        value: 360, duration: 40, repeat: -1, ease: "none",
+        onUpdate: () => {
+            cards.forEach((card) => {
+                const baseAngle = parseInt(card.dataset.angle);
+                const currentAngle = ((baseAngle + orbitRotation.value) * Math.PI) / 180;
+                const x = Math.cos(currentAngle) * radius;
+                const y = Math.sin(currentAngle) * radius;
+                // On utilise x et y par rapport au centre (50%, 50%) défini en CSS
+                gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
+            });
+        }
+    });
+
+    if (!isMobile) {
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 35;
+            const y = (e.clientY / window.innerHeight - 0.5) * 35;
+            gsap.to(container, { rotationY: x, rotationX: -y, ease: "power2.out", duration: 1.2 });
+        });
+    }
+
+    cards.forEach((card, i) => {
+        gsap.to(card, {
+            z: i % 2 === 0 ? 25 : -25, duration: 3 + i, repeat: -1, yoyo: true, ease: "sine.inOut"
+        });
+    });
+
+    const animElements = document.querySelectorAll('[data-animate]');
+    animElements.forEach((el, index) => {
+        setTimeout(() => { el.classList.add('animated'); }, 150 * index);
+    });
+});
+</script>
+
+</body>
 </html>
