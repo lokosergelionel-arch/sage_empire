@@ -231,19 +231,48 @@
 </section>
 
 <footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
-<h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px;">SAGE EMPIRE</h4>
-<p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; margin-bottom: 50px;">L'Excellence comme Référence</p>
-<div style="margin-bottom: 50px;"><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="text-decoration: none; color: var(--charcoal); border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px;">CONTACTEZ L'EMPIRE</a></div>
-<p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb;">&copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS</p>
+<div style="margin-bottom: 50px;">
+<h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px; font-size: 1.4rem;">SAGE EMPIRE</h4>
+<p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; text-transform: uppercase;">L'Excellence comme Référence</p>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
+<a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE MODE</a>
+<a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">IMMOBILIER</a>
+<a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">ÉVÉNEMENTIEL</a>
+<a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE DIGITAL</a>
+<a href="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">MAKO SERVICES</a>
+</div>
+
+<div style="margin-bottom: 50px;">
+<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase; transition: 0.3s; display: inline-block;">
+CONTACTEZ L'EMPIRE
+</a>
+</div>
+
+<p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; border-top: 1px solid #f0f0f0; display: inline-block; padding-top: 20px;">
+&copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
+</p>
 </footer>
 
 <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 25px; border: none; background: white;">
-      <div class="modal-body text-center py-5">
-        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px;">CONTACTEZ-NOUS</h4>
-        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background: #64d474;">📱 WHATSAPP</a>
-        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background: #559db7;">📧 EMAIL</a>
+    <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden; background-color: white;">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center pt-0 pb-5">
+        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
+
+        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">
+          <span class="me-2">📱</span> WHATSAPP
+        </a>
+
+        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">
+          <span class="me-2">📧</span> EMAIL
+        </a>
+
+        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal" style="font-size: 0.8rem; letter-spacing: 1px;">FERMER</button>
       </div>
     </div>
   </div>
