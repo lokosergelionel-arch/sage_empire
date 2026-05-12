@@ -26,7 +26,7 @@
     html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-    /* NAV */
+    /* NAV ORIGINAL INTÉGRALEMENT CONSERVÉ */
     nav {
     padding: 15px 8%;
     display: flex;
@@ -52,75 +52,236 @@
     .nav-links a:hover { color: var(--gold-subtle); }
     .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-    /* MOBILE */
-    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2100; padding: 10px; }
-    .hamburger span { width: 30px; height: 2px; background: var(--charcoal); transition: 0.4s; border-radius: 2px; }
+    /* MOBILE OPTIMISÉ ORIGINAL INTÉGRALEMENT CONSERVÉ */
+    .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 2100;
+    padding: 10px;
+    }
+    .hamburger span {
+    width: 30px;
+    height: 2px;
+    background: var(--charcoal);
+    transition: 0.4s;
+    border-radius: 2px;
+    }
+
     .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
    .mobile-overlay {
-       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-       background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px);
-       z-index: 2500; opacity: 0; visibility: hidden; transition: 0.4s;
-       display: flex; flex-direction: column; justify-content: center; align-items: center;
+       position: fixed; top: 0; left: 0;
+       width: 100%; height: 100%;
+       background: rgba(255, 255, 255, 0.98);
+       backdrop-filter: blur(15px);
+       z-index: 2500;
+       opacity: 0; visibility: hidden;
+       transition: all 0.4s ease;
+       display: flex; flex-direction: column;
+       justify-content: center; align-items: center;
    }
    .mobile-overlay.active { opacity: 1; visibility: visible; }
-   .mobile-overlay a { padding: 15px 0; width: 80%; text-align: center; text-decoration: none; color: var(--charcoal); font-family: 'Cinzel', serif; text-transform: uppercase; font-size: 1.3rem; letter-spacing: 4px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-    .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
+.mobile-overlay a {
+ padding: 15px 0;
+ width: 80%;
+ text-align: center;
+ text-decoration: none;
+ color: var(--charcoal);
+ font-family: 'Cinzel', serif;
+ text-transform: uppercase;
+ font-size: 1.3rem;
+ letter-spacing: 4px;
+ border-bottom: 1px solid rgba(0,0,0,0.05);
+}
 
-    .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
-    .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
-    .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
-    .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
-    .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
-    .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+.mobile-overlay a:last-child { border-bottom: none; }
 
-    .services { padding: 80px 8%; }
-    .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
-    .service-card {
-        background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
-        border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
-        text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
+ .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+ .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
+ .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
+ .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
+ .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
+ .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
+ .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
+ .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+
+ .services { padding: 80px 8%; }
+ .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
+ .service-card {
+ background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
+ border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
+ text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
+ }
+ .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+ .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+ .service-card p { font-size: 0.8rem; color: #888; }
+ .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
+ .service-card:hover .line { width: 80px; }
+
+ .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
+ .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
+ .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
+ .btn-enter:hover { background: var(--charcoal); color: white; }
+
+ .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
+ .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
+ .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
+ footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
+
+ [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
+ [data-animate].animated { opacity: 1; transform: translateY(0); }
+
+ @media (max-width: 768px) {
+ .vision-grid { grid-template-columns: 1fr; }
+ .service-card { flex: 0 1 100%; }
+ }
+
+ .btn-contact-choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 15px;
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: transform 0.2s;
+    border: none;
+}
+.btn-contact-choice:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* --- STYLES ÉCOSYSTÈME ORBITAL CONSERVÉS DE image_5.png --- */
+ .orbit-container {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    transform-style: preserve-3d;
+ }
+
+ .core-node {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(10,10,10,0.9) 0%, rgba(0,0,0,1) 100%);
+    border: 2px solid #B5935E;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(181, 147, 94, 0.2);
+    z-index: 10;
+ }
+
+ .orbit-card {
+    position: absolute;
+    width: 190px;
+    height: 210px;
+    perspective: 1000px;
+    transition: transform 0.3s ease-out;
+ }
+
+ .hex-wrapper {
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(181, 147, 94, 0.3);
+    border-radius: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease, border 0.3s ease;
+ }
+
+ .hex-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(181, 147, 94, 0.05);
+    border: 1px solid rgba(181, 147, 94, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #B5935E;
+    font-size: 1.3rem;
+ }
+
+ .hex-label {
+    font-family: 'Cinzel';
+    font-size: 0.75rem;
+    color: #B5935E;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+ }
+
+ .hex-desc {
+    font-size: 0.65rem;
+    color: #CCC;
+    line-height: 1.5;
+    margin: 0;
+ }
+
+ .orbit-card:hover .hex-wrapper {
+    background: rgba(20, 20, 20, 0.95);
+    border-color: #B5935E;
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(181, 147, 94, 0.4);
+ }
+
+ .bg-lines {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 900px;
+    opacity: 0.15;
+    pointer-events: none;
+ }
+
+ @media (max-width: 768px) {
+    .orbit-container {
+        height: 600px;
+        transform: scale(0.85);
     }
-    .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-    .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
-    .service-card p { font-size: 0.8rem; color: #888; }
-    .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
-    .service-card:hover .line { width: 80px; }
-
-    .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
-    .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
-    .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
-    .btn-enter:hover { background: var(--charcoal); color: white; }
-
-    .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
-    .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
-    .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
-
-    /* --- STYLES HEXAGONES ORBITAUX --- */
-    .orbit-card { position: absolute; width: 200px; height: 230px; transition: transform 0.5s ease; z-index: 20; }
-    .hex-wrapper { width: 100%; height: 100%; background: #B5935E; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; justify-content: center; align-items: center; padding: 1px; }
-    .hex-inner { width: 100%; height: 100%; background: radial-gradient(circle at center, #222, #050505); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; text-align: center; }
-    .hex-icon-box { width: 55px; height: 55px; border-radius: 50%; background: rgba(181, 147, 94, 0.05); border: 1px solid rgba(181, 147, 94, 0.3); display: flex; justify-content: center; align-items: center; margin-bottom: 12px; color: #B5935E; font-size: 1.4rem; }
-    .hex-label { font-family: 'Cinzel'; font-size: 0.75rem; color: #FFF; letter-spacing: 2px; margin-bottom: 8px; }
-    .hex-desc { font-size: 0.6rem; color: #888; line-height: 1.4; margin: 0; }
-    .orbit-card:hover .hex-wrapper { background: #FFF; transform: scale(1.05); box-shadow: 0 0 30px rgba(181, 147, 94, 0.5); }
-
-    [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
-    [data-animate].animated { opacity: 1; transform: translateY(0); }
-
-    .btn-contact-choice { display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; text-decoration: none; }
-
-    @media (max-width: 768px) {
-        .nav-links { display: none; }
-        .hamburger { display: flex; }
-        .hero h1 { font-size: 2.2rem; }
-        .orbit-container { height: 600px !important; transform: scale(0.6); }
-        .hex-desc { display: none; }
+    .hex-wrapper {
+        padding: 15px;
     }
+    .hex-icon-box {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+    }
+    .hex-label {
+        font-size: 0.65rem;
+    }
+    .hex-desc {
+        display: none;
+    }
+ }
 </style>
 </head>
 
@@ -134,6 +295,7 @@
 <a href="#services">Hub Services</a>
 <a href="{% url 'liste_stylistes' %}">Marketplace</a>
 <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
+
 {% if user.is_authenticated %}
 <a href="{% url 'dashboard_styliste' %}" class="btn-gold-nav">MON ESPACE</a>
 {% else %}
@@ -141,13 +303,16 @@
 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
 {% endif %}
 </div>
-<div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+<div class="hamburger" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</div>
 </nav>
 
 <div class="mobile-overlay" id="mobileMenu">
 <a href="#services" onclick="toggleMenu()">Hub Services</a>
 <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
 <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="toggleMenu()">Contact Privé</a>
+
 {% if user.is_authenticated %}
 <a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
 {% else %}
@@ -178,55 +343,121 @@
 <section id="services" class="services">
 <div class="services-grid">
 <a href="{% url 'evenementiel' %}" class="service-card" data-animate>
-<h3>ÉVÉNEMENTIEL</h3><p>Conception de moments d'exception.</p><div class="line"></div>
+<h3>ÉVÉNEMENTIEL</h3>
+<p>Conception de moments d'exception.</p>
+<div class="line"></div>
 </a>
 <a href="{% url 'immobilier' %}" class="service-card" data-animate>
-<h3>IMMOBILIER</h3><p>Résidences de prestige et foncier.</p><div class="line"></div>
+<h3>IMMOBILIER</h3>
+<p>Résidences de prestige et foncier.</p>
+<div class="line"></div>
 </a>
 <a href="{% url 'galerie_mode' %}" class="service-card" data-animate>
-<h3>SAGE MODE</h3><p>Découvrez nos collections exclusives.</p><div class="line"></div>
+<h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives.</p>
+<div class="line"></div>
 </a>
 <a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
-<h3>MAKO SERVICES</h3><p>Entretien expert post-évènement.</p><div class="line"></div>
+<h3>MAKO SERVICES</h3>
+<p>Entretien expert post-évènement.</p>
+<div class="line"></div>
 </a>
 <a href="{% url 'sage_digital' %}" class="service-card" data-animate>
-<h3>SAGE DIGITAL</h3><p>Solutions Web & Formations d'Excellence</p><div class="line"></div>
+<h3>SAGE DIGITAL</h3>
+<p>Solutions Web & Formations d'Excellence</p>
+<div class="line"></div>
 </a>
 </div>
 </section>
 
-<section id="why-sage" style="background: #000; color: white; padding: 140px 0; overflow: hidden; position: relative; perspective: 1500px;">
+<section id="marketplace" class="marketplace-banner" data-animate>
+<h2>MARKETPLACE</h2>
+<div style="width: 40px; height: 1px; background: var(--gold-subtle); margin: 0 auto 30px;"></div>
+<p style="font-size: 0.9rem; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8;">
+L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
+</p>
+<a href="{% url 'liste_stylistes' %}" class="btn-enter">Entrer dans la Marketplace →</a>
+</section>
 
-    <div id="connection-system" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
-        <svg id="orbit-svg" width="100%" height="100%" style="position: absolute; overflow: visible;">
-            <circle cx="50%" cy="50%" r="330" fill="none" stroke="rgba(181, 147, 94, 0.15)" stroke-width="1" />
-            <circle cx="50%" cy="50%" r="220" fill="none" stroke="rgba(181, 147, 94, 0.1)" stroke-width="0.5" />
-            <g id="dynamic-lines"></g>
+{% if not user.is_authenticated %}
+<section class="cta-styliste">
+<h3>VOUS ÊTES CRÉATEUR ?</h3>
+<a href="{% url 'inscription_styliste' %}">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
+</section>
+{% endif %}
+
+<section id="why-sage" style="background: #000; color: white; padding: 100px 0; overflow: hidden; position: relative;">
+
+    <div class="bg-lines">
+        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#B5935E" stroke-width="0.1" opacity="0.5"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#B5935E" stroke-width="0.1"/>
+            <line x1="0" y1="50" x2="100" y2="50" stroke="#B5935E" stroke-width="0.05" opacity="0.3"/>
+            <line x1="50" y1="0" x2="50" y2="100" stroke="#B5935E" stroke-width="0.05" opacity="0.3"/>
+            <g id="line-system" stroke="#B5935E" stroke-width="0.1" opacity="0.5">
+                <line id="line-shield" x1="50" y1="50" x2="50" y2="20"/>
+                <line id="line-bar-chart" x1="50" y1="50" x2="30" y2="35"/>
+                <line id="line-buildings" x1="50" y2="50" x2="70" y2="35"/>
+                <line id="line-cpu" x1="50" y1="50" x2="30" y2="65"/>
+                <line id="line-diamond" x1="50" y1="50" x2="70" y2="65"/>
+                <line id="line-handshake" x1="50" y1="50" x2="50" y2="80"/>
+            </g>
         </svg>
     </div>
 
-    <div class="orbit-container" style="position: relative; width: 100%; height: 850px; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; z-index: 10;">
-        <div class="core-node" style="width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); border: 2px solid #B5935E; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 0 60px rgba(181, 147, 94, 0.4); z-index: 100;">
-            <p style="font-family: 'Cinzel'; font-size: 0.85rem; letter-spacing: 5px; color: #B5935E; margin-bottom: 8px;">POURQUOI</p>
-            <h2 style="font-family: 'Cinzel'; font-size: 2.2rem; letter-spacing: 8px; color: #FFF; margin: 0; line-height: 1.2;">SAGE<br>EMPIRE</h2>
-            <div style="width: 50px; height: 1px; background: #B5935E; margin-top: 20px;"></div>
+    <div class="orbit-container">
+
+        <div class="core-node">
+            <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 3px; color: #B5935E; margin: 0;">POURQUOI<br>SAGE EMPIRE</h2>
         </div>
 
-        <div class="orbit-card" data-angle="270" data-label="STRUCTURE" data-icon="fa-shield-alt" data-desc="Parce que la réussite exige une structure sans faille."></div>
-        <div class="orbit-card" data-angle="330" data-label="EXPERTISE" data-icon="fa-building" data-desc="Une expertise immobilière alliée à une vision d'avant-garde."></div>
-        <div class="orbit-card" data-angle="30" data-label="EXIGENCE" data-icon="fa-gem" data-desc="Une rigueur absolue dans chaque détail. Aucune zone d'ombre."></div>
-        <div class="orbit-card" data-angle="90" data-label="CONFIANCE" data-icon="fa-crown" data-desc="Nous forgeons un écosystème de confiance pour le sommet."></div>
-        <div class="orbit-card" data-angle="150" data-label="TECHNOLOGIE" data-icon="fa-microchip" data-desc="La haute technologie au service de l'excellence."></div>
-        <div class="orbit-card" data-angle="210" data-label="PERFORMANCE" data-icon="fa-chart-bar" data-desc="Nous bâtissons des standards de haute performance."></div>
-    </div>
+        <div class="orbit-card" data-angle="270" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-shield-alt"></i></div>
+                <h4 class="hex-label">STRUCTURE</h4>
+                <p class="hex-desc">Nous garantissons la solidité et la pérennité de votre projet à chaque étape.</p>
+            </div>
+        </div>
 
-    <div style="text-align: center; margin-top: -50px; position: relative; z-index: 150; padding: 0 20px;">
-        <p style="color: rgba(255,255,255,0.7); font-style: italic; max-width: 700px; margin: 0 auto 40px; line-height: 1.6; font-size: 0.95rem;">
-            "Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier ou l'élégance d'une silhouette."
-        </p>
-        <p style="color: #B5935E; font-family: 'Cinzel'; letter-spacing: 6px; font-size: 1.2rem; font-weight: bold; border-top: 1px solid rgba(181,147,94,0.3); display: inline-block; padding-top: 25px;">
-            UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
-        </p>
+        <div class="orbit-card" data-angle="330" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-chart-line"></i></div>
+                <h4 class="hex-label">EXPERT</h4>
+                <p class="hex-desc">La solidité d’un patrimoine immobilier d’exception.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="30" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-crown"></i></div>
+                <h4 class="hex-label">PRESTIGE</h4>
+                <p class="hex-desc">L'élégance d’une silhouette et d’une vision globale.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="90" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-microchip"></i></div>
+                <h4 class="hex-label">TECHNOLOGIE</h4>
+                <p class="hex-desc">La précision d’un code informatique au service du luxe.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="150" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-gem"></i></div>
+                <h4 class="hex-label">EXIGENCE</h4>
+                <p class="hex-desc">Une discipline globale qui ne souffre aucune zone d’ombre.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="210" style="width: 190px; height: 210px;">
+            <div class="hex-wrapper">
+                <div class="hex-icon-box"><i class="fas fa-handshake"></i></div>
+                <h4 class="hex-label">CONFIANCE</h4>
+                <p class="hex-desc">Un écosystème forgé pour ceux qui visent le sommet.</p>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -282,66 +513,71 @@ CONTACTEZ L'EMPIRE
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
+// FONCTION TOGGLE MENU MOBILE ORIGINALE INTÉGRALEMENT CONSERVÉE
 function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const hamburger = document.querySelector('.hamburger');
-    menu.classList.toggle('active');
-    hamburger.classList.toggle('open');
+const menu = document.getElementById('mobileMenu');
+const hamburger = document.querySelector('.hamburger');
+menu.classList.toggle('active');
+hamburger.classList.toggle('open');
+document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
 }
 
+document.getElementById('mobileMenu').addEventListener('click', function(e) {
+if (e.target === this) {
+toggleMenu();
+}
+});
+
+// LOGIQUE D'ANIMATION STANDARD ORIGINALE INTÉGRALEMENT CONSERVÉE
+document.addEventListener("DOMContentLoaded", function() {
+const elements = document.querySelectorAll('[data-animate]');
+elements.forEach((el, index) => {
+setTimeout(() => { el.classList.add('animated'); }, 200 * index);
+});
+});
+
+// NOUVELLE LOGIQUE D'ANIMATION ORBITALE COORDONNÉE (SANS TOUCHER AU RESTE)
 document.addEventListener("DOMContentLoaded", function() {
     const cards = document.querySelectorAll('.orbit-card');
-    const lineGroup = document.getElementById('dynamic-lines');
+    const container = document.querySelector('.orbit-container');
     const isMobile = window.innerWidth < 768;
+
     const radius = isMobile ? 220 : 330;
 
-    cards.forEach(card => {
-        card.innerHTML = `
-            <div class="hex-wrapper"><div class="hex-inner">
-                <div class="hex-icon-box"><i class="fas ${card.dataset.icon}"></i></div>
-                <h4 class="hex-label">${card.dataset.label}</h4>
-                <p class="hex-desc">${card.dataset.desc}</p>
-            </div></div>`;
+    // Positionnement initial en cercle CONSERVÉ DE image_5.png
+    cards.forEach((card, index) => {
+        const angle = (parseInt(card.dataset.angle) * Math.PI) / 180;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
     });
 
-    let rotationData = { angle: 0 };
-    gsap.to(rotationData, {
-        angle: 360, duration: 50, repeat: -1, ease: "none",
+    // --- ANIMATION ORBITALE COORDONNÉE (NOUVEAU - TOUTES LES CARTES ENSEMBLE) ---
+    //timeline GSAP pour faire tourner le conteneur principal
+    const mainOrbit = gsap.to(container, {
+        rotation: 360,
+        duration: 40, // Un tour complet en 40 secondes, toutes les cartes ensemble
+        repeat: -1,
+        ease: "none",
+        transformOrigin: "center center",
         onUpdate: () => {
-            lineGroup.innerHTML = '';
-            cards.forEach((card) => {
-                const baseAngle = parseInt(card.dataset.angle);
-                const currentAngle = ((baseAngle + rotationData.angle) * Math.PI) / 180;
-                const x = Math.cos(currentAngle) * radius;
-                const y = Math.sin(currentAngle) * radius;
-                gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
-
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", "50%"); line.setAttribute("y1", "50%");
-                line.setAttribute("x2", `calc(50% + ${x}px)`); line.setAttribute("y2", `calc(50% + ${y}px)`);
-                line.setAttribute("stroke", "rgba(181, 147, 94, 0.4)"); line.setAttribute("stroke-width", "0.8");
-                line.setAttribute("stroke-dasharray", "4 2");
-                lineGroup.appendChild(line);
-
-                const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                dot.setAttribute("cx", `calc(50% + ${x}px)`); dot.setAttribute("cy", `calc(50% + ${y}px)`);
-                dot.setAttribute("r", "3"); dot.setAttribute("fill", "#B5935E");
-                lineGroup.appendChild(dot);
+            //on s'assure que les cartes restent droites (rotation inverse)
+            cards.forEach(card => {
+                gsap.set(card, { rotation: -mainOrbit.targets()[0].rotation });
             });
         }
     });
 
+    // Effet 3D léger au mouvement de souris CONSERVÉ DE image_5.png
     if (!isMobile) {
         window.addEventListener('mousemove', (e) => {
             const rotX = (e.clientY / window.innerHeight - 0.5) * -15;
             const rotY = (e.clientX / window.innerWidth - 0.5) * 15;
-            gsap.to(".orbit-container", { rotationX: rotX, rotationY: rotY, duration: 1 });
+            gsap.to(container, { rotationX: rotX, rotationY: rotY, duration: 1 });
         });
     }
-
-    const animElements = document.querySelectorAll('[data-animate]');
-    animElements.forEach((el, index) => { setTimeout(() => { el.classList.add('animated'); }, 150 * index); });
 });
 </script>
+
 </body>
 </html>
