@@ -26,7 +26,7 @@
     html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-    /* NAV ORIGINAL INTÉGRALEMENT CONSERVÉ */
+    /* NAV - CODE ORIGINAL */
     nav {
     padding: 15px 8%;
     display: flex;
@@ -52,7 +52,7 @@
     .nav-links a:hover { color: var(--gold-subtle); }
     .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
-    /* MOBILE OPTIMISÉ ORIGINAL INTÉGRALEMENT CONSERVÉ */
+    /* MOBILE OPTIMISÉ - CODE ORIGINAL */
     .hamburger {
     display: none;
     flex-direction: column;
@@ -86,202 +86,135 @@
    }
    .mobile-overlay.active { opacity: 1; visibility: visible; }
 
-.mobile-overlay a {
- padding: 15px 0;
- width: 80%;
- text-align: center;
- text-decoration: none;
- color: var(--charcoal);
- font-family: 'Cinzel', serif;
- text-transform: uppercase;
- font-size: 1.3rem;
- letter-spacing: 4px;
- border-bottom: 1px solid rgba(0,0,0,0.05);
-}
+    .mobile-overlay a {
+     padding: 15px 0;
+     width: 80%;
+     text-align: center;
+     text-decoration: none;
+     color: var(--charcoal);
+     font-family: 'Cinzel', serif;
+     text-transform: uppercase;
+     font-size: 1.3rem;
+     letter-spacing: 4px;
+     border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
 
-.mobile-overlay a:last-child { border-bottom: none; }
+    .mobile-overlay a:last-child { border-bottom: none; }
 
- .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
- .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
- .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
- .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
- .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
- .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
- .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
- .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+    .hero { height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .hero h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 8px; margin-bottom: 10px; }
+    .vision { padding: 80px 10%; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); }
+    .vision h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 50px; }
+    .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
+    .vision-item { border-left: 1px solid var(--gold-subtle); padding-left: 25px; text-align: left; }
+    .vision-item h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-subtle); margin-bottom: 10px; }
+    .vision-item p { font-size: 0.9rem; color: #777; line-height: 1.6; }
 
- .services { padding: 80px 8%; }
- .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
- .service-card {
- background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
- border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
- text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
- }
- .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
- .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
- .service-card p { font-size: 0.8rem; color: #888; }
- .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
- .service-card:hover .line { width: 80px; }
+    .services { padding: 80px 8%; }
+    .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto; }
+    .service-card {
+     background: var(--white); flex: 0 1 300px; min-height: 200px; padding: 40px;
+     border: 1px solid var(--border); text-decoration: none; color: var(--charcoal);
+     text-align: center; display: flex; flex-direction: column; justify-content: center; transition: 0.4s;
+    }
+    .service-card:hover { border-color: var(--gold-subtle); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+    .service-card h3 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 10px; }
+    .service-card p { font-size: 0.8rem; color: #888; }
+    .line { width: 30px; height: 1px; background: var(--gold-subtle); margin: 15px auto; transition: 0.4s; }
+    .service-card:hover .line { width: 80px; }
 
- .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
- .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
- .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
- .btn-enter:hover { background: var(--charcoal); color: white; }
+    .marketplace-banner { padding: 100px 8%; background: #fff; text-align: center; border-top: 1px solid var(--border); }
+    .marketplace-banner h2 { font-family: 'Cinzel', serif; letter-spacing: 5px; margin-bottom: 20px; }
+    .btn-enter { display: inline-block; margin-top: 30px; padding: 15px 40px; border: 1px solid var(--charcoal); color: var(--charcoal); text-decoration: none; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; }
+    .btn-enter:hover { background: var(--charcoal); color: white; }
 
- .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
- .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
- .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
- footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 0.7rem; letter-spacing: 2px; color: #999; }
+    .cta-styliste { background: var(--charcoal); color: white; padding: 60px 10%; text-align: center; }
+    .cta-styliste h3 { font-family: 'Cinzel'; letter-spacing: 3px; margin-bottom: 15px; }
+    .cta-styliste a { color: var(--gold-subtle); text-decoration: none; border-bottom: 1px solid var(--gold-subtle); padding-bottom: 5px; font-size: 0.8rem; letter-spacing: 2px; }
 
- [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
- [data-animate].animated { opacity: 1; transform: translateY(0); }
+    [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
+    [data-animate].animated { opacity: 1; transform: translateY(0); }
 
- @media (max-width: 768px) {
- .vision-grid { grid-template-columns: 1fr; }
- .service-card { flex: 0 1 100%; }
- }
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .hamburger { display: flex; }
+        .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
+        .vision-grid { grid-template-columns: 1fr; }
+        .service-card { flex: 0 1 100%; }
+    }
 
- .btn-contact-choice {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto;
-    padding: 15px;
-    border-radius: 15px;
-    color: white !important;
-    font-weight: bold;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: transform 0.2s;
-    border: none;
-}
-.btn-contact-choice:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
-}
-
-/* --- STYLES ÉCOSYSTÈME ORBITAL CONSERVÉS DE image_5.png --- */
- .orbit-container {
-    position: relative;
-    width: 100%;
-    height: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-    transform-style: preserve-3d;
- }
-
- .core-node {
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(10,10,10,0.9) 0%, rgba(0,0,0,1) 100%);
-    border: 2px solid #B5935E;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 0 50px rgba(181, 147, 94, 0.2);
-    z-index: 10;
- }
-
- .orbit-card {
-    position: absolute;
-    width: 190px;
-    height: 210px;
-    perspective: 1000px;
-    transition: transform 0.3s ease-out;
- }
-
- .hex-wrapper {
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(181, 147, 94, 0.3);
-    border-radius: 15px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-    text-align: center;
-    transition: transform 0.3s ease, background 0.3s ease, border 0.3s ease;
- }
-
- .hex-icon-box {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(181, 147, 94, 0.05);
-    border: 1px solid rgba(181, 147, 94, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 12px;
-    color: #B5935E;
-    font-size: 1.3rem;
- }
-
- .hex-label {
-    font-family: 'Cinzel';
-    font-size: 0.75rem;
-    color: #B5935E;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
- }
-
- .hex-desc {
-    font-size: 0.65rem;
-    color: #CCC;
-    line-height: 1.5;
-    margin: 0;
- }
-
- .orbit-card:hover .hex-wrapper {
-    background: rgba(20, 20, 20, 0.95);
-    border-color: #B5935E;
-    transform: translateY(-5px);
-    box-shadow: 0 0 25px rgba(181, 147, 94, 0.4);
- }
-
- .bg-lines {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 900px;
-    height: 900px;
-    opacity: 0.15;
-    pointer-events: none;
- }
-
- @media (max-width: 768px) {
+    /* --- STYLES SECTION ORBITALE --- */
     .orbit-container {
-        height: 600px;
-        transform: scale(0.85);
+        position: relative;
+        width: 100%;
+        height: 800px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 1200px;
+        z-index: 10;
     }
+
+    .orbit-card {
+        position: absolute;
+        width: 180px;
+        height: 200px;
+        z-index: 20;
+    }
+
     .hex-wrapper {
-        padding: 15px;
+        width: 100%;
+        height: 100%;
+        background: #B5935E;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        padding: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    .hex-icon-box {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 8px;
-        font-size: 1.1rem;
+
+    .hex-inner {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, #1a1a1a, #000);
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        text-align: center;
     }
-    .hex-label {
-        font-size: 0.65rem;
+
+    .hex-icon { color: #B5935E; font-size: 1.5rem; margin-bottom: 10px; }
+    .hex-title { font-family: 'Cinzel'; font-size: 0.75rem; color: #FFF; letter-spacing: 2px; margin-bottom: 5px; }
+    .hex-text { font-size: 0.6rem; color: #888; line-height: 1.3; }
+
+    .core-node {
+        width: 260px;
+        height: 260px;
+        background: #000;
+        border: 2px solid #B5935E;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(181, 147, 94, 0.3);
+        z-index: 50;
     }
-    .hex-desc {
-        display: none;
+
+    .btn-contact-choice {
+        display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto;
+        padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem;
+        text-decoration: none; transition: transform 0.2s; border: none;
     }
- }
+
+    @media (max-width: 768px) {
+        .orbit-container { height: 500px; transform: scale(0.7); }
+        .hex-text { display: none; }
+    }
 </style>
 </head>
 
@@ -385,79 +318,36 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 </section>
 {% endif %}
 
-<section id="why-sage" style="background: #000; color: white; padding: 100px 0; overflow: hidden; position: relative;">
+<section id="why-sage" style="background: #000; color: white; padding: 120px 0; overflow: hidden; position: relative;">
 
-    <div class="bg-lines">
-        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-            <circle cx="50" cy="50" r="30" fill="none" stroke="#B5935E" stroke-width="0.1" opacity="0.5"/>
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#B5935E" stroke-width="0.1"/>
-            <line x1="0" y1="50" x2="100" y2="50" stroke="#B5935E" stroke-width="0.05" opacity="0.3"/>
-            <line x1="50" y1="0" x2="50" y2="100" stroke="#B5935E" stroke-width="0.05" opacity="0.3"/>
-            <g id="line-system" stroke="#B5935E" stroke-width="0.1" opacity="0.5">
-                <line id="line-shield" x1="50" y1="50" x2="50" y2="20"/>
-                <line id="line-bar-chart" x1="50" y1="50" x2="30" y2="35"/>
-                <line id="line-buildings" x1="50" y2="50" x2="70" y2="35"/>
-                <line id="line-cpu" x1="50" y1="50" x2="30" y2="65"/>
-                <line id="line-diamond" x1="50" y1="50" x2="70" y2="65"/>
-                <line id="line-handshake" x1="50" y1="50" x2="50" y2="80"/>
-            </g>
+    <div id="connection-system" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+        <svg width="100%" height="100%" style="overflow: visible;">
+            <circle cx="50%" cy="50%" r="320" fill="none" stroke="rgba(181, 147, 94, 0.1)" stroke-width="1" />
+            <g id="dynamic-lines"></g>
         </svg>
     </div>
 
-    <div class="orbit-container">
-
+    <div class="orbit-container" id="orbit-root">
         <div class="core-node">
-            <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 3px; color: #B5935E; margin: 0;">POURQUOI<br>SAGE EMPIRE</h2>
+            <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 4px; color: #B5935E; margin-bottom: 5px;">POURQUOI</p>
+            <h2 style="font-family: 'Cinzel'; font-size: 1.8rem; letter-spacing: 6px; color: #FFF; margin: 0;">SAGE<br>EMPIRE</h2>
         </div>
 
-        <div class="orbit-card" data-angle="270" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-shield-alt"></i></div>
-                <h4 class="hex-label">STRUCTURE</h4>
-                <p class="hex-desc">Nous garantissons la solidité et la pérennité de votre projet à chaque étape.</p>
-            </div>
-        </div>
+        <div class="orbit-card" data-angle="270" data-label="STRUCTURE" data-icon="fa-shield-alt" data-desc="Une réussite qui exige une structure sans faille."></div>
+        <div class="orbit-card" data-angle="330" data-label="EXPERTISE" data-icon="fa-building" data-desc="L'alliance de l'immobilier et de la vision."></div>
+        <div class="orbit-card" data-angle="30" data-label="EXIGENCE" data-icon="fa-gem" data-desc="Une discipline globale sans zone d'ombre."></div>
+        <div class="orbit-card" data-angle="90" data-label="CONFIANCE" data-icon="fa-crown" data-desc="Un écosystème pour ceux qui visent le sommet."></div>
+        <div class="orbit-card" data-angle="150" data-label="TECHNOLOGIE" data-icon="fa-microchip" data-desc="La précision du code au service du luxe."></div>
+        <div class="orbit-card" data-angle="210" data-label="PERFORMANCE" data-icon="fa-chart-bar" data-desc="Nous bâtissons des standards élevés."></div>
+    </div>
 
-        <div class="orbit-card" data-angle="330" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-chart-line"></i></div>
-                <h4 class="hex-label">EXPERT</h4>
-                <p class="hex-desc">La solidité d’un patrimoine immobilier d’exception.</p>
-            </div>
+    <div style="text-align: center; margin-top: 40px; padding: 0 10%;">
+        <p style="color: #AAA; font-style: italic; max-width: 800px; margin: 0 auto 30px;">
+            "L'excellence doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier."
+        </p>
+        <div style="font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold;">
+            UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
         </div>
-
-        <div class="orbit-card" data-angle="30" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-crown"></i></div>
-                <h4 class="hex-label">PRESTIGE</h4>
-                <p class="hex-desc">L'élégance d’une silhouette et d’une vision globale.</p>
-            </div>
-        </div>
-
-        <div class="orbit-card" data-angle="90" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-microchip"></i></div>
-                <h4 class="hex-label">TECHNOLOGIE</h4>
-                <p class="hex-desc">La précision d’un code informatique au service du luxe.</p>
-            </div>
-        </div>
-
-        <div class="orbit-card" data-angle="150" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-gem"></i></div>
-                <h4 class="hex-label">EXIGENCE</h4>
-                <p class="hex-desc">Une discipline globale qui ne souffre aucune zone d’ombre.</p>
-            </div>
-        </div>
-
-        <div class="orbit-card" data-angle="210" style="width: 190px; height: 210px;">
-            <div class="hex-wrapper">
-                <div class="hex-icon-box"><i class="fas fa-handshake"></i></div>
-                <h4 class="hex-label">CONFIANCE</h4>
-                <p class="hex-desc">Un écosystème forgé pour ceux qui visent le sommet.</p>
-            </div>
-        </div>
-
     </div>
 </section>
 
@@ -468,11 +358,11 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 </div>
 
 <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
-<a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE MODE</a>
-<a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">IMMOBILIER</a>
-<a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">ÉVÉNEMENTIEL</a>
-<a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">SAGE DIGITAL</a>
-<a href="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-subtle)'" onmouseout="this.style.borderColor='transparent'">MAKO SERVICES</a>
+<a href="{% url 'galerie_mode' %}" style="color: var(--charcoal); text-decoration: none;">SAGE MODE</a>
+<a href="{% url 'immobilier' %}" style="color: var(--charcoal); text-decoration: none;">IMMOBILIER</a>
+<a href="{% url 'evenementiel' %}" style="color: var(--charcoal); text-decoration: none;">ÉVÉNEMENTIEL</a>
+<a href="{% url 'sage_digital' %}" style="color: var(--charcoal); text-decoration: none;">SAGE DIGITAL</a>
+<a href="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none;">MAKO SERVICES</a>
 </div>
 
 <div style="margin-bottom: 50px;">
@@ -494,16 +384,9 @@ CONTACTEZ L'EMPIRE
       </div>
       <div class="modal-body text-center pt-0 pb-5">
         <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
-
-        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">
-          <span class="me-2">📱</span> WHATSAPP
-        </a>
-
-        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">
-          <span class="me-2">📧</span> EMAIL
-        </a>
-
-        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal" style="font-size: 0.8rem; letter-spacing: 1px;">FERMER</button>
+        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">WHATSAPP</a>
+        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">EMAIL</a>
+        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal">FERMER</button>
       </div>
     </div>
   </div>
@@ -513,67 +396,83 @@ CONTACTEZ L'EMPIRE
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
-// FONCTION TOGGLE MENU MOBILE ORIGINALE INTÉGRALEMENT CONSERVÉE
+// --- MENU MOBILE ORIGINAL (INTOUCHÉ) ---
 function toggleMenu() {
-const menu = document.getElementById('mobileMenu');
-const hamburger = document.querySelector('.hamburger');
-menu.classList.toggle('active');
-hamburger.classList.toggle('open');
-document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    menu.classList.toggle('active');
+    hamburger.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
 }
 
 document.getElementById('mobileMenu').addEventListener('click', function(e) {
-if (e.target === this) {
-toggleMenu();
-}
+    if (e.target === this) toggleMenu();
 });
 
-// LOGIQUE D'ANIMATION STANDARD ORIGINALE INTÉGRALEMENT CONSERVÉE
+// --- ANIMATION D'ENTRÉE ET ORBITE ---
 document.addEventListener("DOMContentLoaded", function() {
-const elements = document.querySelectorAll('[data-animate]');
-elements.forEach((el, index) => {
-setTimeout(() => { el.classList.add('animated'); }, 200 * index);
-});
-});
-
-// NOUVELLE LOGIQUE D'ANIMATION ORBITALE COORDONNÉE (SANS TOUCHER AU RESTE)
-document.addEventListener("DOMContentLoaded", function() {
-    const cards = document.querySelectorAll('.orbit-card');
-    const container = document.querySelector('.orbit-container');
-    const isMobile = window.innerWidth < 768;
-
-    const radius = isMobile ? 220 : 330;
-
-    // Positionnement initial en cercle CONSERVÉ DE image_5.png
-    cards.forEach((card, index) => {
-        const angle = (parseInt(card.dataset.angle) * Math.PI) / 180;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
+    // Animation d'entrée originale
+    const animElements = document.querySelectorAll('[data-animate]');
+    animElements.forEach((el, index) => {
+        setTimeout(() => { el.classList.add('animated'); }, 200 * index);
     });
 
-    // --- ANIMATION ORBITALE COORDONNÉE (NOUVEAU - TOUTES LES CARTES ENSEMBLE) ---
-    //timeline GSAP pour faire tourner le conteneur principal
-    const mainOrbit = gsap.to(container, {
-        rotation: 360,
-        duration: 40, // Un tour complet en 40 secondes, toutes les cartes ensemble
+    // Configuration Orbite
+    const cards = document.querySelectorAll('.orbit-card');
+    const lineGroup = document.getElementById('dynamic-lines');
+    const isMobile = window.innerWidth < 768;
+    const radius = isMobile ? 220 : 320;
+
+    cards.forEach(card => {
+        card.innerHTML = `
+            <div class="hex-wrapper">
+                <div class="hex-inner">
+                    <i class="fas ${card.dataset.icon} hex-icon"></i>
+                    <div class="hex-title">${card.dataset.label}</div>
+                    <div class="hex-text">${card.dataset.desc}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    let rotationObj = { angle: 0 };
+
+    // Animation de rotation coordonnée
+    gsap.to(rotationObj, {
+        angle: 360,
+        duration: 50,
         repeat: -1,
         ease: "none",
-        transformOrigin: "center center",
         onUpdate: () => {
-            //on s'assure que les cartes restent droites (rotation inverse)
-            cards.forEach(card => {
-                gsap.set(card, { rotation: -mainOrbit.targets()[0].rotation });
+            lineGroup.innerHTML = '';
+            cards.forEach((card) => {
+                const baseAngle = parseInt(card.dataset.angle);
+                const currentAngle = ((baseAngle + rotationObj.angle) * Math.PI) / 180;
+
+                const x = Math.cos(currentAngle) * radius;
+                const y = Math.sin(currentAngle) * radius;
+
+                gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
+
+                // Lignes de connexion vers le centre
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", "50%");
+                line.setAttribute("y1", "50%");
+                line.setAttribute("x2", `calc(50% + ${x}px)`);
+                line.setAttribute("y2", `calc(50% + ${y}px)`);
+                line.setAttribute("stroke", "rgba(181, 147, 94, 0.3)");
+                line.setAttribute("stroke-width", "0.5");
+                lineGroup.appendChild(line);
             });
         }
     });
 
-    // Effet 3D léger au mouvement de souris CONSERVÉ DE image_5.png
+    // Effet de mouvement 3D au survol
     if (!isMobile) {
         window.addEventListener('mousemove', (e) => {
-            const rotX = (e.clientY / window.innerHeight - 0.5) * -15;
-            const rotY = (e.clientX / window.innerWidth - 0.5) * 15;
-            gsap.to(container, { rotationX: rotX, rotationY: rotY, duration: 1 });
+            const rotX = (e.clientY / window.innerHeight - 0.5) * -10;
+            const rotY = (e.clientX / window.innerWidth - 0.5) * 10;
+            gsap.to("#orbit-root", { rotationX: rotX, rotationY: rotY, duration: 1 });
         });
     }
 });
