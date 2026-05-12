@@ -19,6 +19,7 @@
     --ivory: #F9F8F6;
     --charcoal: #1A1A1A;
     --gold-subtle: #B5935E;
+    --gold-glow: #E8C080;
     --border: #E5E2DA;
     --white: #ffffff;
     }
@@ -135,85 +136,145 @@
     [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
     [data-animate].animated { opacity: 1; transform: translateY(0); }
 
-    @media (max-width: 768px) {
-        .nav-links { display: none; }
-        .hamburger { display: flex; }
-        .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
-        .vision-grid { grid-template-columns: 1fr; }
-        .service-card { flex: 0 1 100%; }
+    /* ====================== SECTION POURQUOI SAGE EMPIRE - VERSION PREMIUM ====================== */
+    #why-sage {
+        background: #0a0a0a;
+        color: white;
+        padding: 140px 0 100px;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* --- STYLES SECTION ORBITALE --- */
     .orbit-container {
         position: relative;
         width: 100%;
-        height: 800px;
+        height: 820px;
         display: flex;
         justify-content: center;
         align-items: center;
-        perspective: 1200px;
-        z-index: 10;
+        perspective: 1400px;
     }
 
-    .orbit-card {
-        position: absolute;
-        width: 180px;
-        height: 200px;
-        z-index: 20;
-    }
-
-    .hex-wrapper {
-        width: 100%;
-        height: 100%;
-        background: #B5935E;
-        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        padding: 1px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .hex-inner {
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, #1a1a1a, #000);
-        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .hex-icon { color: #B5935E; font-size: 1.5rem; margin-bottom: 10px; }
-    .hex-title { font-family: 'Cinzel'; font-size: 0.75rem; color: #FFF; letter-spacing: 2px; margin-bottom: 5px; }
-    .hex-text { font-size: 0.6rem; color: #888; line-height: 1.3; }
-
-    .core-node {
-        width: 260px;
-        height: 260px;
-        background: #000;
-        border: 2px solid #B5935E;
+    .central-circle {
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle at 40% 40%, #1f1f1f, #000);
+        border: 3px solid var(--gold-subtle);
         border-radius: 50%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-        box-shadow: 0 0 50px rgba(181, 147, 94, 0.3);
-        z-index: 50;
+        box-shadow: 0 0 80px rgba(181, 147, 94, 0.5),
+                    inset 0 0 60px rgba(232, 192, 128, 0.15);
+        z-index: 10;
+        animation: pulse-glow 8s ease-in-out infinite;
     }
 
-    .btn-contact-choice {
-        display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto;
-        padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem;
-        text-decoration: none; transition: transform 0.2s; border: none;
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 80px rgba(181, 147, 94, 0.5), inset 0 0 60px rgba(232, 192, 128, 0.15); }
+        50% { box-shadow: 0 0 110px rgba(181, 147, 94, 0.7), inset 0 0 80px rgba(232, 192, 128, 0.25); }
+    }
+
+    .central-circle h2 {
+        font-family: 'Cinzel', serif;
+        font-size: 2.1rem;
+        letter-spacing: 8px;
+        color: #E8C080;
+        margin: 0;
+        line-height: 1.1;
+    }
+
+    .central-circle p {
+        font-size: 0.75rem;
+        letter-spacing: 4px;
+        color: var(--gold-subtle);
+        margin-top: 8px;
+        font-weight: 400;
+    }
+
+    .orbit-card {
+        position: absolute;
+        width: 210px;
+        transition: all 0.4s ease;
+    }
+
+    .hex-wrapper {
+        width: 100%;
+        height: 100%;
+        padding: 3px;
+        background: linear-gradient(145deg, #E8C080, #B5935E);
+        clip-path: polygon(50% 8%, 92% 25%, 92% 75%, 50% 92%, 8% 75%, 8% 25%);
+        box-shadow: 0 0 35px rgba(232, 192, 128, 0.6);
+    }
+
+    .hex-inner {
+        width: 100%;
+        height: 100%;
+        background: #0f0f0f;
+        clip-path: polygon(50% 8%, 92% 25%, 92% 75%, 50% 92%, 8% 75%, 8% 25%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 18px 12px;
+        transition: all 0.4s ease;
+    }
+
+    .orbit-card:hover .hex-inner {
+        background: #1a1a1a;
+        transform: scale(1.08) translateY(-10px);
+        box-shadow: 0 0 40px rgba(232, 192, 128, 0.8);
+    }
+
+    .hex-icon { font-size: 2.2rem; color: #E8C080; margin-bottom: 12px; }
+    .hex-title {
+        font-family: 'Cinzel', serif;
+        font-size: 0.95rem;
+        color: #E8C080;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+    }
+    .hex-text {
+        font-size: 0.78rem;
+        color: #bbb;
+        line-height: 1.35;
+        padding: 0 8px;
+    }
+
+    .bottom-quote {
+        text-align: center;
+        max-width: 850px;
+        margin: 80px auto 30px;
+        padding: 0 20px;
+        font-style: italic;
+        color: #aaa;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .bottom-tagline {
+        text-align: center;
+        font-family: 'Cinzel', serif;
+        font-size: 1.35rem;
+        letter-spacing: 6px;
+        color: #E8C080;
+        font-weight: 700;
     }
 
     @media (max-width: 768px) {
-        .orbit-container { height: 500px; transform: scale(0.7); }
-        .hex-text { display: none; }
+        .nav-links { display: none; }
+        .hamburger { display: flex; }
+        .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
+        .vision-grid { grid-template-columns: 1fr; }
+        .service-card { flex: 0 1 100%; }
+        .orbit-container { height: 1100px; }
+        .central-circle { width: 220px; height: 220px; }
+        .central-circle h2 { font-size: 1.55rem; letter-spacing: 4px; }
+        .orbit-card { width: 100%; max-width: 320px; position: relative; margin: 25px auto; }
+        .hex-wrapper, .hex-inner { clip-path: none; border-radius: 12px; }
     }
 </style>
 </head>
@@ -318,36 +379,28 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 </section>
 {% endif %}
 
-<section id="why-sage" style="background: #000; color: white; padding: 120px 0; overflow: hidden; position: relative;">
-
-    <div id="connection-system" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
-        <svg width="100%" height="100%" style="overflow: visible;">
-            <circle cx="50%" cy="50%" r="320" fill="none" stroke="rgba(181, 147, 94, 0.1)" stroke-width="1" />
-            <g id="dynamic-lines"></g>
-        </svg>
-    </div>
+<!-- ====================== SECTION MODIFIÉE ====================== -->
+<section id="why-sage">
 
     <div class="orbit-container" id="orbit-root">
-        <div class="core-node">
-            <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 4px; color: #B5935E; margin-bottom: 5px;">POURQUOI</p>
-            <h2 style="font-family: 'Cinzel'; font-size: 1.8rem; letter-spacing: 6px; color: #FFF; margin: 0;">SAGE<br>EMPIRE</h2>
+        <div class="central-circle">
+            <p>POURQUOI</p>
+            <h2>SAGE<br>EMPIRE</h2>
         </div>
 
-        <div class="orbit-card" data-angle="270" data-label="STRUCTURE" data-icon="fa-shield-alt" data-desc="Une réussite qui exige une structure sans faille."></div>
-        <div class="orbit-card" data-angle="330" data-label="EXPERTISE" data-icon="fa-building" data-desc="L'alliance de l'immobilier et de la vision."></div>
-        <div class="orbit-card" data-angle="30" data-label="EXIGENCE" data-icon="fa-gem" data-desc="Une discipline globale sans zone d'ombre."></div>
-        <div class="orbit-card" data-angle="90" data-label="CONFIANCE" data-icon="fa-crown" data-desc="Un écosystème pour ceux qui visent le sommet."></div>
-        <div class="orbit-card" data-angle="150" data-label="TECHNOLOGIE" data-icon="fa-microchip" data-desc="La précision du code au service du luxe."></div>
-        <div class="orbit-card" data-angle="210" data-label="PERFORMANCE" data-icon="fa-chart-bar" data-desc="Nous bâtissons des standards élevés."></div>
+        <div class="orbit-card" data-angle="0"   data-icon="fa-shield-alt" data-label="STRUCTURE" data-desc="Parce que la réussite exige une structure sans faille."></div>
+        <div class="orbit-card" data-angle="60"  data-icon="fa-chart-bar" data-label="PERFORMANCE" data-desc="Nous bâtissons des standards de haute performance."></div>
+        <div class="orbit-card" data-angle="120" data-icon="fa-microchip" data-label="TECHNOLOGIE" data-desc="La haute technologie au service de l'excellence."></div>
+        <div class="orbit-card" data-angle="180" data-icon="fa-crown" data-label="CONFIANCE" data-desc="Nous forgeons un écosystème de confiance pour ceux qui visent le sommet."></div>
+        <div class="orbit-card" data-angle="240" data-icon="fa-gem" data-label="EXIGENCE" data-desc="Une rigueur absolue dans chaque détail. Aucune zone d'ombre."></div>
+        <div class="orbit-card" data-angle="300" data-icon="fa-building" data-label="EXPERTISE" data-desc="Une expertise immobilière alliée à une vision d'avant-garde."></div>
     </div>
 
-    <div style="text-align: center; margin-top: 40px; padding: 0 10%;">
-        <p style="color: #AAA; font-style: italic; max-width: 800px; margin: 0 auto 30px;">
-            "L'excellence doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier."
-        </p>
-        <div style="font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold;">
-            UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
-        </div>
+    <div class="bottom-quote">
+        « Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier ou l'élégance d'une silhouette. »
+    </div>
+    <div class="bottom-tagline">
+        UN SEUL NOM. UNE VISION GLOBALE.<br>UNE EXIGENCE ABSOLUE.
     </div>
 </section>
 
@@ -396,7 +449,7 @@ CONTACTEZ L'EMPIRE
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
-// --- MENU MOBILE ORIGINAL (INTOUCHÉ) ---
+// --- MENU MOBILE ORIGINAL ---
 function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
     const hamburger = document.querySelector('.hamburger');
@@ -409,72 +462,62 @@ document.getElementById('mobileMenu').addEventListener('click', function(e) {
     if (e.target === this) toggleMenu();
 });
 
-// --- ANIMATION D'ENTRÉE ET ORBITE ---
+// === ANIMATION ORBITALE PREMIUM (Option B) ===
 document.addEventListener("DOMContentLoaded", function() {
-    // Animation d'entrée originale
-    const animElements = document.querySelectorAll('[data-animate]');
-    animElements.forEach((el, index) => {
-        setTimeout(() => { el.classList.add('animated'); }, 200 * index);
-    });
-
-    // Configuration Orbite
     const cards = document.querySelectorAll('.orbit-card');
-    const lineGroup = document.getElementById('dynamic-lines');
-    const isMobile = window.innerWidth < 768;
-    const radius = isMobile ? 220 : 320;
+    const container = document.getElementById('orbit-root');
+    let rotation = 0;
+    let isPaused = false;
+    const speed = 0.085;
 
     cards.forEach(card => {
+        const angle = parseFloat(card.dataset.angle);
+        const icon = card.dataset.icon;
+        const label = card.dataset.label;
+        const desc = card.dataset.desc;
+
         card.innerHTML = `
             <div class="hex-wrapper">
                 <div class="hex-inner">
-                    <i class="fas ${card.dataset.icon} hex-icon"></i>
-                    <div class="hex-title">${card.dataset.label}</div>
-                    <div class="hex-text">${card.dataset.desc}</div>
+                    <i class="fas ${icon} hex-icon"></i>
+                    <div class="hex-title">${label}</div>
+                    <div class="hex-text">${desc}</div>
                 </div>
             </div>
         `;
     });
 
-    let rotationObj = { angle: 0 };
+    function animate() {
+        if (!isPaused) rotation += speed;
 
-    // Animation de rotation coordonnée
-    gsap.to(rotationObj, {
-        angle: 360,
-        duration: 50,
-        repeat: -1,
-        ease: "none",
-        onUpdate: () => {
-            lineGroup.innerHTML = '';
-            cards.forEach((card) => {
-                const baseAngle = parseInt(card.dataset.angle);
-                const currentAngle = ((baseAngle + rotationObj.angle) * Math.PI) / 180;
+        cards.forEach(card => {
+            const baseAngle = parseFloat(card.dataset.angle);
+            const currentAngle = baseAngle + rotation;
+            const rad = (currentAngle * Math.PI) / 180;
+            const radius = window.innerWidth < 768 ? 0 : 340;
 
-                const x = Math.cos(currentAngle) * radius;
-                const y = Math.sin(currentAngle) * radius;
-
-                gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
-
-                // Lignes de connexion vers le centre
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", "50%");
-                line.setAttribute("y1", "50%");
-                line.setAttribute("x2", `calc(50% + ${x}px)`);
-                line.setAttribute("y2", `calc(50% + ${y}px)`);
-                line.setAttribute("stroke", "rgba(181, 147, 94, 0.3)");
-                line.setAttribute("stroke-width", "0.5");
-                lineGroup.appendChild(line);
-            });
-        }
-    });
-
-    // Effet de mouvement 3D au survol
-    if (!isMobile) {
-        window.addEventListener('mousemove', (e) => {
-            const rotX = (e.clientY / window.innerHeight - 0.5) * -10;
-            const rotY = (e.clientX / window.innerWidth - 0.5) * 10;
-            gsap.to("#orbit-root", { rotationX: rotX, rotationY: rotY, duration: 1 });
+            if (radius > 0) {
+                const x = Math.cos(rad) * radius;
+                const y = Math.sin(rad) * radius;
+                gsap.set(card, {
+                    x: x,
+                    y: y,
+                    xPercent: -50,
+                    yPercent: -50,
+                    rotation: currentAngle + 90
+                });
+            }
         });
+        requestAnimationFrame(animate);
     }
+
+    container.addEventListener('mouseenter', () => isPaused = true);
+    container.addEventListener('mouseleave', () => isPaused = false);
+
+    animate();
+
+    // Animation d'entrée du centre
+    gsap.from(".central-circle", { scale: 0.6, opacity: 0, duration: 1.8, ease: "power3.out" });
 });
 </script>
 
