@@ -163,6 +163,26 @@
     transform: scale(1.02);
     opacity: 0.9;
 }
+
+/* STYLE SPÉCIFIQUE SECTION ORBITALE */
+@keyframes pulseCore {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.05); }
+}
+.orbit-card { cursor: pointer; transition: transform 0.3s ease; z-index: 15; }
+.orbit-card:hover .card-inner {
+    border-color: #B5935E;
+    box-shadow: 0 0 25px rgba(181, 147, 94, 0.4);
+    background: rgba(25, 25, 25, 0.95);
+    transform: scale(1.1);
+}
+@media (max-width: 768px) {
+    .orbit-container { height: 550px !important; transform: scale(0.85); }
+    .orbit-ring { width: 380px !important; height: 380px !important; }
+    .orbit-card { width: 140px !important; }
+    .card-inner p { display: none; }
+    .card-inner h4 { font-size: 0.6rem !important; }
+}
 </style>
 </head>
 
@@ -266,22 +286,74 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 </section>
 {% endif %}
 
-<section style="background: #0A0A0A; color: white; padding: 120px 10%; text-align: center; border-top: 1px solid #1A1A1A;">
-<h2 style="font-family: 'Cinzel'; letter-spacing: 6px; color: #B5935E; margin-bottom: 40px;">POURQUOI SAGE EMPIRE ?</h2>
-<div style="max-width: 850px; margin: 0 auto; font-family: 'Lato'; line-height: 2.2; color: #EEE; font-size: 1.1rem;">
-<p style="margin-bottom: 30px;">
-Parce que la réussite exige une <strong>structure sans faille</strong>. SAGE EMPIRE ne se contente pas de l’esthétique ; nous bâtissons des standards de haute performance.
-</p>
-<p style="margin-bottom: 30px; color: #AAA; font-style: italic;">
-"Nous croyons que l’excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la <strong>précision d’un code informatique</strong> que dans la <strong>solidité d’un patrimoine immobilier</strong> ou l’élégance d’une silhouette."
-</p>
-<p>
-En unifiant le luxe, l’expertise immobilière et la haute technologie, nous offrons bien plus que des services : nous forgeons un écosystème de confiance pour ceux qui visent le sommet.
-</p>
-<div style="margin-top: 50px; font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-weight: bold; font-size: 1.2rem;">
-UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.
-</div>
-</div>
+<section id="why-sage" style="background: #000; color: white; padding: 100px 0; overflow: hidden; position: relative; perspective: 1500px;">
+
+    <div class="d-md-none text-center mb-4">
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 4px; color: #B5935E; font-size: 1.5rem;">POURQUOI SAGE EMPIRE ?</h2>
+    </div>
+
+    <div class="orbit-container" style="position: relative; width: 100%; height: 750px; display: flex; justify-content: center; align-items: center;">
+
+        <div class="core-node" style="z-index: 20; width: 220px; height: 220px; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); border: 2px solid #B5935E; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 0 50px rgba(181, 147, 94, 0.2); position: relative;">
+            <div class="core-glow" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 30px #B5935E; opacity: 0.3; animation: pulseCore 4s infinite ease-in-out;"></div>
+            <h2 style="font-family: 'Cinzel'; font-size: 1.1rem; letter-spacing: 3px; color: #B5935E; margin: 0; position: relative; z-index: 2; line-height: 1.5;">POURQUOI<br>SAGE EMPIRE</h2>
+        </div>
+
+        <div class="orbit-ring" style="position: absolute; width: 560px; height: 560px; border: 1px dashed rgba(181, 147, 94, 0.2); border-radius: 50%; pointer-events: none;"></div>
+
+        <div class="orbit-card" data-angle="0" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-shield-alt" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">STRUCTURE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">Une organisation sans faille pour des standards de haute performance.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="60" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-gem" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">EXIGENCE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">Une discipline globale qui ne souffre aucune zone d'ombre.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="120" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-microchip" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">TECHNOLOGIE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">La précision d'un code informatique au service du luxe.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="180" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-handshake" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">CONFIANCE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">Un écosystème forgé pour ceux qui visent le sommet.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="240" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-chart-line" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">EXPERTISE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">La solidité d'un patrimoine immobilier d'exception.</p>
+            </div>
+        </div>
+
+        <div class="orbit-card" data-angle="300" style="position: absolute; width: 190px; text-align: center;">
+            <div class="card-inner" style="background: rgba(15,15,15,0.85); backdrop-filter: blur(12px); padding: 20px; border-radius: 18px; border: 1px solid rgba(181, 147, 94, 0.3); transition: 0.5s;">
+                <i class="fas fa-crown" style="color: #B5935E; font-size: 1.6rem; margin-bottom: 12px;"></i>
+                <h4 style="font-family: 'Cinzel'; font-size: 0.75rem; color: #B5935E; letter-spacing: 2px; margin-bottom: 8px;">PRESTIGE</h4>
+                <p style="font-size: 0.65rem; color: #bbb; margin: 0; line-height: 1.5;">L'élégance d'une silhouette et d'une vision globale.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center" style="margin-top: -60px; position: relative; z-index: 30; padding: 0 10%;">
+        <p style="color: #B5935E; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold; font-size: 1rem;">UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.</p>
+    </div>
 </section>
 
 <footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
@@ -317,15 +389,8 @@ CONTACTEZ L'EMPIRE
       </div>
       <div class="modal-body text-center pt-0 pb-5">
         <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
-
-        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">
-          <span class="me-2">📱</span> WHATSAPP
-        </a>
-
-        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">
-          <span class="me-2">📧</span> EMAIL
-        </a>
-
+        <a href="https://wa.me/22891645869" target="_blank" class="btn btn-contact-choice mb-3" style="background-color: #64d474;">📱 WHATSAPP</a>
+        <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">📧 EMAIL</a>
         <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal" style="font-size: 0.8rem; letter-spacing: 1px;">FERMER</button>
       </div>
     </div>
@@ -333,27 +398,76 @@ CONTACTEZ L'EMPIRE
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
 function toggleMenu() {
-const menu = document.getElementById('mobileMenu');
-const hamburger = document.querySelector('.hamburger');
-menu.classList.toggle('active');
-hamburger.classList.toggle('open');
-document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    menu.classList.toggle('active');
+    hamburger.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
 }
-
-document.getElementById('mobileMenu').addEventListener('click', function(e) {
-if (e.target === this) {
-toggleMenu();
-}
-});
 
 document.addEventListener("DOMContentLoaded", function() {
-const elements = document.querySelectorAll('[data-animate]');
-elements.forEach((el, index) => {
-setTimeout(() => { el.classList.add('animated'); }, 200 * index);
-});
+    // Animation d'entrée des sections standard
+    const elements = document.querySelectorAll('[data-animate]');
+    elements.forEach((el, index) => {
+        setTimeout(() => { el.classList.add('animated'); }, 200 * index);
+    });
+
+    // --- LOGIQUE ORBITALE ---
+    const cards = document.querySelectorAll('.orbit-card');
+    const container = document.querySelector('.orbit-container');
+    const isMobile = window.innerWidth < 768;
+    const radius = isMobile ? 180 : 280;
+
+    // Positionnement des cartes
+    cards.forEach((card) => {
+        const angle = (parseInt(card.dataset.angle) * Math.PI) / 180;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
+    });
+
+    // Rotation infinie lente
+    let rotationProxy = { angle: 0 };
+    gsap.to(rotationProxy, {
+        angle: 360,
+        duration: 55, // Un tour complet en 55 secondes (effet luxe)
+        repeat: -1,
+        ease: "none",
+        onUpdate: () => {
+            cards.forEach((card) => {
+                const baseAngle = parseInt(card.dataset.angle);
+                const currentAngle = ((baseAngle + rotationProxy.angle) * Math.PI) / 180;
+                const x = Math.cos(currentAngle) * radius;
+                const y = Math.sin(currentAngle) * radius;
+                gsap.set(card, { x: x, y: y });
+            });
+        }
+    });
+
+    // Effet 3D Mouvement Souris (Desktop)
+    if (!isMobile) {
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const xPos = (clientX / window.innerWidth - 0.5) * 25;
+            const yPos = (clientY / window.innerHeight - 0.5) * 25;
+            gsap.to(container, { rotationY: xPos, rotationX: -yPos, ease: "power1.out", duration: 1.2 });
+        });
+    }
+
+    // Animation respirante individuelle
+    cards.forEach((card, i) => {
+        gsap.to(card, {
+            y: "+=12",
+            repeat: -1,
+            yoyo: true,
+            duration: 2.5 + i * 0.5,
+            ease: "sine.inOut"
+        });
+    });
 });
 </script>
 
