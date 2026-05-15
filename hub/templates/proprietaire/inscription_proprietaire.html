@@ -39,18 +39,20 @@
         border: none;
         cursor: pointer;
         margin-top: 20px;
+        transition: opacity 0.3s;
     }
+
+    .btn-empire:hover { opacity: 0.9; }
 
     /* On nettoie les répétitions de texte en haut */
     .hide-duplicate { display: none; }
 </style>
 
 <div class="container">
-    <!-- On garde tes textes exactement comme dans ton code -->
     <div class="card-container">
 
         <div class="text-center mb-6">
-            <h2 class="text-2xl font-medium mb-2">Code d'invitation</h2>
+            <h2 class="text-2xl font-medium mb-2" style="font-family: 'Cinzel', serif;">Code d'invitation</h2>
             <p class="text-gray-600 text-sm">Veuillez entrer le code qui vous a été transmis</p>
         </div>
 
@@ -58,17 +60,16 @@
             {% csrf_token %}
 
             <div class="mb-4">
-                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2" style="font-size: 0.7rem; letter-spacing: 1px;">
                     Code d'invitation
                 </label>
-                <!-- On applique le style au champ du formulaire -->
                 {{ form.code|add_class:"input-empire" }}
 
                 {% if form.code.errors %}
-                    <p class="text-red-500 text-xs mt-2">{{ form.code.errors.0 }}</p>
+                    <p class="text-red-500 text-xs mt-2" style="color: #dc3545; font-size: 0.8rem;">{{ form.code.errors.0 }}</p>
                 {% endif %}
 
-                <p class="text-xs text-gray-500 mt-3">
+                <p class="text-xs text-gray-500 mt-3" style="font-size: 0.75rem; color: #888;">
                     Ce code vous a été envoyé après la signature du contrat.
                 </p>
             </div>
@@ -78,28 +79,40 @@
             </button>
         </form>
 
-        <div class="mt-8 text-center">
-            <p class="text-gray-600 text-sm">
+        <div class="mt-8 text-center" style="margin-top: 30px;">
+            <p class="text-gray-600 text-sm" style="font-size: 0.9rem;">
                 Vous n'avez pas encore de code ?<br>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" class="text-[#D4AF37] font-bold" style="text-decoration: none;">
-    Contactez notre équipe pour devenir partenaire
-</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" class="text-[#D4AF37] font-bold" style="text-decoration: none; color: #B8860B;">
+                    Contactez notre équipe pour devenir partenaire
+                </a>
             </p>
         </div>
     </div>
 
-    <!-- Login link centré -->
-<div style="display: flex; justify-content: center; width: 100%; margin-top: 20px;">
-    <a href="{% url 'connexion_proprietaire' %}" style="color: #666; text-decoration: none; font-size: 0.85rem; text-align: center;">
-        ← J'ai déjà un compte
-    </a>
+    <div style="display: flex; justify-content: center; width: 100%; margin-top: 20px;">
+        <a href="{% url 'connexion_proprietaire' %}" style="color: #666; text-decoration: none; font-size: 0.85rem; text-align: center;">
+            ← J'ai déjà un compte
+        </a>
+    </div>
 </div>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 25px; border: none; background-color: white;">
+      <div class="modal-body text-center py-5">
+        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
+        <a href="https://wa.me/22891645869" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #64d474; border: none;">📱 WHATSAPP</a>
+        <a href="mailto:contacts@sage-empire.com" style="display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #559db7; border: none;">📧 EMAIL</a>
+        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal">FERMER</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-    // Ce petit script va supprimer les textes "Sage Empire" en double qui traînent en haut de page
-    document.querySelectorAll('h1').forEach(el => {
-        if(el.textContent.includes("Sage Empire") && !el.closest('.card-container')) {
+    // Suppression des doublons de titres hors de la carte
+    document.querySelectorAll('h1, h2').forEach(el => {
+        if((el.textContent.includes("Sage Empire") || el.textContent.includes("SAGE EMPIRE")) && !el.closest('.card-container')) {
             el.style.display = 'none';
         }
     });
