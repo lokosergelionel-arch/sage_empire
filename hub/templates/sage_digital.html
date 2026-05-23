@@ -105,25 +105,30 @@
             color: var(--gold);
         }
 
-        /* NOUVEAU DESIGN DU BAS (Fini la grosse tache noire) */
+        /* Section Bas de page Premium */
         .premium-factory {
             margin-top: 100px;
-            background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
-            border: 1px solid #2a2a2a;
+            background: linear-gradient(135deg, #0d0d0d 0%, #171717 100%);
+            border: 1px solid #26221c;
             border-radius: 24px;
             padding: 60px 40px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             position: relative;
             overflow: hidden;
+            transition: border-color 0.4s ease;
+        }
+        .premium-factory:hover {
+            border-color: #4a3e2b;
         }
 
         .premium-factory::before {
             content: "";
             position: absolute;
             top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(181, 147, 94, 0.06) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(181, 147, 94, 0.08) 0%, transparent 60%);
             pointer-events: none;
+            transition: opacity 0.4s ease;
         }
 
         .premium-factory h2 {
@@ -169,12 +174,49 @@
             text-decoration: none;
             box-shadow: 0 4px 15px rgba(181, 147, 94, 0.2);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .btn-premium-digital:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(181, 147, 94, 0.35);
+            box-shadow: 0 6px 20px rgba(181, 147, 94, 0.4);
             opacity: 0.95;
+        }
+
+        /* POP-UP MAISON (Invisible par défaut) */
+        .custom-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .custom-popup {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: scale(0.85);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-overlay.active .custom-popup {
+            transform: scale(1);
         }
 
         @media (max-width: 768px) {
@@ -221,9 +263,40 @@
             <h2>VOTRE PROJET WEB</h2>
             <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
             <span class="premium-price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
-            <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." class="btn-premium-digital">Lancer mon projet</a>
+            <a onclick="toggleDigitalModal(event, true)" class="btn-premium-digital">Lancer mon projet</a>
         </div>
     </div>
+
+    <div id="digitalContactModal" class="custom-overlay" onclick="toggleDigitalModal(event, false)">
+        <div class="custom-popup" onclick="event.stopPropagation()">
+            <h4 style="color: #B5935E; font-family: 'Cinzel', serif; letter-spacing: 3px; font-weight: bold; margin-bottom: 25px; font-size: 1.3rem;">LANCER MON PROJET</h4>
+
+            <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." target="_blank" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #25D366; border: none; font-family: 'Lato', sans-serif;">
+                📱 WHATSAPP
+            </a>
+
+            <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #1A1A1A; border: none; font-family: 'Lato', sans-serif;">
+                📧 EMAIL
+            </a>
+
+            <button type="button" onclick="toggleDigitalModal(event, false)" style="background: transparent; border: none; color: #888; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; letter-spacing: 1px;">
+                Fermer
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Gestion ouverture / fermeture pop-up
+        function toggleDigitalModal(event, show) {
+            if (event) event.preventDefault();
+            const modal = document.getElementById('digitalContactModal');
+            if (show) {
+                modal.classList.add('active');
+            } else {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
 
 </body>
 </html>
