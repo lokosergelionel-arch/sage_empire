@@ -24,33 +24,33 @@
 
         /* Hero Section avec Image de Fond */
         .digital-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-                url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
-    background-size: cover;
-    color: white;
-    padding: 130px 5% 100px;        /* Réduit pour ne plus être trop large */
-    text-align: center;
-    border-bottom: 2px solid var(--gold);
-    min-height: auto;               /* Retiré le 70vh qui forçait trop de hauteur */
-}
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                        url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
+            background-size: cover;
+            color: white;
+            padding: 130px 5% 100px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+            min-height: auto;
+        }
 
-.digital-hero h1 {
-    font-family: 'Cinzel';
-    font-size: 2.8rem;              /* Taille réduite */
-    letter-spacing: 6px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-}
+        .digital-hero h1 {
+            font-family: 'Cinzel';
+            font-size: 2.8rem;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
 
-.digital-hero p {
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 0.95rem;
-    font-weight: 400;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-}
+        .digital-hero p {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.95rem;
+            font-weight: 400;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
 
@@ -105,54 +105,83 @@
             color: var(--gold);
         }
 
-        /* Section Offre Web */
-        .web-factory {
+        /* NOUVEAU DESIGN DU BAS (Fini la grosse tache noire) */
+        .premium-factory {
             margin-top: 100px;
-            background: var(--soft-dark);
-            color: white;
-            padding: 60px;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 60px 40px;
             text-align: center;
-            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             position: relative;
+            overflow: hidden;
         }
-        .web-factory h2 {
-            font-family: 'Cinzel';
-            color: white;
-            font-size: 2rem;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-        }
-        .web-factory p { color: #AAA; max-width: 700px; margin: 0 auto 30px; }
 
-        .price-info {
-            display: block;
-            color: var(--gold);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
+        .premium-factory::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(181, 147, 94, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .premium-factory h2 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 2.2rem;
+            letter-spacing: 4px;
             font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
-        .btn-digital {
+        .premium-factory p {
+            color: #aaaaaa;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .premium-price-info {
+            display: block;
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .btn-premium-digital {
             display: inline-block;
-            padding: 18px 45px;
-            background: var(--gold);
-            color: white;
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
+            background: linear-gradient(to right, #B5935E, #947443);
+            color: #000000 !important;
             font-weight: bold;
             text-transform: uppercase;
-            transition: 0.3s;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 16px 45px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(181, 147, 94, 0.2);
+            transition: all 0.3s ease;
         }
-        .btn-digital:hover {
-            background: white;
-            color: var(--dark);
+
+        .btn-premium-digital:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(181, 147, 94, 0.35);
+            opacity: 0.95;
         }
 
         @media (max-width: 768px) {
             .digital-hero h1 { font-size: 2rem; }
             .digital-grid { grid-template-columns: 1fr; }
+            .premium-factory { padding: 40px 20px; }
+            .premium-factory h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -188,11 +217,11 @@
             </div>
         </div>
 
-        <div class="web-factory">
+        <div class="premium-factory">
             <h2>VOTRE PROJET WEB</h2>
             <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
-            <span class="price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
-            <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." class="btn-digital">Lancer mon projet</a>
+            <span class="premium-price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
+            <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." class="btn-premium-digital">Lancer mon projet</a>
         </div>
     </div>
 
