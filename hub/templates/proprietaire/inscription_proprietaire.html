@@ -41,8 +41,44 @@ cursor: pointer;
 margin-top: 20px;
 }
 
-/* On nettoie les répétitions de texte en haut */
-.hide-duplicate { display: none; }
+/* Styles du Pop-up Maison (Caché par défaut) */
+.custom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.custom-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.custom-popup {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.custom-overlay.active .custom-popup {
+    transform: scale(1);
+}
 </style>
 
 <div class="container">
@@ -79,7 +115,7 @@ Valider mon code
 <div class="mt-8 text-center">
 <p class="text-gray-600 text-sm">
 Vous n'avez pas encore de code ?<br>
-<a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" class="text-[#D4AF37] font-bold" style="text-decoration: none; color: #D4AF37;">
+<a href="#" onclick="toggleMyModal(event, true)" class="text-[#D4AF37] font-bold" style="text-decoration: none; color: #D4AF37;">
 Contactez notre équipe pour devenir partenaire
 </a>
 </p>
@@ -93,28 +129,41 @@ Contactez notre équipe pour devenir partenaire
 </div>
 </div>
 
-<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true" style="z-index: 9999;">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 25px; border: none; background-color: white;">
-      <div class="modal-body text-center py-5">
-        <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel', serif; letter-spacing: 4px; font-weight: bold;">CONTACTEZ-NOUS</h4>
-        <a href="https://wa.me/22891645869" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; background-color: #64d474; text-decoration: none;">📱 WHATSAPP</a>
-        <a href="mailto:contacts@sage-empire.com" style="display: flex; align-items: center; justify-content: center; width: 90%; margin: 0 auto; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; background-color: #559db7; text-decoration: none;">📧 EMAIL</a>
-        <button type="button" class="btn mt-4 text-secondary text-uppercase fw-bold border-0 bg-transparent" data-bs-dismiss="modal" style="font-size: 0.8rem; cursor: pointer;">Fermer</button>
-      </div>
+<div id="myContactModal" class="custom-overlay" onclick="toggleMyModal(event, false)">
+    <div class="custom-popup" onclick="event.stopPropagation()">
+        <h4 style="color: #559db7; font-family: 'Cinzel', serif; letter-spacing: 4px; font-weight: bold; margin-bottom: 25px; font-size: 1.3rem;">CONTACTEZ-NOUS</h4>
+
+        <a href="https://wa.me/22891645869" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #64d474; border: none;">
+            📱 WHATSAPP
+        </a>
+
+        <a href="mailto:contacts@sage-empire.com" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #559db7; border: none;">
+            📧 EMAIL
+        </a>
+
+        <button type="button" onclick="toggleMyModal(event, false)" style="background: transparent; border: none; color: #666; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem;">
+            Fermer
+        </button>
     </div>
-  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-// Ce petit script va supprimer les textes "Sage Empire" en double qui traînent en haut de page
-document.querySelectorAll('h1').forEach(el => {
-if(el.textContent.includes("Sage Empire") && !el.closest('.card-container')) {
-el.style.display = 'none';
+// Fonctions ultra simples pour ouvrir et fermer sans bugger
+function toggleMyModal(event, show) {
+    if (event) event.preventDefault();
+    const modal = document.getElementById('myContactModal');
+    if (show) {
+        modal.classList.add('active');
+    } else {
+        modal.classList.remove('active');
+    }
 }
+
+// Nettoyage des titres dupliqués
+document.querySelectorAll('h1').forEach(el => {
+    if(el.textContent.includes("Sage Empire") && !el.closest('.card-container')) {
+        el.style.display = 'none';
+    }
 });
 </script>
-
 {% endblock %}
