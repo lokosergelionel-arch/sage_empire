@@ -48,12 +48,14 @@ class ProfilProprietaire(models.Model):
     est_verifie = models.BooleanField(default=False)  # Validé par l'admin
 
     def clean(self):
-        """Empêche la création de profils propriétaires par l'admin."""
-        if self.user.is_superuser:
-            raise ValidationError("Un compte admin ne peut pas être associé à un profil propriétaire.")
+        if self.user and (self.user.is_superuser or self.user.username == "sagemode_admin"):
+            raise ValidationError("Un compte administrateur ne peut pas être associé à un profil styliste.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
+        # Si le profil est créé pour l'admin par accident, on le marque comme fake
+        if self.user and (self.user.is_superuser or self.user.username == "sagemode_admin"):
+            self.is_fake = True
         super().save(*args, **kwargs)
 
     @property

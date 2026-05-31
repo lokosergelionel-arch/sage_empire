@@ -106,12 +106,14 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
-    # Sécurité maximale : On exclut l'admin
-    # ET on n'affiche QUE les profils qui ont un vrai nom de marque rempli (ni Null, ni vide)
-    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin").filter(
+    stylistes = ProfilStyliste.objects.exclude(
+        models.Q(is_fake=True) |
+        models.Q(user__username="sagemode_admin") |
+        models.Q(nom_marque="")
+    ).filter(
         user__is_active=True,
         nom_marque__isnull=False
-    ).exclude(nom_marque="")
+    ).order_by('nom_marque')
 
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
@@ -168,14 +170,21 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # SÉCURITÉ : Au lieu de get_or_create qui peut s'emballer, on récupère proprement
+    # Protection contre la création automatique pour l'admin
+    if request.user.username == "sagemode_admin" or request.user.is_superuser:
+        messages.warning(request, "Le compte administrateur ne peut pas avoir de profil styliste.")
+        return redirect('admin:index')  # ou une page d'accueil admin
+
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # Si c'est l'admin ou un utilisateur sans profil, on lui crée un profil UNIQUE une bonne fois pour toutes
-        styliste = ProfilStyliste.objects.create(user=request.user)
-        # Optionnel : Si tu veux interdire l'accès aux non-stylistes, tu peux décommenter la ligne dessous :
-        # return redirect('home')
+        # On crée le profil seulement pour les vrais stylistes
+        styliste = ProfilStyliste.objects.create(
+            user=request.user,
+            nom_marque=f"Marque de {request.user.username}",
+            is_fake=False
+        )
+        messages.success(request, "Votre profil styliste a été créé avec succès.")
 
     if request.method == 'POST':
         form = CreationForm(request.POST)
@@ -188,9 +197,11 @@ def dashboard_styliste(request):
             if request.POST.get('public_id_dos'):
                 creation.public_id = f"{creation.public_id},{request.POST.get('public_id_dos')}".strip(',')
             creation.save()
+            messages.success(request, "Création ajoutée avec succès.")
             return redirect('dashboard_styliste')
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
+
     return render(request, 'dashboard_styliste.html', {
         'styliste': styliste,
         'creations': mes_creations
