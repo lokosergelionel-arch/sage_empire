@@ -111,15 +111,13 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
-    # On filtre proprement sans utiliser models.Q
     stylistes = ProfilStyliste.objects.filter(
-        is_fake=False,
         user__is_active=True,
         nom_marque__isnull=False
     ).exclude(
-        user__username="sagemode_admin"
-    ).exclude(
         nom_marque=""
+    ).exclude(
+        user__username="sagemode_admin"
     ).order_by('nom_marque')
 
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
