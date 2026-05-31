@@ -4,6 +4,7 @@ from cloudinary.models import CloudinaryField
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
 
+
 # ===================== PROFILS =====================
 
 class ProfilStyliste(models.Model):
@@ -14,16 +15,14 @@ class ProfilStyliste(models.Model):
     biographie = models.TextField(blank=True)
     email_verifie = models.BooleanField(default=False)
     date_inscription = models.DateTimeField(default=now)
-    is_fake = models.BooleanField(default=False)  # Nouveau: Pour marquer les profils fictifs
 
     def clean(self):
-        """Empêche la création de profils stylistes par l'admin via l'interface admin."""
-        if self.user.is_superuser:
-            raise ValidationError("Un compte admin ne peut pas être associé à un profil styliste.")
+        """Empêche le vrai compte admin Django d'avoir un profil styliste"""
+        if self.user and self.user.username == "admin":
+            raise ValidationError("Le compte administrateur ne peut pas être associé à un profil styliste.")
 
     def save(self, *args, **kwargs):
-        """Validation supplémentaire avant sauvegarde."""
-        self.full_clean()  # Appelle clean() avant sauvegarde
+        self.full_clean()
         super().save(*args, **kwargs)
 
     @property
@@ -36,7 +35,8 @@ class ProfilStyliste(models.Model):
         return f"https://ui-avatars.com/api/?name={self.nom_marque}&background=f9f8f6&color=b5935e"
 
     def __str__(self):
-        return f"{self.nom_marque} {'(Fictif)' if self.is_fake else ''}"  # Indique si fictif
+        return self.nom_marque
+
 
 class ProfilProprietaire(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profil_proprietaire')
@@ -45,17 +45,14 @@ class ProfilProprietaire(models.Model):
     photo_profil = CloudinaryField('image', null=True, blank=True)
     biographie = models.TextField(blank=True)
     date_inscription = models.DateTimeField(default=now)
-    est_verifie = models.BooleanField(default=False)  # Validé par l'admin
+    est_verifie = models.BooleanField(default=False)
 
     def clean(self):
-        if self.user and (self.user.is_superuser or self.user.username == "sagemode_admin"):
-            raise ValidationError("Un compte administrateur ne peut pas être associé à un profil styliste.")
+        if self.user and self.user.username == "admin":
+            raise ValidationError("Le compte administrateur ne peut pas être associé à un profil propriétaire.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        # Si le profil est créé pour l'admin par accident, on le marque comme fake
-        if self.user and (self.user.is_superuser or self.user.username == "sagemode_admin"):
-            self.is_fake = True
         super().save(*args, **kwargs)
 
     @property
@@ -69,6 +66,7 @@ class ProfilProprietaire(models.Model):
 
     def __str__(self):
         return self.nom_complet
+
 
 # ===================== STYLISTES - CREATIONS =====================
 
@@ -110,7 +108,8 @@ class Creation(models.Model):
                 pass
         super().delete(*args, **kwargs)
 
-# ===================== IMMOBILIER (NOUVEAU SYSTÈME) =====================
+
+# ===================== IMMOBILIER =====================
 
 class Property(models.Model):
     STATUS_CHOICES = [
@@ -144,6 +143,7 @@ class Property(models.Model):
     def __str__(self):
         return f"{self.titre} - {self.owner.nom_complet}"
 
+
 class PropertyMedia(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='medias')
     image = CloudinaryField('image')
@@ -157,6 +157,7 @@ class PropertyMedia(models.Model):
 
     def __str__(self):
         return f"Media {self.id} - {self.property.titre}"
+
 
 class PropertyAvailability(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='availabilities')
@@ -172,6 +173,7 @@ class PropertyAvailability(models.Model):
 
     def __str__(self):
         return f"{self.property.titre} - {self.start_date} à {self.end_date}"
+
 
 class VisitRequest(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='visit_requests')
@@ -190,6 +192,7 @@ class VisitRequest(models.Model):
     def __str__(self):
         return f"Demande pour {self.property.titre} - {self.visitor_name}"
 
+
 class InvitationCode(models.Model):
     code = models.CharField(max_length=20, unique=True)
     proprietaire = models.ForeignKey(ProfilProprietaire, on_delete=models.CASCADE, null=True, blank=True)
@@ -200,7 +203,8 @@ class InvitationCode(models.Model):
     def __str__(self):
         return self.code
 
-# ===================== ANCIEN MODÈLE (À MIGRER OU SUPPRIMER) =====================
+
+# ===================== ANCIENS MODÈLES =====================
 
 class Immobilier(models.Model):
     CHOIX = [('terrain', 'Terrain'), ('appartement', 'Appartement')]
@@ -213,6 +217,7 @@ class Immobilier(models.Model):
 
     def __str__(self):
         return self.titre
+
 
 class Event(models.Model):
     titre = models.CharField(max_length=200)

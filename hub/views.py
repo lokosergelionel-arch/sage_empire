@@ -1,14 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import (
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
-    PasswordResetCompleteView
-)
-from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.utils.timezone import now
 
@@ -45,12 +38,10 @@ from django.core.mail import send_mail
 # ===================== REDIRECTION INTELLIGENTE =====================
 @login_required
 def redirection_apres_login(request):
-    """Redirige l'utilisateur vers son dashboard selon son profil"""
-
-    # Sécurité : Si c'est le vrai admin Django, on le déconnecte ou on le redirige vers l'admin
+    """Redirige l'utilisateur selon son profil"""
     if request.user.username == "admin" or request.user.is_superuser:
-        messages.warning(request, "Le compte administrateur n'est pas autorisé sur l'espace public.")
-        logout(request)  # Déconnecte automatiquement l'admin
+        logout(request)
+        messages.warning(request, "Le compte administrateur n'a pas accès à l'espace public.")
         return redirect('home')
 
     if hasattr(request.user, 'profil_proprietaire'):
@@ -64,12 +55,11 @@ def redirection_apres_login(request):
 # ===================== DECORATEUR PROPRIETAIRE =====================
 def proprietaire_required(view_func):
     def wrapper_func(request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
         if not hasattr(request.user, 'profil_proprietaire'):
             messages.warning(request, "Vous n'avez pas accès à cet espace.")
-            return redirect('dashboard_styliste')
+            return redirect('redirection_apres_login')
         return view_func(request, *args, **kwargs)
+
     return wrapper_func
 
 
@@ -114,11 +104,7 @@ def liste_stylistes(request):
     stylistes = ProfilStyliste.objects.filter(
         user__is_active=True,
         nom_marque__isnull=False
-    ).exclude(
-        nom_marque=""
-    ).exclude(
-        user__username="sagemode_admin"
-    ).order_by('nom_marque')
+    ).exclude(nom_marque="").exclude(user__username="admin").order_by('nom_marque')
 
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
@@ -175,21 +161,18 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # Protection contre la création automatique pour l'admin
-    if request.user.username == "sagemode_admin" or request.user.is_superuser:
-        messages.warning(request, "Le compte administrateur ne peut pas avoir de profil styliste.")
-        return redirect('admin:index')  # ou une page d'accueil admin
+    if request.user.username == "admin" or request.user.is_superuser:
+        logout(request)
+        messages.error(request, "Le compte administrateur n'a pas accès à cet espace.")
+        return redirect('home')
 
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # On crée le profil seulement pour les vrais stylistes
         styliste = ProfilStyliste.objects.create(
             user=request.user,
-            nom_marque=f"Marque de {request.user.username}",
-            is_fake=False
+            nom_marque=f"Marque de {request.user.username}"
         )
-        messages.success(request, "Votre profil styliste a été créé avec succès.")
 
     if request.method == 'POST':
         form = CreationForm(request.POST)
@@ -206,7 +189,6 @@ def dashboard_styliste(request):
             return redirect('dashboard_styliste')
 
     mes_creations = Creation.objects.filter(styliste=styliste).order_by('-id')
-
     return render(request, 'dashboard_styliste.html', {
         'styliste': styliste,
         'creations': mes_creations
@@ -231,8 +213,9 @@ def supprimer_creation(request, creation_id):
 
 # ===================== LOGIN =====================
 def login_view(request):
-    if not User.objects.filter(username='sagemode_admin').exists():
-        User.objects.create_superuser('sagemode_admin', 'admin@email.com', 'Empire2026!')
+    # Création du vrai compte admin Django (une seule fois)
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@sage-empire.com', 'Empire2026!')
 
     if request.method == 'POST':
         user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
@@ -302,7 +285,6 @@ def creer_bien(request):
     return render(request, 'proprietaire/creer_bien.html', {'profil': profil})
 
 
-# ACCÈS PUBLIC
 def portfolio_proprietaire(request, proprietaire_id):
     proprietaire = get_object_or_404(ProfilProprietaire, id=proprietaire_id)
     biens = Property.objects.filter(owner=proprietaire, status='published', is_active=True).order_by('-date_creation')
@@ -313,7 +295,6 @@ def portfolio_proprietaire(request, proprietaire_id):
     })
 
 
-# FONCTION CORRIGÉE : Changement de 'gestion_bien_details' en 'gestion_bien'
 @login_required
 @proprietaire_required
 def gestion_bien(request, property_id):
@@ -461,27 +442,6 @@ def renvoyer_email_verification(request):
     return redirect('edit_profil')
 
 
-# ===================== PASSWORD RESET =====================
-class CustomPassword_reset_view(PasswordResetView):
-    template_name = 'registration/styliste_password_reset.html'
-    email_template_name = 'registration/styliste_password_reset_email.html'
-    subject_template_name = 'registration/password_reset_subject.txt'
-    success_url = reverse_lazy('styliste_password_reset_done')
-
-
-class CustomPassword_reset_done_view(PasswordResetDoneView):
-    template_name = 'registration/styliste_password_reset_done.html'
-
-
-class CustomPassword_reset_confirm_view(PasswordResetConfirmView):
-    template_name = 'registration/styliste_password_reset_confirm.html'
-    success_url = reverse_lazy('styliste_password_reset_complete')
-
-
-class CustomPassword_reset_complete_view(PasswordResetCompleteView):
-    template_name = 'registration/styliste_password_reset_complete.html'
-
-
 # ===================== GESTION DU CALENDRIER =====================
 @login_required
 @proprietaire_required
@@ -508,8 +468,8 @@ def ajouter_disponibilite(request, property_id):
 @login_required
 @proprietaire_required
 def supprimer_disponibilite(request, disponibilite_id):
-    # On récupère la dispo et on vérifie que le proprio en est bien le propriétaire
-    dispo = get_object_or_404(PropertyAvailability, id=disponibilite_id, property__owner=request.user.profil_proprietaire)
+    dispo = get_object_or_404(PropertyAvailability, id=disponibilite_id,
+                              property__owner=request.user.profil_proprietaire)
     property_id = dispo.property.id
     dispo.delete()
     messages.success(request, "La période a été supprimée.")
