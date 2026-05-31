@@ -5,6 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.utils.timezone import now
 
+from django.urls import reverse_lazy
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
+
 from .forms import (
     InscriptionStylisteForm,
     EditProfilForm,
@@ -474,3 +482,23 @@ def supprimer_disponibilite(request, disponibilite_id):
     dispo.delete()
     messages.success(request, "La période a été supprimée.")
     return redirect('gestion_bien', property_id=property_id)
+
+# ===================== PASSWORD RESET =====================
+class CustomPassword_reset_view(PasswordResetView):
+    template_name = 'registration/styliste_password_reset.html'
+    email_template_name = 'registration/styliste_password_reset_email.html'
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = reverse_lazy('styliste_password_reset_done')
+
+
+class CustomPassword_reset_done_view(PasswordResetDoneView):
+    template_name = 'registration/styliste_password_reset_done.html'
+
+
+class CustomPassword_reset_confirm_view(PasswordResetConfirmView):
+    template_name = 'registration/styliste_password_reset_confirm.html'
+    success_url = reverse_lazy('styliste_password_reset_complete')
+
+
+class CustomPassword_reset_complete_view(PasswordResetCompleteView):
+    template_name = 'registration/styliste_password_reset_complete.html'
