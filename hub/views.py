@@ -46,14 +46,19 @@ from django.core.mail import send_mail
 @login_required
 def redirection_apres_login(request):
     """Redirige l'utilisateur vers son dashboard selon son profil"""
-    try:
-        if hasattr(request.user, 'profil_proprietaire'):
-            return redirect('dashboard_proprietaire')
-        elif hasattr(request.user, 'profil_styliste'):
-            return redirect('dashboard_styliste')
+
+    # Sécurité : Si c'est le vrai admin Django, on le déconnecte ou on le redirige vers l'admin
+    if request.user.username == "admin" or request.user.is_superuser:
+        messages.warning(request, "Le compte administrateur n'est pas autorisé sur l'espace public.")
+        logout(request)  # Déconnecte automatiquement l'admin
         return redirect('home')
-    except Exception:
-        return redirect('home')
+
+    if hasattr(request.user, 'profil_proprietaire'):
+        return redirect('dashboard_proprietaire')
+    elif hasattr(request.user, 'profil_styliste'):
+        return redirect('dashboard_styliste')
+
+    return redirect('home')
 
 
 # ===================== DECORATEUR PROPRIETAIRE =====================
