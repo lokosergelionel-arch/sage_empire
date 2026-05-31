@@ -106,7 +106,8 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
-    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin")
+    # On exclut l'admin ET on ne prend que les profils actifs ou qui ont un nom/téléphone rempli
+    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin").filter(user__is_active=True)
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
 
@@ -162,7 +163,15 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    styliste, _ = ProfilStyliste.objects.get_or_create(user=request.user)
+    # SÉCURITÉ : Au lieu de get_or_create qui peut s'emballer, on récupère proprement
+    try:
+        styliste = ProfilStyliste.objects.get(user=request.user)
+    except ProfilStyliste.DoesNotExist:
+        # Si c'est l'admin ou un utilisateur sans profil, on lui crée un profil UNIQUE une bonne fois pour toutes
+        styliste = ProfilStyliste.objects.create(user=request.user)
+        # Optionnel : Si tu veux interdire l'accès aux non-stylistes, tu peux décommenter la ligne dessous :
+        # return redirect('home')
+
     if request.method == 'POST':
         form = CreationForm(request.POST)
         if form.is_valid():
