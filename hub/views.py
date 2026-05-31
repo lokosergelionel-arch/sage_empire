@@ -106,8 +106,13 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
-    # On exclut l'admin ET on ne prend que les profils actifs ou qui ont un nom/téléphone rempli
-    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin").filter(user__is_active=True)
+    # Sécurité maximale : On exclut l'admin
+    # ET on n'affiche QUE les profils qui ont un vrai nom de marque rempli (ni Null, ni vide)
+    stylistes = ProfilStyliste.objects.exclude(user__username="sagemode_admin").filter(
+        user__is_active=True,
+        nom_marque__isnull=False
+    ).exclude(nom_marque="")
+
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
 
