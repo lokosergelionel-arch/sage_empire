@@ -58,7 +58,7 @@
     flex-direction: column;
     gap: 6px;
     cursor: pointer;
-    z-index: 3000; /* Augmenté pour être au-dessus de tout */
+    z-index: 3000;
     padding: 10px;
     }
     .hamburger span {
@@ -142,10 +142,9 @@
     text-decoration: none; transition: transform 0.2s; border: none;
  }
 
- /* --- STYLES VERSION ROYALE ORBITALE --- */
  .orbit-card {
     position: absolute;
-    left: 50%; top: 50%; /* Centrage forcé sur l'axe du container */
+    left: 50%; top: 50%;
     width: 220px; height: 240px;
     perspective: 1000px;
     display: flex; justify-content: center; align-items: center;
@@ -194,8 +193,9 @@
 <a href="{% url 'liste_stylistes' %}">Marketplace</a>
 <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
 
+<!-- Navbar Ordinateur avec ESPACE CRÉATEUR conservé -->
 {% if user.is_authenticated %}
-<a href="{% url 'dashboard_styliste' %}" class="btn-gold-nav">MON ESPACE</a>
+<a href="{% url 'redirection_apres_login' %}" class="btn-gold-nav">MON ESPACE</a>
 {% else %}
 <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
 <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
@@ -210,8 +210,10 @@
 <a href="#services" onclick="toggleMenu()">Hub Services</a>
 <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
 <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="toggleMenu()">Contact Privé</a>
+
+<!-- Navbar Mobile avec Espace Créateur conservé -->
 {% if user.is_authenticated %}
-<a href="{% url 'dashboard_styliste' %}" onclick="toggleMenu()">Mon Espace</a>
+<a href="{% url 'redirection_apres_login' %}" onclick="toggleMenu()">Mon Espace</a>
 {% else %}
 <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
 <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
@@ -313,7 +315,7 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 
     <div style="text-align: center; margin-top: -50px; position: relative; z-index: 150; padding: 0 20px;">
         <p style="color: rgba(255,255,255,0.7); font-style: italic; max-width: 700px; margin: 0 auto 40px; line-height: 1.6; font-size: 0.95rem;">
-            "Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier ou l'élégance d'une silhouette."
+            "Nous croyons que l'excellence is une discipline globale qui ne souffre aucune zone d'ombre. Elle doit être aussi rigoureuse dans la précision d'un code informatique que dans la solidité d'un patrimoine immobilier ou l'élégance d'une silhouette."
         </p>
     </div>
 
@@ -378,7 +380,6 @@ function toggleMenu() {
     }
 }
 
-// Fermeture au clic sur l'overlay
 document.getElementById('mobileMenu').addEventListener('click', function(e) {
     if (e.target === this) {
         toggleMenu();
@@ -403,7 +404,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const cards = document.querySelectorAll('.orbit-card');
 
-    // Positionnement et Rotation
     let orbitRotation = { value: 0 };
     gsap.to(orbitRotation, {
         value: 360, duration: 40, repeat: -1, ease: "none",
@@ -413,7 +413,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 const currentAngle = ((baseAngle + orbitRotation.value) * Math.PI) / 180;
                 const x = Math.cos(currentAngle) * radius;
                 const y = Math.sin(currentAngle) * radius;
-                // On utilise x et y par rapport au centre (50%, 50%) défini en CSS
                 gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
             });
         }
