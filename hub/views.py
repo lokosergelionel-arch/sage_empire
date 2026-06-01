@@ -47,15 +47,16 @@ from django.core.mail import send_mail
 @login_required
 def redirection_apres_login(request):
     """Redirige l'utilisateur selon son profil"""
-    # Correction : Si c'est l'admin ou un superuser, on le redirige vers l'administration au lieu de le déconnecter de force
-    if request.user.username == "admin" or request.user.is_superuser:
-        messages.success(request, "Bienvenue dans l'administration de Sage Empire.")
-        return redirect('/admin/')
-
+    # Modification : On donne la priorité aux profils existants, même pour les administrateurs
     if hasattr(request.user, 'profil_proprietaire'):
         return redirect('dashboard_proprietaire')
     elif hasattr(request.user, 'profil_styliste'):
         return redirect('dashboard_styliste')
+
+    # Si c'est un administrateur pur sans profil styliste ou propriétaire, on l'envoie sur le panel admin Django
+    if request.user.is_superuser:
+        messages.success(request, "Bienvenue dans l'administration de Sage Empire.")
+        return redirect('/admin/')
 
     return redirect('home')
 
@@ -169,10 +170,7 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # Correction : Si c'est l'admin ou un superuser, on le redirige vers l'administration au lieu de faire un logout brutal
-    if request.user.username == "admin" or request.user.is_superuser:
-        return redirect('/admin/')
-
+    # Modification : On laisse l'accès libre aux administrateurs s'ils possèdent ou créent un profil styliste
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
