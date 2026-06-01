@@ -21,8 +21,8 @@ from hub.views import (
 urlpatterns = [
     path('', home, name='home'),
 
-    # Route de redirection intelligente après connexion
-    path('redirect-user/', redirection_apres_login, name='redirect_user'),
+    # Route de redirection intelligente après connexion (CORRIGÉE ICI)
+    path('redirect-user/', redirection_apres_login, name='redirection_apres_login'),
 
     # CATALOGUE IMMOBILIER
     path('immobilier/proprietaire/<int:proprietaire_id>/', portfolio_proprietaire, name='portfolio_proprietaire'),
