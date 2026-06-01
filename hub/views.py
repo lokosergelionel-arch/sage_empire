@@ -47,10 +47,10 @@ from django.core.mail import send_mail
 @login_required
 def redirection_apres_login(request):
     """Redirige l'utilisateur selon son profil"""
+    # Correction : Si c'est l'admin ou un superuser, on le redirige vers l'administration au lieu de le déconnecter de force
     if request.user.username == "admin" or request.user.is_superuser:
-        logout(request)
-        messages.warning(request, "Le compte administrateur n'a pas accès à l'espace public.")
-        return redirect('home')
+        messages.success(request, "Bienvenue dans l'administration de Sage Empire.")
+        return redirect('/admin/')
 
     if hasattr(request.user, 'profil_proprietaire'):
         return redirect('dashboard_proprietaire')
@@ -169,10 +169,9 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
+    # Correction : Si c'est l'admin ou un superuser, on le redirige vers l'administration au lieu de faire un logout brutal
     if request.user.username == "admin" or request.user.is_superuser:
-        logout(request)
-        messages.error(request, "Le compte administrateur n'a pas accès à cet espace.")
-        return redirect('home')
+        return redirect('/admin/')
 
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
@@ -482,6 +481,7 @@ def supprimer_disponibilite(request, disponibilite_id):
     dispo.delete()
     messages.success(request, "La période a été supprimée.")
     return redirect('gestion_bien', property_id=property_id)
+
 
 # ===================== PASSWORD RESET =====================
 class CustomPassword_reset_view(PasswordResetView):
