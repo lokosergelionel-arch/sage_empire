@@ -46,14 +46,13 @@ from django.core.mail import send_mail
 # ===================== REDIRECTION INTELLIGENTE =====================
 @login_required
 def redirection_apres_login(request):
-    """Redirige l'utilisateur selon son profil"""
-    # Modification : On donne la priorité aux profils existants, même pour les administrateurs
-    if hasattr(request.user, 'profil_proprietaire'):
-        return redirect('dashboard_proprietaire')
-    elif hasattr(request.user, 'profil_styliste'):
+    """Redirige l'utilisateur selon son profil vers son espace dédié"""
+    if hasattr(request.user, 'profil_styliste'):
         return redirect('dashboard_styliste')
+    elif hasattr(request.user, 'profil_proprietaire'):
+        return redirect('dashboard_proprietaire')
 
-    # Si c'est un administrateur pur sans profil styliste ou propriétaire, on l'envoie sur le panel admin Django
+    # Si c'est un administrateur pur sans profil styliste/propriétaire
     if request.user.is_superuser:
         messages.success(request, "Bienvenue dans l'administration de Sage Empire.")
         return redirect('/admin/')
@@ -170,13 +169,14 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # Modification : On laisse l'accès libre aux administrateurs s'ils possèdent ou créent un profil styliste
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
+        # Correction de la ValidationError : ajout d'une valeur par défaut pour le champ obligatoire contact_whatsapp
         styliste = ProfilStyliste.objects.create(
             user=request.user,
-            nom_marque=f"Marque de {request.user.username}"
+            nom_marque=f"Marque de {request.user.username}",
+            contact_whatsapp="00000000"
         )
 
     if request.method == 'POST':
@@ -218,7 +218,6 @@ def supprimer_creation(request, creation_id):
 
 # ===================== LOGIN =====================
 def login_view(request):
-    # Création du vrai compte admin Django (une seule fois)
     if not User.objects.filter(username='admin').exists():
         User.objects.create_superuser('admin', 'admin@sage-empire.com', 'Empire2026!')
 
