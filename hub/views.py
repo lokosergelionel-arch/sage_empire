@@ -46,17 +46,25 @@ from django.core.mail import send_mail
 # ===================== REDIRECTION INTELLIGENTE =====================
 @login_required
 def redirection_apres_login(request):
-    """Redirige l'utilisateur selon son profil vers son espace dédié"""
-    if hasattr(request.user, 'profil_styliste'):
+    """
+    Redirige intelligemment l'utilisateur selon son profil métier.
+    Vérifie d'abord les profils Styliste/Propriétaire avant le statut Admin.
+    """
+    user = request.user
+
+    # 1. On vérifie d'abord s'il a un profil Styliste
+    if hasattr(user, 'profil_styliste') and user.profil_styliste is not None:
         return redirect('dashboard_styliste')
-    elif hasattr(request.user, 'profil_proprietaire'):
+
+    # 2. On vérifie ensuite s'il a un profil Propriétaire
+    elif hasattr(user, 'profil_proprietaire') and user.profil_proprietaire is not None:
         return redirect('dashboard_proprietaire')
 
-    # Si c'est un administrateur pur sans profil styliste/propriétaire
-    if request.user.is_superuser:
-        messages.success(request, "Bienvenue dans l'administration de Sage Empire.")
-        return redirect('/admin/')
+    # 3. Si ce n'est ni l'un ni l'autre, et qu'il est superutilisateur, on l'envoie sur l'admin
+    elif user.is_superuser:
+        return redirect('admin:index')
 
+    # 4. Par défaut, s'il n'a aucun profil, on le renvoie à l'accueil
     return redirect('home')
 
 
