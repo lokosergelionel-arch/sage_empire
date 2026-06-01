@@ -43,28 +43,28 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
 
-# ===================== REDIRECTION INTELLIGENTE =====================
+# ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
 @login_required
 def redirection_apres_login(request):
     """
     Redirige intelligemment l'utilisateur selon son profil métier.
-    Vérifie d'abord les profils Styliste/Propriétaire avant le statut Admin.
+    Sécurité : Exclut le compte superadmin technique de la redirection métier.
     """
     user = request.user
 
-    # 1. On vérifie d'abord s'il a un profil Styliste
+    # Sécurité : Si c'est l'admin Django pur (sans profil applicatif), on l'exclut et on le renvoie à l'accueil
+    if user.is_superuser or user.is_staff:
+        return redirect('home')
+
+    # 1. On vérifie s'il a un profil Styliste
     if hasattr(user, 'profil_styliste') and user.profil_styliste is not None:
         return redirect('dashboard_styliste')
 
-    # 2. On vérifie ensuite s'il a un profil Propriétaire
+    # 2. On vérifie s'il a un profil Propriétaire
     elif hasattr(user, 'profil_proprietaire') and user.profil_proprietaire is not None:
         return redirect('dashboard_proprietaire')
 
-    # 3. Si ce n'est ni l'un ni l'autre, et qu'il est superutilisateur, on l'envoie sur l'admin
-    elif user.is_superuser:
-        return redirect('admin:index')
-
-    # 4. Par défaut, s'il n'a aucun profil, on le renvoie à l'accueil
+    # 3. Par défaut, s'il n'a aucun profil métier, on le renvoie à l'accueil
     return redirect('home')
 
 
@@ -180,7 +180,6 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # Correction de la ValidationError : ajout d'une valeur par défaut pour le champ obligatoire contact_whatsapp
         styliste = ProfilStyliste.objects.create(
             user=request.user,
             nom_marque=f"Marque de {request.user.username}",
