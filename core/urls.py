@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
@@ -19,9 +20,12 @@ from hub.views import (
 )
 
 urlpatterns = [
+    # PROTECTION DÉCONNEXION ADMIN : Intercepte et déconnecte proprement sur /admin/
+    path('admin/logout/', auth_views.LogoutView.as_view(next_page='/admin/'), name='admin_logout'),
+
     path('', home, name='home'),
 
-    # Route de redirection intelligente après connexion (CORRIGÉE ICI)
+    # Route de redirection intelligente après connexion
     path('redirect-user/', redirection_apres_login, name='redirection_apres_login'),
 
     # CATALOGUE IMMOBILIER
