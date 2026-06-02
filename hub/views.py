@@ -44,24 +44,24 @@ from django.core.mail import send_mail
 
 
 # ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
-@login_required
+@login_require
 def redirection_apres_login(request):
+
     """
     Redirige intelligemment l'utilisateur selon son profil métier.
-    Sécurité : gère le compte sagemode_admin et exclut le superadmin technique.
+    Sécurité : gère le compte sagemode_admin en priorité absolue et exclut le superadmin technique.
     """
     user = request.user
 
-    # 1. EXCEPTION PRIVILÉGIÉE POUR SAGE MODE
-    # Même s'il est staff, il doit aller sur son tableau de bord styliste dédié
+    # 1. PRIORITÉ ABSOLUE : Si c'est l'administrateur de la marque, direction le dashboard styliste
     if user.username == "sagemode_admin":
         return redirect('dashboard_styliste')
 
-    # 2. Sécurité : Si c'est l'admin Django pur (sans profil applicatif), on l'exclut et on le renvoie à l'accueil
+    # 2. SÉCURITÉ : Si c'est l'admin root technique (admin), on l'exclut et on le renvoie à l'accueil
     if user.is_superuser or user.is_staff:
         return redirect('home')
 
-    # 3. On vérifie s'il a un profil Styliste
+    # 3. On vérifie s'il a un profil Styliste classique
     if hasattr(user, 'profil_styliste') and user.profil_styliste is not None:
         return redirect('dashboard_styliste')
 
