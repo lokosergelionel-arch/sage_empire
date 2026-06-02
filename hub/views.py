@@ -201,15 +201,9 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # Si c'est l'admin de la marque, on lui génère automatiquement son profil requis
-        if request.user.username == "sagemode_admin":
-            styliste = ProfilStyliste.objects.create(
-                user=request.user,
-                nom_marque="Sage Mode Admin",
-                telephone="",
-                description="Espace d'administration de la marque.",
-                email_verifie=True
-            )
+        # Si c'est l'admin de la marque, on lui crée son profil à la volée avec le strict minimum requis
+        if request.user.username == "admin":
+            styliste = ProfilStyliste.objects.create(user=request.user)
         else:
             # Si c'est un autre utilisateur sans profil, on le redirige
             messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
