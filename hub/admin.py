@@ -3,7 +3,7 @@ from django.utils import timezone
 from .models import (
     ProfilStyliste, Creation, Event,
     ProfilProprietaire, Property, PropertyMedia,
-    PropertyAvailability, VisitRequest, InvitationCode
+    PropertyAvailability, VisitRequest, InvitationCode, InvitationStyliste
 )
 
 # ==============================================================================
@@ -116,3 +116,9 @@ class VisitRequestAdmin(admin.ModelAdmin):
     search_fields = ('visitor_name', 'visitor_phone', 'property__titre')
     list_editable = ('status',)
     date_hierarchy = 'requested_date'
+
+@admin.register(InvitationStyliste)
+class InvitationStylisteAdmin(admin.ModelAdmin):
+    list_display = ('code', 'est_utilise', 'cree_le')
+    list_filter = ('est_utilise',)
+    search_fields = ('code',)

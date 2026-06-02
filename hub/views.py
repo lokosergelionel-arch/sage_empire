@@ -32,7 +32,8 @@ from .models import (
     PropertyMedia,
     PropertyAvailability,
     VisitRequest,
-    InvitationCode
+    InvitationCode,
+    InvitationStyliste,
 )
 
 from django.contrib.auth.tokens import default_token_generator
@@ -171,6 +172,30 @@ def inscription_styliste(request):
     else:
         form = InscriptionStylisteForm()
     return render(request, 'inscription.html', {'form': form})
+
+
+def verifier_code_styliste(request):
+    if request.method == "POST":
+        code_saisi = request.POST.get("code_invitation", "").strip()
+
+        # On cherche un code correspondant qui n'est pas encore utilisé
+        try:
+            invitation = InvitationStyliste.objects.get(code__iexact=code_saisi, est_utilise=False)
+
+            # Si on le trouve : on donne le feu vert dans la session
+            request.session['code_styliste_valide'] = True
+
+            # (Optionnel) Si tu veux qu'un code ne serve qu'une seule fois,
+            # tu peux le marquer comme utilisé ici :
+            # invitation.est_utilise = True
+            # invitation.save()
+
+            return redirect('inscription_styliste')
+
+        except InvitationStyliste.DoesNotExist:
+            messages.error(request, "Code d'invitation invalide, expiré ou déjà utilisé.")
+
+    return render(request, 'registration/code_invitation_styliste.html')
 
 
 # ===================== PROFIL & DASHBOARD STYLISTE =====================

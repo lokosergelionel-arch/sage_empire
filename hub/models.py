@@ -240,3 +240,17 @@ class Event(models.Model):
 
     def __str__(self):
         return self.titre
+
+from django.db import models
+
+class InvitationStyliste(models.Model):
+    code = models.CharField(max_length=50, unique=True, verbose_name="Code d'invitation")
+    est_utilise = models.BooleanField(default=False, verbose_name="Déjà utilisé ?")
+    cree_le = models.DateTimeField(auto_now_add=True, verbose_name="Créé le")
+
+    class Meta:
+        verbose_name = "Code d'invitation Styliste"
+        verbose_name_plural = "Codes d'invitation Stylistes"
+
+    def __str__(self):
+        return f"{self.code} ({'Utilisé' if self.est_utilise else 'Disponible'})"
