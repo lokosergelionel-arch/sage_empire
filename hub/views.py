@@ -122,10 +122,14 @@ def galerie_mode(request):
 
 
 def liste_stylistes(request):
+    # On récupère uniquement les vrais stylistes en excluant l'admin technique et l'admin de la marque
     stylistes = ProfilStyliste.objects.filter(
         user__is_active=True,
         nom_marque__isnull=False
-    ).exclude(nom_marque="").exclude(user__username="admin").order_by('nom_marque')
+    ).exclude(nom_marque="") \
+     .exclude(user__username="admin") \
+     .exclude(user__username="sagemode_admin") \
+     .order_by('nom_marque')
 
     return render(request, 'annuaire_stylistes.html', {'stylistes': stylistes})
 
@@ -182,14 +186,17 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
+    # SÉCURITÉ : Si l'admin technique ou sagemode_admin tente de forcer l'accès sans profil réel
+    if request.user.username == "admin":
+        messages.error(request, "L'administrateur root ne peut pas posséder un espace styliste.")
+        return redirect('home')
+
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        styliste = ProfilStyliste.objects.create(
-            user=request.user,
-            nom_marque=f"Marque de {request.user.username}",
-            contact_whatsapp="00000000"
-        )
+        # Si un utilisateur classique atterrit ici par erreur, on l'empêche de créer un faux profil
+        messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
+        return redirect('home')
 
     if request.method == 'POST':
         form = CreationForm(request.POST)

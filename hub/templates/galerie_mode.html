@@ -114,6 +114,9 @@ border: 1px solid #eee;
 display: flex;
 
 flex-direction: column;
+/* CORRECTION DU BOBO DE CADRE : Empêche l'image de baver hors du cadre */
+border-radius: 4px;
+overflow: hidden;
 
 }
 
@@ -205,6 +208,15 @@ letter-spacing: 1px;
 
 text-transform: uppercase;
 
+}
+
+/* STYLE AJOUTÉ POUR LA DESCRIPTION */
+.product-info .description {
+font-size: 0.85rem;
+color: #777;
+font-style: italic;
+margin: 5px 0 10px;
+line-height: 1.4;
 }
 
 .price {
@@ -318,6 +330,11 @@ color: black;
     .product-info h3 {
         font-size: 0.75rem;
         line-height: 1.2;
+    }
+
+    .product-info .description {
+        font-size: 0.7rem;
+        margin: 3px 0 7px;
     }
 
     .price {
@@ -464,6 +481,12 @@ overflow: hidden;
 
  <div class="product-info">
  <h3>{{ produit.titre }}</h3>
+
+ <!-- INTEGRATION DE LA DESCRIPTION SOUS LE TITRE -->
+ {% if produit.description %}
+ <p class="description">{{ produit.description }}</p>
+ {% endif %}
+
  <p class="price">{{ produit.prix }} FCFA</p>
  <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour Sage Mode, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
    target="_blank" class="btn-commander" style="text-decoration: none; display: inline-block; text-align: center;">
