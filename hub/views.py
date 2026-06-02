@@ -44,7 +44,7 @@ from django.core.mail import send_mail
 
 
 # ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
-@login_require
+@login_required
 def redirection_apres_login(request):
 
     """
