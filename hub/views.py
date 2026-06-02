@@ -251,7 +251,7 @@ def login_view(request):
         user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
         if user is not None:
             login(request, user)
-            return redirect('redirection_apres_login')
+            return redirect('redirect-user')
         messages.error(request, 'Identifiants invalides')
     return render(request, 'registration/login.html')
 
