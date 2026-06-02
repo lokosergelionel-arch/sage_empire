@@ -44,9 +44,9 @@ from django.core.mail import send_mail
 
 
 # ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
+# ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
 @login_required
-def redirection_apres_login(request):
-
+def redirect_user(request): # <-- On remet le nom exact que Django réclame !
     """
     Redirige intelligemment l'utilisateur selon son profil métier.
     Sécurité : gère le compte sagemode_admin en priorité absolue et exclut le superadmin technique.
