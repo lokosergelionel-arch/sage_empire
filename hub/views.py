@@ -144,6 +144,11 @@ def portfolio_styliste(request, styliste_id):
 
 # ===================== INSCRIPTION STYLISTE =====================
 def inscription_styliste(request):
+    # SÉCURITÉ : Si le code n'a pas été validé dans la session, on le renvoie à la barrière
+    if not request.session.get('code_styliste_valide'):
+        messages.warning(request, "Veuillez saisir votre code d'invitation pour accéder à l'inscription.")
+        return redirect('verifier_code_styliste')
+
     if request.method == 'POST':
         # --- SÉCURITÉ ANTI-ROBOT (HONEYPOT) ---
         # Les robots remplissent automatiquement les champs nommés "website" ou "url"

@@ -278,7 +278,7 @@ L'EMPIRE RÉUNIT LES PLUS GRANDS CRÉATEURS.
 {% if not user.is_authenticated or user.is_superuser %}
 <section class="cta-styliste">
 <h3>VOUS ÊTES CRÉATEUR ?</h3>
-<a href="{% url 'inscription_styliste' %}">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
+<a href="{% url 'verifier_code_styliste' %}" class="btn">REJOINDRE L'EMPIRE & EXPOSER VOS ŒUVRES</a>
 </section>
 {% endif %}
 
