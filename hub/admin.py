@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils import timezone  # Ajouté pour corriger le crash de l'action de groupe
+from django.utils import timezone
 from .models import (
     ProfilStyliste, Creation, Event,
     ProfilProprietaire, Property, PropertyMedia,
@@ -14,28 +14,8 @@ from .models import (
 admin.site.site_header = "SAGE EMPIRE | Panel Technique"
 admin.site.site_title = "Administration Sage Empire"
 admin.site.index_title = "Gestion de l'Écosystème"
-
-# Injection de la feuille de style CSS pour le look luxe (Anthracite & Or #B5935E)
 admin.site.site_url = '/'  # Lien "Voir le site" renvoie à la racine publique
 admin.site.enable_nav_sidebar = True
-
-
-class EmpireAdminTheme:
-    """Feuille de style injectée pour surcharger le thème par défaut de Django"""
-
-    class Media:
-        css = {
-            'all': ('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap',)
-        }
-        # Injection dynamique directe des couleurs de l'Empire
-        admin.site.site_header = admin.site.site_header
-
-
-# Surcharge globale légère via CSS natif (optionnelle mais robuste)
-# Note : Pour les versions récentes de Django, cela applique les variables CSS CSS.
-admin.ModelAdmin.Media.css = {
-    'all': ('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap',)
-}
 
 
 # ==============================================================================
@@ -82,7 +62,6 @@ class InvitationCodeAdmin(admin.ModelAdmin):
     actions = ['mark_as_used']
 
     def mark_as_used(self, request, queryset):
-        # Utilisation de timezone.now() pour éviter les erreurs d'exécution
         queryset.update(is_used=True, used_at=timezone.now())
 
     mark_as_used.short_description = "Marquer les codes comme utilisés"
