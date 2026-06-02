@@ -48,23 +48,28 @@ from django.core.mail import send_mail
 def redirection_apres_login(request):
     """
     Redirige intelligemment l'utilisateur selon son profil métier.
-    Sécurité : Exclut le compte superadmin technique de la redirection métier.
+    Sécurité : gère le compte sagemode_admin et exclut le superadmin technique.
     """
     user = request.user
 
-    # Sécurité : Si c'est l'admin Django pur (sans profil applicatif), on l'exclut et on le renvoie à l'accueil
+    # 1. EXCEPTION PRIVILÉGIÉE POUR SAGE MODE
+    # Même s'il est staff, il doit aller sur son tableau de bord styliste dédié
+    if user.username == "sagemode_admin":
+        return redirect('dashboard_styliste')
+
+    # 2. Sécurité : Si c'est l'admin Django pur (sans profil applicatif), on l'exclut et on le renvoie à l'accueil
     if user.is_superuser or user.is_staff:
         return redirect('home')
 
-    # 1. On vérifie s'il a un profil Styliste
+    # 3. On vérifie s'il a un profil Styliste
     if hasattr(user, 'profil_styliste') and user.profil_styliste is not None:
         return redirect('dashboard_styliste')
 
-    # 2. On vérifie s'il a un profil Propriétaire
+    # 4. On vérifie s'il a un profil Propriétaire
     elif hasattr(user, 'profil_proprietaire') and user.profil_proprietaire is not None:
         return redirect('dashboard_proprietaire')
 
-    # 3. Par défaut, s'il n'a aucun profil métier, on le renvoie à l'accueil
+    # 5. Par défaut, s'il n'a aucun profil métier, on le renvoie à l'accueil
     return redirect('home')
 
 
