@@ -193,7 +193,7 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # SÉCURITÉ : Si l'admin technique tente de forcer l'accès sans profil réel
+    # SÉCURITÉ : Si l'admin technique (root) tente de forcer l'accès sans profil réel
     if request.user.username == "admin":
         messages.error(request, "L'administrateur root ne peut pas posséder un espace styliste.")
         return redirect('home')
@@ -201,7 +201,7 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # Si c'est l'admin de la marque, on lui crée son profil à la volée avec le strict minimum requis
+        # ICI : C'est bien "admin" qu'il faut intercepter pour lui créer son profil !
         if request.user.username == "admin":
             styliste = ProfilStyliste.objects.create(user=request.user)
         else:
