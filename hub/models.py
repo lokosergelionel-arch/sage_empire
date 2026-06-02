@@ -17,9 +17,14 @@ class ProfilStyliste(models.Model):
     date_inscription = models.DateTimeField(default=now)
 
     def clean(self):
-        """Empêche le vrai compte admin Django d'avoir un profil styliste"""
-        if self.user and self.user.username == "admin":
-            raise ValidationError("Le compte administrateur ne peut pas être associé à un profil styliste.")
+        """Empêche de manière sécurisée le superutilisateur 'admin' d'avoir un profil styliste"""
+        super().clean()
+        try:
+            if self.user and self.user.username == "admin":
+                raise ValidationError("Le compte administrateur ne peut pas être associé à un profil styliste.")
+        except (AttributeError, User.DoesNotExist, ProfilStyliste.user.RelatedObjectDoesNotExist):
+            # Gère les cas où l'utilisateur n'est pas encore assigné ou relié lors de l'inscription
+            pass
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -48,8 +53,14 @@ class ProfilProprietaire(models.Model):
     est_verifie = models.BooleanField(default=False)
 
     def clean(self):
-        if self.user and self.user.username == "admin":
-            raise ValidationError("Le compte administrateur ne peut pas être associé à un profil propriétaire.")
+        """Empêche de manière sécurisée le superutilisateur 'admin' d'avoir un profil propriétaire"""
+        super().clean()
+        try:
+            if self.user and self.user.username == "admin":
+                raise ValidationError("Le compte administrateur ne peut pas être associé à un profil propriétaire.")
+        except (AttributeError, User.DoesNotExist, ProfilProprietaire.user.RelatedObjectDoesNotExist):
+            # Gère les cas où l'utilisateur n'est pas encore assigné ou relié lors de l'inscription
+            pass
 
     def save(self, *args, **kwargs):
         self.full_clean()
