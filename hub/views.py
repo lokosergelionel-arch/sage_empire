@@ -146,6 +146,15 @@ def portfolio_styliste(request, styliste_id):
 # ===================== INSCRIPTION STYLISTE =====================
 def inscription_styliste(request):
     if request.method == 'POST':
+        # --- SÉCURITÉ ANTI-ROBOT (HONEYPOT) ---
+        # Les robots remplissent automatiquement les champs nommés "website" ou "url"
+        honeypot = request.POST.get('website', '')
+        if honeypot:
+            # C'est un robot ! On fait semblant d'accepter en redirigeant sur l'accueil
+            # sans RIEN créer en base de données, pour qu'il arrête de forcer.
+            return redirect('home')
+        # ---------------------------------------
+
         form = InscriptionStylisteForm(request.POST, request.FILES)
         if form.is_valid():
             user = User.objects.create_user(
