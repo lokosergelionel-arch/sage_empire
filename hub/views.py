@@ -44,9 +44,8 @@ from django.core.mail import send_mail
 
 
 # ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
-# ===================== REDIRECTION INTELLIGENTE SÉCURISÉE =====================
 @login_required
-def redirect_user(request): # <-- On remet le nom exact que Django réclame !
+def redirection_apres_login(request):
     """
     Redirige intelligemment l'utilisateur selon son profil métier.
     Sécurité : gère le compte sagemode_admin en priorité absolue et exclut le superadmin technique.
@@ -78,11 +77,10 @@ def proprietaire_required(view_func):
     def wrapper_func(request, *args, **kwargs):
         if not hasattr(request.user, 'profil_proprietaire'):
             messages.warning(request, "Vous n'avez pas accès à cet espace.")
-            return redirect('redirection_apres_login')
+            return redirect('redirection_apres_login') # <-- Aligné ici aussi !
         return view_func(request, *args, **kwargs)
 
     return wrapper_func
-
 
 # ===================== PAGES PUBLIQUES =====================
 def home(request):
