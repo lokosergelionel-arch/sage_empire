@@ -127,8 +127,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = 'redirect_user'
-LOGOUT_REDIRECT_URL = 'home'
+# CORRECTION ICI : Redirection alignée sur le nom de la vue dans urls.py
+LOGIN_REDIRECT_URL = 'redirection_apres_login'
 LOGOUT_REDIRECT_URL = '/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
