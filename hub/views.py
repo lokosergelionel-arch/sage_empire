@@ -193,7 +193,7 @@ def edit_profil(request):
 
 @login_required
 def dashboard_styliste(request):
-    # SÉCURITÉ : Si l'admin technique ou sagemode_admin tente de forcer l'accès sans profil réel
+    # SÉCURITÉ : Si l'admin technique tente de forcer l'accès sans profil réel
     if request.user.username == "admin":
         messages.error(request, "L'administrateur root ne peut pas posséder un espace styliste.")
         return redirect('home')
@@ -201,9 +201,19 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # Si un utilisateur classique atterrit ici par erreur, on l'empêche de créer un faux profil
-        messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
-        return redirect('home')
+        # Si c'est l'admin de la marque, on lui génère automatiquement son profil requis
+        if request.user.username == "sagemode_admin":
+            styliste = ProfilStyliste.objects.create(
+                user=request.user,
+                nom_marque="Sage Mode Admin",
+                telephone="",
+                description="Espace d'administration de la marque.",
+                email_verifie=True
+            )
+        else:
+            # Si c'est un autre utilisateur sans profil, on le redirige
+            messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
+            return redirect('home')
 
     if request.method == 'POST':
         form = CreationForm(request.POST)
