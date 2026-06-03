@@ -8,299 +8,164 @@
  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
  <style>
 :root {
-
 --gold: #B5935E;
-
 --charcoal: #1A1A1A;
-
 --ivory: #F9F8F6;
-
 }
 
 body {
-
 margin: 0;
-
 font-family: 'Lato', sans-serif;
-
 background: var(--ivory);
-
 color: var(--charcoal);
-
 }
-
-
 
 header {
-
 padding: 80px 5% 40px;
-
 text-align: center;
-
 background: white;
-
 border-bottom: 1px solid #eee;
-
 }
-
 header h1 {
-
 font-family: 'Cinzel';
-
 font-size: 2.5rem;
-
 letter-spacing: 8px;
-
 margin: 0;
-
 text-transform: uppercase;
-
 }
-
 header p {
-
 color: var(--gold);
-
 letter-spacing: 3px;
-
 font-size: 0.9rem;
-
 margin-top: 15px;
-
 }
-
-
 
 .container {
-
 max-width: 1200px;
-
 margin: 0 auto;
-
 padding: 20px 2%;
-
 }
-
-
 
 /* --- GRILLE ADAPTATIVE --- */
-
 .gallery-grid {
-
 display: grid;
-
-/* Par défaut sur ordinateur : colonnes de min 280px */
-
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
-gap: 20px;
-
+/* AJUSTEMENT PC : On réduit la largeur max des cartes en augmentant la taille minimale à 350px pour qu'elles soient moins larges et mieux proportionnées */
+grid-template-columns: repeat(auto-fit, minmax(350px, 450px));
+gap: 30px;
 padding: 10px;
-
 justify-content: center;
-
 }
-
-
 
 .collection-item {
-
 background: white;
-
 transition: 0.4s;
-
 border: 1px solid #eee;
-
 display: flex;
-
 flex-direction: column;
-/* CORRECTION DU BOBO DE CADRE : Empêche l'image de baver hors du cadre */
 border-radius: 4px;
 overflow: hidden;
-
+/* AJUSTEMENT PC : On limite la largeur maximale de la carte */
+max-width: 450px;
+margin: 0 auto;
+width: 100%;
 }
-
-
 
 .collection-item:hover {
-
 transform: translateY(-8px);
-
 border-color: var(--gold);
-
 }
-
-
 
 .product-image-wrapper {
-
 position: relative;
-
-height: 450px; /* Hauteur par défaut sur ordinateur */
-
+height: 580px; /* AJUSTEMENT PC : Augmentation de la hauteur de l'image (450px -> 580px) */
 overflow: hidden;
-
 background: #fff;
-
 cursor: zoom-in;
-
 }
-
-
 
 .product-img {
-
 width: 100%;
-
 height: 100%;
-
 object-fit: cover;
-
 transition: opacity 0.5s ease-in-out;
-
 }
 
-
-
 .img-back {
-
 position: absolute;
-
 top: 0; left: 0;
-
 opacity: 0;
-
 }
 
 .collection-item:hover .img-front { opacity: 0; }
-
 .collection-item:hover .img-back { opacity: 1; }
 
-
-
 .product-info {
-
-padding: 15px;
-
+padding: 25px; /* Un peu plus d'espace pour respirer */
 text-align: center;
-
 flex-grow: 1;
-
 display: flex;
-
 flex-direction: column;
-
 justify-content: space-between;
-
 }
-
-
 
 .product-info h3 {
-
 font-family: 'Cinzel';
-
-font-size: 1rem;
-
-margin: 0 0 5px;
-
+font-size: 1.1rem;
+margin: 0 0 8px;
 letter-spacing: 1px;
-
 text-transform: uppercase;
-
 }
 
-/* STYLE AJOUTÉ POUR LA DESCRIPTION */
 .product-info .description {
 font-size: 0.85rem;
 color: #777;
 font-style: italic;
-margin: 5px 0 10px;
+margin: 5px 0 15px;
 line-height: 1.4;
 }
 
 .price {
-
 color: var(--gold);
-
 font-weight: bold;
-
-font-size: 0.9rem;
-
-margin-bottom: 10px;
-
+font-size: 1rem;
+margin-bottom: 15px;
 }
-
-
 
 .btn-order {
-
 display: inline-block;
-
 width: 100%;
-
 padding: 12px 5px;
-
 background: var(--charcoal);
-
 color: white;
-
 text-decoration: none;
-
 font-size: 0.7rem;
-
 letter-spacing: 1px;
-
 text-transform: uppercase;
-
 transition: 0.3s;
-
 }
-
 .btn-order:hover { background: var(--gold); }
 
-
-
 .btn-commander {
-
 background: var(--charcoal);
-
 color: white;
-
 padding: 14px 20px;
-
 border-radius: 8px;
-
 font-weight: 600;
-
 letter-spacing: 1px;
-
 text-transform: uppercase;
-
 font-size: 0.8rem;
-
 display: block;
-
 text-decoration: none;
-
 margin-top: 10px;
-
+transition: 0.3s;
 }
-
-
 
 .btn-commander:hover {
-
 background: var(--gold);
-
 color: black;
-
 }
 
-
-
-/* --- OPTIMISATION MOBILE (3 IMAGES PAR LIGNE) --- */
-
+/* --- OPTIMISATION MOBILE (RESTE INTACTE ET PROPRE) --- */
 @media (max-width: 768px) {
     header {
         padding: 40px 15px 20px;
@@ -312,15 +177,19 @@ color: black;
     }
 
     .gallery-grid {
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 COLONNES STRICTES */
-        gap: 12px; /* Espace entre les deux photos */
-        padding: 0 15px !important; /* MARGE À GAUCHE ET À DROITE (L'EFFET DEZOOM) */
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+        padding: 0 15px !important;
         width: 100%;
-        box-sizing: border-box; /* EMPÊCHE QUE CE SOIT ROGNÉ */
+        box-sizing: border-box;
+    }
+
+    .collection-item {
+        max-width: 100% !important;
     }
 
     .product-image-wrapper {
-        height: 220px; /* Hauteur adaptée pour les 2 colonnes */
+        height: 220px !important; /* Ta hauteur parfaite sur mobile ne bouge pas */
     }
 
     .product-info {
@@ -348,103 +217,55 @@ color: black;
     }
 }
 
-
-
 #lightbox {
-
 display: none;
-
 position: fixed;
-
 z-index: 1000;
-
 top: 0; left: 0; width: 100%; height: 100%;
-
 background: rgba(0,0,0,0.9);
-
 flex-direction: column;
-
 justify-content: center;
-
 align-items: center;
-
 }
 
 #lightbox img#lightbox-img {
-
 max-width: 85%;
-
 max-height: 80%;
-
 border: 3px solid var(--gold);
-
 }
 
-
-
 .zoom-controls {
-
 margin-top: 20px;
-
 display: flex;
-
 gap: 12px;
-
 }
 
 .thumb-zoom {
-
 width: 60px;
-
 height: 80px;
-
 object-fit: cover;
-
 cursor: pointer;
-
 border: 2px solid #fff;
-
 opacity: 0.8;
-
 }
-
 .thumb-zoom:hover {
-
 opacity: 1;
-
 border-color: var(--gold);
-
 }
-
-
 
 .empty-shop {
-
 grid-column: 1 / -1;
-
 padding: 80px 20px;
-
 color: #888;
-
 font-style: italic;
-
 text-align: center;
-
 }
-
-
 
 .main-wrapper {
-
 max-width: 94%;
-
 margin: 0 auto;
-
 overflow: hidden;
-
 }
-
-
  </style>
 </head>
 <body>
@@ -456,11 +277,12 @@ overflow: hidden;
 
  <header>
  <h1>SAGE MODE</h1>
- <p>L'EXCELLENCE À VOTRE MESURE</p>
+ <p>L'EXCELLENCE À VOCE MESURE</p>
  </header>
 
  <section class="container">
- <div class="main-wrapper"> <div class="gallery-grid">
+ <div class="main-wrapper">
+ <div class="gallery-grid">
  {% for produit in produits_sage %}
  <div class="collection-item">
  <div class="product-image-wrapper"
@@ -482,7 +304,6 @@ overflow: hidden;
  <div class="product-info">
  <h3>{{ produit.titre }}</h3>
 
- <!-- INTEGRATION DE LA DESCRIPTION SOUS LE TITRE -->
  {% if produit.description %}
  <p class="description">{{ produit.description }}</p>
  {% endif %}
@@ -491,7 +312,7 @@ overflow: hidden;
  <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour Sage Mode, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
    target="_blank" class="btn-commander" style="text-decoration: none; display: inline-block; text-align: center;">
     COMMANDER
-</a>
+ </a>
  </div>
  </div>
  {% empty %}
@@ -499,6 +320,7 @@ overflow: hidden;
  <p>Nos nouvelles collections arrivent bientôt...</p>
  </div>
  {% endfor %}
+ </div>
  </div>
  </section>
 
