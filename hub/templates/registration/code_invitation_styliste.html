@@ -1,47 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-    <div class="card p-4 shadow-lg text-center" style="max-width: 450px; width: 100%; border-radius: 15px; border: 1px solid #dca54e;">
-        <h2 class="mb-3" style="color: #111; font-weight: 700;">Rejoindre l'Empire</h2>
-        <p class="text-muted small">L'accès à l'espace créateur est strictement réservé aux stylistes partenaires de la marque ayant obtenu une invitation.</p>
+<!-- Conteneur principal centré horizontalement et verticalement -->
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #fafafa;">
 
+    <!-- Carte d'invitation au style Épuré & Premium -->
+    <div style="max-width: 450px; width: 100%; background: #ffffff; border: 1px solid #dca54e; border-radius: 12px; padding: 40px 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); text-align: center;">
+
+        <h2 style="color: #111111; font-weight: 700; font-size: 28px; margin-bottom: 15px; letter-spacing: 0.5px;">Rejoindre l'Empire</h2>
+        <p style="color: #666666; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">
+            L'accès à l'espace créateur est strictement réservé aux stylistes partenaires de la marque ayant obtenu une invitation unique.
+        </p>
+
+        <!-- Section Messages d'erreur Django -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} py-2 small">{{ message }}</div>
+                <div style="background-color: #fdf2f2; color: #de3b3b; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; font-size: 13px; margin-bottom: 20px; font-weight: 500;">
+                    {{ message }}
+                </div>
             {% endfor %}
         {% endif %}
 
-        <form method="POST" class="mt-4">
+        <!-- Formulaire de saisie du code -->
+        <form method="POST" style="margin-bottom: 35px;">
             {% csrf_token %}
-            <div class="mb-3 text-start">
-                <label for="code_invitation" class="form-label small fw-bold text-uppercase" style="letter-spacing: 1px;">Code d'invitation unique</label>
-                <input type="text" name="code_invitation" id="code_invitation" class="form-control text-center text-uppercase fw-bold" placeholder="XXX-XXX" required style="border-color: #ccc; padding: 12px;">
+            <div style="text-align: left; margin-bottom: 20px;">
+                <label for="code_invitation" style="display: block; font-size: 12px; font-weight: 700; color: #111111; text-uppercase: true; letter-spacing: 1.5px; margin-bottom: 8px;">
+                    CODE D'INVITATION UNIQUE
+                </label>
+                <input type="text" name="code_invitation" id="code_invitation" placeholder="SAGE-XXXXXX" required
+                       style="width: 100%; padding: 14px; border: 1px solid #cccccc; border-radius: 8px; font-size: 16px; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 2px; transition: border-color 0.3s; box-sizing: border-box;">
             </div>
-            <button type="submit" class="btn w-100 fw-bold text-white mt-2" style="background-color: #111; padding: 12px; border-radius: 8px;">
+
+            <button type="submit" style="width: 100%; background-color: #111111; color: #ffffff; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; padding: 14px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; box-sizing: border-box;">
                 Valider l'accès
             </button>
         </form>
 
-        <div class="mt-4 pt-3 border-top">
-            <span class="text-muted small d-block mb-3">Pas encore de code d'invitation ?</span>
-            <div class="d-flex flex-column gap-2">
-                <!-- Bouton WhatsApp -->
+        <!-- Séparation et Boutons de contact -->
+        <div style="border-top: 1px solid #eeeeee; padding-top: 25px;">
+            <span style="color: #888888; font-size: 13px; display: block; margin-bottom: 15px;">Pas encore de code d'invitation ?</span>
+
+            <div style="display: flex; flex-column: row; gap: 12px; justify-content: center; align-items: center; flex-direction: column;">
+                <!-- Bouton WhatsApp version Classe/Black & Gold -->
                 <a href="https://wa.me/22897070509?text=Bonjour%20Sage%20Empire,%20je%20suis%20styliste%20et%20je%20souhaiterais%20obtenir%20un%20code%20d'invitation%20pour%20rejoindre%20la%20plateforme."
                    target="_blank"
-                   class="btn btn-success w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
-                   style="background-color: #25D366; border: none; padding: 10px; border-radius: 8px;">
-                    <i class="fab fa-whatsapp fs-5"></i> Demander via WhatsApp
+                   style="width: 100%; max-width: 280px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: #ffffff; color: #111111; border: 2px solid #111111; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px; border-radius: 8px; text-decoration: none; transition: all 0.3s; box-sizing: border-box;">
+                    <i class="fab fa-whatsapp" style="font-size: 16px;"></i> Demander via WhatsApp
                 </a>
 
-                <!-- Lien Mail discret -->
+                <!-- Lien Mail épuré -->
                 <a href="mailto:contact@sage-empire.com?subject=Demande%20de%20code%20d'invitation%20Styliste"
-                   class="small fw-bold mt-1"
-                   style="color: #dca54e; text-decoration: none;">
-                    <i class="fas fa-envelope me-1"></i> Contacter par email
+                   style="color: #dca54e; font-size: 13px; font-weight: 600; text-decoration: none; margin-top: 5px;">
+                    <i class="fas fa-envelope" style="margin-right: 4px;"></i> Contacter par email
                 </a>
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}
