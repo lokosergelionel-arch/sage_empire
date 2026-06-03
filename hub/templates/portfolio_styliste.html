@@ -64,7 +64,17 @@
         }
 
         .product-info { padding: 20px; text-align: center; }
-        .product-info h3 { font-family: 'Cinzel', serif; font-size: 0.9rem; margin: 0 0 10px; }
+        .product-info h3 { font-family: 'Cinzel', serif; font-size: 0.9rem; margin: 0 0 5px; }
+
+        /* STYLE AJOUTÉ POUR LA DESCRIPTION DU STYLISTE */
+        .product-info .description {
+            font-size: 0.85rem;
+            color: #777;
+            font-style: italic;
+            margin: 5px 0 10px;
+            line-height: 1.4;
+        }
+
         .price { color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
 
         .btn-commander {
@@ -104,46 +114,59 @@
             /* On désactive l'effet de transparence sur mobile pour éviter l'image noire */
             .img-back { display: none; }
             .product-card:active .img-front { transform: scale(0.98); }
+
+            /* Ajustement de la taille de la description sur mobile */
+            .product-info .description {
+                font-size: 0.75rem;
+                margin: 3px 0 7px;
+            }
         }
+
         /* Lightbox - Mobile (bordure très fine dorée) */
-#lightbox {
-    padding: 12px !important;
-    background: rgba(0,0,0,0.95) !important;
-}
+        #lightbox {
+            padding: 12px !important;
+            background: rgba(0,0,0,0.95) !important;
+        }
 
-#lightbox img#main-image {
-    border: 1px solid #D4AF37 !important;     /* Bordure très fine */
-    border-radius: 12px !important;
-    max-width: 92% !important;
-    max-height: 60vh !important;
-    object-fit: contain !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-       .btn-commander {
-    display: block;
-    width: 100%;
-    background: #1A1A1A;
-    color: white;
-    text-align: center;
-    padding: 16px 20px;
-    border-radius: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    text-decoration: none;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-}
+        #lightbox img#main-image {
+            border: 1px solid #D4AF37 !important;     /* Bordure très fine */
+            border-radius: 12px !important;
+            max-width: 92% !important;
+            max-height: 60vh !important;
+            object-fit: contain !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
 
-.btn-commander:hover {
-    background: var(--gold);
-    color: black;
-}
+        .btn-commander {
+            display: block;
+            width: 100%;
+            background: #1A1A1A;
+            color: white;
+            text-align: center;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-commander:hover {
+            background: var(--gold);
+            color: black;
+        }
     </style>
 </head>
 <body>
+
+    <div id="lightbox" onclick="closeZoom(event)">
+        <img id="main-image" src="" alt="Zoom">
+        <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()"></div>
+    </div>
 
     <header class="profile-header">
         <div class="profile-img-container">
@@ -168,19 +191,20 @@
             </div>
             <div class="product-info">
                 <h3>{{ produit.titre }}</h3>
+
+                <!-- INCLUSION DE LA DESCRIPTION JUSTE ICI -->
+                {% if produit.description %}
+                    <p class="description">{{ produit.description }}</p>
+                {% endif %}
+
                 <span class="price">{{ produit.prix }} FCFA</span>
                 <a href="https://wa.me/{{ styliste.contact_whatsapp }}?text=Bonjour {{ styliste.nom_marque }}, je suis intéressé par cet article :%0A%0A*{{ produit.titre }}*%0A{{ produit.prix }} FCFA%0A%0AImage : {{ produit.display_image }}"
-   target="_blank" class="btn-commander">
-    COMMANDER
-</a>
+                   target="_blank" class="btn-commander">
+                    COMMANDER
+                </a>
             </div>
         </div>
         {% endfor %}
-    </div>
-
-    <div id="lightbox" onclick="closeZoom(event)">
-        <img id="main-image" src="" alt="Zoom">
-        <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()"></div>
     </div>
 
     <script>
