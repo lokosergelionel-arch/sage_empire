@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
+    verifier_code_styliste,  # <-- AJOUT DE LA VUE DE VÉRIFICATION
     mes_publications, supprimer_creation, galerie_mode, liste_stylistes,
     portfolio_styliste, page_immobilier, page_evenementiel, sage_digital,
     verify_email, renvoyer_email_verification, verification_sent,
@@ -35,14 +36,20 @@ urlpatterns = [
 
     # Authentification
     path('login/', login_view, name='login'),
-    path('rejoindre/', inscription_styliste, name='inscription_styliste'),
+
+    # SÉCURISATION INSCRIPTION STYLISTE
+    path('rejoindre/', verifier_code_styliste, name='verifier_code_styliste'),
+    # <-- Gère le template avec le code d'invitation
+    path('rejoindre/formulaire-creation/', inscription_styliste, name='inscription_styliste'),
+    # <-- Le formulaire réel, protégé par la session
+
     path('inscription-proprietaire/', inscription_proprietaire, name='inscription_proprietaire'),
     path('complete-inscription/', complete_inscription_proprietaire, name='complete_inscription_proprietaire'),
 
     # Password Reset
     path('mot-de-passe-oublie/', CustomPassword_reset_view.as_view(), name='styliste_password_reset'),
     path('mot-de-passe-oublie/done/', CustomPassword_reset_done_view.as_view(), name='styliste_password_reset_done'),
-    path('reset/<uidb64>/<token>/', CustomPassword_reset_confirm_view.as_view(), name='styliste_password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', CustomPassword_reset_confirm_view.as_view(),name='styliste_password_reset_confirm'),
     path('reset/done/', CustomPassword_reset_complete_view.as_view(), name='styliste_password_reset_complete'),
 
     # Email Verification

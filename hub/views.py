@@ -78,10 +78,11 @@ def proprietaire_required(view_func):
     def wrapper_func(request, *args, **kwargs):
         if not hasattr(request.user, 'profil_proprietaire'):
             messages.warning(request, "Vous n'avez pas accès à cet espace.")
-            return redirect('redirection_apres_login') # <-- Aligné ici aussi !
+            return redirect('redirection_apres_login')
         return view_func(request, *args, **kwargs)
 
     return wrapper_func
+
 
 # ===================== PAGES PUBLIQUES =====================
 def home(request):
@@ -151,11 +152,8 @@ def inscription_styliste(request):
 
     if request.method == 'POST':
         # --- SÉCURITÉ ANTI-ROBOT (HONEYPOT) ---
-        # Les robots remplissent automatiquement les champs nommés "website" ou "url"
         honeypot = request.POST.get('website', '')
         if honeypot:
-            # C'est un robot ! On fait semblant d'accepter en redirigeant sur l'accueil
-            # sans RIEN créer en base de données, pour qu'il arrête de forcer.
             return redirect('home')
         # ---------------------------------------
 
@@ -170,6 +168,10 @@ def inscription_styliste(request):
             profil.user = user
             profil.email_verifie = False
             profil.save()
+
+            # SÉCURITÉ : On nettoie le jeton de session pour qu'on ne puisse pas créer plusieurs comptes avec le même code
+            if 'code_styliste_valide' in request.session:
+                del request.session['code_styliste_valide']
 
             if send_verification_email(request, user):
                 return redirect('verification_sent')
@@ -231,11 +233,10 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # ICI : C'est bien "admin" qu'il faut intercepter pour lui créer son profil !
-        if request.user.username == "admin":
-            styliste = ProfilStyliste.objects.create(user=request.user)
+        # CORRECTION : C'est bien sagemode_admin qu'il faut intercepter pour lui auto-créer son espace de marque
+        if request.user.username == "sagemode_admin":
+            styliste = ProfilStyliste.objects.create(user=request.user, nom_marque="Sage Mode Admin")
         else:
-            # Si c'est un autre utilisateur sans profil, on le redirige
             messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
             return redirect('home')
 
