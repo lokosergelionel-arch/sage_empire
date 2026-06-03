@@ -234,7 +234,12 @@ def dashboard_styliste(request):
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
         if request.user.username == "sagemode_admin":
-            styliste = ProfilStyliste(user=request.user)
+            # On crée le profil en fournissant obligatoirement le nom de marque et un numéro par défaut
+            styliste = ProfilStyliste(
+                user=request.user,
+                nom_marque="Sage Mode",
+                contact_whatsapp="22897070509"
+            )
             styliste.save()
         else:
             messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
