@@ -233,9 +233,9 @@ def dashboard_styliste(request):
     try:
         styliste = ProfilStyliste.objects.get(user=request.user)
     except ProfilStyliste.DoesNotExist:
-        # CORRECTION : C'est bien sagemode_admin qu'il faut intercepter pour lui auto-créer son espace de marque
         if request.user.username == "sagemode_admin":
-            styliste = ProfilStyliste.objects.create(user=request.user, nom_marque="Sage Mode Admin")
+            styliste = ProfilStyliste(user=request.user)
+            styliste.save()
         else:
             messages.error(request, "Aucun profil styliste n'est associé à ce compte.")
             return redirect('home')
