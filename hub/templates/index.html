@@ -434,28 +434,25 @@ document.addEventListener("DOMContentLoaded", function() {
     animElements.forEach((el, index) => {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
-});
-<script>
-  // On attend que tout soit chargé
-  window.addEventListener('load', () => {
-    // On vérifie de manière ultra-sécurisée si Capacitor et ses plugins existent
-    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-      try {
-        const App = window.Capacitor.Plugins.App;
 
-        // Cet écouteur ne s'activera QUE sur Android
-        App.addListener('backButton', (data) => {
-          if (window.history.length > 1) {
-            window.history.back();
-          } else {
-            App.exitApp();
-          }
-        });
-      } catch (e) {
-        console.log("Capacitor App non configuré ou absent");
-      }
-    }
-  });
+    // ÉCOUTEUR DU BOUTON RETOUR POUR CAPACITOR (Intégré proprement)
+    window.addEventListener('load', () => {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+            try {
+                const App = window.Capacitor.Plugins.App;
+                App.addListener('backButton', (data) => {
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        App.exitApp();
+                    }
+                });
+            } catch (e) {
+                console.log("Capacitor App non configuré ou absent");
+            }
+        }
+    });
+});
 </script>
 </body>
 </html>
