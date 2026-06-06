@@ -435,24 +435,24 @@ document.addEventListener("DOMContentLoaded", function() {
     animElements.forEach((el, index) => {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
+});
 
-    / ÉCOUTEUR DU BOUTON RETOUR POUR CAPACITOR
-    window.addEventListener('load', () => {
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-            try {
-                const App = window.Capacitor.Plugins.App;
-                App.addListener('backButton', (data) => {
-                    if (window.history.length > 1) {
-                        window.history.back();
-                    } else {
-                        App.exitApp();
-                    }
-                });
-            } catch (e) {
-                console.log("Capacitor App non configuré ou absent");
-            }
+// ÉCOUTEUR DU BOUTON RETOUR VERSION MOBILES (CORRIGÉ)
+window.addEventListener('load', () => {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        try {
+            const App = window.Capacitor.Plugins.App;
+            App.addListener('backButton', () => {
+                if (window.history && window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    App.exitApp();
+                }
+            });
+        } catch (e) {
+            console.log("Capacitor App non configuré ou absent");
         }
-    });
+    }
 });
 </script>
 </body>
