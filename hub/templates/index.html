@@ -436,15 +436,17 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
 
-    // ÉCOUTEUR DU BOUTON RETOUR POUR CAPACITOR
+    // ÉCOUTEUR DU BOUTON RETOUR VERSION ANDROID/CAPACITOR ULTRA-ROBUSTE
     window.addEventListener('load', () => {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
             try {
                 const App = window.Capacitor.Plugins.App;
-                App.addListener('backButton', (data) => {
-                    if (window.history.length > 1) {
+                App.addListener('backButton', () => {
+                    // On vérifie si le navigateur de l'application peut revenir en arrière
+                    if (window.history && window.history.length > 1) {
                         window.history.back();
                     } else {
+                        // Si on est vraiment à l'accueil de l'application, on la ferme proprement
                         App.exitApp();
                     }
                 });
@@ -453,7 +455,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-});
 </script>
 </body>
 </html>
