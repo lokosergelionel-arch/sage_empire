@@ -436,13 +436,14 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // 1. On vérifie d'abord si on est bien dans l'application Capacitor Android
-    if (window.Capacitor && window.Capacitor.isPluginAvailable('App')) {
+  // On attend que tout soit chargé
+  window.addEventListener('load', () => {
+    // On vérifie de manière ultra-sécurisée si Capacitor et ses plugins existent
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
       try {
         const App = window.Capacitor.Plugins.App;
 
-        // 2. On n'active l'écouteur du bouton retour QUE si le plugin existe
+        // Cet écouteur ne s'activera QUE sur Android
         App.addListener('backButton', (data) => {
           if (window.history.length > 1) {
             window.history.back();
@@ -450,8 +451,8 @@ document.addEventListener("DOMContentLoaded", function() {
             App.exitApp();
           }
         });
-      } catch (error) {
-        console.log("Capacitor App plugin non prêt :", error);
+      } catch (e) {
+        console.log("Capacitor App non configuré ou absent");
       }
     }
   });
