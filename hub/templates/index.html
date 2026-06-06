@@ -3,7 +3,7 @@
 <html lang="fr">
 <head>
  <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
  <meta property="og:title" content="SAGE EMPIRE | Signature d'Excellence">
  <meta property="og:description" content="Sage Empire — L'art de vivre l'exception. Prestige événementiel, patrimoine d'exception, créations signatures. Un empire, une vision. ">
  <meta property="og:image" content="{% static 'images/logo.png' %}?v=empire">
@@ -26,9 +26,10 @@
     html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Lato', sans-serif; background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-    /* NAV */
+    /* NAV AJUSTÉ POUR LES ENCOCHES MOBILES */
     nav {
     padding: 15px 8%;
+    padding-top: calc(15px + env(safe-area-inset-top));
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -253,7 +254,7 @@
 <h3>SAGE MODE</h3> <p>Découvrez nos collections exclusives.</p>
 <div class="line"></div>
 </a>
-<a href="https://www.makoservicestg.com" target="_blank" class="service-card" data-animate>
+<a href="https://www.makoservicestg.com" class="service-card" data-animate>
 <h3>MAKO SERVICES</h3>
 <p>Entretien expert post-évènement.</p>
 <div class="line"></div>
@@ -435,7 +436,7 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
 
-    // ÉCOUTEUR DU BOUTON RETOUR POUR CAPACITOR (Intégré proprement)
+    // ÉCOUTEUR DU BOUTON RETOUR POUR CAPACITOR
     window.addEventListener('load', () => {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
             try {
