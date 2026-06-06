@@ -435,24 +435,24 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
 });
-</script>
-<!-- Charger le script de Capacitor si ce n'est pas déjà fait -->
-<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
-
 <script>
-  // On attend que Capacitor soit prêt
   window.addEventListener('DOMContentLoaded', () => {
-    if (window.Capacitor && window.Capacitor.Plugins) {
-      const { App } = window.Capacitor.Plugins;
+    // 1. On vérifie d'abord si on est bien dans l'application Capacitor Android
+    if (window.Capacitor && window.Capacitor.isPluginAvailable('App')) {
+      try {
+        const App = window.Capacitor.Plugins.App;
 
-      // On écoute le clic sur le bouton retour physique d'Android
-      App.addListener('backButton', (data) => {
-        if (window.history.length > 1) {
-          window.history.back(); // Recule d'une page sur le site
-        } else {
-          App.exitApp(); // Si on est à l'accueil, on ferme l'application
-        }
-      });
+        // 2. On n'active l'écouteur du bouton retour QUE si le plugin existe
+        App.addListener('backButton', (data) => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            App.exitApp();
+          }
+        });
+      } catch (error) {
+        console.log("Capacitor App plugin non prêt :", error);
+      }
     }
   });
 </script>
