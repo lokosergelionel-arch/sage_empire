@@ -384,61 +384,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
-// ✅ GESTION BOUTON RETOUR ANDROID + LIENS EXTERNES
-window.addEventListener('load', () => {
-    const isCapacitor = window.Capacitor !== undefined;
+// ✅ DÉTECTION CAPACITOR AMÉLIORÉE
+document.addEventListener('DOMContentLoaded', function() {
 
-    if (isCapacitor) {
+    // Fonction pour vérifier si on est dans Capacitor
+    function isCapacitorApp() {
+        return window.Capacitor !== undefined &&
+               window.Capacitor.isNativePlatform &&
+               window.Capacitor.isNativePlatform();
+    }
+
+    // ✅ MAKO SERVICES - Liens externes
+    document.querySelectorAll('.mako-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = this.getAttribute('data-url');
+            if (!url) return;
+
+            if (isCapacitorApp()) {
+                window.Capacitor.Plugins.Browser.open({ url: url });
+            } else {
+                window.open(url, '_blank');
+            }
+        });
+    });
+
+    // ✅ BOUTON RETOUR ANDROID
+    function setupBackButton() {
+        if (!isCapacitorApp()) return;
+
         const App = window.Capacitor.Plugins.App;
-        const Browser = window.Capacitor.Plugins.Browser;
 
-        // ✅ Bouton retour Android amélioré
-        App.addListener('backButton', () => {
-            const modals = document.querySelectorAll('.modal.show');
-            const mobileMenu = document.getElementById('mobileMenu');
-
-            // Si un modal est ouvert, le fermer
-            if (modals.length > 0) {
-                modals.forEach(modal => {
-                    const bsModal = bootstrap.Modal.getInstance(modal);
-                    if (bsModal) bsModal.hide();
-                });
-                return;
+        App.addListener('backButton', function() {
+            // Si modal ouvert
+            const modalOpen = document.querySelector('.modal.show');
+            if (modalOpen) {
+                const bsModal = bootstrap.Modal.getInstance(modalOpen);
+                if (bsModal) { bsModal.hide(); return; }
             }
 
-            // Si le menu mobile est ouvert, le fermer
-            if (mobileMenu && mobileMenu.classList.contains('active')) {
-                toggleMenu();
-                return;
+            // Si menu mobile ouvert
+            const menuOpen = document.getElementById('mobileMenu');
+            if (menuOpen && menuOpen.classList.contains('active')) {
+                toggleMenu(); return;
             }
 
-            // Sinon gérer la navigation
+            // Navigation normale
             if (window.history.length > 1) {
                 window.history.back();
             } else {
                 App.exitApp();
             }
         });
+    }
 
-        // ✅ Ouvrir les liens externes dans un navigateur in-app
-        document.querySelectorAll('.mako-link').forEach(link => {
-            link.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const url = link.getAttribute('data-url');
-                if (url) {
-                    await Browser.open({ url: url });
-                }
-            });
-        });
+    // Attendre que Capacitor soit prêt
+    if (window.Capacitor) {
+        setupBackButton();
     } else {
-        // Sur navigateur normal, comportement classique
-        document.querySelectorAll('.mako-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const url = link.getAttribute('data-url');
-                if (url) window.open(url, '_blank');
-            });
-        });
+        // Attendre un peu que Capacitor charge
+        setTimeout(setupBackButton, 500);
     }
 });
 
