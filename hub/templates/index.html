@@ -389,7 +389,8 @@ window.addEventListener('load', () => {
     const isCapacitor = window.Capacitor !== undefined;
 
     if (isCapacitor) {
-        const { App, Browser } = window.Capacitor.Plugins;
+        const App = window.Capacitor.Plugins.App;
+        const Browser = window.Capacitor.Plugins.Browser;
 
         // ✅ Bouton retour Android amélioré
         App.addListener('backButton', () => {
