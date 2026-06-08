@@ -22,17 +22,20 @@
         --gold-subtle: #B5935E;
         --border: #E5E2DA;
         --white: #ffffff;
+        /* ✅ Variable Safe Area */
+        --sat: env(safe-area-inset-top);
+        --sab: env(safe-area-inset-bottom);
+        --sal: env(safe-area-inset-left);
+        --sar: env(safe-area-inset-right);
     }
 
     html {
         scroll-behavior: smooth;
-        /* ✅ Safe Area sur html pas sur body */
-        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     body {
         margin: 0;
-        padding: 0; /* ✅ Plus de padding sur body */
+        padding: 0;
         font-family: 'Lato', sans-serif;
         background-color: var(--ivory);
         color: var(--charcoal);
@@ -48,10 +51,13 @@
         display: block;
     }
 
-    /* ✅ NAV CORRIGÉE - Safe area uniquement ici */
+    /* ✅ NAV FIXÉE AVEC SAFE AREA IOS */
     nav {
-        padding: 15px 8%;
-        /* ✅ On enlève le safe-area-inset-top du nav car il est déjà sur html */
+        padding-left: 8%;
+        padding-right: 8%;
+        padding-bottom: 15px;
+        /* ✅ Clé : padding-top prend en compte la Dynamic Island */
+        padding-top: max(15px, calc(15px + env(safe-area-inset-top)));
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -60,6 +66,10 @@
         position: sticky;
         top: 0;
         z-index: 1000;
+        /* ✅ La nav doit couvrir toute la largeur */
+        left: 0;
+        right: 0;
+        box-sizing: border-box;
     }
 
     .nav-logo-container { height: 50px; }
@@ -102,7 +112,7 @@
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-    /* ✅ MENU MOBILE CORRIGÉ */
+    /* ✅ MENU MOBILE AVEC SAFE AREA */
     .mobile-overlay {
         position: fixed;
         top: 0; left: 0;
@@ -114,7 +124,9 @@
         transition: all 0.4s ease;
         display: flex; flex-direction: column;
         justify-content: center; align-items: center;
-        /* ✅ Pas de padding safe area ici car déjà sur html */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        box-sizing: border-box;
     }
     .mobile-overlay.active { opacity: 1; visibility: visible; }
 
@@ -339,7 +351,6 @@
         50% { opacity: 0.5; transform: scale(1.05); }
     }
 
-    /* ✅ MEDIA QUERIES MOBILE */
     @media (max-width: 768px) {
         .nav-links { display: none; }
         .hamburger { display: flex; }
@@ -347,6 +358,7 @@
         .orbit-container { height: 600px !important; transform: scale(0.7); }
         .hex-desc { display: none; }
     }
+</style>
 </style>
 </head>
 
