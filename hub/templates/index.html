@@ -550,45 +550,14 @@
 <script src="https://unpkg.com/@capacitor/browser@latest/dist/plugin.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+// ✅ Détection Capacitor
+function isCapacitor() {
+    return window.Capacitor !== undefined &&
+           window.Capacitor.isNativePlatform !== undefined &&
+           window.Capacitor.isNativePlatform();
+}
 
-    // ✅ Détection Capacitor
-    function isCapacitor() {
-        return window.Capacitor !== undefined &&
-               window.Capacitor.isNativePlatform !== undefined &&
-               window.Capacitor.isNativePlatform();
-    }
-
-    // ✅ Mako Services - Ouvrir dans navigateur intégré
-    document.querySelectorAll('.mako-link').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var url = this.getAttribute('data-url');
-            if (!url) return;
-
-            if (isCapacitor()) {
-                // Ouvrir dans le navigateur intégré de l'app
-                window.Capacitor.Plugins.Browser.open({
-                    url: url,
-                    presentationStyle: 'fullscreen'
-                }).catch(function(err) {
-                    // Fallback si Browser ne marche pas
-                    window.open(url, '_blank');
-                });
-            } else {
-                window.open(url, '_blank');
-            }
-        });
-    });
-
-    // ✅ Bouton retour - Fermer le navigateur intégré si ouvert
-    if (isCapacitor()) {
-        window.Capacitor.Plugins.Browser.addListener('browserFinished', function() {
-            console.log('Navigateur intégré fermé');
-        });
-    }
-
+// ✅ Toggle Menu Mobile
 function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
     const hamburger = document.querySelector('.hamburger');
@@ -605,60 +574,150 @@ function toggleMenu() {
     }
 }
 
-document.getElementById('mobileMenu').addEventListener('click', function(e) {
-    if (e.target === this) toggleMenu();
-});
+document.addEventListener('DOMContentLoaded', function() {
 
-document.addEventListener("DOMContentLoaded", function() {
-    const cardsData = document.querySelectorAll('.orbit-card');
-    const container = document.querySelector('.orbit-container');
-    const isMobile = window.innerWidth < 768;
-    const radius = isMobile ? 210 : 330;
-
-    cardsData.forEach(card => {
-        card.innerHTML = `
-            <div class="hex-content">
-                <i class="fas ${card.dataset.icon} hex-icon"></i>
-                <h4 class="hex-label">${card.dataset.label}</h4>
-                <p class="hex-desc">${card.dataset.desc}</p>
-            </div>
-        `;
-    });
-
-    const cards = document.querySelectorAll('.orbit-card');
-    let orbitRotation = { value: 0 };
-
-    gsap.to(orbitRotation, {
-        value: 360, duration: 40, repeat: -1, ease: "none",
-        onUpdate: () => {
-            cards.forEach((card) => {
-                const baseAngle = parseInt(card.dataset.angle);
-                const currentAngle = ((baseAngle + orbitRotation.value) * Math.PI) / 180;
-                const x = Math.cos(currentAngle) * radius;
-                const y = Math.sin(currentAngle) * radius;
-                gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
-            });
-        }
-    });
-
-    if (!isMobile) {
-        window.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 35;
-            const y = (e.clientY / window.innerHeight - 0.5) * 35;
-            gsap.to(container, { rotationY: x, rotationX: -y, ease: "power2.out", duration: 1.2 });
+    // ✅ Fermer menu en cliquant dehors
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === this) toggleMenu();
         });
     }
 
-    cards.forEach((card, i) => {
-        gsap.to(card, {
-            z: i % 2 === 0 ? 25 : -25, duration: 3 + i, repeat: -1, yoyo: true, ease: "sine.inOut"
+    // ✅ Mako Services - Ouvrir dans navigateur intégré
+    document.querySelectorAll('.mako-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var url = this.getAttribute('data-url');
+            if (!url) return;
+
+            if (isCapacitor()) {
+                window.Capacitor.Plugins.Browser.open({
+                    url: url,
+                    presentationStyle: 'fullscreen'
+                }).catch(function(err) {
+                    window.open(url, '_blank');
+                });
+            } else {
+                window.open(url, '_blank');
+            }
         });
     });
 
+    // ✅ Capacitor - Browser listener
+    if (isCapacitor()) {
+        if (window.Capacitor.Plugins.Browser) {
+            window.Capacitor.Plugins.Browser.addListener(
+                'browserFinished',
+                function() {
+                    console.log('Navigateur intégré fermé');
+                }
+            );
+        }
+    }
+
+    // ✅ Orbit Cards (uniquement si présentes sur la page)
+    const cardsData = document.querySelectorAll('.orbit-card');
+    const container = document.querySelector('.orbit-container');
+
+    if (cardsData.length > 0 && container) {
+        const isMobile = window.innerWidth < 768;
+        const radius = isMobile ? 210 : 330;
+
+        cardsData.forEach(card => {
+            card.innerHTML = `
+                <div class="hex-content">
+                    <i class="fas ${card.dataset.icon} hex-icon"></i>
+                    <h4 class="hex-label">${card.dataset.label}</h4>
+                    <p class="hex-desc">${card.dataset.desc}</p>
+                </div>
+            `;
+        });
+
+        const cards = document.querySelectorAll('.orbit-card');
+        let orbitRotation = { value: 0 };
+
+        if (typeof gsap !== 'undefined') {
+            gsap.to(orbitRotation, {
+                value: 360, duration: 40, repeat: -1, ease: "none",
+                onUpdate: () => {
+                    cards.forEach((card) => {
+                        const baseAngle = parseInt(card.dataset.angle);
+                        const currentAngle = ((baseAngle + orbitRotation.value) * Math.PI) / 180;
+                        const x = Math.cos(currentAngle) * radius;
+                        const y = Math.sin(currentAngle) * radius;
+                        gsap.set(card, { x: x, y: y, xPercent: -50, yPercent: -50 });
+                    });
+                }
+            });
+
+            if (!isMobile) {
+                window.addEventListener('mousemove', (e) => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 35;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 35;
+                    gsap.to(container, {
+                        rotationY: x, rotationX: -y,
+                        ease: "power2.out", duration: 1.2
+                    });
+                });
+            }
+
+            cards.forEach((card, i) => {
+                gsap.to(card, {
+                    z: i % 2 === 0 ? 25 : -25,
+                    duration: 3 + i,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+        }
+    }
+
+    // ✅ Animations
     const animElements = document.querySelectorAll('[data-animate]');
     animElements.forEach((el, index) => {
         setTimeout(() => { el.classList.add('animated'); }, 150 * index);
     });
+
+    // ✅ Bouton retour iOS
+    if (isCapacitor()) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS && window.history.length > 1) {
+            const backBtn = document.createElement('button');
+            backBtn.innerHTML = '&#8592;';
+            backBtn.id = 'ios-back-btn';
+            backBtn.style.cssText = `
+                position: fixed;
+                bottom: 40px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: rgba(26, 26, 26, 0.85);
+                color: #B5935E;
+                border: 1px solid #B5935E;
+                font-size: 1.4rem;
+                cursor: pointer;
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            `;
+
+            backBtn.addEventListener('click', function() {
+                if (window.history.length > 1) {
+                    window.history.back();
+                }
+            });
+
+            document.body.appendChild(backBtn);
+        }
+    }
 });
 </script>
 </body>
