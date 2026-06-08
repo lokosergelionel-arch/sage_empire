@@ -276,7 +276,8 @@
         </a>
 
         <!-- ✅ CORRECTION LIEN EXTERNE MAKO SERVICES -->
-        <a href="https://www.makoservicestg.com" class="service-card mako-link" data-animate data-url="https://www.makoservicestg.com">
+       <a href="#"
+   class="service-card mako-link" data-animate data-url="https://www.makoservicestg.com">
     <h3>MAKO SERVICES</h3>
     <p>Entretien expert post-évènement.</p>
     <div class="line"></div>
@@ -391,47 +392,44 @@
 <script src="https://unpkg.com/@capacitor/browser@latest/dist/plugin.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
-    // 1. Détection sécurisée des plugins Capacitor
-    const isCapacitor = window.Capacitor && window.Capacitor.isNativePlatform();
-    const CapApp = window.capacitorExports ? window.capacitorExports.App : null;
-    const CapBrowser = window.capacitorExports ? window.capacitorExports.Browser : null;
-
-    // 2. Gestion du bouton Retour Android
-    if (isCapacitor && CapApp) {
-        CapApp.addListener('backButton', function() {
-            // Fermer le menu mobile s'il est ouvert
-            const menu = document.getElementById('mobileMenu');
-            if (menu && menu.classList.contains('active')) {
-                toggleMenu();
-                return;
-            }
-
-            // Retour normal
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                CapApp.exitApp();
-            }
-        });
+    // ✅ Détection Capacitor
+    function isCapacitor() {
+        return window.Capacitor !== undefined &&
+               window.Capacitor.isNativePlatform !== undefined &&
+               window.Capacitor.isNativePlatform();
     }
 
-    // 3. Gestion de Mako Services et liens externes
-    document.querySelectorAll('.mako-link').forEach(link => {
+    // ✅ Mako Services - Ouvrir dans navigateur intégré
+    document.querySelectorAll('.mako-link').forEach(function(link) {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const url = this.getAttribute('data-url') || this.href;
+            e.stopPropagation();
+            var url = this.getAttribute('data-url');
+            if (!url) return;
 
-            if (isCapacitor && CapBrowser) {
-                // S'ouvre proprement dans l'application
-                CapBrowser.open({ url: url });
+            if (isCapacitor()) {
+                // Ouvrir dans le navigateur intégré de l'app
+                window.Capacitor.Plugins.Browser.open({
+                    url: url,
+                    presentationStyle: 'fullscreen'
+                }).catch(function(err) {
+                    // Fallback si Browser ne marche pas
+                    window.open(url, '_blank');
+                });
             } else {
-                // S'ouvre dans un nouvel onglet sur PC
                 window.open(url, '_blank');
             }
         });
     });
+
+    // ✅ Bouton retour - Fermer le navigateur intégré si ouvert
+    if (isCapacitor()) {
+        window.Capacitor.Plugins.Browser.addListener('browserFinished', function() {
+            console.log('Navigateur intégré fermé');
+        });
+    }
 });
 
 function toggleMenu() {
