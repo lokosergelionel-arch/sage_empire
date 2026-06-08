@@ -201,6 +201,19 @@
         .orbit-container { height: 600px !important; transform: scale(0.7); }
         .hex-desc { display: none; }
     }
+     /* ✅ CORRECTION SAFE AREA iOS */
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+
+    /* ✅ Fix pour tous les templates qui n'étendent pas base.html */
+    .immo-hero,
+    .profil-img-container {
+        margin-top: 0;
+    }
  </style>
 </head>
 
