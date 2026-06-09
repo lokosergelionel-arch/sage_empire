@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<section style="background: #1a1a1a; padding: 30px 15px; text-align: center; color: white; border-bottom: 1px solid #c5a059;">
+<section style="background: #1a1a1a; padding: 30px 15px; padding-top: calc(30px + env(safe-area-inset-top)); text-align: center; color: white; border-bottom: 1px solid #c5a059;">
     <h1 style="text-transform: uppercase; letter-spacing: 2px; font-size: 1.3rem; margin-bottom: 5px;">Catalogue Immobilier</h1>
     <p style="color: #c5a059; font-size: 0.85rem;">Expert : {{ proprietaire.nom_complet }}</p>
 </section>
