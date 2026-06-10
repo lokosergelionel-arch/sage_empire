@@ -237,45 +237,6 @@
         </div>
         {% endfor %}
     </div>
-<!-- ✅ Bouton retour iOS -->
-    <script>
-    (function() {
-        function isCapacitor() {
-            return window.Capacitor !== undefined && window.Capacitor.isNativePlatform();
-        }
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent);
-        }
-
-        if (isCapacitor() && isIOS()) {
-            const btn = document.createElement('button');
-            btn.innerHTML = '&#8592;';
-            btn.style.cssText = `
-                position: fixed;
-                bottom: 40px;
-                left: 20px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: rgba(26, 26, 26, 0.9);
-                color: #B5935E;
-                border: 1px solid #B5935E;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 9999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            `;
-            btn.onclick = function() {
-                if (window.history.length > 1) {
-                    window.history.back();
-                }
-            };
-            document.body.appendChild(btn);
-        }
-    })();
     </script>
 
 </body>
