@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 from hub.views import (
     home, inscription_styliste, login_view, edit_profil, dashboard_styliste,
@@ -36,6 +37,8 @@ urlpatterns = [
 
     # Authentification
     path('login/', login_view, name='login'),
+    path('conditions/', TemplateView.as_view(template_name='conditions_utilisation.html'), name='cgu'),
+    path('confidentialite/', TemplateView.as_view(template_name='politique_confidentialite.html'), name='politique'),
 
     # SÉCURISATION INSCRIPTION STYLISTE
     path('rejoindre/', verifier_code_styliste, name='verifier_code_styliste'),
