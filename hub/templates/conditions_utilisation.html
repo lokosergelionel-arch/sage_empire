@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Conditions Générales d'Utilisation — Sage Empire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+            --border: #E5E2DA;
+            --cap-status-bar-height: 0px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.8;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-bottom: 40px;
+            padding-top: max(80px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 50px));
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            margin: 0 0 10px;
+            color: var(--charcoal);
+        }
+
+        header p {
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 30px 5%;
+            font-weight: bold;
+        }
+        .back-link:hover { opacity: 0.75; }
+
+        .doc-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 5% 80px;
+        }
+
+        .last-updated {
+            background: white;
+            border-left: 3px solid var(--gold);
+            padding: 12px 20px;
+            margin-bottom: 40px;
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: var(--charcoal);
+            margin-top: 45px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        p, li { font-size: 0.95rem; color: #444; }
+
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        .highlight-box {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+        .highlight-box p { margin: 0; }
+
+        .contact-block {
+            background: var(--charcoal);
+            color: white;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .contact-block p { color: #ccc; margin: 5px 0; }
+        .contact-block a { color: var(--gold); text-decoration: none; }
+
+        footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 25px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #bbb;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+(function(){
+    if(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.StatusBar){
+        window.Capacitor.Plugins.StatusBar.getInfo().then(function(i){document.documentElement.style.setProperty('--cap-status-bar-height',(i&&i.height?i.height:59)+'px');}).catch(function(){document.documentElement.style.setProperty('--cap-status-bar-height','59px');});
+    }
+})();
+</script>
+
+<header>
+    <h1>CONDITIONS GÉNÉRALES D'UTILISATION</h1>
+    <p>Sage Empire — Version en vigueur</p>
+</header>
+
+<div style="padding: 0 5%;">
+    <a href="{% url 'home' %}" class="back-link">← Retour à l'accueil</a>
+</div>
+
+<div class="doc-container">
+
+    <div class="last-updated">
+        <strong>Dernière mise à jour :</strong> Juin 2026 &nbsp;|&nbsp;
+        <strong>Applicable depuis :</strong> Juin 2026 &nbsp;|&nbsp;
+        <strong>Version :</strong> 1.0
+    </div>
+
+    <h2>Article 1 — Présentation et éditeur</h2>
+    <p>
+        La plateforme <strong>Sage Empire</strong> (accessible via le site web <strong>www.sage-empire.com</strong> et les applications mobiles iOS et Android) est éditée par :
+    </p>
+    <div class="highlight-box">
+        <p><strong>Dénomination :</strong> Sage Empire</p>
+        <p><strong>Siège social :</strong> Lomé, Togo</p>
+        <p><strong>Email de contact :</strong> <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a></p>
+        <p><strong>WhatsApp :</strong> +228 97 07 05 09</p>
+    </div>
+    <p>
+        Sage Empire est une plateforme multi-services proposant des services dans les domaines de la mode, de l'immobilier, de l'événementiel, du numérique et de l'entretien, ainsi qu'une marketplace permettant à des créateurs partenaires d'exposer et de vendre leurs œuvres.
+    </p>
+
+    <h2>Article 2 — Acceptation des conditions</h2>
+    <p>
+        L'accès à la plateforme Sage Empire, que ce soit via le site web ou les applications mobiles (iOS et Android), implique l'acceptation pleine et entière des présentes Conditions Générales d'Utilisation (CGU).
+    </p>
+    <p>
+        Si vous n'acceptez pas ces conditions, vous devez cesser immédiatement d'utiliser la plateforme. Sage Empire se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés des modifications substantielles par notification dans l'application ou par email.
+    </p>
+
+    <h2>Article 3 — Accès à la plateforme</h2>
+    <p>La plateforme est accessible :</p>
+    <ul>
+        <li>Via le site web <strong>www.sage-empire.com</strong>, accessible depuis tout navigateur internet.</li>
+        <li>Via l'application mobile <strong>Sage Empire</strong> disponible sur l'App Store (iOS) et le Google Play Store (Android).</li>
+    </ul>
+    <p>
+        Sage Empire s'efforce d'assurer la disponibilité de la plateforme 24h/24 et 7j/7, mais ne peut garantir une disponibilité ininterrompue. Des interruptions peuvent survenir pour des raisons de maintenance, de mise à jour ou de force majeure.
+    </p>
+
+    <h2>Article 4 — Création de compte et espace créateur</h2>
+    <p>
+        Certaines fonctionnalités de la plateforme nécessitent la création d'un compte utilisateur. L'accès à l'espace créateur (styliste ou propriétaire partenaire) est strictement réservé aux personnes ayant reçu un <strong>code d'invitation unique</strong> délivré par Sage Empire.
+    </p>
+    <p>L'utilisateur s'engage à :</p>
+    <ul>
+        <li>Fournir des informations exactes, complètes et à jour lors de son inscription.</li>
+        <li>Maintenir la confidentialité de ses identifiants de connexion.</li>
+        <li>Notifier immédiatement Sage Empire de tout accès non autorisé à son compte.</li>
+        <li>Ne pas partager son code d'invitation avec des tiers.</li>
+    </ul>
+    <p>
+        Sage Empire se réserve le droit de suspendre ou supprimer tout compte ne respectant pas les présentes CGU, sans préavis et sans indemnité.
+    </p>
+
+    <h2>Article 5 — Marketplace et créateurs partenaires</h2>
+    <p>
+        La marketplace Sage Empire permet à des créateurs partenaires agréés d'exposer et de proposer leurs produits et services. Les créateurs partenaires s'engagent à :
+    </p>
+    <ul>
+        <li>Proposer uniquement des produits et services conformes à la législation en vigueur.</li>
+        <li>Garantir l'authenticité et la qualité des produits présentés.</li>
+        <li>Assurer la véracité des descriptions, prix et visuels publiés.</li>
+        <li>Uploader uniquement des photos et contenus dont ils détiennent les droits.</li>
+        <li>Traiter les commandes et communications client avec professionnalisme.</li>
+    </ul>
+    <p>
+        Les commandes effectuées via la plateforme sont traitées directement entre l'acheteur et le créateur via WhatsApp. Sage Empire agit en qualité d'<strong>intermédiaire technique</strong> et ne saurait être tenu responsable des litiges commerciaux entre acheteurs et créateurs.
+    </p>
+
+    <h2>Article 6 — Contenu utilisateur et photos</h2>
+    <p>
+        Les créateurs partenaires sont autorisés à uploader des photos et visuels de leurs produits sur la plateforme. En publiant du contenu, l'utilisateur :
+    </p>
+    <ul>
+        <li>Déclare être titulaire des droits de propriété intellectuelle sur les contenus publiés, ou disposer des autorisations nécessaires.</li>
+        <li>Accorde à Sage Empire une licence non exclusive, mondiale et gratuite d'utilisation de ces contenus aux fins de fonctionnement et de promotion de la plateforme.</li>
+        <li>Garantit que les contenus publiés ne contiennent pas de matériel illégal, offensant, trompeur ou portant atteinte aux droits de tiers.</li>
+    </ul>
+    <p>
+        Sage Empire se réserve le droit de supprimer tout contenu non conforme sans préavis.
+    </p>
+
+    <h2>Article 7 — Comportement des utilisateurs</h2>
+    <p>Il est strictement interdit sur la plateforme Sage Empire de :</p>
+    <ul>
+        <li>Publier des contenus illégaux, diffamatoires, obscènes ou portant atteinte à la vie privée d'autrui.</li>
+        <li>Usurper l'identité d'un tiers ou se faire passer pour un représentant de Sage Empire.</li>
+        <li>Tenter d'accéder sans autorisation aux systèmes informatiques de la plateforme.</li>
+        <li>Utiliser la plateforme à des fins de spam, phishing ou toute activité frauduleuse.</li>
+        <li>Reproduire, copier ou exploiter commercialement tout ou partie de la plateforme sans autorisation écrite.</li>
+    </ul>
+
+    <h2>Article 8 — Responsabilité</h2>
+    <p>
+        Sage Empire s'efforce de maintenir la plateforme fonctionnelle et sécurisée, mais ne peut être tenu responsable :
+    </p>
+    <ul>
+        <li>Des interruptions de service dues à des causes extérieures (panne internet, force majeure, etc.).</li>
+        <li>Des contenus publiés par les créateurs partenaires.</li>
+        <li>Des transactions commerciales conclues entre utilisateurs via WhatsApp ou tout autre canal externe.</li>
+        <li>Des dommages indirects résultant de l'utilisation ou de l'impossibilité d'utiliser la plateforme.</li>
+    </ul>
+
+    <h2>Article 9 — Propriété intellectuelle</h2>
+    <p>
+        L'ensemble des éléments constitutifs de la plateforme Sage Empire (logo, charte graphique, textes, structure, code source) sont protégés par le droit de la propriété intellectuelle et appartiennent exclusivement à Sage Empire.
+    </p>
+    <p>
+        Toute reproduction, représentation, modification ou exploitation non autorisée de ces éléments est strictement interdite et pourra faire l'objet de poursuites judiciaires.
+    </p>
+
+    <h2>Article 10 — Droit applicable et juridiction</h2>
+    <p>
+        Les présentes CGU sont soumises au <strong>droit togolais</strong>, Sage Empire étant basé à Lomé, Togo, et opérant dans le cadre réglementaire de l'<strong>Union Européenne</strong>.
+    </p>
+    <p>
+        En cas de litige, les parties s'efforceront de trouver une solution amiable. À défaut, le litige sera soumis aux tribunaux compétents de <strong>Lomé, Togo</strong>.
+    </p>
+    <p>
+        Les utilisateurs résidant dans l'Union Européenne bénéficient également des protections prévues par la législation européenne, notamment le <strong>Règlement (UE) 2016/679 (RGPD)</strong> en matière de protection des données personnelles.
+    </p>
+
+    <h2>Article 11 — Contact et réclamations</h2>
+    <div class="highlight-box">
+        <p>Pour toute question relative aux présentes CGU ou pour soumettre une réclamation :</p>
+        <p>📧 <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a></p>
+        <p>📱 WhatsApp : <a href="https://wa.me/22897070509" style="color: var(--gold);">+228 97 07 05 09</a></p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 Sage Empire — Tous droits réservés — Lomé, Togo
+</footer>
+
+</body>
+</html>

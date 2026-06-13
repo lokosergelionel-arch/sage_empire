@@ -1,0 +1,427 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Politique de Confidentialité — Sage Empire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #B5935E;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+            --border: #E5E2DA;
+            --cap-status-bar-height: 0px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.8;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-bottom: 40px;
+            padding-top: max(80px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 50px));
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            margin: 0 0 10px;
+            color: var(--charcoal);
+        }
+
+        header p {
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 30px 5%;
+            font-weight: bold;
+        }
+        .back-link:hover { opacity: 0.75; }
+
+        .doc-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 5% 80px;
+        }
+
+        .last-updated {
+            background: white;
+            border-left: 3px solid var(--gold);
+            padding: 12px 20px;
+            margin-bottom: 40px;
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .rgpd-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: var(--charcoal);
+            margin-top: 45px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        p, li { font-size: 0.95rem; color: #444; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        .highlight-box {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+        .highlight-box p { margin: 5px 0; }
+
+        .rights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .right-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .right-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin: 0 0 8px;
+            text-transform: uppercase;
+        }
+
+        .right-card p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.88rem;
+        }
+        th {
+            background: var(--charcoal);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            color: #444;
+            background: white;
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 25px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #bbb;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            th { display: none; }
+            td { border: none; border-bottom: 1px solid var(--border); padding: 10px 15px; }
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: var(--charcoal);
+                display: block;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+(function(){
+    if(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.StatusBar){
+        window.Capacitor.Plugins.StatusBar.getInfo().then(function(i){document.documentElement.style.setProperty('--cap-status-bar-height',(i&&i.height?i.height:59)+'px');}).catch(function(){document.documentElement.style.setProperty('--cap-status-bar-height','59px');});
+    }
+})();
+</script>
+
+<header>
+    <h1>POLITIQUE DE CONFIDENTIALITÉ</h1>
+    <p>Sage Empire — Protection de vos données personnelles</p>
+</header>
+
+<div style="padding: 0 5%;">
+    <a href="{% url 'home' %}" class="back-link">← Retour à l'accueil</a>
+</div>
+
+<div class="doc-container">
+
+    <span class="rgpd-badge">✓ Conforme RGPD — Règlement UE 2016/679</span>
+
+    <div class="last-updated">
+        <strong>Dernière mise à jour :</strong> Juin 2026 &nbsp;|&nbsp;
+        <strong>Responsable du traitement :</strong> Sage Empire, Lomé, Togo
+    </div>
+
+    <p>
+        Chez Sage Empire, la protection de vos données personnelles est une priorité. Cette politique explique quelles données nous collectons, pourquoi nous les collectons, comment nous les utilisons, et quels sont vos droits en tant qu'utilisateur, conformément au <strong>Règlement Général sur la Protection des Données (RGPD)</strong> de l'Union Européenne.
+    </p>
+
+    <h2>Article 1 — Responsable du traitement</h2>
+    <div class="highlight-box">
+        <p><strong>Responsable :</strong> Sage Empire</p>
+        <p><strong>Adresse :</strong> Lomé, Togo</p>
+        <p><strong>Email DPO / Contact RGPD :</strong> <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a></p>
+        <p><strong>WhatsApp :</strong> +228 97 07 05 09</p>
+    </div>
+
+    <h2>Article 2 — Données collectées</h2>
+    <p>Nous collectons uniquement les données strictement nécessaires au fonctionnement de la plateforme :</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Données collectées</th>
+                <th>Contexte</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Catégorie"><strong>Compte utilisateur</strong></td>
+                <td data-label="Données">Nom, prénom, adresse email, mot de passe (chiffré), code d'invitation</td>
+                <td data-label="Contexte">Inscription à l'espace créateur (styliste / propriétaire)</td>
+            </tr>
+            <tr>
+                <td data-label="Catégorie"><strong>Contenus publiés</strong></td>
+                <td data-label="Données">Photos de produits, descriptions, prix, informations de contact WhatsApp</td>
+                <td data-label="Contexte">Publication sur la marketplace</td>
+            </tr>
+            <tr>
+                <td data-label="Catégorie"><strong>Données de navigation</strong></td>
+                <td data-label="Données">Adresse IP, type d'appareil, navigateur, pages visitées</td>
+                <td data-label="Contexte">Logs serveur, sécurité</td>
+            </tr>
+            <tr>
+                <td data-label="Catégorie"><strong>Communications</strong></td>
+                <td data-label="Données">Messages WhatsApp (via lien externe — hors traitement Sage Empire)</td>
+                <td data-label="Contexte">Commandes produits, demandes de contact</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Nous ne collectons pas</strong> de données de paiement (aucun paiement en ligne sur la plateforme), de données de géolocalisation, ni de données sensibles au sens de l'article 9 du RGPD.</p>
+
+    <h2>Article 3 — Finalités et bases légales du traitement</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Finalité</th>
+                <th>Base légale (RGPD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Finalité">Création et gestion des comptes utilisateurs</td>
+                <td data-label="Base légale">Exécution du contrat (Art. 6.1.b)</td>
+            </tr>
+            <tr>
+                <td data-label="Finalité">Publication et affichage des produits sur la marketplace</td>
+                <td data-label="Base légale">Exécution du contrat (Art. 6.1.b)</td>
+            </tr>
+            <tr>
+                <td data-label="Finalité">Sécurité et prévention des fraudes</td>
+                <td data-label="Base légale">Intérêt légitime (Art. 6.1.f)</td>
+            </tr>
+            <tr>
+                <td data-label="Finalité">Respect des obligations légales</td>
+                <td data-label="Base légale">Obligation légale (Art. 6.1.c)</td>
+            </tr>
+            <tr>
+                <td data-label="Finalité">Communications relatives au service (mises à jour, notifications)</td>
+                <td data-label="Base légale">Intérêt légitime (Art. 6.1.f)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Article 4 — Hébergement et transfert des données</h2>
+    <p>
+        La plateforme Sage Empire est hébergée via des services cloud conformes aux normes européennes. Les données des utilisateurs sont stockées sur des serveurs situés dans l'<strong>Espace Économique Européen (EEE)</strong> ou bénéficiant de garanties appropriées (décision d'adéquation ou clauses contractuelles types de la Commission Européenne).
+    </p>
+    <p>
+        Les photos de produits sont hébergées via <strong>Cloudinary</strong> (service conforme aux réglementations de protection des données et offrant des garanties RGPD).
+    </p>
+    <p>
+        Aucune donnée personnelle n'est vendue, louée ou cédée à des tiers à des fins commerciales.
+    </p>
+
+    <h2>Article 5 — Durée de conservation</h2>
+    <ul>
+        <li><strong>Données de compte :</strong> conservées pendant toute la durée d'activité du compte, puis supprimées dans un délai maximum de 3 ans après la dernière activité ou suite à une demande de suppression.</li>
+        <li><strong>Contenus publiés (photos, descriptions) :</strong> conservés tant que le compte est actif. Supprimés sur demande ou lors de la clôture du compte.</li>
+        <li><strong>Logs de navigation :</strong> conservés maximum 12 mois à des fins de sécurité.</li>
+    </ul>
+
+    <h2>Article 6 — Vos droits RGPD</h2>
+    <p>Conformément au RGPD, vous disposez des droits suivants sur vos données personnelles :</p>
+
+    <div class="rights-grid">
+        <div class="right-card">
+            <h3>Droit d'accès</h3>
+            <p>Obtenir une copie de toutes les données personnelles que nous détenons vous concernant.</p>
+        </div>
+        <div class="right-card">
+            <h3>Droit de rectification</h3>
+            <p>Corriger des données inexactes ou incomplètes vous concernant.</p>
+        </div>
+        <div class="right-card">
+            <h3>Droit à l'effacement</h3>
+            <p>Demander la suppression de vos données (« droit à l'oubli »), sous réserve des obligations légales.</p>
+        </div>
+        <div class="right-card">
+            <h3>Droit à la portabilité</h3>
+            <p>Recevoir vos données dans un format structuré et lisible par machine.</p>
+        </div>
+        <div class="right-card">
+            <h3>Droit d'opposition</h3>
+            <p>Vous opposer au traitement de vos données basé sur l'intérêt légitime.</p>
+        </div>
+        <div class="right-card">
+            <h3>Droit de limitation</h3>
+            <p>Demander la limitation du traitement de vos données dans certains cas.</p>
+        </div>
+    </div>
+
+    <p>
+        Pour exercer l'un de ces droits, contactez-nous à <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a>. Nous nous engageons à répondre dans un délai maximum de <strong>30 jours</strong>.
+    </p>
+    <p>
+        Vous avez également le droit d'introduire une réclamation auprès de l'autorité de contrôle compétente. En République du Togo, il s'agit de la <strong>HAPD (Haute Autorité de Protection des Données Personnelles du Togo) — <a href="https://www.hapd.tg" target="_blank" style="color: var(--gold);">www.hapd.tg</a>.
+    </p>
+
+    <h2>Article 7 — Cookies et traceurs</h2>
+    <p>
+        La plateforme Sage Empire utilise des cookies techniques strictement nécessaires au fonctionnement du service (gestion des sessions utilisateur, sécurité CSRF). Ces cookies ne nécessitent pas de consentement préalable car ils sont indispensables au service.
+    </p>
+    <p>
+        Nous n'utilisons pas de cookies publicitaires, de traceurs de réseaux sociaux tiers, ni de solutions d'analyse comportementale invasives.
+    </p>
+
+    <h2>Article 8 — Sécurité des données</h2>
+    <p>Sage Empire met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données :</p>
+    <ul>
+        <li>Chiffrement des mots de passe (hachage sécurisé).</li>
+        <li>Connexions sécurisées via HTTPS (TLS).</li>
+        <li>Protection contre les attaques CSRF via le framework Django.</li>
+        <li>Accès aux données restreint aux seules personnes habilitées.</li>
+        <li>Hébergement sur infrastructure sécurisée.</li>
+    </ul>
+    <p>
+        En cas de violation de données susceptible d'engendrer un risque pour vos droits et libertés, Sage Empire s'engage à vous notifier dans les <strong>72 heures</strong> conformément à l'article 33 du RGPD.
+    </p>
+
+    <h2>Article 9 — Applications mobiles (iOS et Android)</h2>
+    <p>
+        Les applications mobiles Sage Empire (disponibles sur l'App Store et le Google Play Store) collectent et traitent les mêmes données que le site web. Aucune donnée supplémentaire n'est collectée via les applications mobiles.
+    </p>
+    <p>
+        Les applications mobiles ne collectent pas de données de localisation, n'accèdent pas aux contacts, à la caméra ou aux autres capteurs de l'appareil sans votre consentement explicite.
+    </p>
+    <p>
+        Les liens externes (WhatsApp, sites partenaires) ouverts depuis l'application sont soumis aux politiques de confidentialité de leurs éditeurs respectifs, indépendamment de Sage Empire.
+    </p>
+
+    <h2>Article 10 — Mineurs</h2>
+    <p>
+        La plateforme Sage Empire n'est pas destinée aux personnes de moins de 16 ans. Nous ne collectons pas sciemment de données personnelles concernant des mineurs. Si vous êtes parent ou tuteur et pensez que votre enfant nous a fourni des données personnelles, contactez-nous immédiatement à <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a>.
+    </p>
+
+    <h2>Article 11 — Modifications de la politique</h2>
+    <p>
+        Sage Empire se réserve le droit de modifier la présente politique de confidentialité à tout moment. En cas de modifications substantielles, les utilisateurs seront informés par notification dans l'application ou par email au moins <strong>15 jours avant</strong> l'entrée en vigueur des modifications.
+    </p>
+
+    <h2>Article 12 — Contact</h2>
+    <div class="highlight-box">
+        <p>Pour toute question relative à cette politique ou pour exercer vos droits :</p>
+        <p>📧 <a href="mailto:contacts@sage-empire.com" style="color: var(--gold);">contacts@sage-empire.com</a></p>
+        <p>📱 WhatsApp : <a href="https://wa.me/22897070509" style="color: var(--gold);">+228 97 07 05 09</a></p>
+        <p>🏛️ Autorité de contrôle (Togo) : <a href="https://www.hapd.tg" target="_blank" style="color: var(--gold);">HAPD — www.hapd.tg</a></p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 Sage Empire — Politique de Confidentialité — Lomé, Togo — Conforme RGPD
+</footer>
+
+</body>
+</html>
