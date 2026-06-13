@@ -22,23 +22,23 @@
             --gold-subtle: #B5935E;
             --border: #E5E2DA;
             --white: #ffffff;
-            /* ✅ Safe Area iOS */
+            /* Safe Area — valeurs CSS (fallback si JS ne tourne pas encore) */
             --sat: env(safe-area-inset-top, 0px);
             --sab: env(safe-area-inset-bottom, 0px);
             --sal: env(safe-area-inset-left, 0px);
             --sar: env(safe-area-inset-right, 0px);
+            /* Hauteur status bar injectée par JS Capacitor — 0px par défaut */
+            --cap-status-bar-height: 0px;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        /* ✅ FIX PRINCIPAL : body pousse son contenu hors des zones système */
         body {
             margin: 0;
             padding: 0;
-            /* Pas de padding-top ici : la nav sticky s'en charge */
-            padding-bottom: env(safe-area-inset-bottom, 0px); /* home indicator */
+            padding-bottom: env(safe-area-inset-bottom, 0px);
             padding-left: env(safe-area-inset-left, 0px);
             padding-right: env(safe-area-inset-right, 0px);
             font-family: 'Lato', sans-serif;
@@ -55,13 +55,21 @@
             display: block;
         }
 
-        /* ✅ NAV STICKY avec Dynamic Island : position sticky + safe area top */
+        /*
+         * ✅ FIX DYNAMIC ISLAND
+         * On utilise max() entre :
+         *   - env(safe-area-inset-top) : valeur CSS native (marche en browser)
+         *   - var(--cap-status-bar-height) : valeur injectée par JS Capacitor (marche en app native)
+         * Le max() prend la plus grande des deux → toujours correct peu importe le contexte.
+         */
         nav {
             padding-left: 8%;
             padding-right: 8%;
             padding-bottom: 15px;
-            /* ✅ max() garantit au moins 15px même sans Dynamic Island */
-            padding-top: max(15px, calc(env(safe-area-inset-top, 0px) + 10px));
+            padding-top: max(
+                15px,
+                calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 10px)
+            );
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -115,7 +123,7 @@
         .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* ✅ MENU MOBILE avec safe areas */
+        /* ✅ MENU MOBILE — même logique double safe area */
         .mobile-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -128,8 +136,7 @@
             transition: all 0.4s ease;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            /* ✅ Safe areas dans le menu mobile */
-            padding-top: env(safe-area-inset-top, 0px);
+            padding-top: max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height));
             padding-bottom: env(safe-area-inset-bottom, 0px);
             padding-left: env(safe-area-inset-left, 0px);
             padding-right: env(safe-area-inset-right, 0px);
@@ -371,6 +378,43 @@
 
 <body>
 
+<!-- ✅ SCRIPT PRIORITAIRE — s'exécute avant le rendu de la nav
+     Injecte la vraie hauteur de la status bar iOS via Capacitor StatusBar plugin.
+     Cela corrige le problème du contenu caché derrière la Dynamic Island
+     en mode server.url (où env(safe-area-inset-top) CSS n'est pas fiable). -->
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/app@latest/dist/plugin.js"></script>
+<script src="https://unpkg.com/@capacitor/browser@latest/dist/plugin.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+    (function () {
+        // On applique le fix dès que possible, avant DOMContentLoaded
+        function applyStatusBarFix() {
+            if (
+                window.Capacitor &&
+                typeof window.Capacitor.isNativePlatform === 'function' &&
+                window.Capacitor.isNativePlatform() &&
+                window.Capacitor.Plugins &&
+                window.Capacitor.Plugins.StatusBar
+            ) {
+                window.Capacitor.Plugins.StatusBar.getInfo()
+                    .then(function (info) {
+                        // info.height = hauteur réelle en pixels de la status bar (Dynamic Island incluse)
+                        var h = (info && info.height) ? info.height : 59; // 59px = fallback Dynamic Island
+                        document.documentElement.style.setProperty('--cap-status-bar-height', h + 'px');
+                        console.log('[SageEmpire] StatusBar height:', h + 'px');
+                    })
+                    .catch(function () {
+                        // Fallback hardcodé : Dynamic Island fait ~59px, notch classique ~44px
+                        document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
+                        console.warn('[SageEmpire] StatusBar getInfo() failed, using fallback 59px');
+                    });
+            }
+        }
+        applyStatusBarFix();
+    })();
+</script>
+
 <nav>
     <div class="nav-logo-container">
         <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Sage Empire"></a>
@@ -541,22 +585,16 @@
     </div>
 </div>
 
-<!-- ✅ Scripts JS — ordre correct, pas de balises imbriquées -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
-<script src="https://unpkg.com/@capacitor/app@latest/dist/plugin.js"></script>
-<script src="https://unpkg.com/@capacitor/browser@latest/dist/plugin.js"></script>
 
 <script>
-    // ✅ Détection Capacitor
     function isCapacitor() {
         return window.Capacitor !== undefined &&
                typeof window.Capacitor.isNativePlatform === 'function' &&
                window.Capacitor.isNativePlatform();
     }
 
-    // ✅ Toggle Menu Mobile
     function toggleMenu() {
         const menu = document.getElementById('mobileMenu');
         const hamburger = document.querySelector('.hamburger');
@@ -573,6 +611,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+
+        // ✅ Re-applique le fix status bar après DOMContentLoaded (double sécurité)
+        if (isCapacitor() && window.Capacitor.Plugins.StatusBar) {
+            window.Capacitor.Plugins.StatusBar.getInfo()
+                .then(function (info) {
+                    var h = (info && info.height) ? info.height : 59;
+                    document.documentElement.style.setProperty('--cap-status-bar-height', h + 'px');
+                })
+                .catch(function () {
+                    document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
+                });
+        }
 
         // ✅ Fermer menu en cliquant dehors
         const mobileMenu = document.getElementById('mobileMenu');
@@ -605,7 +655,7 @@
         // ✅ Browser close listener
         if (isCapacitor() && window.Capacitor.Plugins.Browser) {
             window.Capacitor.Plugins.Browser.addListener('browserFinished', function () {
-                console.log('Navigateur intégré fermé');
+                console.log('[SageEmpire] Navigateur intégré fermé');
             });
         }
 
@@ -667,7 +717,7 @@
             setTimeout(() => { el.classList.add('animated'); }, 150 * index);
         });
 
-        // ✅ Bouton retour iOS — ✅ FIX : tient compte du home indicator
+        // ✅ Bouton retour iOS — positionné au-dessus du home indicator
         if (isCapacitor()) {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             if (isIOS && window.history.length > 1) {
@@ -676,7 +726,6 @@
                 backBtn.id = 'ios-back-btn';
                 backBtn.style.cssText = `
                     position: fixed;
-                    /* ✅ bottom tient compte du home indicator (safe area bottom) */
                     bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
                     left: calc(env(safe-area-inset-left, 0px) + 20px);
                     width: 50px;
