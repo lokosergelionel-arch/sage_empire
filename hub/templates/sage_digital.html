@@ -3,7 +3,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SAGE DIGITAL | Expertise Tech & Formations</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
@@ -12,6 +12,7 @@
             --dark: #0A0A0A;
             --soft-dark: #1A1A1A;
             --gray: #F9F9F9;
+            --cap-status-bar-height: 0px;
         }
 
         body {
@@ -20,18 +21,27 @@
             background: white;
             color: #333;
             line-height: 1.6;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
         }
 
-        /* Hero Section avec Image de Fond */
+        /* ✅ FIX DYNAMIC ISLAND — hero section en haut de page */
         .digital-hero {
             background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
                         url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
             background-size: cover;
             color: white;
-            padding: 130px 5% 100px;
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-bottom: 100px;
+            /* ✅ padding-top dynamique : au moins 130px, ou status bar + 80px */
+            padding-top: max(
+                130px,
+                calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 80px)
+            );
             text-align: center;
             border-bottom: 2px solid var(--gold);
-            min-height: auto;
         }
 
         .digital-hero h1 {
@@ -42,7 +52,6 @@
             text-transform: uppercase;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
-
         .digital-hero p {
             color: var(--gold);
             text-transform: uppercase;
@@ -54,7 +63,6 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
 
-        /* Grid Services */
         .digital-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -77,35 +85,13 @@
             background: var(--gold);
             transition: 0.4s ease;
         }
-        .digital-card:hover {
-            transform: translateY(-10px);
-            background: white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
+        .digital-card:hover { transform: translateY(-10px); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
         .digital-card:hover::before { height: 100%; }
-
-        .digital-card h3 {
-            font-family: 'Cinzel';
-            color: var(--dark);
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
+        .digital-card h3 { font-family: 'Cinzel'; color: var(--dark); font-size: 1.4rem; margin-bottom: 20px; letter-spacing: 2px; }
         .digital-card ul { padding-left: 0; list-style: none; }
-        .digital-card li {
-            margin-bottom: 15px;
-            padding-left: 20px;
-            position: relative;
-            color: #555;
-        }
-        .digital-card li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--gold);
-        }
+        .digital-card li { margin-bottom: 15px; padding-left: 20px; position: relative; color: #555; }
+        .digital-card li::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
 
-        /* Section Bas de page Premium */
         .premium-factory {
             margin-top: 100px;
             background: linear-gradient(135deg, #0d0d0d 0%, #171717 100%);
@@ -118,49 +104,17 @@
             overflow: hidden;
             transition: border-color 0.4s ease;
         }
-        .premium-factory:hover {
-            border-color: #4a3e2b;
-        }
-
+        .premium-factory:hover { border-color: #4a3e2b; }
         .premium-factory::before {
             content: "";
             position: absolute;
             top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(181, 147, 94, 0.08) 0%, transparent 60%);
             pointer-events: none;
-            transition: opacity 0.4s ease;
         }
-
-        .premium-factory h2 {
-            font-family: 'Cinzel', serif;
-            color: white;
-            font-size: 2.2rem;
-            letter-spacing: 4px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .premium-factory p {
-            color: #aaaaaa;
-            font-size: 1rem;
-            max-width: 600px;
-            margin: 0 auto 25px;
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        .premium-price-info {
-            display: block;
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            margin-bottom: 35px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
+        .premium-factory h2 { font-family: 'Cinzel', serif; color: white; font-size: 2.2rem; letter-spacing: 4px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
+        .premium-factory p { color: #aaaaaa; font-size: 1rem; max-width: 600px; margin: 0 auto 25px; line-height: 1.6; font-weight: 300; }
+        .premium-price-info { display: block; font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 35px; font-weight: 600; text-transform: uppercase; }
         .btn-premium-digital {
             display: inline-block;
             background: linear-gradient(to right, #B5935E, #947443);
@@ -176,19 +130,14 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
+        .btn-premium-digital:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(181, 147, 94, 0.4); opacity: 0.95; }
 
-        .btn-premium-digital:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(181, 147, 94, 0.4);
-            opacity: 0.95;
-        }
-
-        /* POP-UP MAISON (Invisible par défaut) */
         .custom-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -197,12 +146,7 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
-
-        .custom-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        .custom-overlay.active { opacity: 1; pointer-events: auto; }
         .custom-popup {
             background: white;
             padding: 45px 35px;
@@ -214,12 +158,10 @@
             transform: scale(0.85);
             transition: transform 0.3s ease;
         }
-
-        .custom-overlay.active .custom-popup {
-            transform: scale(1);
-        }
+        .custom-overlay.active .custom-popup { transform: scale(1); }
 
         @media (max-width: 768px) {
+            .digital-hero { padding-top: max(80px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 50px)); }
             .digital-hero h1 { font-size: 2rem; }
             .digital-grid { grid-template-columns: 1fr; }
             .premium-factory { padding: 40px 20px; }
@@ -229,74 +171,92 @@
 </head>
 <body>
 
-    <section class="digital-hero">
-        <h1>SAGE DIGITAL</h1>
-        <p>Expertise Technologique & Ingénierie de Projet</p>
-    </section>
+<!-- ✅ SCRIPT PRIORITAIRE Dynamic Island -->
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+(function () {
+    if (
+        window.Capacitor &&
+        typeof window.Capacitor.isNativePlatform === 'function' &&
+        window.Capacitor.isNativePlatform() &&
+        window.Capacitor.Plugins &&
+        window.Capacitor.Plugins.StatusBar
+    ) {
+        window.Capacitor.Plugins.StatusBar.getInfo()
+            .then(function (info) {
+                var h = (info && info.height) ? info.height : 59;
+                document.documentElement.style.setProperty('--cap-status-bar-height', h + 'px');
+            })
+            .catch(function () {
+                document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
+            });
+    }
+})();
+</script>
 
-    <div class="container">
-        <div class="digital-grid">
-            <div class="digital-card">
-                <h3>FORMATIONS ÉLITES</h3>
-                <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
-                <ul>
-                    <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
-                    <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
-                    <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
-                    <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
-                </ul>
-            </div>
+<section class="digital-hero">
+    <h1>SAGE DIGITAL</h1>
+    <p>Expertise Technologique & Ingénierie de Projet</p>
+</section>
 
-            <div class="digital-card">
-                <h3>CRÉATION SUR-MESURE</h3>
-                <p>Une présence digitale propulsée par des technologies de pointe :</p>
-                <ul>
-                    <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
-                    <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
-                    <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
-                    <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
-                </ul>
-            </div>
+<div class="container">
+    <div class="digital-grid">
+        <div class="digital-card">
+            <h3>FORMATIONS ÉLITES</h3>
+            <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
+            <ul>
+                <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
+                <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
+                <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
+                <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
+            </ul>
         </div>
-
-        <div class="premium-factory">
-            <h2>VOTRE PROJET WEB</h2>
-            <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
-            <span class="premium-price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
-            <a onclick="toggleDigitalModal(event, true)" class="btn-premium-digital">Lancer mon projet</a>
-        </div>
-    </div>
-
-    <div id="digitalContactModal" class="custom-overlay" onclick="toggleDigitalModal(event, false)">
-        <div class="custom-popup" onclick="event.stopPropagation()">
-            <h4 style="color: #B5935E; font-family: 'Cinzel', serif; letter-spacing: 3px; font-weight: bold; margin-bottom: 25px; font-size: 1.3rem;">LANCER MON PROJET</h4>
-
-            <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." target="_blank" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #25D366; border: none; font-family: 'Lato', sans-serif;">
-                📱 WHATSAPP
-            </a>
-
-            <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #1A1A1A; border: none; font-family: 'Lato', sans-serif;">
-                📧 EMAIL
-            </a>
-
-            <button type="button" onclick="toggleDigitalModal(event, false)" style="background: transparent; border: none; color: #888; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; letter-spacing: 1px;">
-                Fermer
-            </button>
+        <div class="digital-card">
+            <h3>CRÉATION SUR-MESURE</h3>
+            <p>Une présence digitale propulsée par des technologies de pointe :</p>
+            <ul>
+                <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
+                <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
+                <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
+                <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
+            </ul>
         </div>
     </div>
 
-    <script>
-        // Gestion ouverture / fermeture pop-up
-        function toggleDigitalModal(event, show) {
-            if (event) event.preventDefault();
-            const modal = document.getElementById('digitalContactModal');
-            if (show) {
-                modal.classList.add('active');
-            } else {
-                modal.classList.remove('active');
-            }
-        }
-    </script>
+    <div class="premium-factory">
+        <h2>VOTRE PROJET WEB</h2>
+        <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
+        <span class="premium-price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
+        <a onclick="toggleDigitalModal(event, true)" class="btn-premium-digital">Lancer mon projet</a>
+    </div>
+</div>
 
+<div id="digitalContactModal" class="custom-overlay" onclick="toggleDigitalModal(event, false)">
+    <div class="custom-popup" onclick="event.stopPropagation()">
+        <h4 style="color: #B5935E; font-family: 'Cinzel', serif; letter-spacing: 3px; font-weight: bold; margin-bottom: 25px; font-size: 1.3rem;">LANCER MON PROJET</h4>
+        <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." target="_blank"
+           style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #25D366; font-family: 'Lato', sans-serif;">
+            📱 WHATSAPP
+        </a>
+        <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital"
+           style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #1A1A1A; font-family: 'Lato', sans-serif;">
+            📧 EMAIL
+        </a>
+        <button type="button" onclick="toggleDigitalModal(event, false)"
+                style="background: transparent; border: none; color: #888; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; letter-spacing: 1px;">
+            Fermer
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleDigitalModal(event, show) {
+        if (event) event.preventDefault();
+        const modal = document.getElementById('digitalContactModal');
+        if (show) { modal.classList.add('active'); }
+        else { modal.classList.remove('active'); }
+    }
+</script>
 </body>
 </html>

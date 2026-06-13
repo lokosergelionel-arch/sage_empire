@@ -3,10 +3,11 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>{% block title %}Sage Empire{% endblock %}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <style>
@@ -15,11 +16,16 @@
             --charcoal: #1A1A1A;
             --ivory: #F9F8F6;
             --border: #E5E2DA;
+            /* Safe area CSS — fallback si JS Capacitor pas encore prêt */
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sal: env(safe-area-inset-left, 0px);
+            --sar: env(safe-area-inset-right, 0px);
+            /* Hauteur status bar injectée par JS — 0px par défaut */
+            --cap-status-bar-height: 0px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -27,12 +33,29 @@
             color: var(--charcoal);
             margin: 0;
             padding: 0;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
         }
 
+        /*
+         * ✅ FIX DYNAMIC ISLAND
+         * max() entre env(safe-area-inset-top) [browser] et --cap-status-bar-height [Capacitor natif]
+         * On prend toujours la plus grande valeur → correct dans tous les contextes.
+         */
         .navbar {
             background: white;
             border-bottom: 1px solid #eeeae3;
-            padding: 18px 5%;
+            padding-bottom: 18px;
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-top: max(
+                18px,
+                calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 10px)
+            );
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar-inner {
@@ -69,9 +92,7 @@
             transition: color 0.25s ease;
         }
 
-        .nav-link:hover {
-            color: var(--gold);
-        }
+        .nav-link:hover { color: var(--gold); }
 
         footer {
             background: var(--charcoal);
@@ -79,52 +100,76 @@
             text-align: center;
             padding: 30px;
             margin-top: 50px;
+            /* ✅ Le footer tient compte du home indicator */
+            padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
         }
 
-        footer p {
-            margin: 0;
-        }
+        footer p { margin: 0; }
 
         @media (max-width: 768px) {
             .navbar-inner {
                 flex-direction: column;
                 gap: 18px;
             }
-
             .nav-menu {
                 gap: 18px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-
-            .logo-img {
-                height: 38px;
-            }
+            .logo-img { height: 38px; }
         }
     </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a href="{% url 'home' %}" class="logo-link">
-                <img src="{% static 'images/logo.png' %}" alt="Sage Empire" class="logo-img">
-            </a>
+<!-- ✅ SCRIPT PRIORITAIRE — injecte la vraie hauteur status bar iOS avant le rendu de la navbar -->
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+(function () {
+    function applyStatusBarFix() {
+        if (
+            window.Capacitor &&
+            typeof window.Capacitor.isNativePlatform === 'function' &&
+            window.Capacitor.isNativePlatform() &&
+            window.Capacitor.Plugins &&
+            window.Capacitor.Plugins.StatusBar
+        ) {
+            window.Capacitor.Plugins.StatusBar.getInfo()
+                .then(function (info) {
+                    var h = (info && info.height) ? info.height : 59;
+                    document.documentElement.style.setProperty('--cap-status-bar-height', h + 'px');
+                })
+                .catch(function () {
+                    document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
+                });
+        }
+    }
+    applyStatusBarFix();
+})();
+</script>
 
-            <div class="nav-menu">
-                <a href="{% url 'home' %}" class="nav-link">Hub Services</a>
-                <a href="{% url 'galerie_mode' %}" class="nav-link">Marketplace</a>
-                <a href="{% url 'login' %}" class="nav-link">Mon Espace</a>
-            </div>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="{% url 'home' %}" class="logo-link">
+            <img src="{% static 'images/logo.png' %}" alt="Sage Empire" class="logo-img">
+        </a>
+        <div class="nav-menu">
+            <a href="{% url 'home' %}" class="nav-link">Hub Services</a>
+            <a href="{% url 'galerie_mode' %}" class="nav-link">Marketplace</a>
+            <a href="{% url 'login' %}" class="nav-link">Mon Espace</a>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 
-    <footer>
-        <p>&copy; 2026 Sage Empire - Tous droits réservés</p>
-    </footer>
+<footer>
+    <p>&copy; 2026 Sage Empire - Tous droits réservés</p>
+</footer>
 
 </body>
 </html>
