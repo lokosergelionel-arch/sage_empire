@@ -3,202 +3,694 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SAGE EMPIRE | Immobilier d'Exception</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
             --gold: #D4A017;
-            --dark: #0B0B0B;
+            --gold-light: #E8C24A;
+            --charcoal: #0B0B0B;
+            --charcoal-soft: #141414;
             --card-bg: #1A1A1A;
-            --text-gray: #a0a0a0;
+            --text-gray: #999;
+            --border-soft: rgba(212,160,23,0.15);
+            --cap-status-bar-height: 0px;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            margin: 0;
             font-family: 'Lato', sans-serif;
-            background: var(--dark);
-            color: white;
-        }
-
-        /* Bannière réduite pour plus d'espace */
-        .immo-hero {
-            height: 35vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                        url('{% static "images/immo-hero.jpg" %}') center/cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            border-bottom: 1px solid rgba(212, 160, 23, 0.3);
-        }
-        .immo-hero h1 {
-            font-family: 'Cinzel';
-            font-size: 2.5rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin: 0;
-        }
-
-        /* Grille centrée et compacte */
-        .properties-grid {
-            padding: 50px 5%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); /* Cartes de taille fixe */
-            justify-content: center; /* Centre les cartes si elles sont peu nombreuses */
-            gap: 30px;
-        }
-
-        /* Carte au format Carré */
-        .property-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            border: 1px solid rgba(212, 160, 23, 0.1);
-            transition: 0.4s;
-            text-align: center;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1 / 1; /* Force le format carré */
-        }
-
-        .property-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--gold);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-
-        .owner-avatar-medium {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            margin-bottom: 15px;
-            object-fit: cover;
-        }
-
-        .property-info h3 {
-            margin: 0 0 5px 0;
-            font-family: 'Cinzel';
+            background: var(--charcoal);
             color: #fff;
-            font-size: 1.2rem;
+            overflow-x: hidden;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        .stats-badge {
+        /* ══════════════════════════════════════
+           HERO
+        ══════════════════════════════════════ */
+        .hero {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+            padding-top: max(0px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height))));
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(160deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.6) 55%, rgba(11,11,11,0.95) 100%),
+                url('{% static "images/immo-hero.jpg" %}') center/cover no-repeat;
+            transform: scale(1.05);
+            transition: transform 8s ease;
+        }
+        .hero-bg.loaded { transform: scale(1); }
+
+        .hero-accent {
+            position: absolute;
+            left: 8%; top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+            opacity: 0;
+            animation: fadeInLine 1.5s ease 0.5s forwards;
+        }
+        @keyframes fadeInLine { to { opacity: 0.55; } }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 8% 7vh;
+            max-width: 850px;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.68rem;
+            letter-spacing: 6px;
             color: var(--gold);
-            font-size: 0.7rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.6rem, 7vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 18px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.9s ease 1s forwards;
+        }
+
+        .hero-sub {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.9s ease 1.2s forwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 35px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.4s;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.4s forwards;
+        }
+        .hero-cta:hover { background: var(--gold); color: var(--charcoal); }
+        .hero-cta i { transition: transform 0.3s; }
+        .hero-cta:hover i { transform: translateX(5px); }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* ══════════════════════════════════════
+           STATS BAR — dynamique
+        ══════════════════════════════════════ */
+        .stats-bar {
+            background: var(--charcoal-soft);
+            border-top: 1px solid var(--border-soft);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 45px 8%;
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: 'Cinzel', serif;
+            font-size: 2.3rem;
+            color: var(--gold);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 0.66rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
         }
 
-        .biographie {
+        /* ══════════════════════════════════════
+           SECTION ANNUAIRE
+        ══════════════════════════════════════ */
+        .directory-section {
+            padding: 90px 8% 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-eyebrow {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 400;
+        }
+
+        /* ── Cards annuaire : format liste horizontale, scalable ── */
+        .agents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .agent-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 6px;
+            padding: 28px 32px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 28px;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 0;
+            background: var(--gold);
+            transition: width 0.35s ease;
+        }
+        .agent-card:hover {
+            background: #1f1f1f;
+            transform: translateX(4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .agent-card:hover::before { width: 3px; }
+
+        .agent-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid rgba(212,160,23,0.4);
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: border-color 0.3s;
+        }
+        .agent-card:hover .agent-avatar { border-color: var(--gold); }
+
+        .agent-info { min-width: 0; }
+
+        .agent-badge {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .agent-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .agent-bio {
+            font-size: 0.82rem;
             color: var(--text-gray);
-            font-size: 0.8rem;
-            line-height: 1.4;
-            margin-bottom: 20px;
-            max-height: 45px;
+            line-height: 1.5;
+            max-width: 520px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
+        .agent-action {
+            flex-shrink: 0;
+        }
+
         .btn-view {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
+            padding: 12px 26px;
             text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
+            border-radius: 4px;
+            font-weight: 700;
             transition: 0.3s;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            white-space: nowrap;
         }
-        .btn-view:hover {
+        .btn-view:hover { background: var(--gold); color: #000; }
+        .btn-view i { transition: transform 0.3s; }
+        .btn-view:hover i { transform: translateX(4px); }
+
+        /* Empty state */
+        .empty-directory {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .empty-directory h2 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+        .empty-directory p { color: var(--text-gray); font-size: 0.9rem; }
+
+        /* ══════════════════════════════════════
+           CTA PROPRIÉTAIRE
+        ══════════════════════════════════════ */
+        .owner-cta {
+            margin: 90px 8% 0;
+            background: linear-gradient(135deg, #161616 0%, #1f1a0d 100%);
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            padding: 60px 50px;
+            display: grid;
+            grid-template-columns: 1.3fr auto;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .owner-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -10%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(212,160,23,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .owner-cta-text .label {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .owner-cta-text h3 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+            margin-bottom: 14px;
+            line-height: 1.3;
+            font-weight: 400;
+        }
+        .owner-cta-text p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+            max-width: 480px;
+            font-weight: 300;
+        }
+        .owner-cta-text p strong { color: var(--gold-light); font-weight: 600; }
+
+        .owner-cta-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .btn-gold {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 32px;
             background: var(--gold);
             color: #000;
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+        .btn-outline-gold {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .btn-outline-gold:hover { background: var(--gold); color: #000; }
+
+        /* ══════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════ */
+        footer {
+            background: var(--charcoal-soft);
+            border-top: 1px solid var(--border-soft);
+            padding: 40px 8%;
+            margin-top: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+        }
+        .footer-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+        }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a {
+            font-size: 0.62rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.35);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { font-size: 0.65rem; color: rgba(255,255,255,0.2); letter-spacing: 1px; }
+
+        /* ══════════════════════════════════════
+           SCROLL REVEAL + RESPONSIVE
+        ══════════════════════════════════════ */
+        .reveal { opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 900px) {
+            .owner-cta { grid-template-columns: 1fr; gap: 30px; padding: 45px 35px; }
+            .owner-cta-actions { flex-direction: row; flex-wrap: wrap; }
+            .stats-bar { gap: 40px; }
         }
 
-        .cta-section {
-            background-color: #1A1A1A;
-            border-top: 2px solid #D4A017;
-            padding: 50px 20px;
-            margin-top: 60px;
-            color: #ffffff;
+        @media (max-width: 768px) {
+            .agent-card {
+                grid-template-columns: auto 1fr;
+                grid-template-rows: auto auto;
+            }
+            .agent-action {
+                grid-column: 1 / -1;
+                margin-top: 10px;
+            }
+            .btn-view { width: 100%; justify-content: center; }
+            .agent-bio { -webkit-line-clamp: 3; }
+            .directory-section { padding: 60px 5% 40px; }
         }
 
-        @media (max-width: 480px) {
-            .immo-hero h1 { font-size: 1.8rem; letter-spacing: 4px; }
-            .properties-grid { grid-template-columns: 1fr; }
-            .property-card { aspect-ratio: auto; padding: 40px 20px; }
+        @media (max-width: 600px) {
+            .stats-bar { gap: 25px; padding: 35px 5%; }
+            .stat-number { font-size: 1.7rem; }
+            .agent-card { padding: 22px 20px; gap: 16px; }
+            .agent-avatar { width: 58px; height: 58px; }
+            .agent-name { font-size: 1.02rem; }
+            .owner-cta { margin: 60px 5% 0; padding: 40px 24px; }
+            .owner-cta-actions { flex-direction: column; }
+            .btn-gold, .btn-outline-gold { width: 100%; }
+            footer { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; width: 100%; gap: 10px 18px; }
+            .footer-links a { font-size: 0.6rem; letter-spacing: 0.5px; }
         }
     </style>
 </head>
 <body>
 
-    <section class="immo-hero">
-        <h1>IMMOBILIER</h1>
-        <p style="letter-spacing: 5px; font-size: 0.8rem; margin-top: 10px;">VIVEZ L'EXCEPTION AU QUOTIDIEN</p>
-    </section>
+<!-- Fix Dynamic Island iOS -->
+<script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
+<script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
+<script>
+(function(){
+    if(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.StatusBar){
+        window.Capacitor.Plugins.StatusBar.getInfo().then(function(i){document.documentElement.style.setProperty('--cap-status-bar-height',(i&&i.height?i.height:59)+'px');}).catch(function(){document.documentElement.style.setProperty('--cap-status-bar-height','59px');});
+    }
+})();
+</script>
 
-    <div class="properties-grid">
+<!-- ══ HERO ══ -->
+<section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-accent"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">Sage Empire — Pôle Immobilier</p>
+        <h1 class="hero-title">IMMOBILIER</h1>
+        <p class="hero-sub">Vivez l'exception au quotidien</p>
+        <a href="#annuaire" class="hero-cta">
+            Découvrir nos agences partenaires
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar reveal">
+    <div class="stat-item">
+        <div class="stat-number">{{ proprietaires|length }}</div>
+        <div class="stat-label">Agences partenaires</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Vérifiées</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Exigence</div>
+    </div>
+</div>
+
+<!-- ══ ANNUAIRE ══ -->
+<section class="directory-section" id="annuaire">
+    <div class="section-header reveal">
+        <p class="section-eyebrow">Nos partenaires</p>
+        <h2 class="section-title">L'annuaire des agences d'exception</h2>
+    </div>
+
+    <div class="agents-list">
         {% for proprio in proprietaires %}
-        <div class="property-card">
-            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="owner-avatar-medium">
+        <div class="agent-card reveal">
+            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="agent-avatar">
 
-            <div class="property-info">
-                <div class="stats-badge">{{ proprio.properties.count }} BIEN(S) DISPONIBLE(S)</div>
-                <h3>{{ proprio.nom_complet }}</h3>
-
-                <p class="biographie">
+            <div class="agent-info">
+                <span class="agent-badge">{{ proprio.properties.count }} bien{{ proprio.properties.count|pluralize }} disponible{{ proprio.properties.count|pluralize }}</span>
+                <h3 class="agent-name">{{ proprio.nom_complet }}</h3>
+                <p class="agent-bio">
                     {% if proprio.biographie %}
-                        {{ proprio.biographie|truncatewords:12 }}
+                        {{ proprio.biographie|truncatewords:18 }}
                     {% else %}
                         Partenaire certifié Sage Empire.
                     {% endif %}
                 </p>
+            </div>
 
-                <a href="{% url 'portfolio_proprietaire' proprio.id %}" class="btn-view">Explorer le catalogue</a>
+            <div class="agent-action">
+                <a href="{% url 'portfolio_proprietaire' proprio.id %}" class="btn-view">
+                    Explorer le catalogue <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
         {% empty %}
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
-            <h2 style="color: var(--gold); font-family: 'Cinzel';">Aucune agence disponible</h2>
-            <p style="color: var(--text-gray);">Revenez bientôt pour nos nouvelles opportunités.</p>
+        <div class="empty-directory">
+            <h2>Aucune agence disponible</h2>
+            <p>Revenez bientôt pour nos nouvelles opportunités.</p>
         </div>
         {% endfor %}
     </div>
+</section>
 
-    <div class="cta-section">
-        <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px;">
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="color: #D4A017; font-size: 22px; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">
-                    Vous êtes propriétaire ?
-                </h3>
-                <p style="font-size: 16px; line-height: 1.6; color: #e0e0e0; margin: 0;">
-                    Mettez votre bien en location ou en vente avec <strong>Sage Empire</strong>.<br>
-                    Bénéficiez de notre expertise et de notre visibilité pour maximiser vos revenus.
-                </p>
-            </div>
+<!-- ══ CTA PROPRIÉTAIRE ══ -->
+<div class="owner-cta reveal">
+    <div class="owner-cta-text">
+        <p class="label">Vous êtes propriétaire ?</p>
+        <h3>Rejoignez l'élite de l'immobilier Sage Empire</h3>
+        <p>Mettez votre bien en location ou en vente avec <strong>Sage Empire</strong>. Bénéficiez de notre expertise et de notre visibilité pour maximiser vos revenus.</p>
+    </div>
+    <div class="owner-cta-actions">
+        <a href="{% url 'inscription_proprietaire' %}" class="btn-gold">
+            <i class="fas fa-key"></i> Rejoindre l'espace
+        </a>
+        <a href="{% url 'connexion_proprietaire' %}" class="btn-outline-gold">
+            <i class="fas fa-sign-in-alt"></i> Se connecter
+        </a>
+    </div>
+</div>
 
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-                <a href="{% url 'inscription_proprietaire' %}"
-                   style="background-color: #D4A017; color: #000; padding: 15px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; text-align: center;">
-                    REJOINDRE L'ESPACE PROPRIÉTAIRE
-                </a>
-                <a href="{% url 'connexion_proprietaire' %}"
-                   style="background-color: transparent; color: #D4A017; border: 2px solid #D4A017; padding: 13px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; text-align: center;">
-                     SE CONNECTER
-                </a>
-            </div>
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="footer-brand">SAGE EMPIRE</div>
+    <div class="footer-links">
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'evenementiel' %}">Événementiel</a>
+        <a href="{% url 'galerie_mode' %}">Marketplace</a>
+        <a href="{% url 'cgu' %}">CGU</a>
+        <a href="{% url 'politique' %}">Confidentialité</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 — Lomé, Togo</div>
+</footer>
+
+<script>
+    // Hero parallax
+    window.addEventListener('load', function(){ document.getElementById('heroBg').classList.add('loaded'); });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(el => { if(el.isIntersecting){ el.target.classList.add('visible'); observer.unobserve(el.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<!-- ══ GA4 + COOKIES ══ -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+function loadGoogleAnalytics() {
+    if (document.getElementById('ga-script')) return;
+    var s = document.createElement('script');
+    s.id = 'ga-script'; s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8KMK0V850B';
+    document.head.appendChild(s);
+    s.onload = function(){ gtag('js', new Date()); gtag('config', 'G-8KMK0V850B'); };
+}
+</script>
+
+<style>
+#cookie-banner { position:fixed; bottom:0; left:0; right:0; z-index:99000; background:#fff; border-top:2px solid #B5935E; padding:20px 5%; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; box-shadow:0 -4px 30px rgba(0,0,0,0.1); padding-bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateY(100%); transition:transform 0.4s ease; }
+#cookie-banner.visible { transform:translateY(0); }
+#cookie-banner .cookie-text { flex:1; min-width:200px; }
+#cookie-banner .cookie-text p { margin:0; font-family:'Lato',sans-serif; font-size:0.82rem; color:#555; line-height:1.6; }
+#cookie-banner .cookie-text strong { font-family:'Cinzel',serif; font-size:0.85rem; color:#1A1A1A; letter-spacing:1px; display:block; margin-bottom:6px; }
+#cookie-banner .cookie-text a { color:#B5935E; text-decoration:none; font-size:0.78rem; }
+.cookie-buttons { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.btn-cookie { padding:10px 20px; font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; font-family:'Lato',sans-serif; font-weight:bold; border:none; cursor:pointer; transition:all 0.3s; white-space:nowrap; border-radius:2px; }
+.btn-cookie-accept { background:#1A1A1A; color:#fff; }
+.btn-cookie-accept:hover { background:#B5935E; }
+.btn-cookie-customize { background:transparent; color:#1A1A1A; border:1px solid #1A1A1A; }
+.btn-cookie-customize:hover { border-color:#B5935E; color:#B5935E; }
+.btn-cookie-refuse { background:transparent; color:#999; border:1px solid #ddd; }
+.btn-cookie-refuse:hover { color:#555; border-color:#999; }
+#cookie-modal { position:fixed; inset:0; z-index:99500; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s; padding-bottom:env(safe-area-inset-bottom,0px); }
+#cookie-modal.active { opacity:1; pointer-events:auto; }
+.cookie-modal-box { background:#fff; width:100%; max-width:560px; max-height:80vh; overflow-y:auto; border-radius:16px 16px 0 0; padding:35px 30px 30px; transform:translateY(30px); transition:transform 0.4s ease; }
+#cookie-modal.active .cookie-modal-box { transform:translateY(0); }
+.cookie-modal-box h3 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:3px; color:#1A1A1A; margin:0 0 8px; text-transform:uppercase; }
+.cookie-modal-box > p { font-size:0.82rem; color:#777; margin:0 0 25px; line-height:1.6; }
+.cookie-category { display:flex; align-items:flex-start; justify-content:space-between; padding:18px 0; border-bottom:1px solid #f0f0f0; gap:15px; }
+.cookie-category:last-of-type { border-bottom:none; }
+.cookie-cat-info { flex:1; }
+.cookie-cat-info strong { display:block; font-size:0.85rem; color:#1A1A1A; margin-bottom:4px; }
+.cookie-cat-info span { font-size:0.78rem; color:#999; line-height:1.5; }
+.toggle-wrapper { flex-shrink:0; padding-top:2px; }
+.toggle-switch { position:relative; width:44px; height:24px; display:inline-block; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:#ddd; border-radius:24px; cursor:pointer; transition:0.3s; }
+.toggle-slider::before { content:""; position:absolute; width:18px; height:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:0.3s; }
+.toggle-switch input:checked + .toggle-slider { background:#B5935E; }
+.toggle-switch input:checked + .toggle-slider::before { transform:translateX(20px); }
+.toggle-switch input:disabled + .toggle-slider { opacity:0.6; cursor:not-allowed; }
+.cookie-modal-actions { display:flex; gap:10px; margin-top:25px; flex-wrap:wrap; }
+.cookie-modal-actions .btn-cookie { flex:1; min-width:120px; text-align:center; }
+@media(max-width:600px){ #cookie-banner{flex-direction:column;align-items:flex-start;} .cookie-buttons{width:100%;} .btn-cookie{flex:1;text-align:center;} .cookie-modal-box{padding:25px 20px 20px;} }
+</style>
+
+<div id="cookie-banner" role="dialog" aria-label="Gestion des cookies">
+    <div class="cookie-text">
+        <strong>🍪 Vos préférences cookies</strong>
+        <p>Sage Empire utilise des cookies techniques et analytiques (Google Analytics). <a href="{% url 'politique' %}">En savoir plus →</a></p>
+    </div>
+    <div class="cookie-buttons">
+        <button class="btn-cookie btn-cookie-refuse" onclick="cookieChoice('refuse')">Refuser</button>
+        <button class="btn-cookie btn-cookie-customize" onclick="openCookieModal()">Personnaliser</button>
+        <button class="btn-cookie btn-cookie-accept" onclick="cookieChoice('accept')">Tout accepter</button>
+    </div>
+</div>
+
+<div id="cookie-modal" role="dialog" aria-modal="true">
+    <div class="cookie-modal-box">
+        <h3>Personnaliser</h3>
+        <p>Choisissez les catégories de cookies que vous acceptez.</p>
+        <div class="cookie-category">
+            <div class="cookie-cat-info"><strong>Cookies nécessaires</strong><span>Session Django, CSRF. Toujours actifs.</span></div>
+            <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="toggle-necessary" checked disabled><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="cookie-category">
+            <div class="cookie-cat-info"><strong>Cookies analytiques</strong><span>Google Analytics — pages visitées, durée de visite.</span></div>
+            <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="toggle-analytics"><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="cookie-modal-actions">
+            <button class="btn-cookie btn-cookie-refuse" onclick="cookieChoice('refuse')">Tout refuser</button>
+            <button class="btn-cookie btn-cookie-accept" onclick="saveCustomCookies()">Enregistrer</button>
         </div>
     </div>
+</div>
+
+<script>
+(function(){
+    var KEY='sage_cookie_consent', DAYS=365;
+    function setCookie(n,v,d){var e=new Date(Date.now()+d*864e5).toUTCString();document.cookie=n+'='+encodeURIComponent(v)+';expires='+e+';path=/;SameSite=Lax';}
+    function getCookie(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null;}
+    function hideBanner(){var b=document.getElementById('cookie-banner');if(b){b.style.transform='translateY(100%)';b.style.pointerEvents='none';}}
+    function showBanner(){var b=document.getElementById('cookie-banner');if(b){setTimeout(function(){b.classList.add('visible');},600);}}
+    window.openCookieModal=function(){var s=getCookie(KEY);if(s){try{var p=JSON.parse(s);var el=document.getElementById('toggle-analytics');if(el)el.checked=!!p.analytics;}catch(e){}}document.getElementById('cookie-modal').classList.add('active');};
+    window.closeCookieModal=function(){document.getElementById('cookie-modal').classList.remove('active');};
+    document.getElementById('cookie-modal').addEventListener('click',function(e){if(e.target===this)closeCookieModal();});
+    window.cookieChoice=function(c){var p={necessary:true,analytics:c==='accept'};setCookie(KEY,JSON.stringify(p),DAYS);applyConsent(p);hideBanner();closeCookieModal();};
+    window.saveCustomCookies=function(){var el=document.getElementById('toggle-analytics');var p={necessary:true,analytics:el?el.checked:false};setCookie(KEY,JSON.stringify(p),DAYS);applyConsent(p);hideBanner();closeCookieModal();};
+    function applyConsent(p){if(p.analytics){loadGoogleAnalytics();}else{window['ga-disable-G-8KMK0V850B']=true;}}
+    var s=getCookie(KEY);if(s){try{applyConsent(JSON.parse(s));}catch(e){showBanner();}}else{showBanner();}
+})();
+</script>
 
 </body>
 </html>
