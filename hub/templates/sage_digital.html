@@ -5,649 +5,727 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SAGE DIGITAL | Expertise Tech & Formations</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
             --gold: #B5935E;
-            --dark: #0A0A0A;
-            --soft-dark: #1A1A1A;
-            --gray: #F9F9F9;
+            --gold-light: #D4B483;
+            --charcoal: #1A1A1A;
+            --ivory: #F9F8F6;
+            --white: #ffffff;
+            --border: #E5E2DA;
             --cap-status-bar-height: 0px;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
         body {
-            margin: 0;
             font-family: 'Lato', sans-serif;
-            background: white;
-            color: #333;
-            line-height: 1.6;
+            background: var(--ivory);
+            color: var(--charcoal);
+            overflow-x: hidden;
             padding-bottom: env(safe-area-inset-bottom, 0px);
-            padding-left: env(safe-area-inset-left, 0px);
-            padding-right: env(safe-area-inset-right, 0px);
         }
 
-        /* ✅ FIX DYNAMIC ISLAND — hero section en haut de page */
-        .digital-hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-                        url("{% static 'images/sage_digital_banner.jpg' %}") no-repeat center top;
-            background-size: cover;
-            color: white;
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ══════════════════════════════════════
+           TOP BAR — style "fenêtre app"
+        ══════════════════════════════════════ */
+        .top-bar {
+            background: var(--charcoal);
+            padding-bottom: 14px;
             padding-left: 5%;
             padding-right: 5%;
-            padding-bottom: 100px;
-            /* ✅ padding-top dynamique : au moins 130px, ou status bar + 80px */
-            padding-top: max(
-                130px,
-                calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 80px)
-            );
-            text-align: center;
-            border-bottom: 2px solid var(--gold);
+            padding-top: max(14px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 8px));
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .top-bar-dot { width: 9px; height: 9px; border-radius: 50%; }
+        .dot-1 { background: #e25b4f; }
+        .dot-2 { background: #e8c14d; }
+        .dot-3 { background: #5eb86a; }
+        .top-bar-path {
+            margin-left: 15px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.5px;
+        }
+        .top-bar-path span { color: var(--gold); }
+
+        /* ══════════════════════════════════════
+           HERO — split screen, pas plein écran
+        ══════════════════════════════════════ */
+        .hero-split {
+            background: var(--charcoal);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            min-height: 78vh;
+            position: relative;
         }
 
-        .digital-hero h1 {
-            font-family: 'Cinzel';
-            font-size: 2.8rem;
-            letter-spacing: 6px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        .hero-left {
+            padding: 80px 6% 80px 8%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
         }
-        .digital-hero p {
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.68rem;
+            letter-spacing: 2px;
             color: var(--gold);
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.95rem;
-            font-weight: 400;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.3s forwards;
         }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
-
-        .digital-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .digital-card {
-            background: var(--gray);
-            padding: 50px 40px;
-            border: 1px solid #EEE;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .digital-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 0;
+        .hero-tag::before {
+            content: '';
+            width: 7px; height: 7px;
             background: var(--gold);
-            transition: 0.4s ease;
+            border-radius: 50%;
+            animation: blink 2s ease infinite;
         }
-        .digital-card:hover { transform: translateY(-10px); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        .digital-card:hover::before { height: 100%; }
-        .digital-card h3 { font-family: 'Cinzel'; color: var(--dark); font-size: 1.4rem; margin-bottom: 20px; letter-spacing: 2px; }
-        .digital-card ul { padding-left: 0; list-style: none; }
-        .digital-card li { margin-bottom: 15px; padding-left: 20px; position: relative; color: #555; }
-        .digital-card li::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-        .premium-factory {
-            margin-top: 100px;
-            background: linear-gradient(135deg, #0d0d0d 0%, #171717 100%);
-            border: 1px solid #26221c;
-            border-radius: 24px;
-            padding: 60px 40px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.4s ease;
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            color: var(--white);
+            font-size: clamp(2.6rem, 6vw, 4.2rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 0.5s forwards;
         }
-        .premium-factory:hover { border-color: #4a3e2b; }
-        .premium-factory::before {
-            content: "";
+        .hero-title em {
+            font-style: normal;
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        .hero-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 0.65s forwards;
+        }
+
+        .hero-desc {
+            font-size: 0.98rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.85;
+            max-width: 460px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease 1s forwards;
+        }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Panneau droit — terminal animé */
+        .hero-right {
+            background: #0d0d0d;
+            border-left: 1px solid rgba(181,147,94,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 6%;
+            position: relative;
+        }
+
+        .terminal {
+            width: 100%;
+            max-width: 420px;
+            background: #131313;
+            border: 1px solid rgba(181,147,94,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 0.9s ease 1.1s forwards;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .terminal-header span {
+            margin-left: 8px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .terminal-body {
+            padding: 24px 22px;
+            font-size: 0.82rem;
+            line-height: 2;
+            min-height: 260px;
+        }
+
+        .term-line { color: rgba(255,255,255,0.5); }
+        .term-prompt { color: var(--gold); }
+        .term-string { color: #9ECE6A; }
+        .term-comment { color: rgba(255,255,255,0.25); }
+        .term-key { color: #7DB4E0; }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 7px; height: 14px;
+            background: var(--gold);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        /* Grille de fond décorative */
+        .hero-right::before {
+            content: '';
             position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(181, 147, 94, 0.08) 0%, transparent 60%);
+            inset: 0;
+            background-image: linear-gradient(rgba(181,147,94,0.03) 1px, transparent 1px),
+                               linear-gradient(90deg, rgba(181,147,94,0.03) 1px, transparent 1px);
+            background-size: 35px 35px;
             pointer-events: none;
         }
-        .premium-factory h2 { font-family: 'Cinzel', serif; color: white; font-size: 2.2rem; letter-spacing: 4px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
-        .premium-factory p { color: #aaaaaa; font-size: 1rem; max-width: 600px; margin: 0 auto 25px; line-height: 1.6; font-weight: 300; }
-        .premium-price-info { display: block; font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 35px; font-weight: 600; text-transform: uppercase; }
-        .btn-premium-digital {
-            display: inline-block;
-            background: linear-gradient(to right, #B5935E, #947443);
-            color: #000000 !important;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            padding: 16px 45px;
-            border-radius: 12px;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(181, 147, 94, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .btn-premium-digital:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(181, 147, 94, 0.4); opacity: 0.95; }
 
-        .custom-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+        /* ══════════════════════════════════════
+           SERVICES — Tabs interactifs
+        ══════════════════════════════════════ */
+        .services-section {
+            padding: 110px 8%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--charcoal);
+            font-weight: 400;
+        }
+
+        .tabs-nav {
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            gap: 0;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
         }
-        .custom-overlay.active { opacity: 1; pointer-events: auto; }
-        .custom-popup {
-            background: white;
-            padding: 45px 35px;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            transform: scale(0.85);
-            transition: transform 0.3s ease;
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 18px 35px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
         }
-        .custom-overlay.active .custom-popup { transform: scale(1); }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 50%;
+            width: 0; height: 2px;
+            background: var(--gold);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+        .tab-btn.active { color: var(--charcoal); font-weight: 700; }
+        .tab-btn.active::after { width: 100%; }
 
-        @media (max-width: 768px) {
-            .digital-hero { padding-top: max(80px, calc(max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height)) + 50px)); }
-            .digital-hero h1 { font-size: 2rem; }
-            .digital-grid { grid-template-columns: 1fr; }
-            .premium-factory { padding: 40px 20px; }
-            .premium-factory h2 { font-size: 1.6rem; }
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .tab-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        .tab-panel-text h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            color: var(--charcoal);
+        }
+        .tab-panel-text p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .feature-list { list-style: none; }
+        .feature-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-num {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 500;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .feature-list li div strong {
+            display: block;
+            font-size: 0.92rem;
+            color: var(--charcoal);
+            margin-bottom: 4px;
+        }
+        .feature-list li div span {
+            font-size: 0.82rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════════
+           CTA — Carte flottante asymétrique
+        ══════════════════════════════════════ */
+        .cta-section {
+            background: var(--charcoal);
+            padding: 100px 8%;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(181,147,94,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-box .mono-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: var(--gold);
+            background: rgba(181,147,94,0.1);
+            border: 1px solid rgba(181,147,94,0.25);
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin-bottom: 28px;
+            letter-spacing: 1px;
+        }
+
+        .cta-box h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--white);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 400;
+            margin-bottom: 22px;
+            line-height: 1.25;
+        }
+        .cta-box h2 strong { color: var(--gold); font-weight: 600; }
+
+        .cta-box > p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 45px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .cta-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+
+        .btn-gold {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 17px 38px; background: var(--gold); color: var(--charcoal);
+            text-decoration: none; font-size: 0.72rem; letter-spacing: 2px;
+            text-transform: uppercase; font-weight: 700; border: none; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 17px 38px; border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.72rem;
+            letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ══════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════ */
+        footer {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            padding: 35px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+            padding-bottom: calc(35px + env(safe-area-inset-bottom, 0px));
+        }
+        .footer-brand { font-family: 'Cinzel', serif; font-size: 0.95rem; letter-spacing: 4px; color: var(--charcoal); }
+        .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+        .footer-links a { font-size: 0.65rem; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { font-size: 0.65rem; color: #bbb; letter-spacing: 1px; }
+
+        /* ══════════════════════════════════════
+           MODAL
+        ══════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            display: flex; justify-content: center; align-items: center; z-index: 99999;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: var(--white); border-radius: 16px; padding: 45px 35px;
+            width: 100%; max-width: 400px; text-align: center;
+            transform: translateY(20px) scale(0.97); transition: transform 0.35s ease;
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+        .modal-box h4 { font-family: 'Cinzel', serif; color: var(--gold); letter-spacing: 3px; font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; }
+        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 10px; font-weight: bold; text-decoration: none; margin-bottom: 12px; transition: all 0.3s; }
+        .modal-btn-wa { background: #25D366; color: white; }
+        .modal-btn-wa:hover { background: #1ebe5d; }
+        .modal-btn-email { background: var(--charcoal); color: white; }
+        .modal-btn-email:hover { background: #000; }
+        .modal-close { background: none; border: none; color: #999; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.85rem; letter-spacing: 1px; margin-top: 5px; }
+
+        /* ══════════════════════════════════════
+           SCROLL REVEAL + RESPONSIVE
+        ══════════════════════════════════════ */
+        .reveal { opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 900px) {
+            .hero-split { grid-template-columns: 1fr; min-height: auto; }
+            .hero-left { padding: 60px 6% 50px; text-align: center; align-items: center; }
+            .hero-desc { margin-left: auto; margin-right: auto; }
+            .hero-actions { justify-content: center; }
+            .hero-right { padding: 40px 6% 60px; }
+            .tab-panel.active { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        @media (max-width: 600px) {
+            .tabs-nav { overflow-x: auto; justify-content: flex-start; padding: 0 5%; }
+            .tab-btn { padding: 16px 20px; white-space: nowrap; }
+            .services-section { padding: 70px 5%; }
+            .cta-section { padding: 70px 5%; }
+            footer { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<!-- ✅ SCRIPT PRIORITAIRE Dynamic Island -->
+<!-- Fix Dynamic Island iOS -->
 <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
 <script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
 <script>
-(function () {
-    if (
-        window.Capacitor &&
-        typeof window.Capacitor.isNativePlatform === 'function' &&
-        window.Capacitor.isNativePlatform() &&
-        window.Capacitor.Plugins &&
-        window.Capacitor.Plugins.StatusBar
-    ) {
-        window.Capacitor.Plugins.StatusBar.getInfo()
-            .then(function (info) {
-                var h = (info && info.height) ? info.height : 59;
-                document.documentElement.style.setProperty('--cap-status-bar-height', h + 'px');
-            })
-            .catch(function () {
-                document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
-            });
+(function(){
+    if(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.StatusBar){
+        window.Capacitor.Plugins.StatusBar.getInfo().then(function(i){document.documentElement.style.setProperty('--cap-status-bar-height',(i&&i.height?i.height:59)+'px');}).catch(function(){document.documentElement.style.setProperty('--cap-status-bar-height','59px');});
     }
 })();
 </script>
 
-<section class="digital-hero">
-    <h1>SAGE DIGITAL</h1>
-    <p>Expertise Technologique & Ingénierie de Projet</p>
-</section>
-
-<div class="container">
-    <div class="digital-grid">
-        <div class="digital-card">
-            <h3>FORMATIONS ÉLITES</h3>
-            <p>Maîtrisez les outils de demain pour propulser votre carrière :</p>
-            <ul>
-                <li><strong>Python & Automatisation :</strong> Apprenez le langage leader du marché.</li>
-                <li><strong>Ingénierie de Projet :</strong> Rédaction, évaluation et suivi rigoureux.</li>
-                <li><strong>Développement Web :</strong> Du HTML au déploiement de solutions Django.</li>
-                <li><strong>Soft Skills :</strong> Leadership et coaching professionnel.</li>
-            </ul>
-        </div>
-        <div class="digital-card">
-            <h3>CRÉATION SUR-MESURE</h3>
-            <p>Une présence digitale propulsée par des technologies de pointe :</p>
-            <ul>
-                <li><strong>Architecture Python / Django :</strong> Pour des sites robustes et évolutifs.</li>
-                <li><strong>Solutions Web Intelligentes :</strong> Intégration d'IA et d'automatisations.</li>
-                <li><strong>E-commerce Premium :</strong> Plateformes sécurisées pour vos ventes mondiales.</li>
-                <li><strong>SEO & Performance :</strong> Visibilité maximale sur les moteurs de recherche.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="premium-factory">
-        <h2>VOTRE PROJET WEB</h2>
-        <p>Nous concevons des plateformes digitales performantes avec des tarifs préférentiels pour les partenaires de l'Empire.</p>
-        <span class="premium-price-info">SOLUTIONS PERSONNALISÉES SUR DEVIS</span>
-        <a onclick="toggleDigitalModal(event, true)" class="btn-premium-digital">Lancer mon projet</a>
-    </div>
+<!-- ══ TOP BAR ══ -->
+<div class="top-bar">
+    <div class="top-bar-dot dot-1"></div>
+    <div class="top-bar-dot dot-2"></div>
+    <div class="top-bar-dot dot-3"></div>
+    <span class="top-bar-path mono">sage-empire / <span>digital</span></span>
 </div>
 
-<div id="digitalContactModal" class="custom-overlay" onclick="toggleDigitalModal(event, false)">
-    <div class="custom-popup" onclick="event.stopPropagation()">
-        <h4 style="color: #B5935E; font-family: 'Cinzel', serif; letter-spacing: 3px; font-weight: bold; margin-bottom: 25px; font-size: 1.3rem;">LANCER MON PROJET</h4>
-        <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." target="_blank"
-           style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #25D366; font-family: 'Lato', sans-serif;">
-            📱 WHATSAPP
+<!-- ══ HERO SPLIT ══ -->
+<section class="hero-split">
+    <div class="hero-left">
+        <p class="hero-tag">Système opérationnel</p>
+        <h1 class="hero-title">SAGE<br><em>DIGITAL</em></h1>
+        <p class="hero-subtitle">Technologie & Ingénierie</p>
+        <p class="hero-desc">Nous formons les esprits et construisons les plateformes qui définiront demain. Chaque ligne de code, chaque formation, pensée avec la même exigence que le reste de l'Empire.</p>
+        <div class="hero-actions">
+            <a href="#services" class="btn-gold">
+                <i class="fas fa-arrow-down"></i> Explorer nos services
+            </a>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="top-bar-dot dot-1"></div>
+                <div class="top-bar-dot dot-2"></div>
+                <div class="top-bar-dot dot-3"></div>
+                <span class="mono">sage_digital.py</span>
+            </div>
+            <div class="terminal-body mono">
+                <div class="term-line"><span class="term-comment"># Initialisation du projet</span></div>
+                <div class="term-line"><span class="term-key">class</span> SageDigital:</div>
+                <div class="term-line">&nbsp;&nbsp;expertise = <span class="term-string">"formation"</span></div>
+                <div class="term-line">&nbsp;&nbsp;stack = <span class="term-string">"Python / Django"</span></div>
+                <div class="term-line">&nbsp;&nbsp;exigence = <span class="term-string">"absolue"</span></div>
+                <div class="term-line">&nbsp;</div>
+                <div class="term-line"><span class="term-prompt">&gt;&gt;&gt;</span> lancer_projet()</div>
+                <div class="term-line">Connexion établie<span class="cursor-blink"></span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ SERVICES — TABS ══ -->
+<section class="services-section" id="services">
+    <p class="section-label reveal">Notre savoir-faire</p>
+    <h2 class="section-title reveal">Deux expertises,<br>une même rigueur</h2>
+
+    <div class="tabs-nav reveal">
+        <button class="tab-btn active" onclick="switchTab('formation', this)">Formations</button>
+        <button class="tab-btn" onclick="switchTab('creation', this)">Création Web</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-formation">
+        <div class="tab-panel-text">
+            <h3>Formations Élites</h3>
+            <p>Maîtrisez les outils de demain pour propulser votre carrière. Nos formations allient rigueur académique et application pratique immédiate.</p>
+        </div>
+        <ul class="feature-list">
+            <li><span class="feature-num mono">01</span><div><strong>Python & Automatisation</strong><span>Apprenez le langage leader du marché et automatisez vos process.</span></div></li>
+            <li><span class="feature-num mono">02</span><div><strong>Ingénierie de Projet</strong><span>Rédaction, évaluation et suivi rigoureux de vos projets.</span></div></li>
+            <li><span class="feature-num mono">03</span><div><strong>Développement Web</strong><span>Du HTML au déploiement de solutions Django complètes.</span></div></li>
+            <li><span class="feature-num mono">04</span><div><strong>Soft Skills</strong><span>Leadership et coaching professionnel pour vos équipes.</span></div></li>
+        </ul>
+    </div>
+
+    <div class="tab-panel" id="tab-creation">
+        <div class="tab-panel-text">
+            <h3>Création Sur-Mesure</h3>
+            <p>Une présence digitale propulsée par des technologies de pointe. Chaque plateforme est pensée pour évoluer avec votre ambition.</p>
+        </div>
+        <ul class="feature-list">
+            <li><span class="feature-num mono">01</span><div><strong>Architecture Django</strong><span>Pour des sites robustes, sécurisés et évolutifs.</span></div></li>
+            <li><span class="feature-num mono">02</span><div><strong>Solutions Web Intelligentes</strong><span>Intégration d'IA et d'automatisations sur-mesure.</span></div></li>
+            <li><span class="feature-num mono">03</span><div><strong>E-commerce Premium</strong><span>Plateformes sécurisées pour vos ventes mondiales.</span></div></li>
+            <li><span class="feature-num mono">04</span><div><strong>SEO & Performance</strong><span>Visibilité maximale sur les moteurs de recherche.</span></div></li>
+        </ul>
+    </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section reveal">
+    <div class="cta-box">
+        <span class="mono-tag mono">$ lancer_mon_projet()</span>
+        <h2>Prêt à construire <strong>l'exceptionnel</strong> ?</h2>
+        <p>Tarifs préférentiels pour les partenaires de l'Empire. Discutons de votre vision et donnons-lui vie.</p>
+        <div class="cta-buttons">
+            <button class="btn-gold" onclick="toggleModal(true)">
+                <i class="fab fa-whatsapp"></i> Lancer mon projet
+            </button>
+            <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital" class="btn-ghost">
+                <i class="fas fa-envelope"></i> Envoyer un email
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="footer-brand">SAGE EMPIRE</div>
+    <div class="footer-links">
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'evenementiel' %}">Événementiel</a>
+        <a href="{% url 'galerie_mode' %}">Marketplace</a>
+        <a href="{% url 'cgu' %}">CGU</a>
+        <a href="{% url 'politique' %}">Confidentialité</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 — Lomé, Togo</div>
+</footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="contactModal" onclick="if(event.target===this)toggleModal(false)">
+    <div class="modal-box">
+        <h4>Lancer mon projet</h4>
+        <a href="https://wa.me/22897070509?text=Bonjour Sage Digital, je souhaite discuter d'un projet de création de site web." target="_blank" class="modal-btn modal-btn-wa">
+            <i class="fab fa-whatsapp"></i> WhatsApp
         </a>
-        <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital"
-           style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 25px; padding: 15px; border-radius: 15px; color: white !important; font-weight: bold; font-size: 1.1rem; text-decoration: none; background-color: #1A1A1A; font-family: 'Lato', sans-serif;">
-            📧 EMAIL
+        <a href="mailto:contacts@sage-empire.com?subject=Projet Web - Sage Digital" class="modal-btn modal-btn-email">
+            <i class="fas fa-envelope"></i> Email
         </a>
-        <button type="button" onclick="toggleDigitalModal(event, false)"
-                style="background: transparent; border: none; color: #888; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; letter-spacing: 1px;">
-            Fermer
-        </button>
+        <button class="modal-close" onclick="toggleModal(false)">Fermer</button>
     </div>
 </div>
 
 <script>
-    function toggleDigitalModal(event, show) {
-        if (event) event.preventDefault();
-        const modal = document.getElementById('digitalContactModal');
-        if (show) { modal.classList.add('active'); }
-        else { modal.classList.remove('active'); }
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(el => { if(el.isIntersecting){ el.target.classList.add('visible'); observer.unobserve(el.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Tabs
+    function switchTab(name, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    // Modal
+    function toggleModal(show) {
+        document.getElementById('contactModal').classList.toggle('active', show);
     }
 </script>
-<!-- ============================================================
-     SAGE EMPIRE — BANDEAU COOKIES RGPD
-     À inclure dans base.html et index.html juste avant </body>
-     ============================================================ -->
 
-<!-- Google Analytics — chargé conditionnellement selon consentement -->
+<!-- ══ GA4 + COOKIES ══ -->
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
-
 function loadGoogleAnalytics() {
-    if (document.getElementById('ga-script')) return; // déjà chargé
-    var script = document.createElement('script');
-    script.id = 'ga-script';
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-8KMK0V850B'; // ← remplace par ton ID GA4
-    document.head.appendChild(script);
-    script.onload = function() {
-        gtag('js', new Date());
-        gtag('config', 'G-8KMK0V850B'); // ← remplace par ton ID GA4
-        console.log('[SageEmpire] Google Analytics activé');
-    };
+    if (document.getElementById('ga-script')) return;
+    var s = document.createElement('script');
+    s.id = 'ga-script'; s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8KMK0V850B';
+    document.head.appendChild(s);
+    s.onload = function(){ gtag('js', new Date()); gtag('config', 'G-8KMK0V850B'); };
 }
 </script>
 
 <style>
-    /* ===== BANDEAU PRINCIPAL ===== */
-    #cookie-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 99000;
-        background: #fff;
-        border-top: 2px solid #B5935E;
-        padding: 20px 5%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-        box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
-        /* ✅ Safe area iOS home indicator */
-        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-        transform: translateY(100%);
-        transition: transform 0.4s ease;
-    }
-    #cookie-banner.visible { transform: translateY(0); }
-
-    #cookie-banner .cookie-text {
-        flex: 1;
-        min-width: 200px;
-    }
-    #cookie-banner .cookie-text p {
-        margin: 0;
-        font-family: 'Lato', sans-serif;
-        font-size: 0.82rem;
-        color: #555;
-        line-height: 1.6;
-    }
-    #cookie-banner .cookie-text strong {
-        font-family: 'Cinzel', serif;
-        font-size: 0.85rem;
-        color: #1A1A1A;
-        letter-spacing: 1px;
-        display: block;
-        margin-bottom: 6px;
-    }
-    #cookie-banner .cookie-text a {
-        color: #B5935E;
-        text-decoration: none;
-        font-size: 0.78rem;
-    }
-
-    .cookie-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .btn-cookie {
-        padding: 10px 20px;
-        font-size: 0.72rem;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        white-space: nowrap;
-        border-radius: 2px;
-    }
-    .btn-cookie-accept {
-        background: #1A1A1A;
-        color: #fff;
-    }
-    .btn-cookie-accept:hover { background: #B5935E; }
-
-    .btn-cookie-customize {
-        background: transparent;
-        color: #1A1A1A;
-        border: 1px solid #1A1A1A;
-    }
-    .btn-cookie-customize:hover { border-color: #B5935E; color: #B5935E; }
-
-    .btn-cookie-refuse {
-        background: transparent;
-        color: #999;
-        border: 1px solid #ddd;
-    }
-    .btn-cookie-refuse:hover { color: #555; border-color: #999; }
-
-    /* ===== MODAL PERSONNALISATION ===== */
-    #cookie-modal {
-        position: fixed;
-        inset: 0;
-        z-index: 99500;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-        /* ✅ Safe area */
-        padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    #cookie-modal.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .cookie-modal-box {
-        background: #fff;
-        width: 100%;
-        max-width: 560px;
-        max-height: 80vh;
-        overflow-y: auto;
-        border-radius: 16px 16px 0 0;
-        padding: 35px 30px 30px;
-        transform: translateY(30px);
-        transition: transform 0.4s ease;
-    }
-    #cookie-modal.active .cookie-modal-box { transform: translateY(0); }
-
-    .cookie-modal-box h3 {
-        font-family: 'Cinzel', serif;
-        font-size: 1rem;
-        letter-spacing: 3px;
-        color: #1A1A1A;
-        margin: 0 0 8px;
-        text-transform: uppercase;
-    }
-    .cookie-modal-box > p {
-        font-size: 0.82rem;
-        color: #777;
-        margin: 0 0 25px;
-        line-height: 1.6;
-    }
-
-    /* Toggle switch */
-    .cookie-category {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 18px 0;
-        border-bottom: 1px solid #f0f0f0;
-        gap: 15px;
-    }
-    .cookie-category:last-of-type { border-bottom: none; }
-
-    .cookie-cat-info { flex: 1; }
-    .cookie-cat-info strong {
-        display: block;
-        font-size: 0.85rem;
-        color: #1A1A1A;
-        margin-bottom: 4px;
-        font-family: 'Lato', sans-serif;
-    }
-    .cookie-cat-info span {
-        font-size: 0.78rem;
-        color: #999;
-        line-height: 1.5;
-    }
-
-    .toggle-wrapper { flex-shrink: 0; padding-top: 2px; }
-
-    .toggle-switch {
-        position: relative;
-        width: 44px;
-        height: 24px;
-        display: inline-block;
-    }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-        position: absolute;
-        inset: 0;
-        background: #ddd;
-        border-radius: 24px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .toggle-slider::before {
-        content: "";
-        position: absolute;
-        width: 18px; height: 18px;
-        left: 3px; bottom: 3px;
-        background: white;
-        border-radius: 50%;
-        transition: 0.3s;
-    }
-    .toggle-switch input:checked + .toggle-slider { background: #B5935E; }
-    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
-    .toggle-switch input:disabled + .toggle-slider { opacity: 0.6; cursor: not-allowed; }
-
-    .cookie-modal-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 25px;
-        flex-wrap: wrap;
-    }
-    .cookie-modal-actions .btn-cookie { flex: 1; min-width: 120px; text-align: center; }
-
-    @media (max-width: 600px) {
-        #cookie-banner { flex-direction: column; align-items: flex-start; }
-        .cookie-buttons { width: 100%; }
-        .btn-cookie { flex: 1; text-align: center; }
-        .cookie-modal-box { padding: 25px 20px 20px; }
-    }
+#cookie-banner { position:fixed; bottom:0; left:0; right:0; z-index:99000; background:#fff; border-top:2px solid #B5935E; padding:20px 5%; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; box-shadow:0 -4px 30px rgba(0,0,0,0.1); padding-bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateY(100%); transition:transform 0.4s ease; }
+#cookie-banner.visible { transform:translateY(0); }
+#cookie-banner .cookie-text { flex:1; min-width:200px; }
+#cookie-banner .cookie-text p { margin:0; font-family:'Lato',sans-serif; font-size:0.82rem; color:#555; line-height:1.6; }
+#cookie-banner .cookie-text strong { font-family:'Cinzel',serif; font-size:0.85rem; color:#1A1A1A; letter-spacing:1px; display:block; margin-bottom:6px; }
+#cookie-banner .cookie-text a { color:#B5935E; text-decoration:none; font-size:0.78rem; }
+.cookie-buttons { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.btn-cookie { padding:10px 20px; font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; font-family:'Lato',sans-serif; font-weight:bold; border:none; cursor:pointer; transition:all 0.3s; white-space:nowrap; border-radius:2px; }
+.btn-cookie-accept { background:#1A1A1A; color:#fff; }
+.btn-cookie-accept:hover { background:#B5935E; }
+.btn-cookie-customize { background:transparent; color:#1A1A1A; border:1px solid #1A1A1A; }
+.btn-cookie-customize:hover { border-color:#B5935E; color:#B5935E; }
+.btn-cookie-refuse { background:transparent; color:#999; border:1px solid #ddd; }
+.btn-cookie-refuse:hover { color:#555; border-color:#999; }
+#cookie-modal { position:fixed; inset:0; z-index:99500; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s; padding-bottom:env(safe-area-inset-bottom,0px); }
+#cookie-modal.active { opacity:1; pointer-events:auto; }
+.cookie-modal-box { background:#fff; width:100%; max-width:560px; max-height:80vh; overflow-y:auto; border-radius:16px 16px 0 0; padding:35px 30px 30px; transform:translateY(30px); transition:transform 0.4s ease; }
+#cookie-modal.active .cookie-modal-box { transform:translateY(0); }
+.cookie-modal-box h3 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:3px; color:#1A1A1A; margin:0 0 8px; text-transform:uppercase; }
+.cookie-modal-box > p { font-size:0.82rem; color:#777; margin:0 0 25px; line-height:1.6; }
+.cookie-category { display:flex; align-items:flex-start; justify-content:space-between; padding:18px 0; border-bottom:1px solid #f0f0f0; gap:15px; }
+.cookie-category:last-of-type { border-bottom:none; }
+.cookie-cat-info { flex:1; }
+.cookie-cat-info strong { display:block; font-size:0.85rem; color:#1A1A1A; margin-bottom:4px; }
+.cookie-cat-info span { font-size:0.78rem; color:#999; line-height:1.5; }
+.toggle-wrapper { flex-shrink:0; padding-top:2px; }
+.toggle-switch { position:relative; width:44px; height:24px; display:inline-block; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:#ddd; border-radius:24px; cursor:pointer; transition:0.3s; }
+.toggle-slider::before { content:""; position:absolute; width:18px; height:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:0.3s; }
+.toggle-switch input:checked + .toggle-slider { background:#B5935E; }
+.toggle-switch input:checked + .toggle-slider::before { transform:translateX(20px); }
+.toggle-switch input:disabled + .toggle-slider { opacity:0.6; cursor:not-allowed; }
+.cookie-modal-actions { display:flex; gap:10px; margin-top:25px; flex-wrap:wrap; }
+.cookie-modal-actions .btn-cookie { flex:1; min-width:120px; text-align:center; }
+@media(max-width:600px){ #cookie-banner{flex-direction:column;align-items:flex-start;} .cookie-buttons{width:100%;} .btn-cookie{flex:1;text-align:center;} .cookie-modal-box{padding:25px 20px 20px;} }
 </style>
 
-<!-- ===== BANDEAU ===== -->
 <div id="cookie-banner" role="dialog" aria-label="Gestion des cookies">
     <div class="cookie-text">
         <strong>🍪 Vos préférences cookies</strong>
-        <p>
-            Sage Empire utilise des cookies techniques (nécessaires au fonctionnement) et des cookies analytiques (Google Analytics) pour améliorer votre expérience.
-            <a href="{% url 'politique' %}">En savoir plus →</a>
-        </p>
+        <p>Sage Empire utilise des cookies techniques et analytiques (Google Analytics). <a href="{% url 'politique' %}">En savoir plus →</a></p>
     </div>
     <div class="cookie-buttons">
-        <button class="btn-cookie btn-cookie-refuse"     onclick="cookieChoice('refuse')">Refuser</button>
-        <button class="btn-cookie btn-cookie-customize"  onclick="openCookieModal()">Personnaliser</button>
-        <button class="btn-cookie btn-cookie-accept"     onclick="cookieChoice('accept')">Tout accepter</button>
+        <button class="btn-cookie btn-cookie-refuse" onclick="cookieChoice('refuse')">Refuser</button>
+        <button class="btn-cookie btn-cookie-customize" onclick="openCookieModal()">Personnaliser</button>
+        <button class="btn-cookie btn-cookie-accept" onclick="cookieChoice('accept')">Tout accepter</button>
     </div>
 </div>
 
-<!-- ===== MODAL PERSONNALISATION ===== -->
-<div id="cookie-modal" role="dialog" aria-modal="true" aria-label="Personnaliser les cookies">
+<div id="cookie-modal" role="dialog" aria-modal="true">
     <div class="cookie-modal-box">
         <h3>Personnaliser</h3>
-        <p>Choisissez les catégories de cookies que vous acceptez. Les cookies nécessaires ne peuvent pas être désactivés car ils sont indispensables au bon fonctionnement du site.</p>
-
-        <!-- Cookies nécessaires — toujours ON -->
+        <p>Choisissez les catégories de cookies que vous acceptez.</p>
         <div class="cookie-category">
-            <div class="cookie-cat-info">
-                <strong>Cookies nécessaires</strong>
-                <span>Session Django, protection CSRF, authentification. Indispensables au fonctionnement du site. Toujours actifs.</span>
-            </div>
-            <div class="toggle-wrapper">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-necessary" checked disabled>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
+            <div class="cookie-cat-info"><strong>Cookies nécessaires</strong><span>Session Django, CSRF. Toujours actifs.</span></div>
+            <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="toggle-necessary" checked disabled><span class="toggle-slider"></span></label></div>
         </div>
-
-        <!-- Cookies analytiques — optionnels -->
         <div class="cookie-category">
-            <div class="cookie-cat-info">
-                <strong>Cookies analytiques</strong>
-                <span>Google Analytics — nous aide à comprendre comment vous utilisez le site (pages visitées, durée de visite). Aucune donnée personnelle identifiable n'est transmise.</span>
-            </div>
-            <div class="toggle-wrapper">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-analytics">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
+            <div class="cookie-cat-info"><strong>Cookies analytiques</strong><span>Google Analytics — pages visitées, durée de visite.</span></div>
+            <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="toggle-analytics"><span class="toggle-slider"></span></label></div>
         </div>
-
         <div class="cookie-modal-actions">
-            <button class="btn-cookie btn-cookie-refuse"  onclick="cookieChoice('refuse')">Tout refuser</button>
-            <button class="btn-cookie btn-cookie-accept"  onclick="saveCustomCookies()">Enregistrer</button>
+            <button class="btn-cookie btn-cookie-refuse" onclick="cookieChoice('refuse')">Tout refuser</button>
+            <button class="btn-cookie btn-cookie-accept" onclick="saveCustomCookies()">Enregistrer</button>
         </div>
     </div>
 </div>
 
 <script>
-(function () {
-    var COOKIE_KEY = 'sage_cookie_consent';
-    var COOKIE_DURATION = 365; // jours
-
-    // ── Utilitaires ──────────────────────────────────────────────
-    function setCookie(name, value, days) {
-        var expires = new Date(Date.now() + days * 864e5).toUTCString();
-        document.cookie = name + '=' + encodeURIComponent(value) +
-            '; expires=' + expires + '; path=/; SameSite=Lax';
-    }
-
-    function getCookie(name) {
-        var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-        return match ? decodeURIComponent(match[1]) : null;
-    }
-
-    function hideBanner() {
-        var b = document.getElementById('cookie-banner');
-        if (b) { b.style.transform = 'translateY(100%)'; b.style.pointerEvents = 'none'; }
-    }
-
-    function showBanner() {
-        var b = document.getElementById('cookie-banner');
-        if (b) { setTimeout(function(){ b.classList.add('visible'); }, 600); }
-    }
-
-    // ── Modal ─────────────────────────────────────────────────────
-    window.openCookieModal = function () {
-        // Pré-cocher selon consentement existant
-        var saved = getCookie(COOKIE_KEY);
-        if (saved) {
-            try {
-                var prefs = JSON.parse(saved);
-                var el = document.getElementById('toggle-analytics');
-                if (el) el.checked = !!prefs.analytics;
-            } catch(e) {}
-        }
-        document.getElementById('cookie-modal').classList.add('active');
-    };
-
-    window.closeCookieModal = function () {
-        document.getElementById('cookie-modal').classList.remove('active');
-    };
-
-    // Fermer en cliquant sur le fond
-    document.getElementById('cookie-modal').addEventListener('click', function(e) {
-        if (e.target === this) closeCookieModal();
-    });
-
-    // ── Choix global ─────────────────────────────────────────────
-    window.cookieChoice = function (choice) {
-        var prefs = {
-            necessary: true,
-            analytics: choice === 'accept'
-        };
-        setCookie(COOKIE_KEY, JSON.stringify(prefs), COOKIE_DURATION);
-        applyConsent(prefs);
-        hideBanner();
-        closeCookieModal();
-    };
-
-    // ── Sauvegarde personnalisée ──────────────────────────────────
-    window.saveCustomCookies = function () {
-        var analyticsEl = document.getElementById('toggle-analytics');
-        var prefs = {
-            necessary: true,
-            analytics: analyticsEl ? analyticsEl.checked : false
-        };
-        setCookie(COOKIE_KEY, JSON.stringify(prefs), COOKIE_DURATION);
-        applyConsent(prefs);
-        hideBanner();
-        closeCookieModal();
-    };
-
-    // ── Application du consentement ───────────────────────────────
-    function applyConsent(prefs) {
-        if (prefs.analytics) {
-            loadGoogleAnalytics();
-        } else {
-            // Désactiver GA si déjà chargé
-            window['ga-disable-G-8KMK0V850B'] = true; // ← remplace par ton ID GA4
-        }
-    }
-
-    // ── Init au chargement ────────────────────────────────────────
-    var saved = getCookie(COOKIE_KEY);
-    if (saved) {
-        try {
-            var prefs = JSON.parse(saved);
-            applyConsent(prefs); // applique sans afficher le bandeau
-        } catch(e) {
-            showBanner(); // cookie corrompu → réafficher
-        }
-    } else {
-        showBanner(); // premier visiteur
-    }
-
+(function(){
+    var KEY='sage_cookie_consent', DAYS=365;
+    function setCookie(n,v,d){var e=new Date(Date.now()+d*864e5).toUTCString();document.cookie=n+'='+encodeURIComponent(v)+';expires='+e+';path=/;SameSite=Lax';}
+    function getCookie(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null;}
+    function hideBanner(){var b=document.getElementById('cookie-banner');if(b){b.style.transform='translateY(100%)';b.style.pointerEvents='none';}}
+    function showBanner(){var b=document.getElementById('cookie-banner');if(b){setTimeout(function(){b.classList.add('visible');},600);}}
+    window.openCookieModal=function(){var s=getCookie(KEY);if(s){try{var p=JSON.parse(s);var el=document.getElementById('toggle-analytics');if(el)el.checked=!!p.analytics;}catch(e){}}document.getElementById('cookie-modal').classList.add('active');};
+    window.closeCookieModal=function(){document.getElementById('cookie-modal').classList.remove('active');};
+    document.getElementById('cookie-modal').addEventListener('click',function(e){if(e.target===this)closeCookieModal();});
+    window.cookieChoice=function(c){var p={necessary:true,analytics:c==='accept'};setCookie(KEY,JSON.stringify(p),DAYS);applyConsent(p);hideBanner();closeCookieModal();};
+    window.saveCustomCookies=function(){var el=document.getElementById('toggle-analytics');var p={necessary:true,analytics:el?el.checked:false};setCookie(KEY,JSON.stringify(p),DAYS);applyConsent(p);hideBanner();closeCookieModal();};
+    function applyConsent(p){if(p.analytics){loadGoogleAnalytics();}else{window['ga-disable-G-8KMK0V850B']=true;}}
+    var s=getCookie(KEY);if(s){try{applyConsent(JSON.parse(s));}catch(e){showBanner();}}else{showBanner();}
 })();
 </script>
 
