@@ -531,17 +531,18 @@
 
         .footer-links {
             display: flex;
-            gap: 30px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
+            font-size: 0.62rem;
+            letter-spacing: 1px;
             color: rgba(255,255,255,0.35);
             text-decoration: none;
             text-transform: uppercase;
             transition: color 0.3s;
+            white-space: nowrap;
         }
         .footer-links a:hover { color: var(--gold); }
 
@@ -677,6 +678,12 @@
             .event-card-action { opacity: 1; transform: scale(1); }
             .event-card-desc { opacity: 1; transform: none; }
             footer { flex-direction: column; text-align: center; }
+            .footer-links {
+                justify-content: center;
+                width: 100%;
+                gap: 10px 18px;
+            }
+            .footer-links a { font-size: 0.6rem; letter-spacing: 0.5px; }
             .lightbox-nav-btn { display: none; }
             .cta-buttons { flex-direction: column; align-items: center; }
         }
@@ -736,7 +743,7 @@
 <!-- ══ STATS ══ -->
 <div class="stats-bar reveal">
     <div class="stat-item">
-        <div class="stat-number"><span class="count-up" data-target="05" data-suffix="+">0</span></div>
+        <div class="stat-number"><span class="count-up" data-target="12" data-suffix="+">0</span></div>
         <div class="stat-label">Événements réalisés</div>
     </div>
     <div class="stat-item">
