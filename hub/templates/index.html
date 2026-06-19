@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        /* ============================================================
+           VARIABLES GLOBALES
+           Palette de couleurs + Safe Area iOS (Dynamic Island / Notch)
+           ============================================================ */
         :root {
             --ivory: #F9F8F6;
             --charcoal: #1A1A1A;
@@ -31,13 +35,15 @@
             --cap-status-bar-height: 0px;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        /* ============================================================
+           BASE
+           ============================================================ */
+        html { scroll-behavior: smooth; }
 
         body {
             margin: 0;
             padding: 0;
+            /* ✅ Safe area pour les bords iOS */
             padding-bottom: env(safe-area-inset-bottom, 0px);
             padding-left: env(safe-area-inset-left, 0px);
             padding-right: env(safe-area-inset-right, 0px);
@@ -55,13 +61,13 @@
             display: block;
         }
 
-        /*
-         * ✅ FIX DYNAMIC ISLAND
-         * On utilise max() entre :
-         *   - env(safe-area-inset-top) : valeur CSS native (marche en browser)
-         *   - var(--cap-status-bar-height) : valeur injectée par JS Capacitor (marche en app native)
-         * Le max() prend la plus grande des deux → toujours correct peu importe le contexte.
-         */
+        /* ============================================================
+           NAVIGATION
+           ✅ FIX DYNAMIC ISLAND — on utilise max() entre :
+             - env(safe-area-inset-top) : valeur CSS native (browser)
+             - var(--cap-status-bar-height) : valeur JS Capacitor (app native)
+           Le max() prend la plus grande → toujours correct peu importe le contexte.
+           ============================================================ */
         nav {
             padding-left: 8%;
             padding-right: 8%;
@@ -103,6 +109,9 @@
         .nav-links a:hover { color: var(--gold-subtle); }
         .btn-gold-nav { color: var(--gold-subtle) !important; font-weight: bold; }
 
+        /* ============================================================
+           HAMBURGER MENU MOBILE
+           ============================================================ */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -118,12 +127,15 @@
             transition: 0.4s;
             border-radius: 2px;
         }
-
+        /* Animation hamburger → croix */
         .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* ✅ MENU MOBILE — même logique double safe area */
+        /* ============================================================
+           MENU MOBILE OVERLAY
+           ✅ Même logique double safe area que la nav
+           ============================================================ */
         .mobile-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -136,6 +148,7 @@
             transition: all 0.4s ease;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
+            /* ✅ Safe area pour éviter le Dynamic Island */
             padding-top: max(env(safe-area-inset-top, 0px), var(--cap-status-bar-height));
             padding-bottom: env(safe-area-inset-bottom, 0px);
             padding-left: env(safe-area-inset-left, 0px);
@@ -143,7 +156,6 @@
             box-sizing: border-box;
         }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
-
         .mobile-overlay a {
             padding: 15px 0;
             width: 80%;
@@ -158,6 +170,11 @@
         }
         .mobile-overlay a:last-child { border-bottom: none; }
 
+        /* ============================================================
+           HERO — Section principale "SAGE EMPIRE"
+           position: relative → nécessaire pour positionner les formes en absolu
+           overflow: hidden  → les formes ne débordent pas hors du hero
+           ============================================================ */
         .hero {
             height: 45vh;
             display: flex;
@@ -165,14 +182,203 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;   /* ✅ Requis pour .empire-bg en absolu */
+            overflow: hidden;     /* ✅ Empêche les SVG de dépasser */
         }
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: 3.5rem;
             letter-spacing: 8px;
             margin-bottom: 10px;
+            position: relative;   /* ✅ z-index 2 → passe au-dessus des formes */
+            z-index: 2;
+        }
+        .hero p {
+            position: relative;   /* ✅ z-index 2 → passe au-dessus des formes */
+            z-index: 2;
         }
 
+        /* ============================================================
+           EMPIRE BG — Conteneur des formes SVG animées
+           Placé en absolu pour couvrir tout le hero
+           pointer-events: none → ne bloque pas les clics sur le texte
+           ============================================================ */
+        .empire-bg {
+            position: absolute;
+            inset: 0;             /* top:0 right:0 bottom:0 left:0 */
+            z-index: 1;           /* Derrière le texte (z-index: 2) */
+            pointer-events: none; /* Les formes ne captent pas les clics */
+        }
+
+        /* Le SVG couvre tout le conteneur */
+        .empire-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ============================================================
+           STYLES DE BASE DES ÉLÉMENTS SVG
+           Tous en stroke doré, fill transparent, opacity 0 au départ
+           Les animations les font apparaître progressivement
+           ============================================================ */
+        .empire-svg .col,
+        .empire-svg .cap,
+        .empire-svg .base,
+        .empire-svg .arch,
+        .empire-svg .pyramid,
+        .empire-svg .horizon,
+        .empire-svg .deco-line,
+        .empire-svg .tick {
+            fill: none;
+            stroke: #B5935E;   /* Or Sage Empire */
+            stroke-width: 0.8;
+            opacity: 0;        /* Invisible au départ — les animations gèrent l'apparition */
+        }
+
+        /* ============================================================
+           ANIMATION 1 — COLONNES : Slide-up + Fade-in
+           Les colonnes montent depuis le bas et apparaissent
+           ============================================================ */
+        @keyframes colRise {
+            0%   { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 0.35; transform: translateY(0); }
+        }
+        /* Chaque type d'élément a sa propre durée pour un effet naturel */
+        .col  { animation: colRise 2s ease-out forwards; }
+        .cap  { animation: colRise 2.3s ease-out forwards; }  /* Chapiteaux légèrement après */
+        .base { animation: colRise 2.1s ease-out forwards; }  /* Bases légèrement après */
+
+        /* Décalages temporels pour un effet cascade gauche→droite */
+        .col-1, .cap-1, .base-1 { animation-delay: 0.2s; }
+        .col-2, .cap-2, .base-2 { animation-delay: 0.5s; }
+        .col-3, .cap-3           { animation-delay: 0.7s; }
+        .col-4, .cap-4, .base-4 { animation-delay: 0.3s; }
+        .col-5, .cap-5, .base-5 { animation-delay: 0.6s; }
+        .col-6, .cap-6           { animation-delay: 0.8s; }
+
+        /* ============================================================
+           ANIMATION 2 — FLOAT CONTINU des colonnes
+           Après l'apparition, les colonnes flottent doucement up/down
+           On chaîne 2 animations : colRise puis colFloat en infini
+           ============================================================ */
+        @keyframes colFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-4px); }
+        }
+        /* Colonnes principales (1 et 4) — float lent 5s */
+        .col-1, .cap-1, .base-1,
+        .col-4, .cap-4, .base-4 {
+            animation: colRise 2s ease-out 0.2s forwards,
+                       colFloat 5s ease-in-out 2.2s infinite;
+        }
+        /* Colonnes secondaires (2 et 5) — float légèrement différent 6s */
+        .col-2, .cap-2, .base-2,
+        .col-5, .cap-5, .base-5 {
+            animation: colRise 2s ease-out 0.5s forwards,
+                       colFloat 6s ease-in-out 2.5s infinite;
+        }
+
+        /* ============================================================
+           ANIMATION 3 — ARCHES : Effet "dessin progressif"
+           Utilise stroke-dashoffset pour simuler un trait qui se dessine
+           ============================================================ */
+        @keyframes archDraw {
+            0%   { opacity: 0; stroke-dashoffset: 600; }  /* Invisible + trait non dessiné */
+            100% { opacity: 0.25; stroke-dashoffset: 0; } /* Visible + trait complet */
+        }
+        .arch {
+            fill: none;
+            stroke-dasharray: 600;    /* Longueur totale du trait */
+            stroke-dashoffset: 600;   /* Décalage = caché au départ */
+            animation: archDraw 3s ease-out forwards;
+        }
+        .arch-1 { animation-delay: 0.9s; }
+        .arch-2 { animation-delay: 1.1s; }
+
+        /* ============================================================
+           ANIMATION 4 — PYRAMIDES : Scale depuis la base + Fade
+           L'effet de croissance depuis le bas est donné par transform-origin
+           ============================================================ */
+        @keyframes pyrFade {
+            0%   { opacity: 0; transform: scaleY(0.6) translateY(10px); }
+            100% { opacity: 0.2; transform: scaleY(1) translateY(0); }
+        }
+        .pyramid {
+            transform-origin: bottom center; /* ✅ Grandit depuis la base */
+            transform-box: fill-box;         /* ✅ transform-origin relatif au SVG element */
+            animation: pyrFade 2s ease-out forwards;
+        }
+        .pyr-1 { animation-delay: 0.5s; }
+        .pyr-2 { animation-delay: 0.8s; }
+        .pyr-3 { animation-delay: 0.8s; }
+
+        /* ============================================================
+           ANIMATION 5 — LIGNES : Déploiement horizontal
+           Même technique stroke-dashoffset que les arches
+           ============================================================ */
+        @keyframes lineExpand {
+            0%   { opacity: 0; stroke-dashoffset: 1200; }
+            100% { opacity: 0.2; stroke-dashoffset: 0; }
+        }
+        /* Ligne d'horizon principale — longue → dasharray 1200 */
+        .horizon {
+            stroke-dasharray: 1200;
+            stroke-dashoffset: 1200;
+            animation: lineExpand 2.5s ease-out 0.6s forwards;
+        }
+        /* Lignes décoratives courtes — dasharray 300 */
+        .deco-line {
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: lineExpand 2s ease-out 1.2s forwards;
+        }
+        /* Petits tirets verticaux — réutilise colRise */
+        .tick { animation: colRise 1.5s ease-out 1.4s forwards; }
+
+        /* ============================================================
+           ANIMATION 6 — ÉTOILES ✦ : Scintillement en boucle
+           Chaque étoile a une durée et un délai légèrement différent
+           pour éviter un effet synchronisé trop mécanique
+           ============================================================ */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.08; transform: scale(1); }   /* Presque invisible */
+            50%       { opacity: 0.5;  transform: scale(1.3); } /* Brillante */
+        }
+        .star {
+            fill: #B5935E;
+            stroke: none;
+            font-family: serif;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        /* Décalages individuels → scintillement désynchronisé = naturel */
+        .star-1 { animation-delay: 0s;   animation-duration: 3.2s; }
+        .star-2 { animation-delay: 0.8s; animation-duration: 2.8s; }
+        .star-3 { animation-delay: 1.5s; animation-duration: 4s;   }
+        .star-4 { animation-delay: 0.4s; animation-duration: 3.5s; }
+        .star-5 { animation-delay: 1.2s; animation-duration: 2.6s; }
+        .star-6 { animation-delay: 2s;   animation-duration: 3.8s; }
+        .star-7 { animation-delay: 0.6s; animation-duration: 3.1s; }
+
+        /* ============================================================
+           ANIMATION 7 — COURONNE : Flottement vertical doux en boucle
+           La couronne monte/descend légèrement et pulse en opacité
+           ============================================================ */
+        @keyframes crownFloat {
+            0%, 100% { opacity: 0.35; transform: translateY(0px); }
+            50%       { opacity: 0.55; transform: translateY(-6px); }
+        }
+        .crown {
+            fill: none;
+            stroke: #B5935E;
+            stroke-width: 0.8;
+            transform-origin: center;
+            transform-box: fill-box;           /* ✅ transform relatif à l'élément SVG */
+            animation: crownFloat 4s ease-in-out 1s infinite; /* Démarre après 1s */
+        }
+
+        /* ============================================================
+           VISION — Section "Notre Vision"
+           ============================================================ */
         .vision {
             padding: 80px 10%;
             background: var(--white);
@@ -209,6 +415,9 @@
             line-height: 1.6;
         }
 
+        /* ============================================================
+           SERVICES — Grille de cartes
+           ============================================================ */
         .services { padding: 80px 8%; }
         .services-grid {
             display: flex;
@@ -244,6 +453,8 @@
             margin-bottom: 10px;
         }
         .service-card p { font-size: 0.8rem; color: #888; }
+
+        /* Trait doré sous les cards — s'élargit au hover */
         .line {
             width: 30px;
             height: 1px;
@@ -253,6 +464,9 @@
         }
         .service-card:hover .line { width: 80px; }
 
+        /* ============================================================
+           MARKETPLACE BANNER
+           ============================================================ */
         .marketplace-banner {
             padding: 100px 8%;
             background: #fff;
@@ -278,6 +492,9 @@
         }
         .btn-enter:hover { background: var(--charcoal); color: white; }
 
+        /* ============================================================
+           CTA STYLISTE — Bandeau sombre pour recruter des créateurs
+           ============================================================ */
         .cta-styliste {
             background: var(--charcoal);
             color: white;
@@ -298,9 +515,17 @@
             letter-spacing: 2px;
         }
 
+        /* ============================================================
+           ANIMATIONS AU SCROLL — data-animate
+           Les éléments sont invisibles + décalés vers le bas au départ
+           La classe .animated (ajoutée par JS) les fait apparaître
+           ============================================================ */
         [data-animate] { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
         [data-animate].animated { opacity: 1; transform: translateY(0); }
 
+        /* ============================================================
+           BOUTONS CONTACT MODAL
+           ============================================================ */
         .btn-contact-choice {
             display: flex;
             align-items: center;
@@ -317,6 +542,10 @@
             border: none;
         }
 
+        /* ============================================================
+           ORBIT CARDS — Section "Pourquoi Sage Empire"
+           Hexagones en orbite autour du nœud central
+           ============================================================ */
         .orbit-card {
             position: absolute;
             left: 50%; top: 50%;
@@ -325,6 +554,7 @@
             display: flex; justify-content: center; align-items: center;
             z-index: 20;
         }
+        /* Hexagone avec clip-path */
         .hex-content {
             width: 100%; height: 100%;
             background: rgba(10, 10, 10, 0.9);
@@ -339,6 +569,7 @@
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             border: 1px solid rgba(181, 147, 94, 0.2);
         }
+        /* Bordure dorée sur le hexagone */
         .hex-content::after {
             content: "";
             position: absolute; inset: 0;
@@ -346,6 +577,7 @@
             border: 1px solid rgba(181, 147, 94, 0.4);
             pointer-events: none;
         }
+        /* Effet au survol des hexagones */
         .orbit-card:hover .hex-content {
             transform: scale(1.1) translateZ(50px);
             background: rgba(20, 20, 20, 0.95);
@@ -361,34 +593,207 @@
         }
         .hex-desc { font-size: 0.7rem; color: #AAA; line-height: 1.6; margin: 0; }
 
+        /* Pulsation du halo central */
         @keyframes pulseCore {
             0%, 100% { opacity: 0.2; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(1.05); }
         }
 
+        /* ============================================================
+           RESPONSIVE MOBILE
+           ============================================================ */
         @media (max-width: 768px) {
+            /* Navigation : cache les liens, affiche le hamburger */
             .nav-links { display: none; }
             .hamburger { display: flex; }
+
+            /* Hero : titre plus petit */
             .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
+
+            /* Orbit : zoom out pour tenir sur mobile */
             .orbit-container { height: 600px !important; transform: scale(0.7); }
+
+            /* Hexagones : cache la description pour économiser l'espace */
             .hex-desc { display: none; }
+
+            /* Empire SVG : simplifié sur mobile pour rester lisible
+               On cache les arches et les pyramides latérales */
+            .empire-svg .arch,
+            .empire-svg .pyr-2,
+            .empire-svg .pyr-3 { display: none; }
         }
+
+        /* ============================================================
+           COOKIES RGPD — Bandeau + Modal de personnalisation
+           ============================================================ */
+
+        /* --- Bandeau principal --- */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 99000;
+            background: #fff;
+            border-top: 2px solid #B5935E;
+            padding: 20px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
+            /* ✅ Safe area iOS home indicator */
+            padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            /* Masqué par défaut — JS l'affiche avec la classe .visible */
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        #cookie-banner.visible { transform: translateY(0); }
+
+        #cookie-banner .cookie-text { flex: 1; min-width: 200px; }
+        #cookie-banner .cookie-text p {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.82rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        #cookie-banner .cookie-text strong {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: #1A1A1A;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        #cookie-banner .cookie-text a { color: #B5935E; text-decoration: none; font-size: 0.78rem; }
+
+        .cookie-buttons { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+        /* Boutons cookies */
+        .btn-cookie {
+            padding: 10px 20px;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'Lato', sans-serif;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-radius: 2px;
+        }
+        .btn-cookie-accept { background: #1A1A1A; color: #fff; }
+        .btn-cookie-accept:hover { background: #B5935E; }
+        .btn-cookie-customize { background: transparent; color: #1A1A1A; border: 1px solid #1A1A1A; }
+        .btn-cookie-customize:hover { border-color: #B5935E; color: #B5935E; }
+        .btn-cookie-refuse { background: transparent; color: #999; border: 1px solid #ddd; }
+        .btn-cookie-refuse:hover { color: #555; border-color: #999; }
+
+        /* --- Modal personnalisation cookies --- */
+        #cookie-modal {
+            position: fixed; inset: 0;
+            z-index: 99500;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            /* Invisible par défaut */
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+            /* ✅ Safe area */
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        #cookie-modal.active { opacity: 1; pointer-events: auto; }
+
+        .cookie-modal-box {
+            background: #fff;
+            width: 100%; max-width: 560px;
+            max-height: 80vh; overflow-y: auto;
+            border-radius: 16px 16px 0 0;
+            padding: 35px 30px 30px;
+            /* Slide up à l'ouverture */
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        #cookie-modal.active .cookie-modal-box { transform: translateY(0); }
+
+        .cookie-modal-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: #1A1A1A;
+            margin: 0 0 8px;
+            text-transform: uppercase;
+        }
+        .cookie-modal-box > p { font-size: 0.82rem; color: #777; margin: 0 0 25px; line-height: 1.6; }
+
+        /* Ligne par catégorie de cookie */
+        .cookie-category {
+            display: flex; align-items: flex-start;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 15px;
+        }
+        .cookie-category:last-of-type { border-bottom: none; }
+        .cookie-cat-info { flex: 1; }
+        .cookie-cat-info strong { display: block; font-size: 0.85rem; color: #1A1A1A; margin-bottom: 4px; font-family: 'Lato', sans-serif; }
+        .cookie-cat-info span { font-size: 0.78rem; color: #999; line-height: 1.5; }
+        .toggle-wrapper { flex-shrink: 0; padding-top: 2px; }
+
+        /* Toggle switch on/off */
+        .toggle-switch { position: relative; width: 44px; height: 24px; display: inline-block; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; inset: 0;
+            background: #ddd; border-radius: 24px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .toggle-slider::before {
+            content: ""; position: absolute;
+            width: 18px; height: 18px;
+            left: 3px; bottom: 3px;
+            background: white; border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle-switch input:checked + .toggle-slider { background: #B5935E; }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+        /* Désactivé = cookies nécessaires → toujours ON */
+        .toggle-switch input:disabled + .toggle-slider { opacity: 0.6; cursor: not-allowed; }
+
+        .cookie-modal-actions { display: flex; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
+        .cookie-modal-actions .btn-cookie { flex: 1; min-width: 120px; text-align: center; }
+
+        /* Responsive cookies */
+        @media (max-width: 600px) {
+            #cookie-banner { flex-direction: column; align-items: flex-start; }
+            .cookie-buttons { width: 100%; }
+            .btn-cookie { flex: 1; text-align: center; }
+            .cookie-modal-box { padding: 25px 20px 20px; }
+        }
+
     </style>
 </head>
 
 <body>
 
-<!-- ✅ SCRIPT PRIORITAIRE — s'exécute avant le rendu de la nav
+<!-- ============================================================
+     SCRIPT PRIORITAIRE — Status Bar Capacitor
+     S'exécute AVANT le rendu de la nav pour éviter le saut visuel.
      Injecte la vraie hauteur de la status bar iOS via Capacitor StatusBar plugin.
-     Cela corrige le problème du contenu caché derrière la Dynamic Island
-     en mode server.url (où env(safe-area-inset-top) CSS n'est pas fiable). -->
+     Corrige le problème du contenu caché derrière la Dynamic Island
+     en mode server.url (où env(safe-area-inset-top) CSS n'est pas fiable).
+     ============================================================ -->
 <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.global.js"></script>
 <script src="https://unpkg.com/@capacitor/app@latest/dist/plugin.js"></script>
 <script src="https://unpkg.com/@capacitor/browser@latest/dist/plugin.js"></script>
 <script src="https://unpkg.com/@capacitor/status-bar@latest/dist/plugin.js"></script>
 <script>
     (function () {
-        // On applique le fix dès que possible, avant DOMContentLoaded
+        // Applique le fix dès que possible, avant DOMContentLoaded
         function applyStatusBarFix() {
             if (
                 window.Capacitor &&
@@ -405,7 +810,7 @@
                         console.log('[SageEmpire] StatusBar height:', h + 'px');
                     })
                     .catch(function () {
-                        // Fallback hardcodé : Dynamic Island fait ~59px, notch classique ~44px
+                        // Fallback hardcodé : Dynamic Island ~59px, notch classique ~44px
                         document.documentElement.style.setProperty('--cap-status-bar-height', '59px');
                         console.warn('[SageEmpire] StatusBar getInfo() failed, using fallback 59px');
                     });
@@ -415,6 +820,10 @@
     })();
 </script>
 
+<!-- ============================================================
+     NAVIGATION PRINCIPALE
+     sticky top:0 → reste visible au scroll
+     ============================================================ -->
 <nav>
     <div class="nav-logo-container">
         <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Sage Empire"></a>
@@ -424,34 +833,177 @@
         <a href="{% url 'liste_stylistes' %}">Marketplace</a>
         <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="color: var(--gold-subtle); font-weight: bold;">CONTACT PRIVE</a>
         {% if user.is_authenticated and user.profil_styliste or user.profil_proprietaire %}
-        <a href="{% url 'redirection_apres_login' %}" class="btn-gold-nav">MON ESPACE</a>
+            <a href="{% url 'redirection_apres_login' %}" class="btn-gold-nav">MON ESPACE</a>
         {% else %}
-        <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
-        <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
+            <a href="{% url 'inscription_styliste' %}">ESPACE CRÉATEUR</a>
+            <a href="{% url 'login' %}" class="btn-gold-nav">CONNEXION</a>
         {% endif %}
     </div>
+    <!-- Hamburger visible uniquement sur mobile -->
     <div class="hamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
     </div>
 </nav>
 
+<!-- ============================================================
+     MENU MOBILE OVERLAY
+     S'affiche plein écran quand le hamburger est cliqué
+     ============================================================ -->
 <div class="mobile-overlay" id="mobileMenu">
     <a href="#services" onclick="toggleMenu()">Hub Services</a>
     <a href="{% url 'liste_stylistes' %}" onclick="toggleMenu()">Marketplace</a>
     <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="toggleMenu()">Contact Privé</a>
     {% if user.is_authenticated and user.profil_styliste or user.profil_proprietaire %}
-    <a href="{% url 'redirection_apres_login' %}" onclick="toggleMenu()">Mon Espace</a>
+        <a href="{% url 'redirection_apres_login' %}" onclick="toggleMenu()">Mon Espace</a>
     {% else %}
-    <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
-    <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
+        <a href="{% url 'inscription_styliste' %}" onclick="toggleMenu()">Espace Créateur</a>
+        <a href="{% url 'login' %}" onclick="toggleMenu()">Connexion</a>
     {% endif %}
 </div>
 
+<!-- ============================================================
+     HERO — Section d'accueil principale
+     Contient :
+       - .empire-bg  : les formes SVG animées (z-index: 1)
+       - h1 + p      : le texte principal (z-index: 2, au-dessus)
+     ============================================================ -->
 <section class="hero" data-animate>
+
+    <!-- ✨ FORMES EMPIRE ANIMÉES
+         SVG inline pour des animations CSS performantes (pas de lib)
+         viewBox="0 0 1200 450" → coordonnées internes du dessin
+         preserveAspectRatio="xMidYMid slice" → couvre tout l'espace comme un background-size: cover
+    -->
+    <div class="empire-bg" aria-hidden="true">
+        <svg class="empire-svg" viewBox="0 0 1200 450" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+
+            <!-- ==========================================
+                 COLONNES GAUCHE
+                 3 colonnes de taille décroissante
+                 Chacune = rect (fût) + rect (chapiteau) + rect (base)
+                 ========================================== -->
+
+            <!-- Colonne principale gauche (la plus grande) -->
+            <rect class="col col-1"  x="80"  y="80"  width="8" height="280" rx="2"/>  <!-- Fût -->
+            <rect class="cap cap-1"  x="65"  y="75"  width="38" height="8"  rx="1"/>  <!-- Chapiteau -->
+            <rect class="base base-1" x="65" y="358" width="38" height="6"  rx="1"/>  <!-- Base -->
+
+            <!-- Colonne secondaire gauche -->
+            <rect class="col col-2"  x="115" y="100" width="6" height="260" rx="2"/>
+            <rect class="cap cap-2"  x="103" y="95"  width="30" height="6"  rx="1"/>
+            <rect class="base base-2" x="103" y="358" width="30" height="5" rx="1"/>
+
+            <!-- Petite colonne décorative gauche -->
+            <rect class="col col-3"  x="148" y="140" width="4" height="220" rx="1"/>
+            <rect class="cap cap-3"  x="140" y="136" width="20" height="5"  rx="1"/>
+
+            <!-- ==========================================
+                 ARCHE GAUCHE
+                 Demi-cercle stylisé = arc de triomphe
+                 Chemin SVG : descend, monte, fait l'arche, redescend
+                 ========================================== -->
+            <path class="arch arch-1" d="M 55 360 L 55 220 Q 55 140 118 140 Q 181 140 181 220 L 181 360"/>
+
+            <!-- ==========================================
+                 COLONNES DROITE
+                 Miroir exact des colonnes gauche
+                 ========================================== -->
+
+            <!-- Colonne principale droite -->
+            <rect class="col col-4"  x="1112" y="80"  width="8" height="280" rx="2"/>
+            <rect class="cap cap-4"  x="1097" y="75"  width="38" height="8"  rx="1"/>
+            <rect class="base base-4" x="1097" y="358" width="38" height="6" rx="1"/>
+
+            <!-- Colonne secondaire droite -->
+            <rect class="col col-5"  x="1079" y="100" width="6" height="260" rx="2"/>
+            <rect class="cap cap-5"  x="1067" y="95"  width="30" height="6"  rx="1"/>
+            <rect class="base base-5" x="1067" y="358" width="30" height="5" rx="1"/>
+
+            <!-- Petite colonne décorative droite -->
+            <rect class="col col-6"  x="1048" y="140" width="4" height="220" rx="1"/>
+            <rect class="cap cap-6"  x="1040" y="136" width="20" height="5"  rx="1"/>
+
+            <!-- ==========================================
+                 ARCHE DROITE — miroir de l'arche gauche
+                 ========================================== -->
+            <path class="arch arch-2" d="M 1019 360 L 1019 220 Q 1019 140 1082 140 Q 1145 140 1145 220 L 1145 360"/>
+
+            <!-- ==========================================
+                 PYRAMIDES
+                 pyr-1 : centrale, grande (évoque un empire égyptien)
+                 pyr-2 / pyr-3 : petites, symétriques sur les côtés
+                 ========================================== -->
+            <polygon class="pyramid pyr-1" points="600,30 645,120 555,120"/>   <!-- Centre haut -->
+            <polygon class="pyramid pyr-2" points="300,20 330,80  270,80"/>    <!-- Gauche -->
+            <polygon class="pyramid pyr-3" points="900,20 930,80  870,80"/>    <!-- Droite -->
+
+            <!-- ==========================================
+                 LIGNE D'HORIZON
+                 Sépare visuellement le "sol" de l'empire
+                 ========================================== -->
+            <line class="horizon" x1="0" y1="364" x2="1200" y2="364"/>
+
+            <!-- ==========================================
+                 LIGNES DÉCORATIVES
+                 Courtes lignes entre les colonnes et le centre
+                 ========================================== -->
+            <line class="deco-line line-l" x1="200" y1="364" x2="460"  y2="364"/> <!-- Gauche → centre -->
+            <line class="deco-line line-r" x1="740" y1="364" x2="1000" y2="364"/> <!-- Centre → droite -->
+
+            <!-- Petits tirets verticaux sur la ligne d'horizon (graduations) -->
+            <line class="tick" x1="250" y1="356" x2="250" y2="372"/>
+            <line class="tick" x1="320" y1="358" x2="320" y2="370"/>
+            <line class="tick" x1="390" y1="358" x2="390" y2="370"/>
+            <line class="tick" x1="950" y1="358" x2="950" y2="370"/>
+            <line class="tick" x1="880" y1="358" x2="880" y2="370"/>
+            <line class="tick" x1="810" y1="358" x2="810" y2="370"/>
+
+            <!-- ==========================================
+                 ÉTOILES DÉCORATIVES ✦
+                 Dispersées dans le ciel (haut) et au sol (bas)
+                 Tailles variables pour la profondeur
+                 ========================================== -->
+            <text class="star star-1" x="200"  y="60"  font-size="12">✦</text>  <!-- Grand gauche haut -->
+            <text class="star star-2" x="990"  y="60"  font-size="12">✦</text>  <!-- Grand droite haut -->
+            <text class="star star-3" x="600"  y="400" font-size="8">✦</text>   <!-- Bas centre -->
+            <text class="star star-4" x="380"  y="50"  font-size="7">✦</text>   <!-- Milieu gauche haut -->
+            <text class="star star-5" x="820"  y="50"  font-size="7">✦</text>   <!-- Milieu droite haut -->
+            <text class="star star-6" x="160"  y="420" font-size="6">✦</text>   <!-- Bas gauche -->
+            <text class="star star-7" x="1040" y="420" font-size="6">✦</text>   <!-- Bas droite -->
+
+            <!-- ==========================================
+                 COURONNE CENTRALE
+                 Positionnée juste au-dessus du texte "SAGE EMPIRE"
+                 Composée de rectangles et polygones formant une couronne royale
+                 Le groupe <g> est positionné par transform="translate()"
+                 ========================================== -->
+            <g class="crown" transform="translate(570, 8)">
+                <!-- Base de la couronne (bandeau horizontal) -->
+                <rect x="-35" y="18" width="70" height="5" rx="1"/>
+                <!-- Pointe centrale (la plus haute) -->
+                <polygon points="0,-8 6,10 -6,10"/>
+                <!-- Pointes latérales -->
+                <polygon points="-22,0 -16,18 -28,18"/>
+                <polygon points="22,0 28,18 16,18"/>
+                <!-- Petites pointes intermédiaires -->
+                <polygon points="-11,4 -7,14 -15,14"/>
+                <polygon points="11,4 15,14 7,14"/>
+            </g>
+
+        </svg>
+    </div>
+    <!-- FIN FORMES EMPIRE ANIMÉES -->
+
+    <!-- Texte principal — z-index: 2 (défini dans .hero h1 et .hero p) pour passer au-dessus du SVG -->
     <h1>SAGE EMPIRE</h1>
     <p style="font-size: 0.7rem; letter-spacing: 4px; color: var(--gold-subtle);">L'EXCELLENCE SUR MESURE</p>
-</section>
 
+</section>
+<!-- FIN HERO -->
+
+<!-- ============================================================
+     VISION — Notre philosophie
+     ============================================================ -->
 <section class="vision" data-animate>
     <h2>Notre Vision</h2>
     <div class="vision-grid">
@@ -466,6 +1018,9 @@
     </div>
 </section>
 
+<!-- ============================================================
+     SERVICES — Hub des services Sage Empire
+     ============================================================ -->
 <section id="services" class="services">
     <div class="services-grid">
         <a href="{% url 'evenementiel' %}" class="service-card" data-animate>
@@ -483,6 +1038,7 @@
             <p>Découvrez nos collections exclusives.</p>
             <div class="line"></div>
         </a>
+        <!-- ✅ Lien externe Mako — géré par Capacitor Browser en app native -->
         <a href="#" class="service-card mako-link" data-animate data-url="https://www.makoservicestg.com">
             <h3>MAKO SERVICES</h3>
             <p>Entretien expert post-évènement.</p>
@@ -496,6 +1052,9 @@
     </div>
 </section>
 
+<!-- ============================================================
+     MARKETPLACE BANNER
+     ============================================================ -->
 <section id="marketplace" class="marketplace-banner" data-animate>
     <h2>MARKETPLACE</h2>
     <div style="width: 40px; height: 1px; background: var(--gold-subtle); margin: 0 auto 30px;"></div>
@@ -505,6 +1064,9 @@
     <a href="{% url 'liste_stylistes' %}" class="btn-enter">Entrer dans la Marketplace →</a>
 </section>
 
+<!-- ============================================================
+     CTA STYLISTE — Visible uniquement si non connecté ou superuser
+     ============================================================ -->
 {% if not user.is_authenticated or user.is_superuser %}
 <section class="cta-styliste">
     <h3>VOUS ÊTES CRÉATEUR ?</h3>
@@ -512,7 +1074,14 @@
 </section>
 {% endif %}
 
+<!-- ============================================================
+     WHY SAGE EMPIRE — Section orbite 3D
+     Hexagones animés en orbite autour d'un nœud central
+     Utilise GSAP pour les animations JavaScript
+     ============================================================ -->
 <section id="why-sage" style="background: #000; color: white; padding: 120px 0; overflow: hidden; position: relative; perspective: 2000px;">
+
+    <!-- Cercles décoratifs en arrière-plan -->
     <div class="bg-lines" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 1000px; opacity: 0.15; pointer-events: none;">
         <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
             <circle cx="50" cy="50" r="28" fill="none" stroke="#B5935E" stroke-width="0.1" />
@@ -522,66 +1091,96 @@
         </svg>
     </div>
 
+    <!-- Conteneur 3D de l'orbite — transform-style: preserve-3d pour l'effet parallaxe souris -->
     <div class="orbit-container" style="position: relative; width: 100%; height: 800px; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d;">
+
+        <!-- Nœud central — cercle avec halo pulsant -->
         <div class="core-node" style="z-index: 100; width: 260px; height: 260px; background: radial-gradient(circle, #222 0%, #000 100%); border: 1px solid rgba(181, 147, 94, 0.6); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 0 80px rgba(181, 147, 94, 0.2); position: relative;">
+            <!-- Halo animé autour du nœud central -->
             <div class="core-glow" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 30px #B5935E; opacity: 0.3; animation: pulseCore 4s infinite ease-in-out;"></div>
             <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 4px; color: #B5935E; margin-bottom: 5px;">POURQUOI</p>
             <h2 style="font-family: 'Cinzel'; font-size: 1.8rem; letter-spacing: 5px; color: #FFF; margin: 0;">SAGE<br>EMPIRE</h2>
             <div style="width: 40px; height: 1px; background: #B5935E; margin-top: 15px;"></div>
         </div>
 
+        <!-- Hexagones en orbite — positionnés et animés par GSAP -->
+        <!-- data-angle : angle de départ sur le cercle d'orbite (en degrés) -->
+        <!-- data-label, data-icon, data-desc : remplis dynamiquement par JS -->
         <div class="orbit-card" data-angle="0"   data-label="STRUCTURE"   data-icon="fa-shield-alt"  data-desc="Parce que la réussite exige une structure sans faille."></div>
         <div class="orbit-card" data-angle="60"  data-label="EXPERTISE"   data-icon="fa-chart-line"  data-desc="Une expertise immobilière alliée à une vision d'avant-garde."></div>
         <div class="orbit-card" data-angle="120" data-label="EXIGENCE"    data-icon="fa-gem"         data-desc="Une rigueur absolue dans chaque détail. Aucune zone d'ombre."></div>
         <div class="orbit-card" data-angle="180" data-label="CONFIANCE"   data-icon="fa-handshake"   data-desc="Nous forgeons un écosystème de confiance pour le sommet."></div>
         <div class="orbit-card" data-angle="240" data-label="TECHNOLOGIE" data-icon="fa-microchip"   data-desc="La haute technologie au service de l'excellence."></div>
         <div class="orbit-card" data-angle="300" data-label="PERFORMANCE" data-icon="fa-crown"       data-desc="Nous bâtissons des standards de haute performance."></div>
+
     </div>
 
+    <!-- Citation -->
     <div style="text-align: center; margin-top: -50px; position: relative; z-index: 150; padding: 0 20px;">
         <p style="color: rgba(255,255,255,0.7); font-style: italic; max-width: 700px; margin: 0 auto 40px; line-height: 1.6; font-size: 0.95rem;">
             "Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre."
         </p>
     </div>
 
+    <!-- Tagline finale -->
     <div class="text-center" style="margin-top: -40px; position: relative; z-index: 150;">
         <p style="color: #B5935E; font-family: 'Cinzel'; letter-spacing: 5px; font-size: 1.1rem; font-weight: bold;">UN SEUL NOM. UNE VISION GLOBALE. UNE EXIGENCE ABSOLUE.</p>
     </div>
+
 </section>
 
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer style="padding: 100px 10% 40px; background: #fff; border-top: 1px solid var(--border); text-align: center;">
+
+    <!-- Logo texte -->
     <div style="margin-bottom: 50px;">
         <h4 style="font-family: 'Cinzel'; letter-spacing: 6px; color: var(--gold-subtle); margin-bottom: 10px; font-size: 1.4rem;">SAGE EMPIRE</h4>
         <p style="font-size: 0.8rem; color: #888; letter-spacing: 3px; text-transform: uppercase;">L'Excellence comme Référence</p>
     </div>
 
+    <!-- Liens footer -->
     <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; font-family: 'Lato'; font-size: 0.75rem; letter-spacing: 2px;">
-        <a href="{% url 'galerie_mode' %}"   style="color: var(--charcoal); text-decoration: none;">SAGE MODE</a>
-        <a href="{% url 'immobilier' %}"     style="color: var(--charcoal); text-decoration: none;">IMMOBILIER</a>
-        <a href="{% url 'evenementiel' %}"   style="color: var(--charcoal); text-decoration: none;">ÉVÉNEMENTIEL</a>
-        <a href="{% url 'sage_digital' %}"   style="color: var(--charcoal); text-decoration: none;">SAGE DIGITAL</a>
+        <a href="{% url 'galerie_mode' %}"  style="color: var(--charcoal); text-decoration: none;">SAGE MODE</a>
+        <a href="{% url 'immobilier' %}"    style="color: var(--charcoal); text-decoration: none;">IMMOBILIER</a>
+        <a href="{% url 'evenementiel' %}"  style="color: var(--charcoal); text-decoration: none;">ÉVÉNEMENTIEL</a>
+        <a href="{% url 'sage_digital' %}"  style="color: var(--charcoal); text-decoration: none;">SAGE DIGITAL</a>
+        <!-- ✅ Lien externe Mako via Capacitor Browser -->
         <a href="#" class="mako-link" data-url="https://www.makoservicestg.com" style="color: var(--charcoal); text-decoration: none;">MAKO SERVICES</a>
     </div>
 
+    <!-- Bouton contact -->
     <div style="margin-bottom: 50px;">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal" style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase;">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal"
+           style="text-decoration: none; color: var(--charcoal); font-size: 0.7rem; letter-spacing: 2px; border: 1px solid var(--charcoal); padding: 15px 40px; text-transform: uppercase;">
             CONTACTEZ L'EMPIRE
         </a>
     </div>
+
+    <!-- Liens légaux -->
     <div style="margin-bottom: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-        <a href="{% url 'cgu' %}" style="font-size: 0.65rem; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase; transition: color 0.3s;">Conditions d'utilisation</a>
-        <a href="{% url 'politique' %}" style="font-size: 0.65rem; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase; transition: color 0.3s;">Politique de confidentialité</a>
+        <a href="{% url 'cgu' %}"       style="font-size: 0.65rem; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase;">Conditions d'utilisation</a>
+        <a href="{% url 'politique' %}" style="font-size: 0.65rem; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase;">Politique de confidentialité</a>
     </div>
+
+    <!-- Copyright -->
     <p style="font-size: 0.6rem; letter-spacing: 3px; color: #bbb; text-transform: uppercase; border-top: 1px solid #f0f0f0; display: inline-block; padding-top: 20px;">
         &copy; 2026 SAGE EMPIRE - TOUS DROITS RÉSERVÉS
     </p>
+
 </footer>
 
+<!-- ============================================================
+     MODAL CONTACT
+     Bootstrap modal — deux options : WhatsApp ou Email
+     ============================================================ -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 25px; border: none; background-color: white;">
             <div class="modal-body text-center py-5">
                 <h4 class="mb-4" style="color: #559db7; font-family: 'Cinzel'; letter-spacing: 4px;">CONTACTEZ-NOUS</h4>
+                <!-- ✅ WhatsApp via Capacitor Browser en app native -->
                 <a href="#" class="btn btn-contact-choice mb-3 mako-link" data-url="https://wa.me/22897070509" style="background-color: #64d474;">📱 WHATSAPP</a>
                 <a href="mailto:contacts@sage-empire.com" class="btn btn-contact-choice" style="background-color: #559db7;">📧 EMAIL</a>
             </div>
@@ -589,34 +1188,55 @@
     </div>
 </div>
 
+<!-- ============================================================
+     SCRIPTS
+     Bootstrap + GSAP (animations orbite)
+     ============================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <script>
+    /* ============================================================
+       UTILITAIRES
+       ============================================================ */
+
+    // Détecte si on est dans une app Capacitor native (iOS/Android)
     function isCapacitor() {
         return window.Capacitor !== undefined &&
                typeof window.Capacitor.isNativePlatform === 'function' &&
                window.Capacitor.isNativePlatform();
     }
 
+    /* ============================================================
+       HAMBURGER MENU — Toggle ouverture/fermeture
+       ============================================================ */
     function toggleMenu() {
         const menu = document.getElementById('mobileMenu');
         const hamburger = document.querySelector('.hamburger');
         const isActive = menu.classList.contains('active');
         if (isActive) {
+            // Fermeture
             menu.classList.remove('active');
             hamburger.classList.remove('open');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Réactive le scroll
         } else {
+            // Ouverture
             menu.classList.add('active');
             hamburger.classList.add('open');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Bloque le scroll derrière
         }
     }
 
+    /* ============================================================
+       INITIALISATION AU CHARGEMENT DU DOM
+       ============================================================ */
     document.addEventListener('DOMContentLoaded', function () {
 
-        // ✅ Re-applique le fix status bar après DOMContentLoaded (double sécurité)
+        /* ----------------------------------------------------------
+           ✅ DOUBLE SÉCURITÉ — Re-applique le fix status bar
+           après DOMContentLoaded (au cas où le premier script
+           au-dessus du body ait été trop rapide)
+           ---------------------------------------------------------- */
         if (isCapacitor() && window.Capacitor.Plugins.StatusBar) {
             window.Capacitor.Plugins.StatusBar.getInfo()
                 .then(function (info) {
@@ -628,15 +1248,22 @@
                 });
         }
 
-        // ✅ Fermer menu en cliquant dehors
+        /* ----------------------------------------------------------
+           FERMER LE MENU MOBILE en cliquant en dehors du contenu
+           ---------------------------------------------------------- */
         const mobileMenu = document.getElementById('mobileMenu');
         if (mobileMenu) {
             mobileMenu.addEventListener('click', function (e) {
-                if (e.target === this) toggleMenu();
+                if (e.target === this) toggleMenu(); // Clic sur l'overlay lui-même
             });
         }
 
-        // ✅ Liens externes via Capacitor Browser
+        /* ----------------------------------------------------------
+           LIENS EXTERNES — Capacitor Browser
+           En app native → ouvre dans le navigateur intégré Capacitor
+           En browser web → ouvre dans un nouvel onglet
+           Appliqué à tous les éléments avec la classe .mako-link
+           ---------------------------------------------------------- */
         document.querySelectorAll('.mako-link').forEach(function (link) {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -644,33 +1271,41 @@
                 var url = this.getAttribute('data-url');
                 if (!url) return;
                 if (isCapacitor()) {
+                    // ✅ App native → Capacitor Browser (in-app browser)
                     window.Capacitor.Plugins.Browser.open({
                         url: url,
                         presentationStyle: 'fullscreen'
                     }).catch(function () {
-                        window.open(url, '_blank');
+                        window.open(url, '_blank'); // Fallback si Browser échoue
                     });
                 } else {
+                    // Web standard → nouvel onglet
                     window.open(url, '_blank');
                 }
             });
         });
 
-        // ✅ Browser close listener
+        /* ----------------------------------------------------------
+           CAPACITOR BROWSER — Listener fermeture navigateur intégré
+           ---------------------------------------------------------- */
         if (isCapacitor() && window.Capacitor.Plugins.Browser) {
             window.Capacitor.Plugins.Browser.addListener('browserFinished', function () {
                 console.log('[SageEmpire] Navigateur intégré fermé');
             });
         }
 
-        // ✅ Orbit Cards
+        /* ----------------------------------------------------------
+           ORBIT CARDS — Section "Pourquoi Sage Empire"
+           Positionnement et animation des hexagones en orbite via GSAP
+           ---------------------------------------------------------- */
         const cardsData = document.querySelectorAll('.orbit-card');
         const container = document.querySelector('.orbit-container');
 
         if (cardsData.length > 0 && container) {
             const isMobile = window.innerWidth < 768;
-            const radius = isMobile ? 210 : 330;
+            const radius = isMobile ? 210 : 330; // Rayon de l'orbite en pixels
 
+            // 1. Injection du HTML dans chaque card (icône + label + description)
             cardsData.forEach(card => {
                 card.innerHTML = `
                     <div class="hex-content">
@@ -682,58 +1317,84 @@
             });
 
             const cards = document.querySelectorAll('.orbit-card');
-            let orbitRotation = { value: 0 };
+            let orbitRotation = { value: 0 }; // Valeur de rotation commune à toutes les cards
 
             if (typeof gsap !== 'undefined') {
+
+                // 2. Rotation continue de l'orbite — 360° en 40 secondes, en boucle
                 gsap.to(orbitRotation, {
-                    value: 360, duration: 40, repeat: -1, ease: "none",
+                    value: 360,
+                    duration: 40,
+                    repeat: -1,      // Infini
+                    ease: "none",    // Vitesse constante (pas d'accélération)
                     onUpdate: () => {
                         cards.forEach((card) => {
+                            // Calcule la position X/Y de chaque card sur le cercle
                             const baseAngle = parseInt(card.dataset.angle);
                             const currentAngle = ((baseAngle + orbitRotation.value) * Math.PI) / 180;
                             const x = Math.cos(currentAngle) * radius;
                             const y = Math.sin(currentAngle) * radius;
+                            // Applique la position (centré sur le nœud central)
                             gsap.set(card, { x, y, xPercent: -50, yPercent: -50 });
                         });
                     }
                 });
 
+                // 3. Effet parallaxe 3D au mouvement de la souris (desktop uniquement)
                 if (!isMobile) {
                     window.addEventListener('mousemove', (e) => {
-                        const x = (e.clientX / window.innerWidth - 0.5) * 35;
+                        const x = (e.clientX / window.innerWidth - 0.5) * 35;  // -17.5 à +17.5 degrés
                         const y = (e.clientY / window.innerHeight - 0.5) * 35;
-                        gsap.to(container, { rotationY: x, rotationX: -y, ease: "power2.out", duration: 1.2 });
+                        gsap.to(container, {
+                            rotationY: x,
+                            rotationX: -y,
+                            ease: "power2.out",
+                            duration: 1.2
+                        });
                     });
                 }
 
+                // 4. Flottement Z (profondeur) de chaque card — alternance avant/arrière
                 cards.forEach((card, i) => {
                     gsap.to(card, {
-                        z: i % 2 === 0 ? 25 : -25,
-                        duration: 3 + i, repeat: -1, yoyo: true, ease: "sine.inOut"
+                        z: i % 2 === 0 ? 25 : -25, // Alternance pair/impair
+                        duration: 3 + i,            // Durée légèrement différente par card
+                        repeat: -1,
+                        yoyo: true,                 // Aller-retour
+                        ease: "sine.inOut"
                     });
                 });
             }
         }
 
-        // ✅ Animations au scroll
+        /* ----------------------------------------------------------
+           ANIMATIONS AU SCROLL — data-animate
+           Tous les éléments [data-animate] apparaissent progressivement
+           avec un délai en cascade (150ms entre chaque)
+           ---------------------------------------------------------- */
         const animElements = document.querySelectorAll('[data-animate]');
         animElements.forEach((el, index) => {
-            setTimeout(() => { el.classList.add('animated'); }, 150 * index);
+            setTimeout(() => {
+                el.classList.add('animated'); // Déclenche la transition CSS
+            }, 150 * index);
         });
 
-        // ✅ Bouton retour iOS — positionné au-dessus du home indicator
+        /* ----------------------------------------------------------
+           BOUTON RETOUR iOS — App Capacitor uniquement
+           Positionné au-dessus du home indicator (safe area bottom)
+           Visible seulement si l'historique de navigation le permet
+           ---------------------------------------------------------- */
         if (isCapacitor()) {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             if (isIOS && window.history.length > 1) {
                 const backBtn = document.createElement('button');
-                backBtn.innerHTML = '&#8592;';
+                backBtn.innerHTML = '&#8592;'; // Flèche gauche ←
                 backBtn.id = 'ios-back-btn';
                 backBtn.style.cssText = `
                     position: fixed;
                     bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
                     left: calc(env(safe-area-inset-left, 0px) + 20px);
-                    width: 50px;
-                    height: 50px;
+                    width: 50px; height: 50px;
                     border-radius: 50%;
                     background: rgba(26, 26, 26, 0.85);
                     color: #B5935E;
@@ -754,244 +1415,39 @@
                 document.body.appendChild(backBtn);
             }
         }
-    });
-</script>
-<!-- ============================================================
-     SAGE EMPIRE — BANDEAU COOKIES RGPD
-     À inclure dans base.html et index.html juste avant </body>
-     ============================================================ -->
 
-<!-- Google Analytics — chargé conditionnellement selon consentement -->
+    }); // Fin DOMContentLoaded
+</script>
+
+<!-- ============================================================
+     GOOGLE ANALYTICS — Chargé conditionnellement
+     Ne se charge que si l'utilisateur accepte les cookies analytiques
+     ============================================================ -->
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 
+// Fonction appelée par le système de cookies quand l'utilisateur accepte
 function loadGoogleAnalytics() {
-    if (document.getElementById('ga-script')) return; // déjà chargé
+    if (document.getElementById('ga-script')) return; // Évite le double chargement
     var script = document.createElement('script');
     script.id = 'ga-script';
     script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-8KMK0V850B'; // ← remplace par ton ID GA4
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-8KMK0V850B';
     document.head.appendChild(script);
     script.onload = function() {
         gtag('js', new Date());
-        gtag('config', 'G-8KMK0V850B'); // ← remplace par ton ID GA4
+        gtag('config', 'G-8KMK0V850B');
         console.log('[SageEmpire] Google Analytics activé');
     };
 }
 </script>
 
-<style>
-    /* ===== BANDEAU PRINCIPAL ===== */
-    #cookie-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 99000;
-        background: #fff;
-        border-top: 2px solid #B5935E;
-        padding: 20px 5%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-        box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
-        /* ✅ Safe area iOS home indicator */
-        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-        transform: translateY(100%);
-        transition: transform 0.4s ease;
-    }
-    #cookie-banner.visible { transform: translateY(0); }
-
-    #cookie-banner .cookie-text {
-        flex: 1;
-        min-width: 200px;
-    }
-    #cookie-banner .cookie-text p {
-        margin: 0;
-        font-family: 'Lato', sans-serif;
-        font-size: 0.82rem;
-        color: #555;
-        line-height: 1.6;
-    }
-    #cookie-banner .cookie-text strong {
-        font-family: 'Cinzel', serif;
-        font-size: 0.85rem;
-        color: #1A1A1A;
-        letter-spacing: 1px;
-        display: block;
-        margin-bottom: 6px;
-    }
-    #cookie-banner .cookie-text a {
-        color: #B5935E;
-        text-decoration: none;
-        font-size: 0.78rem;
-    }
-
-    .cookie-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .btn-cookie {
-        padding: 10px 20px;
-        font-size: 0.72rem;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        white-space: nowrap;
-        border-radius: 2px;
-    }
-    .btn-cookie-accept {
-        background: #1A1A1A;
-        color: #fff;
-    }
-    .btn-cookie-accept:hover { background: #B5935E; }
-
-    .btn-cookie-customize {
-        background: transparent;
-        color: #1A1A1A;
-        border: 1px solid #1A1A1A;
-    }
-    .btn-cookie-customize:hover { border-color: #B5935E; color: #B5935E; }
-
-    .btn-cookie-refuse {
-        background: transparent;
-        color: #999;
-        border: 1px solid #ddd;
-    }
-    .btn-cookie-refuse:hover { color: #555; border-color: #999; }
-
-    /* ===== MODAL PERSONNALISATION ===== */
-    #cookie-modal {
-        position: fixed;
-        inset: 0;
-        z-index: 99500;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-        /* ✅ Safe area */
-        padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    #cookie-modal.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .cookie-modal-box {
-        background: #fff;
-        width: 100%;
-        max-width: 560px;
-        max-height: 80vh;
-        overflow-y: auto;
-        border-radius: 16px 16px 0 0;
-        padding: 35px 30px 30px;
-        transform: translateY(30px);
-        transition: transform 0.4s ease;
-    }
-    #cookie-modal.active .cookie-modal-box { transform: translateY(0); }
-
-    .cookie-modal-box h3 {
-        font-family: 'Cinzel', serif;
-        font-size: 1rem;
-        letter-spacing: 3px;
-        color: #1A1A1A;
-        margin: 0 0 8px;
-        text-transform: uppercase;
-    }
-    .cookie-modal-box > p {
-        font-size: 0.82rem;
-        color: #777;
-        margin: 0 0 25px;
-        line-height: 1.6;
-    }
-
-    /* Toggle switch */
-    .cookie-category {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 18px 0;
-        border-bottom: 1px solid #f0f0f0;
-        gap: 15px;
-    }
-    .cookie-category:last-of-type { border-bottom: none; }
-
-    .cookie-cat-info { flex: 1; }
-    .cookie-cat-info strong {
-        display: block;
-        font-size: 0.85rem;
-        color: #1A1A1A;
-        margin-bottom: 4px;
-        font-family: 'Lato', sans-serif;
-    }
-    .cookie-cat-info span {
-        font-size: 0.78rem;
-        color: #999;
-        line-height: 1.5;
-    }
-
-    .toggle-wrapper { flex-shrink: 0; padding-top: 2px; }
-
-    .toggle-switch {
-        position: relative;
-        width: 44px;
-        height: 24px;
-        display: inline-block;
-    }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-        position: absolute;
-        inset: 0;
-        background: #ddd;
-        border-radius: 24px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .toggle-slider::before {
-        content: "";
-        position: absolute;
-        width: 18px; height: 18px;
-        left: 3px; bottom: 3px;
-        background: white;
-        border-radius: 50%;
-        transition: 0.3s;
-    }
-    .toggle-switch input:checked + .toggle-slider { background: #B5935E; }
-    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
-    .toggle-switch input:disabled + .toggle-slider { opacity: 0.6; cursor: not-allowed; }
-
-    .cookie-modal-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 25px;
-        flex-wrap: wrap;
-    }
-    .cookie-modal-actions .btn-cookie { flex: 1; min-width: 120px; text-align: center; }
-
-    @media (max-width: 600px) {
-        #cookie-banner { flex-direction: column; align-items: flex-start; }
-        .cookie-buttons { width: 100%; }
-        .btn-cookie { flex: 1; text-align: center; }
-        .cookie-modal-box { padding: 25px 20px 20px; }
-    }
-</style>
-
-<!-- ===== BANDEAU ===== -->
+<!-- ============================================================
+     BANDEAU COOKIES RGPD
+     Apparaît en bas de page pour les nouveaux visiteurs
+     Se masque après le choix de l'utilisateur (stocké en cookie)
+     ============================================================ -->
 <div id="cookie-banner" role="dialog" aria-label="Gestion des cookies">
     <div class="cookie-text">
         <strong>🍪 Vos préférences cookies</strong>
@@ -1001,19 +1457,22 @@ function loadGoogleAnalytics() {
         </p>
     </div>
     <div class="cookie-buttons">
-        <button class="btn-cookie btn-cookie-refuse"     onclick="cookieChoice('refuse')">Refuser</button>
-        <button class="btn-cookie btn-cookie-customize"  onclick="openCookieModal()">Personnaliser</button>
-        <button class="btn-cookie btn-cookie-accept"     onclick="cookieChoice('accept')">Tout accepter</button>
+        <button class="btn-cookie btn-cookie-refuse"    onclick="cookieChoice('refuse')">Refuser</button>
+        <button class="btn-cookie btn-cookie-customize" onclick="openCookieModal()">Personnaliser</button>
+        <button class="btn-cookie btn-cookie-accept"    onclick="cookieChoice('accept')">Tout accepter</button>
     </div>
 </div>
 
-<!-- ===== MODAL PERSONNALISATION ===== -->
+<!-- ============================================================
+     MODAL PERSONNALISATION COOKIES
+     Permet à l'utilisateur de choisir catégorie par catégorie
+     ============================================================ -->
 <div id="cookie-modal" role="dialog" aria-modal="true" aria-label="Personnaliser les cookies">
     <div class="cookie-modal-box">
         <h3>Personnaliser</h3>
         <p>Choisissez les catégories de cookies que vous acceptez. Les cookies nécessaires ne peuvent pas être désactivés car ils sont indispensables au bon fonctionnement du site.</p>
 
-        <!-- Cookies nécessaires — toujours ON -->
+        <!-- Cookies nécessaires — TOUJOURS ON (disabled) -->
         <div class="cookie-category">
             <div class="cookie-cat-info">
                 <strong>Cookies nécessaires</strong>
@@ -1027,7 +1486,7 @@ function loadGoogleAnalytics() {
             </div>
         </div>
 
-        <!-- Cookies analytiques — optionnels -->
+        <!-- Cookies analytiques — OPTIONNELS -->
         <div class="cookie-category">
             <div class="cookie-cat-info">
                 <strong>Cookies analytiques</strong>
@@ -1041,19 +1500,24 @@ function loadGoogleAnalytics() {
             </div>
         </div>
 
+        <!-- Actions -->
         <div class="cookie-modal-actions">
-            <button class="btn-cookie btn-cookie-refuse"  onclick="cookieChoice('refuse')">Tout refuser</button>
-            <button class="btn-cookie btn-cookie-accept"  onclick="saveCustomCookies()">Enregistrer</button>
+            <button class="btn-cookie btn-cookie-refuse" onclick="cookieChoice('refuse')">Tout refuser</button>
+            <button class="btn-cookie btn-cookie-accept" onclick="saveCustomCookies()">Enregistrer</button>
         </div>
     </div>
 </div>
 
+<!-- ============================================================
+     SCRIPT COOKIES RGPD
+     Gestion complète : lecture/écriture cookie, consentement, GA
+     ============================================================ -->
 <script>
 (function () {
-    var COOKIE_KEY = 'sage_cookie_consent';
-    var COOKIE_DURATION = 365; // jours
+    var COOKIE_KEY = 'sage_cookie_consent'; // Nom du cookie de consentement
+    var COOKIE_DURATION = 365;              // Durée en jours
 
-    // ── Utilitaires ──────────────────────────────────────────────
+    /* -- Utilitaires cookies navigateur -- */
     function setCookie(name, value, days) {
         var expires = new Date(Date.now() + days * 864e5).toUTCString();
         document.cookie = name + '=' + encodeURIComponent(value) +
@@ -1065,6 +1529,7 @@ function loadGoogleAnalytics() {
         return match ? decodeURIComponent(match[1]) : null;
     }
 
+    /* -- Affichage/masquage du bandeau -- */
     function hideBanner() {
         var b = document.getElementById('cookie-banner');
         if (b) { b.style.transform = 'translateY(100%)'; b.style.pointerEvents = 'none'; }
@@ -1072,12 +1537,13 @@ function loadGoogleAnalytics() {
 
     function showBanner() {
         var b = document.getElementById('cookie-banner');
+        // Délai de 600ms pour laisser la page se charger avant d'afficher
         if (b) { setTimeout(function(){ b.classList.add('visible'); }, 600); }
     }
 
-    // ── Modal ─────────────────────────────────────────────────────
+    /* -- Modal personnalisation -- */
     window.openCookieModal = function () {
-        // Pré-cocher selon consentement existant
+        // Pré-coche les toggles selon les préférences existantes
         var saved = getCookie(COOKIE_KEY);
         if (saved) {
             try {
@@ -1093,16 +1559,16 @@ function loadGoogleAnalytics() {
         document.getElementById('cookie-modal').classList.remove('active');
     };
 
-    // Fermer en cliquant sur le fond
+    // Fermer la modal en cliquant sur le fond sombre
     document.getElementById('cookie-modal').addEventListener('click', function(e) {
         if (e.target === this) closeCookieModal();
     });
 
-    // ── Choix global ─────────────────────────────────────────────
+    /* -- Choix global (tout accepter / tout refuser) -- */
     window.cookieChoice = function (choice) {
         var prefs = {
-            necessary: true,
-            analytics: choice === 'accept'
+            necessary: true,                    // Toujours true
+            analytics: choice === 'accept'      // true si accepté, false si refusé
         };
         setCookie(COOKIE_KEY, JSON.stringify(prefs), COOKIE_DURATION);
         applyConsent(prefs);
@@ -1110,7 +1576,7 @@ function loadGoogleAnalytics() {
         closeCookieModal();
     };
 
-    // ── Sauvegarde personnalisée ──────────────────────────────────
+    /* -- Sauvegarde des choix personnalisés -- */
     window.saveCustomCookies = function () {
         var analyticsEl = document.getElementById('toggle-analytics');
         var prefs = {
@@ -1123,27 +1589,32 @@ function loadGoogleAnalytics() {
         closeCookieModal();
     };
 
-    // ── Application du consentement ───────────────────────────────
+    /* -- Application du consentement --
+       Lance ou désactive Google Analytics selon les préférences
+    */
     function applyConsent(prefs) {
         if (prefs.analytics) {
-            loadGoogleAnalytics();
+            loadGoogleAnalytics(); // Charge GA dynamiquement
         } else {
-            // Désactiver GA si déjà chargé
-            window['ga-disable-G-8KMK0V850B'] = true; // ← remplace par ton ID GA4
+            // Désactive GA même s'il est déjà chargé
+            window['ga-disable-G-8KMK0V850B'] = true;
         }
     }
 
-    // ── Init au chargement ────────────────────────────────────────
+    /* -- Initialisation au chargement --
+       Si un cookie de consentement existe → applique silencieusement
+       Sinon → affiche le bandeau au nouveau visiteur
+    */
     var saved = getCookie(COOKIE_KEY);
     if (saved) {
         try {
             var prefs = JSON.parse(saved);
-            applyConsent(prefs); // applique sans afficher le bandeau
+            applyConsent(prefs); // Applique sans réafficher le bandeau
         } catch(e) {
-            showBanner(); // cookie corrompu → réafficher
+            showBanner(); // Cookie corrompu → réafficher
         }
     } else {
-        showBanner(); // premier visiteur
+        showBanner(); // Premier visiteur
     }
 
 })();
