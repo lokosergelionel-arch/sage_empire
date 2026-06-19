@@ -237,21 +237,12 @@
         padding-top: max(20px, env(safe-area-inset-top, 20px));
         padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
     }
-    #lightbox-close {
-        position: absolute;
-        top: max(20px, env(safe-area-inset-top, 20px));
-        right: 25px;
-        color: white;
-        font-size: 2.2rem;
-        cursor: pointer;
-        z-index: 10;
-        line-height: 1;
-    }
     #lightbox-image {
         max-width: 92%;
         max-height: 85vh;
         border-radius: 6px;
         object-fit: contain;
+        pointer-events: none;
     }
 </style>
 
@@ -281,12 +272,12 @@
                 <h3 class="bien-title">{{ bien.titre }}</h3>
                 <p class="bien-price">{{ bien.prix }} FCFA</p>
 
-                <!-- ══ LOCALISATION CLIQUABLE ══ -->
+                <!-- ══ LOCALISATION CLIQUABLE — ouvre l'app native Maps ══ -->
                 {% if bien.latitude and bien.longitude %}
-                <a href="https://www.google.com/maps?q={{ bien.latitude }},{{ bien.longitude }}"
-                   target="_blank"
+                <a href="#"
+                   onclick="openLocation({{ bien.latitude }}, {{ bien.longitude }}); return false;"
                    class="bien-location has-gps"
-                   title="Voir la position exacte sur Google Maps">
+                   title="Voir la position exacte sur la carte">
                     <i class="fas fa-map-marker-alt"></i>
                     {{ bien.quartier }} — Voir sur la carte
                 </a>
@@ -337,7 +328,6 @@
 </div>
 
 <div id="lightbox">
-    <span id="lightbox-close" onclick="closeLightbox()">&times;</span>
     <img id="lightbox-image" src="" alt="Aperçu du bien">
 </div>
 
@@ -350,10 +340,32 @@
         document.getElementById('lightbox').style.display = 'none';
     }
     document.getElementById('lightbox').addEventListener('click', function(e) {
-        if (e.target.id === 'lightbox') closeLightbox();
+        closeLightbox();
     });
     document.addEventListener('keydown', function(e) {
         if (e.key === "Escape") closeLightbox();
     });
+
+    // ══ Ouverture de la localisation — privilégie l'app native ══
+    function openLocation(lat, lng) {
+        var isCapacitor = window.Capacitor &&
+            typeof window.Capacitor.isNativePlatform === 'function' &&
+            window.Capacitor.isNativePlatform();
+
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        var isAndroid = /Android/.test(navigator.userAgent);
+
+        if (isCapacitor || isIOS || isAndroid) {
+            // Schéma natif — ouvre directement l'app Maps installée (Apple Maps sur iOS, Google Maps sur Android)
+            if (isIOS) {
+                window.location.href = 'maps://maps.apple.com/?q=' + lat + ',' + lng;
+            } else {
+                window.location.href = 'geo:' + lat + ',' + lng + '?q=' + lat + ',' + lng;
+            }
+        } else {
+            // Desktop / navigateur classique — pas d'app native disponible
+            window.location.href = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+        }
+    }
 </script>
 {% endblock %}
