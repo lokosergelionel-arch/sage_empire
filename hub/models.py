@@ -146,10 +146,34 @@ class Property(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
+    # ══════════════════════════════════════════════════════
+    # ✅ AJOUT — Coordonnées GPS pour la localisation cliquable
+    # ══════════════════════════════════════════════════════
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6,
+        null=True, blank=True,
+        help_text="Coordonnée GPS — ex: 6.131900 (Lomé)"
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6,
+        null=True, blank=True,
+        help_text="Coordonnée GPS — ex: 1.222800 (Lomé)"
+    )
+
     class Meta:
         verbose_name = "Bien Immobilier"
         verbose_name_plural = "Biens Immobiliers"
         ordering = ['-date_creation']
+
+    def has_location(self):
+        """Vérifie si le bien a une position GPS valide."""
+        return self.latitude is not None and self.longitude is not None
+
+    def google_maps_url(self):
+        """Génère le lien Google Maps pour ce bien."""
+        if self.has_location():
+            return f"https://www.google.com/maps?q={self.latitude},{self.longitude}"
+        return None
 
     def __str__(self):
         return f"{self.titre} - {self.owner.nom_complet}"
@@ -241,7 +265,6 @@ class Event(models.Model):
     def __str__(self):
         return self.titre
 
-from django.db import models
 
 class InvitationStyliste(models.Model):
     code = models.CharField(max_length=50, unique=True, verbose_name="Code d'invitation")
