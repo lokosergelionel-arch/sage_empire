@@ -25,6 +25,12 @@ urlpatterns = [
     # PROTECTION DÉCONNEXION ADMIN : Intercepte et déconnecte proprement sur /admin/
     path('admin/logout/', auth_views.LogoutView.as_view(next_page='/admin/'), name='admin_logout'),
 
+    # RÉINITIALISATION MOT DE PASSE ADMIN
+    path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
+    path('admin/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     path('', home, name='home'),
 
     # Route de redirection intelligente après connexion
