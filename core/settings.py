@@ -133,6 +133,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     'SECURE': True,
+    # Sans PREFIX, la lib utilise MEDIA_URL (URL absolue) comme préfixe de nom -> dossiers/URLs mal formés.
+    'PREFIX': '',
 }
 
 # ===================== EMAIL (BREVO) =====================
