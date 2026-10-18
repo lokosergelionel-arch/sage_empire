@@ -5,9 +5,19 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ===================== SÉCURITÉ =====================
+# NOTE : la valeur par défaut ci-dessous est publique (dans git). Définir SECRET_KEY
+# dans les variables d'environnement Render. Pas d'erreur levée volontairement
+# pour ne pas casser un déploiement si la variable est absente.
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!-8t*1$y7g#epu8zj&)@=14q&$e+b%f(zuko_bsno^bm$k*$7_')
 
-DEBUG = True
+# Render définit RENDER=true : aucune variable à configurer pour la prod.
+IS_PROD = bool(os.environ.get('RENDER'))
+# DEBUG : True en local, False sur Render ; surcharge possible via env DEBUG ('1'/'0').
+_debug_env = os.environ.get('DEBUG')
+if _debug_env in ('1', '0'):
+    DEBUG = _debug_env == '1'
+else:
+    DEBUG = not IS_PROD
 
 ALLOWED_HOSTS = [
     'sage-empire.com',
@@ -23,13 +33,25 @@ CSRF_TRUSTED_ORIGINS = [
     'https://sage-empire.onrender.com'
 ]
 
-# Sécurité HTTPS (important en production)
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Sécurité HTTPS : actif uniquement hors DEBUG (production), désactivé en dev.
 USE_X_FORWARDED_HOST = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+else:
+    SECURE_PROXY_SSL_HEADER = None
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 
 # ===================== APPLICATIONS =====================
 INSTALLED_APPS = [
@@ -39,6 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
 
     "cloudinary_storage",
     "cloudinary",
@@ -48,6 +71,7 @@ INSTALLED_APPS = [
 # ===================== MIDDLEWARE =====================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "hub.middleware.CanonicalHostMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -58,6 +82,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "core.urls"
+
+# SEO : domaine canonique
+SITE_URL = "https://sage-empire.com"
 WSGI_APPLICATION = "core.wsgi.application"
 
 TEMPLATES = [
@@ -70,6 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "hub.context_processors.site_info",
             ],
         },
     },
@@ -149,10 +177,3 @@ LOGGING = {
         },
     },
 }
-
-# === SECURITE - DÉVELOPPEMENT ===
-SECURE_SSL_REDIRECT = False
-SECURE_HSTS_SECONDS = 0
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-SECURE_HSTS_PRELOAD = False
-SECURE_PROXY_SSL_HEADER = None

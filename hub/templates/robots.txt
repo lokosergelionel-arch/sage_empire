@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /login/
+Disallow: /redirect-user/
+Disallow: /acces-proprietaire/
+Disallow: /rejoindre/
+Disallow: /inscription-proprietaire/
+Disallow: /complete-inscription/
+Disallow: /mot-de-passe-oublie/
+Disallow: /reset/
+Disallow: /verify-email/
+Disallow: /verification-sent/
+Disallow: /renvoyer-verification/
+Disallow: /mon-espace/
+Disallow: /profil/modifier/
+Disallow: /mes-publications/
+Disallow: /supprimer-creation/
+Disallow: /proprietaire/
+
+Sitemap: https://sage-empire.com/sitemap.xml

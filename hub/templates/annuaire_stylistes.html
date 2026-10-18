@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SAGE EMPIRE | Annuaire des Créateurs</title>
+    {% with seo_title="Annuaire des créateurs de mode au Togo – SAGE EMPIRE" seo_desc="Trouvez les stylistes et créateurs de mode du Togo et explorez leurs portfolios." %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' with jsonld_crumb="Annuaire des créateurs" %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -197,7 +198,7 @@
 <body>
 
     <nav>
-        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" class="nav-logo" alt="Logo"></a>
+        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" class="nav-logo" alt="Logo SAGE EMPIRE"></a>
         <a href="{% url 'home' %}" class="back-home">← Accueil</a>
     </nav>
 
@@ -211,9 +212,9 @@
         <div class="card">
             <div class="profil-img-container">
                 {% if styliste.photo_profil %}
-                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}">
+                    <img src="{{ styliste.photo_profil.url }}" class="profil-img" alt="{{ styliste.nom_marque }}" loading="lazy" decoding="async" width="300" height="480">
                 {% else %}
-                    <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=F9F8F6&color=B5935E&size=300" class="profil-img" alt="{{ styliste.nom_marque }}">
+                    <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque|urlencode }}&background=F9F8F6&color=B5935E&size=300" class="profil-img" alt="{{ styliste.nom_marque }}" loading="lazy" decoding="async" width="300" height="480">
                 {% endif %}
             </div>
 

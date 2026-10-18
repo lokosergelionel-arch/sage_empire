@@ -1,0 +1,38 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page introuvable – SAGE EMPIRE</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
+    <meta name="theme-color" content="#1A1A1A">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+               background: #1A1A1A; color: #fff; font-family: Georgia, 'Times New Roman', serif; padding: 24px; }
+        .code { font-size: 5rem; letter-spacing: 8px; color: #B5935E; }
+        h1 { font-size: 1.4rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; margin: 12px 0; }
+        p { color: rgba(255,255,255,0.6); margin-bottom: 28px; font-family: Arial, sans-serif; }
+        a { color: #B5935E; text-decoration: none; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;
+            font-family: Arial, sans-serif; }
+        a:hover { color: #D4B483; }
+        .btn { display: inline-block; border: 1px solid #B5935E; padding: 12px 28px; margin-bottom: 28px; }
+        nav a { margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="code">404</div>
+        <h1>Page introuvable</h1>
+        <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
+        <a class="btn" href="/">Retour à l'accueil</a>
+        <nav>
+            <a href="/evenementiel/">Événementiel</a>
+            <a href="/immobilier/">Immobilier</a>
+            <a href="/digital/">Digital</a>
+            <a href="/mode/">Mode</a>
+        </nav>
+    </main>
+</body>
+</html>

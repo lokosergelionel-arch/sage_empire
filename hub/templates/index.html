@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta property="og:title" content="SAGE EMPIRE | Signature d'Excellence">
-    <meta property="og:description" content="Sage Empire — L'art de vivre l'exception.">
-    <meta property="og:image" content="{% static 'images/logo.png' %}?v=empire">
-    <meta property="og:url" content="https://sage-empire.com">
-    <meta property="og:type" content="website">
+    {% with seo_title="SAGE EMPIRE – Événementiel, Immobilier, Mode &amp; Digital à Lomé" seo_desc="Agence de prestige à Lomé, Togo : organisation d'événements, immobilier, mode et solutions digitales. Découvrez l'univers SAGE EMPIRE." %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' %}
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | {{ styliste.nom_marque }}</title>
+    {% include 'partials/seo_head.html' %}
+    {% include 'partials/jsonld.html' with jsonld_crumb=styliste.nom_marque jsonld_parent_name="Annuaire des créateurs" jsonld_parent_url="/marketplace/annuaire/" %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -164,16 +165,16 @@
 <body>
 
     <div id="lightbox" onclick="closeZoom(event)">
-        <img id="main-image" src="" alt="Zoom">
+        <img id="main-image" src="" alt="Vue agrandie de la création">
         <div class="zoom-controls" id="zoom-thumbs" onclick="event.stopPropagation()"></div>
     </div>
 
     <header class="profile-header">
         <div class="profile-img-container">
             {% if styliste.photo_profil %}
-                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}">
+                <img src="{{ styliste.photo_profil.url }}" alt="{{ styliste.nom_marque }}" loading="lazy" decoding="async" width="150" height="150">
             {% else %}
-                <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque }}&background=F9F8F6&color=B5935E" alt="{{ styliste.nom_marque }}">
+                <img src="https://ui-avatars.com/api/?name={{ styliste.nom_marque|urlencode }}&background=F9F8F6&color=B5935E" alt="{{ styliste.nom_marque }}" loading="lazy" decoding="async" width="150" height="150">
             {% endif %}
         </div>
         <h1 class="brand">{{ styliste.nom_marque }}</h1>
@@ -184,9 +185,9 @@
         {% for produit in creations %}
         <div class="product-card">
             <div class="product-image-wrapper" onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
-                <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}">
+                <img src="{{ produit.display_image }}" class="img-front" alt="{{ produit.titre }}" loading="lazy" decoding="async" width="600" height="800">
                 {% if produit.display_image_dos %}
-                    <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} dos">
+                    <img src="{{ produit.display_image_dos }}" class="img-back" alt="{{ produit.titre }} dos" loading="lazy" decoding="async" width="600" height="800">
                 {% endif %}
             </div>
             <div class="product-info">
@@ -214,10 +215,10 @@
             const thumbs = document.getElementById('zoom-thumbs');
 
             main.src = front;
-            thumbs.innerHTML = `<img src="${front}" class="thumb active" onclick="switchImg(this, '${front}')">`;
+            thumbs.innerHTML = `<img src="${front}" alt="Miniature face de la création" class="thumb active" onclick="switchImg(this, '${front}')">`;
 
             if (back && back !== 'None' && back !== '') {
-                thumbs.innerHTML += `<img src="${back}" class="thumb" onclick="switchImg(this, '${back}')">`;
+                thumbs.innerHTML += `<img src="${back}" alt="Miniature dos de la création" class="thumb" onclick="switchImg(this, '${back}')">`;
             }
 
             lb.style.display = 'flex';

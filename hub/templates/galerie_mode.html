@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SAGE MODE | La Collection Officielle</title>
+    {% with seo_title="Boutique mode &amp; créateurs togolais – SAGE MODE" seo_desc="Collection officielle SAGE MODE : pièces de créateurs togolais, livraison au Togo." %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' with jsonld_crumb="Mode" %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -229,7 +230,7 @@
 </script>
 
 <div id="lightbox" onclick="closeZoom(event)">
-    <img id="lightbox-img" src="" alt="Zoom">
+    <img id="lightbox-img" src="" alt="Vue agrandie du modèle de la collection">
     <div class="zoom-controls" id="zoom-thumbs"></div>
 </div>
 
@@ -246,10 +247,10 @@
                 <div class="product-image-wrapper"
                      onclick="openZoom('{{ produit.display_image }}', '{{ produit.display_image_dos }}')">
                     {% if produit.display_image %}
-                    <img src="{{ produit.display_image }}" class="product-img img-front" alt="{{ produit.titre }}">
+                    <img src="{{ produit.display_image }}" class="product-img img-front" alt="{{ produit.titre }}" loading="lazy" decoding="async" width="600" height="800">
                     {% endif %}
                     {% if produit.display_image_dos %}
-                    <img src="{{ produit.display_image_dos }}" class="product-img img-back" alt="{{ produit.titre }} - dos">
+                    <img src="{{ produit.display_image_dos }}" class="product-img img-back" alt="{{ produit.titre }} - dos" loading="lazy" decoding="async" width="600" height="800">
                     {% endif %}
                 </div>
                 <div class="product-info">
@@ -276,9 +277,9 @@
         const thumbContainer = document.getElementById('zoom-thumbs');
         mainImg.src = urlFront;
         thumbContainer.innerHTML = '';
-        let thumbsHTML = `<img src="${urlFront}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">`;
+        let thumbsHTML = `<img src="${urlFront}" alt="Miniature face du modèle" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlFront}')">`;
         if (urlBack && urlBack !== 'None' && urlBack !== 'null') {
-            thumbsHTML += `<img src="${urlBack}" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">`;
+            thumbsHTML += `<img src="${urlBack}" alt="Miniature dos du modèle" class="thumb-zoom" onclick="event.stopPropagation(); changeZoomImg('${urlBack}')">`;
         }
         thumbContainer.innerHTML = thumbsHTML;
         lightbox.style.display = 'flex';

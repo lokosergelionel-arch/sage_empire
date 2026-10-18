@@ -139,7 +139,10 @@ def portfolio_styliste(request, styliste_id):
     creations = Creation.objects.filter(styliste=styliste).order_by('-id')
     return render(request, 'portfolio_styliste.html', {
         'styliste': styliste,
-        'creations': creations
+        'creations': creations,
+        'seo_title': f"{styliste.nom_marque[:30]} – Styliste à Lomé | SAGE EMPIRE",
+        'seo_desc': ' '.join((styliste.biographie or '').split())[:155]
+                    or f"Découvrez le portfolio de {styliste.nom_marque}, créateur de mode au Togo, sur SAGE EMPIRE.",
     })
 
 

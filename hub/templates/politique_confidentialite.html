@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Politique de Confidentialité — Sage Empire</title>
+    {% with seo_title="Politique de Confidentialité — Sage Empire" seo_desc="Politique de confidentialité de SAGE EMPIRE : collecte, usage et protection de vos données personnelles." %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' with jsonld_crumb="Politique de confidentialité" %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SAGE EMPIRE | Événementiel de Prestige</title>
+    {% with seo_title="Organisation d'événements à Lomé, Togo – SAGE EMPIRE" seo_desc="Soirées, mariages, showcases et événements d'entreprise à Lomé. Découvrez nos réalisations : Coup de Cœur, White Party, Showcase Novimed." seo_image="images/whiteparty_01.jpg" %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' with jsonld_crumb="Événementiel" jsonld_gallery=True %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -343,8 +344,10 @@
         .event-card-bg {
             position: absolute;
             inset: 0;
-            background-size: cover;
-            background-position: center;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
             transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             filter: brightness(0.5);
         }
@@ -772,7 +775,7 @@
     </div>
     <div class="philosophy-visual reveal">
         <div class="philosophy-img-wrap">
-            <img src="{% static 'images/coupdecoeur_01.jpg' %}" alt="Sage Empire Événementiel">
+            <img src="{% static 'images/coupdecoeur_01.jpg' %}" alt="Sage Empire Événementiel" loading="lazy" decoding="async" width="1458" height="1800">
         </div>
     </div>
 </section>
@@ -786,7 +789,7 @@
 
     <div class="event-cards">
         <div class="event-card reveal" onclick="openEventGallery(0)">
-            <div class="event-card-bg" style="background-image: url('{% static "images/coupdecoeur_01.jpg" %}')"></div>
+            <img class="event-card-bg" src="{% static 'images/coupdecoeur_01.jpg' %}" alt="Coup de Cœur – soirée événementielle à Lomé" loading="lazy" decoding="async" width="1458" height="1800">
             <div class="event-card-content">
                 <div class="event-card-info">
                     <p class="event-card-year">2022 — Soirée Privée</p>
@@ -800,7 +803,7 @@
         </div>
 
         <div class="event-card reveal" onclick="openEventGallery(1)">
-            <div class="event-card-bg" style="background-image: url('{% static "images/whiteparty_01.jpg" %}')"></div>
+            <img class="event-card-bg" src="{% static 'images/whiteparty_01.jpg' %}" alt="White Party SAGE EMPIRE – soirée tout en blanc" loading="lazy" decoding="async" width="1800" height="1106">
             <div class="event-card-content">
                 <div class="event-card-info">
                     <p class="event-card-year">Soirée Privée — Dress code blanc</p>
@@ -814,7 +817,7 @@
         </div>
 
         <div class="event-card reveal" onclick="openEventGallery(2)">
-            <div class="event-card-bg" style="background-image: url('{% static "images/novimed_01.jpg" %}')"></div>
+            <img class="event-card-bg" src="{% static 'images/novimed_01.jpg' %}" alt="Showcase Novimed – présentation organisée par SAGE EMPIRE" loading="lazy" decoding="async" width="1273" height="1800">
             <div class="event-card-content">
                 <div class="event-card-info">
                     <p class="event-card-year">Showcase — Santé &amp; Innovation</p>
@@ -866,7 +869,7 @@
         <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
     </div>
     <button class="lightbox-nav-btn lightbox-prev" onclick="prevImage()"><i class="fas fa-chevron-left"></i></button>
-    <img id="lightbox-image" src="" alt="Événement">
+    <img id="lightbox-image" src="" alt="">
     <button class="lightbox-nav-btn lightbox-next" onclick="nextImage()"><i class="fas fa-chevron-right"></i></button>
     <div class="lightbox-dots" id="lb-dots"></div>
 </div>
@@ -950,7 +953,9 @@
 
     function updateLightbox() {
         const ev = events[currentEvent];
-        document.getElementById('lightbox-image').src = ev.images[currentImage];
+        const lbImg = document.getElementById('lightbox-image');
+        lbImg.src = ev.images[currentImage];
+        lbImg.alt = ev.title + ' – photo ' + (currentImage + 1);
         document.getElementById('lb-title').textContent = ev.title;
         document.getElementById('lb-counter').textContent = (currentImage + 1) + ' / ' + ev.images.length;
 

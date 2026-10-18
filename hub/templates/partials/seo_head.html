@@ -1,0 +1,18 @@
+{% load static %}<title>{{ seo_title }}</title>
+<meta name="description" content="{{ seo_desc }}">
+<link rel="canonical" href="{{ SITE_URL }}{{ request.path }}">
+<meta name="robots" content="{{ seo_robots|default:'index,follow' }}">
+<meta property="og:type" content="{{ seo_type|default:'website' }}">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="{{ SITE_NAME }}">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_desc }}">
+<meta property="og:url" content="{{ SITE_URL }}{{ request.path }}">
+<meta property="og:image" content="{% if seo_image %}{{ SITE_URL }}{% static seo_image %}{% else %}{{ SITE_URL }}{% static 'images/logo.png' %}{% endif %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ seo_title }}">
+<meta name="twitter:description" content="{{ seo_desc }}">
+<meta name="twitter:image" content="{% if seo_image %}{{ SITE_URL }}{% static seo_image %}{% else %}{{ SITE_URL }}{% static 'images/logo.png' %}{% endif %}">
+<link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
+<link rel="apple-touch-icon" href="{% static 'images/logo.png' %}">
+<meta name="theme-color" content="#1A1A1A">

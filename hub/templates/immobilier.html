@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SAGE EMPIRE | Immobilier d'Exception</title>
+    {% with seo_title="Immobilier à Lomé : biens d'exception – SAGE EMPIRE" seo_desc="Biens immobiliers à Lomé, Togo : propriétés sélectionnées, visites sur rendez-vous et accompagnement personnalisé." %}{% include 'partials/seo_head.html' %}{% endwith %}
+    {% include 'partials/jsonld.html' with jsonld_crumb="Immobilier" %}
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -521,7 +522,7 @@
     <div class="agents-list">
         {% for proprio in proprietaires %}
         <div class="agent-card reveal">
-            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="agent-avatar">
+            <img src="{{ proprio.get_photo_url }}" alt="{{ proprio.nom_complet }}" class="agent-avatar" loading="lazy" decoding="async" width="72" height="72">
 
             <div class="agent-info">
                 <span class="agent-badge">{{ proprio.properties.count }} bien{{ proprio.properties.count|pluralize }} disponible{{ proprio.properties.count|pluralize }}</span>
