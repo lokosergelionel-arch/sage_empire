@@ -84,7 +84,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 # SEO : domaine canonique
-SITE_URL = "https://sage-empire.com"
+SITE_URL = "https://www.sage-empire.com"
 WSGI_APPLICATION = "core.wsgi.application"
 
 TEMPLATES = [
@@ -133,7 +133,7 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     'SECURE': True,
-    # Sans PREFIX, la lib utilise MEDIA_URL (URL absolue) comme préfixe de nom -> dossiers/URLs mal formés.
+    # Sans PREFIX, la lib utilise MEDIA_URL (URL absolue) comme préfixe de nom -> noms/URLs mal formés.
     'PREFIX': '',
 }
 

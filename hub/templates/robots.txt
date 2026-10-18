@@ -19,4 +19,4 @@ Disallow: /mes-publications/
 Disallow: /supprimer-creation/
 Disallow: /proprietaire/
 
-Sitemap: https://sage-empire.com/sitemap.xml
+Sitemap: https://www.sage-empire.com/sitemap.xml

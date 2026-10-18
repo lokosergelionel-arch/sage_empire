@@ -5,7 +5,7 @@ from .models import ProfilProprietaire, ProfilStyliste, Property
 
 
 class _CanonicalSite:
-    domain = "sage-empire.com"
+    domain = "www.sage-empire.com"
     name = "SAGE EMPIRE"
 
 

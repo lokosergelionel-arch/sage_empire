@@ -1,13 +1,14 @@
 from django.conf import settings
 from django.http import HttpResponsePermanentRedirect
 
-CANONICAL_HOST = "sage-empire.com"
+CANONICAL_HOST = "www.sage-empire.com"
 HEALTH_PATHS = ("/health", "/healthz")
 
 
 class CanonicalHostMiddleware:
-    """En production : www.sage-empire.com -> sage-empire.com (301, https) ;
-    sage-empire.onrender.com -> sage-empire.com (GET/HEAD uniquement, hors health checks).
+    """En production : sage-empire.onrender.com -> www.sage-empire.com (301, GET/HEAD
+    uniquement, hors health checks). Le domaine nu sage-empire.com est déjà redirigé vers
+    www par Cloudflare : ne JAMAIS rediriger www vers le domaine nu (boucle infinie).
     Les autres hôtes (localhost, testserver...) ne sont pas redirigés."""
 
     def __init__(self, get_response):
@@ -19,9 +20,7 @@ class CanonicalHostMiddleware:
             path = request.path
             is_health = path.rstrip("/") in HEALTH_PATHS
             redirect = False
-            if host == "www." + CANONICAL_HOST:
-                redirect = True
-            elif host == "sage-empire.onrender.com":
+            if host == "sage-empire.onrender.com":
                 redirect = request.method in ("GET", "HEAD") and not is_health
             if redirect:
                 return HttpResponsePermanentRedirect(
