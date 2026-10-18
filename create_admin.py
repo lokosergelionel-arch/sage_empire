@@ -15,7 +15,10 @@ except ImportError:
 # TES IDENTIFIANTS SAGE EMPIRE
 username = "sagemode_admin"
 email = "admin@sage-empire.com"
-password = "Empire2026!" # <--- METS TON VRAI PASS ICI
+# Mot de passe lu dans l'environnement : SAGEMODE_ADMIN_PASSWORD=... python create_admin.py
+password = os.environ.get("SAGEMODE_ADMIN_PASSWORD")
+if not password:
+    raise SystemExit("SAGEMODE_ADMIN_PASSWORD est requis (aucun mot de passe n'est stocké dans le code).")
 
 try:
     if not User.objects.filter(username=username).exists():

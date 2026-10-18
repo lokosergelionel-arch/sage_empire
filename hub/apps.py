@@ -1,3 +1,5 @@
+import os
+
 from django.apps import AppConfig
 from django.db.models.signals import post_migrate
 
@@ -15,7 +17,13 @@ def create_or_update_admin(sender, **kwargs):
 
     username = 'admin'
     email = 'loko.sergelionel@gmail.com'
-    password = 'SageEmpire2026!'
+    # Le mot de passe vient de l'environnement (jamais écrit dans le code).
+    password = os.environ.get('ADMIN_PASSWORD')
+    reset_password = os.environ.get('ADMIN_RESET_PASSWORD') == '1'
+
+    if not password:
+        print("--- SAGE EMPIRE : ADMIN_PASSWORD absent, compte admin non modifié ---")
+        return
 
     # --- MÉTHODE RADICALE : On bloque tous les signaux post_save temporairement ---
     receivers = post_save.receivers
@@ -28,7 +36,9 @@ def create_or_update_admin(sender, **kwargs):
         else:
             user = User.objects.get(username=username)
             user.email = email
-            user.set_password(password)
+            # Le mot de passe n'est remplacé que sur demande explicite.
+            if reset_password:
+                user.set_password(password)
             user.save()
             print("--- SAGE EMPIRE : ADMIN MIS À JOUR ---")
     finally:
