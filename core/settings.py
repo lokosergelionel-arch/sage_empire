@@ -122,11 +122,13 @@ DATABASES = {
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "hub" / "static"]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 MEDIA_URL = "https://res.cloudinary.com/"
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# STORAGES (Django >= 4.2) remplace STATICFILES_STORAGE / DEFAULT_FILE_STORAGE (supprimés en 5.1).
+STORAGES = {
+    'default': {'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
