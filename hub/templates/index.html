@@ -420,7 +420,11 @@
             50% { opacity: 0.5; transform: scale(1.05); }
         }
 
+        /* Citation sous l'orbite : les cartes en bas du cercle dépassent d'environ 50px du conteneur */
+        .why-quote { margin-top: 75px; }
+
         @media (max-width: 768px) {
+            .why-quote { margin-top: 15px; }
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .hero h1 { font-size: 2.2rem; letter-spacing: 4px; }
@@ -608,7 +612,7 @@
         <div class="orbit-card" data-angle="300" data-label="PERFORMANCE" data-icon="fa-crown"       data-desc="Nous bâtissons des standards de haute performance."></div>
     </div>
 
-    <div style="text-align: center; margin-top: -50px; position: relative; z-index: 150; padding: 0 20px;">
+    <div class="why-quote" style="text-align: center; position: relative; z-index: 150; padding: 0 20px;">
         <p style="color: rgba(255,255,255,0.7); font-style: italic; max-width: 700px; margin: 0 auto 40px; line-height: 1.6; font-size: 0.95rem;">
             "Nous croyons que l'excellence est une discipline globale qui ne souffre aucune zone d'ombre."
         </p>
